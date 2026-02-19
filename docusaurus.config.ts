@@ -7,11 +7,11 @@ const config: Config = {
   tagline: 'Comprehensive reference manual for AMPscript — the scripting language for Salesforce Marketing Cloud.',
   favicon: 'img/favicon.ico',
 
-  url: 'https://YOUR-USERNAME.github.io',
-  baseUrl: '/ampscript-the-guide/',
+  url: 'https://jolucas245.github.io',
+  baseUrl: '/AMPScript-The-Guide/',
 
-  organizationName: 'YOUR-USERNAME',
-  projectName: 'ampscript-the-guide',
+  organizationName: 'jolucas245',
+  projectName: 'AMPScript-The-Guide',
 
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
