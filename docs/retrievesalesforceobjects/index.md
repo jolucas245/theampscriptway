@@ -12,7 +12,7 @@ The `retrievesalesforceobjects` function retrieves field values from a Salesforc
 | 1 | String | Yes | The name of the Salesforce object to retrieve data from (e.g., "Lead", "Contact", "Account"). |
 | 2 | String | Yes | A comma-delimited string of field names to retrieve. |
 | 3 | String | Yes | The name of the field to use for filtering the records. |
-| 4 | String | Yes | The comparison operator for the filter (e.g., "=", "!=", ">", "<"). |
+| 4 | String | Yes | The comparison operator for the filter (e.g., `=`, `!=`, `>`, `<`). |
 | 5 | String | Yes | The value to compare against in the filter. |
 | 6+ | String | No | Additional sets of filter criteria can be added as subsequent arguments. |
 
@@ -27,7 +27,7 @@ This example retrieves the First Name and Last Name of a Lead with a specific em
 
 /* Set the email address to look up */
 var @email
-set @email = "[email@example.com](mailto:email@example.com)"
+set @email = "email@example.com"
 
 /* Retrieve the Lead record */
 var @rows, @row, @rowCount
