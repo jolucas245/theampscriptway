@@ -16,37 +16,37 @@ const cards: CardItem[] = [
     title: 'Language',
     icon: '⌥',
     description: 'Syntax, variables, operators, loops and control flow — everything you need to read and write AMPscript fluently.',
-    link: '/language/index',
+    link: '/language/',
   },
   {
     title: 'Functions',
     icon: 'ƒ',
     description: 'Complete reference for all 150+ AMPscript functions, organized by category with arguments and real-world examples.',
-    link: '/function-index/index',
+    link: '/function-index/',
   },
   {
     title: 'Data Strings',
     icon: '⊕',
     description: 'Personalization strings, system strings, sender data and subscriber attributes for dynamic content.',
-    link: '/attributes/index',
+    link: '/attributes/',
   },
   {
     title: 'Content Syndication',
     icon: '↗',
     description: 'Fetch and render external content inside your emails and landing pages using HTTP-based syndication.',
-    link: '/content-syndication/index',
+    link: '/content-syndication/',
   },
   {
     title: 'Best Practices',
     icon: '◈',
     description: 'Patterns for writing reliable, maintainable AMPscript — defensive coding, debugging, error handling and more.',
-    link: '/best-practices/index',
+    link: '/best-practices/',
   },
   {
     title: 'Integrations',
     icon: '⇄',
     description: 'Using AMPscript alongside Server-Side JavaScript, Guide Template Language, Excel formulas and more.',
-    link: '/ampscript-and-server-side-javascript/index',
+    link: '/ampscript-and-server-side-javascript/',
   },
 ];
 
@@ -81,10 +81,10 @@ export default function Home(): ReactNode {
               the scripting language powering personalization in Salesforce Marketing Cloud.
             </p>
             <div className={styles.heroActions}>
-              <Link to="/introduction/index" className={styles.btnPrimary}>
+              <Link to="/introduction/" className={styles.btnPrimary}>
                 Get Started
               </Link>
-              <Link to="/function-index/index" className={styles.btnSecondary}>
+              <Link to="/function-index/" className={styles.btnSecondary}>
                 Function Index
               </Link>
             </div>
