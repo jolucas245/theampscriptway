@@ -1,30 +1,240 @@
-/**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap');
 
-/* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifm-color-primary: #4f6ef7;
+  --ifm-color-primary-dark: #2e52f5;
+  --ifm-color-primary-darker: #1d44f4;
+  --ifm-color-primary-darkest: #0a30e2;
+  --ifm-color-primary-light: #708af9;
+  --ifm-color-primary-lighter: #8199fa;
+  --ifm-color-primary-lightest: #b3c0fc;
+
+  --ifm-background-color: #f8f9fc;
+  --ifm-background-surface-color: #ffffff;
+
+  --ifm-font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
+  --ifm-font-family-monospace: 'Fira Code', 'Cascadia Code', monospace;
+  --ifm-font-size-base: 16px;
+  --ifm-line-height-base: 1.75;
+
+  --ifm-heading-font-weight: 600;
+  --ifm-heading-line-height: 1.3;
+
+  --ifm-code-font-size: 0.875rem;
+  --ifm-code-border-radius: 5px;
+  --ifm-code-background: #eef0f7;
+  --ifm-code-border-color: #c8cde0;
+  --ifm-code-padding-vertical: 0.15rem;
+  --ifm-code-padding-horizontal: 0.4rem;
+
+  --ifm-navbar-background-color: #ffffff;
+  --ifm-navbar-shadow: 0 1px 0 0 #e8eaf0;
+  --ifm-navbar-height: 60px;
+
+  --ifm-sidebar-width: 280px;
+
+  --ifm-toc-border-color: #e8eaf0;
+  --ifm-hr-border-color: #e8eaf0;
+
+  --ifm-blockquote-border-color: var(--ifm-color-primary);
+  --ifm-blockquote-background-color: #f0f3fe;
+  --ifm-blockquote-color: #3d4a6b;
+
+  --ifm-table-border-color: #e8eaf0;
+  --ifm-table-head-background: #f0f3fe;
+
+  --docusaurus-highlighted-code-line-bg: rgba(79, 110, 247, 0.08);
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-color-primary: #7b9bff;
+  --ifm-color-primary-dark: #5a7ffe;
+  --ifm-color-primary-darker: #4a72fe;
+  --ifm-color-primary-darkest: #1a4dfd;
+  --ifm-color-primary-light: #9cb5ff;
+  --ifm-color-primary-lighter: #adc1ff;
+  --ifm-color-primary-lightest: #cfdbff;
+
+  --ifm-background-color: #0f1117;
+  --ifm-background-surface-color: #16181f;
+
+  --ifm-code-background: #1e2130;
+
+  --ifm-navbar-background-color: #16181f;
+  --ifm-navbar-shadow: 0 1px 0 0 #252836;
+
+  --ifm-blockquote-background-color: #1a1e2e;
+  --ifm-blockquote-color: #a0aec0;
+
+  --ifm-table-border-color: #252836;
+  --ifm-table-head-background: #1a1e2e;
+
+  --ifm-toc-border-color: #252836;
+  --ifm-hr-border-color: #252836;
+
+  --docusaurus-highlighted-code-line-bg: rgba(123, 155, 255, 0.1);
+}
+
+body {
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; margin-top: 2.5rem; }
+h3 { font-size: 1.2rem; margin-top: 2rem; }
+
+p {
+  max-width: 72ch;
+}
+
+.navbar {
+  padding: 0 1.5rem;
+  backdrop-filter: blur(8px);
+}
+
+.navbar__brand {
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+  color: var(--ifm-color-primary);
+}
+
+.navbar__link {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.menu__link {
+  font-size: 0.875rem;
+  border-radius: 6px;
+  padding: 0.3rem 0.75rem;
+}
+
+.menu__link--active {
+  font-weight: 600;
+  background-color: rgba(79, 110, 247, 0.08);
+}
+
+[data-theme='dark'] .menu__link--active {
+  background-color: rgba(123, 155, 255, 0.1);
+}
+
+.menu__caret::before {
+  background-size: 1.1rem;
+}
+
+.menu__list-item-collapsible:hover {
+  background: transparent;
+}
+
+code {
+  font-feature-settings: 'liga' 1, 'calt' 1;
+  font-variant-ligatures: contextual;
+  border: 1px solid #c8cde0;
+}
+
+[data-theme='dark'] code {
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.prism-code {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  border-radius: 8px;
+  border: 1px solid #c8cde0;
+}
+
+blockquote {
+  background: var(--ifm-blockquote-background-color);
+  border-left: 3px solid var(--ifm-blockquote-border-color);
+  border-radius: 0 6px 6px 0;
+  padding: 0.75rem 1rem;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+blockquote p {
+  margin: 0;
+}
+
+table {
+  display: table;
+  width: 100%;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #c8cde0;
+}
+
+table td, table th {
+  border-color: #c8cde0;
+}
+
+table th {
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--ifm-table-head-background);
+}
+
+table tr:last-child td {
+  border-bottom: none;
+}
+
+.markdown {
+  max-width: 860px;
+}
+
+.markdown > h1:first-child {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.table-of-contents {
+  font-size: 0.82rem;
+}
+
+.table-of-contents__link {
+  color: var(--ifm-color-secondary-darkest);
+  transition: color 0.15s;
+}
+
+.table-of-contents__link--active {
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+.footer {
+  padding: 2rem;
+  font-size: 0.85rem;
+  border-top: 1px solid var(--ifm-hr-border-color);
+  background: var(--ifm-background-surface-color);
+}
+
+[data-theme='dark'] .footer {
+  background: var(--ifm-background-color);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(79, 110, 247, 0.25);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(79, 110, 247, 0.5);
 }
