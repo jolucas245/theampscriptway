@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'AMPscript: The Guide',
   tagline: 'Comprehensive reference manual for AMPscript — the scripting language for Salesforce Marketing Cloud.',
-  favicon: 'img/favicon.ico',
+  favicon: 'favicon.ico',
 
   url: 'https://jolucas245.github.io',
   baseUrl: '/AMPScript-The-Guide/',
@@ -40,6 +40,10 @@ const config: Config = {
   themeConfig: {
     navbar: {
       title: 'AMPscript: The Guide',
+      logo: {
+        alt: 'AMPscript The Guide',
+        src: 'img/mascot.svg',
+      },
       items: [
         {
           type: 'docSidebar',
