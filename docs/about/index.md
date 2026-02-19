@@ -2,7 +2,7 @@
 title: "About"
 ---
 
-### About AMPscript.dev
+### About AMPscript The Guide
 
 AMPscript is a scripting language for Salesforce Marketing Cloud. You can use it to create highly sophisticated, personalized content through an extensive set of functions.
 

@@ -9,7 +9,7 @@ If the syndicated content URL returns empty content, the platform assumes there 
 
 | Ordinal | Type | Required | Description |
 | --- | --- | --- | --- |
-| 1 | Numeric | No | `0` - Continues processing (default value)<br>`1` - Stops processing the email send and returns an error<br>`2` - Skips sending the email to the respective Subscriber for the `HTTPGet` command, or stops processing the email send and returns an error for the `Before;HTTPGet` command |
+| 1 | Numeric | No | `0` - Continues processing (default value)<br/>`1` - Stops processing the email send and returns an error<br/>`2` - Skips sending the email to the respective Subscriber for the `HTTPGet` command, or stops processing the email send and returns an error for the `Before;HTTPGet` command |
 
 > NOTE: This flag is ignored if used with the `After;HTTPGet` command.
 

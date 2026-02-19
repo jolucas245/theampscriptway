@@ -26,15 +26,15 @@ Supported non-alphanumeric characters and their respective encoded values are pr
 | " | `%22` | & | `%26` |
 | % | `%25` | ‘ | `%27` |
 | , | `%2c` | + | `%2b` |
-| < | `%3c` | / | `%2f` |
-| > | `%3e` | : | `%3a` |
+| `<` | `%3c` | / | `%2f` |
+| `>` | `%3e` | `:` | `%3a` |
 | &bsol; | `%5c` | ; | `%3b` |
 | ^ | `%5e` | = | `%3d` |
 | \_ | `%5f` | ? | `%3f` |
 | &grave; | `%60` | @ | `%40` |
-| { | `%7b` | [ | `%5b` |
-| &verbar; | `%7c` | ] | `%5d` |
-| } | `%7d` | $ | `%24` |
+| `{` | `%7b` | `[` | `%5b` |
+| `\|` | `%7c` | `]` | `%5d` |
+| `}` | `%7d` | `$` | `%24` |
 
 > NOTE: When parameter 2 is set to an argument value of `1`, the space character will be converted to `+`. When the parameter is set to an argument value of `1`, the space character will be converted to `%20` and all other characters will not be converted.
 
