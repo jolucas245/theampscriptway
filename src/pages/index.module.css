@@ -1,23 +1,296 @@
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
+.main {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--ifm-navbar-height));
+}
 
-.heroBanner {
-  padding: 4rem 0;
-  text-align: center;
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 6rem 2rem 5rem;
+  width: 100%;
+}
+
+.heroInner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ifm-color-primary);
+  background: rgba(79, 110, 247, 0.08);
+  border: 1px solid rgba(79, 110, 247, 0.2);
+  border-radius: 99px;
+  width: fit-content;
+}
+
+[data-theme='dark'] .badge {
+  background: rgba(123, 155, 255, 0.1);
+  border-color: rgba(123, 155, 255, 0.25);
+}
+
+.heroTitle {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  margin: 0;
+  color: var(--ifm-heading-color);
+}
+
+.heroTitleAccent {
+  color: var(--ifm-color-primary);
+}
+
+.heroSubtitle {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--ifm-color-secondary-darkest);
+  margin: 0;
+  max-width: 46ch;
+}
+
+[data-theme='dark'] .heroSubtitle {
+  color: #8892a4;
+}
+
+.heroActions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.65rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff !important;
+  background: var(--ifm-color-primary);
+  border-radius: 8px;
+  text-decoration: none !important;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 8px rgba(79, 110, 247, 0.35);
+}
+
+.btnPrimary:hover {
+  background: var(--ifm-color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(79, 110, 247, 0.45);
+}
+
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.65rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ifm-color-primary) !important;
+  background: transparent;
+  border: 1px solid rgba(79, 110, 247, 0.3);
+  border-radius: 8px;
+  text-decoration: none !important;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.btnSecondary:hover {
+  background: rgba(79, 110, 247, 0.06);
+  border-color: var(--ifm-color-primary);
+  transform: translateY(-1px);
+}
+
+.heroCode {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.codeWindow {
+  width: 100%;
+  max-width: 480px;
+  background: #0f1117;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #252836;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme='dark'] .codeWindow {
+  border-color: #252836;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+.codeWindowBar {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: #16181f;
+  border-bottom: 1px solid #252836;
+}
+
+.codeWindowBar span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #252836;
+}
+
+.codeWindowBar span:nth-child(1) { background: #ff5f57; }
+.codeWindowBar span:nth-child(2) { background: #febc2e; }
+.codeWindowBar span:nth-child(3) { background: #28c840; }
+
+.codeBlock {
+  margin: 0;
+  padding: 1.25rem 1.5rem;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.82rem;
+  line-height: 1.75;
+  color: #a8b5d1;
+  background: transparent;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.cards {
+  background: var(--ifm-background-surface-color);
+  border-top: 1px solid var(--ifm-hr-border-color);
+  padding: 5rem 2rem;
+}
+
+[data-theme='dark'] .cards {
+  background: #16181f;
+}
+
+.cardsInner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 2.5rem;
+  color: var(--ifm-heading-color);
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.5rem;
+  background: var(--ifm-background-color);
+  border: 1px solid var(--ifm-hr-border-color);
+  border-radius: 10px;
+  text-decoration: none !important;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
   position: relative;
   overflow: hidden;
 }
 
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
+[data-theme='dark'] .card {
+  background: #0f1117;
+}
+
+.card:hover {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 4px 20px rgba(79, 110, 247, 0.12);
+  transform: translateY(-2px);
+  text-decoration: none !important;
+}
+
+[data-theme='dark'] .card:hover {
+  box-shadow: 0 4px 20px rgba(123, 155, 255, 0.1);
+}
+
+.cardIcon {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--ifm-color-primary);
+  line-height: 1;
+  font-family: 'Fira Code', monospace;
+  opacity: 0.85;
+}
+
+.cardTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--ifm-heading-color);
+  letter-spacing: -0.02em;
+}
+
+.cardDescription {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--ifm-color-secondary-darkest);
+  margin: 0;
+  flex: 1;
+}
+
+[data-theme='dark'] .cardDescription {
+  color: #6b7a96;
+}
+
+.cardArrow {
+  font-size: 1rem;
+  color: var(--ifm-color-primary);
+  opacity: 0;
+  transition: opacity 0.15s, transform 0.15s;
+  align-self: flex-end;
+}
+
+.card:hover .cardArrow {
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+@media (max-width: 996px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding: 4rem 1.5rem;
+  }
+
+  .heroCode {
+    justify-content: center;
+  }
+
+  .heroTitle {
+    font-size: 2.75rem;
+  }
+
+  .cardsGrid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+@media (max-width: 600px) {
+  .heroTitle {
+    font-size: 2.2rem;
+  }
+
+  .cardsGrid {
+    grid-template-columns: 1fr;
+  }
 }
