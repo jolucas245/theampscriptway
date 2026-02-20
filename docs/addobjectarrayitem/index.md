@@ -31,7 +31,7 @@ IF NOT EMPTY(@mySubscriber) THEN
     Call SetObjectProperty(@mySubscriber, "EmailAddress", "test@example.com")
 ENDIF
 
-/* Add an attribute to the \'Attributes\' array of the subscriber object */
+/* Add an attribute to the "Attributes" array of the subscriber object */
 IF NOT EMPTY(@mySubscriber) THEN
     Call AddObjectArrayItem(@mySubscriber, "Attributes", "myNewAttribute")
 ENDIF
@@ -50,6 +50,7 @@ ENDIF
 This example demonstrates how to create a new subscriber in Marketing Cloud Engagement using `CreateObject`, `SetObjectProperty`, and `AddObjectArrayItem` to include multiple custom attributes, followed by `InvokeCreate` to persist the data.
 
 ```html
+%%[
 /* --- Variable Declarations --- */
 VAR @subscriber, @emailAddress, @firstName, @lastName, @customAttribute1, @customAttribute2
 VAR @status, @requestId, @error
@@ -71,7 +72,7 @@ IF NOT EMPTY(@subscriber) THEN
 ENDIF
 
 /* --- Add Custom Attributes using AddObjectArrayItem --- */
-/* Custom attributes are added to the \'Attributes\' array of the Subscriber object */
+/* Custom attributes are added to the "Attributes" array of the Subscriber object */
 IF NOT EMPTY(@subscriber) THEN
     /* Add FirstName */
     VAR @attr1
@@ -116,4 +117,5 @@ IF NOT EMPTY(@subscriber) THEN
         OutputLine(Concat("Error creating subscriber ", @emailAddress, ": ", @error))
     ENDIF
 ENDIF
+]%%
 ```
