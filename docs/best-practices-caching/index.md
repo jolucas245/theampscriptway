@@ -4,44 +4,38 @@ title: "Best Practices For Caching"
 
 ## Best Practices: Caching in AMPscript
 
-Caching is a fundamental concept in Salesforce Marketing Cloud that significantly impacts the performance and behavior of your emails and CloudPages.
+Caching is a fundamental concept in Salesforce Marketing Cloud that significantly impacts the performance and behaviour of your emails and CloudPages.
 
 ### 1. Data Extension Caching
 
-Marketing Cloud employs a caching mechanism for Data Extensions to improve send performance.
-
-**How it works:**
-
-- For large Data Extensions (typically >1000 rows), the system may cache the data to speed up processing.
-- For smaller Data Extensions, the system is more likely to fetch the live data at send time.
+Marketing Cloud caches Data Extension data during a send to improve performance. This means that changes made to a Data Extension after a send job has started may not be reflected in emails sent during that job.
 
 **Best Practices:**
 
-- **Be aware of caching during testing:** If you are testing with a small Data Extension and not seeing your data updates reflected, it might be due to caching.
-- **Use separate Data Extensions for testing:** Always use a separate Data Extension for your testing and development.
-- **Force a refresh:** Try adding a few dummy rows to your Data Extension to increase its size and force a cache refresh.
+- **Use separate Data Extensions for testing:** Always use a dedicated Data Extension for development and testing to avoid contaminating production data or being misled by stale cached results.
+- **Be aware of caching during test sends:** If data changes are not appearing during a preview or test send, the send engine may be using a cached snapshot of the Data Extension taken at job start.
 
 ### 2. Content Block Caching
 
-Content blocks are also cached to improve performance.
-
-**How it works:**
-
-- When a triggered send is published or a CloudPage is saved, the content of any referenced content blocks is cached.
-- Subsequent sends or page loads will use the cached version of the content block.
+When a triggered send definition is published, Marketing Cloud caches the content of referenced content blocks. Subsequent sends use the cached version until the definition is republished.
 
 **Best Practices:**
 
-- **Republish to refresh:** To see your changes to a content block reflected, you must pause and republish the triggered send, or re-save the CloudPage.
-- **Use `ContentBlockByID()` with caution:** Be aware that this function will retrieve the cached version of the content block.
+- **Republish to pick up changes:** To apply edits to a content block used in a triggered send, pause and republish the triggered send definition.
+- **Use `ContentBlockByID()` or `ContentBlockByKey()` with awareness:** These functions return the cached version of a block at the time the send definition was published. Changes made after publishing will not appear until the definition is republished.
 
 ### 3. Caching External Content with `Before;HTTPGet`
 
-The `Before;HTTPGet` command is the most efficient way to cache external content for a send.
+The `Before;HTTPGet` directive is the most efficient way to cache external HTTP content for the duration of a send job. The platform fetches the URL once at the start of the send and reuses the response for every subscriber.
 
 **Best Practices:**
 
-- **Use for non-personalized content:** This method is ideal for content that is the same for everyone.
-- **Avoid for personalized content:** If you need to fetch personalized content for each subscriber, you must use the `HTTPGet()` function.
+- **Use for non-personalised content:** `Before;HTTPGet` is appropriate for content that is identical for all subscribers — promotional banners, product listings, static navigation blocks.
+- **Use inline `HTTPGet()` for personalised content:** If the content must vary per subscriber, use a standard inline `HTTPGet()` call so that a unique request is made for each recipient.
+- **Keep `Before;HTTPGet` URLs stable:** Changes to the content at the URL after the send has started will not be reflected, as the response is cached at job start.
 
-By understanding these caching behaviors, you can develop more efficiently in Marketing Cloud and avoid common frustrations.
+```html
+%%Before;HTTPGet "https://www.example.com/promo-banner.html"%%
+```
+
+By understanding these caching behaviours, you can develop more predictably in Marketing Cloud and avoid common testing frustrations.

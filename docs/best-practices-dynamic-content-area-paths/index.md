@@ -2,64 +2,47 @@
 title: "Best Practice: Dynamic Content Area Paths"
 ---
 
-## best-practices-dynamic-content-area-paths
+Dynamically constructing the path to a Content Area allows for greater flexibility and maintainability in personalised emails. Rather than hardcoding a content area name or ID, you build the path at render time from subscriber attributes or other data, allowing a single code block to serve many different content variations.
 
-Dynamically constructing the path to a Content Area is a best practice that allows for greater flexibility and maintainability in personalized emails. This approach enables the selection of content based on subscriber attributes or other data, without hardcoding content area IDs or names.
+This technique relies on the `ContentAreaByName()` function, which accepts a dynamically constructed string as its argument.
 
-### Arguments
+> NOTE: Content Areas referenced via this pattern must exist in the account before send time. If the constructed path does not match an existing Content Area, the function returns an empty string. Always include a fallback to handle missing or unexpected attribute values.
 
-This is a conceptual best practice and not a function, so it does not have arguments.
+### Example 1: Language-Based Content Selection
 
-> NOTE: This technique is used within email content to dynamically pull in different content blocks based on defined logic.
-
-### Example 1: Basic Use
-
-This example demonstrates how to dynamically display a content block based on a subscriber's preferred language. The `ContentAreaByName` function is used with a dynamically constructed path.
+This example selects a header block from a folder structure based on the subscriber's preferred language. If no language attribute is set, it defaults to English.
 
 ```html
 %%[
+VAR @lang, @contentPath
 
-/* Set the subscriber's preferred language */
-var @lang
-set @lang = AttributeValue("language") /* language is a profile attribute */
+SET @lang = AttributeValue("language")
 
-/* Set a default language if the subscriber's preference is not available */
-if empty(@lang) then
-  set @lang = "en"
-endif
+IF EMPTY(@lang) THEN
+  SET @lang = "en"
+ENDIF
 
-/* Dynamically construct the content area path */
-var @contentPath
-set @contentPath = Concat("my-contents/", @lang, "/header")
-
-]%% %%=ContentAreaByName(@contentPath)=%%
+SET @contentPath = Concat("my-contents/", @lang, "/header")
+]%%
+%%=ContentAreaByName(@contentPath)=%%
 ```
 
-### Example 2: Advanced Scenario
+### Example 2: Region and Loyalty Tier Offer Selection
 
-This example shows how to select a promotional offer based on a subscriber's loyalty status and region. It combines multiple attributes to create a highly specific content path.
+This example constructs a path from two attributes — region and loyalty status — to select a targeted promotional offer block. A generic fallback is used when either attribute is missing.
 
 ```html
 %%[
+VAR @loyaltyStatus, @region, @offerPath
 
-/* Retrieve subscriber attributes */
-var @loyaltyStatus, @region
-set @loyaltyStatus = AttributeValue("loyaltyStatus")
-set @region = AttributeValue("region")
+SET @loyaltyStatus = AttributeValue("loyaltyStatus")
+SET @region = AttributeValue("region")
 
-/* Set default values to ensure content is always displayed */
-if not empty(@loyaltyStatus) and not empty(@region) then
-
-  /* Construct the dynamic path to the content area */
-  var @offerPath
-  set @offerPath = Concat("my-offers/", @region, "/", @loyaltyStatus)
-
-else
-
-  /* Fallback to a generic offer if attributes are missing */
-  set @offerPath = "my-offers/generic-offer"
-
-endif
-
-]%% %%=ContentAreaByName(@offerPath)=%%
+IF NOT EMPTY(@loyaltyStatus) AND NOT EMPTY(@region) THEN
+  SET @offerPath = Concat("my-offers/", @region, "/", @loyaltyStatus)
+ELSE
+  SET @offerPath = "my-offers/generic-offer"
+ENDIF
+]%%
+%%=ContentAreaByName(@offerPath)=%%
 ```
