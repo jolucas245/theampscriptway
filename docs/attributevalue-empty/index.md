@@ -1,63 +1,69 @@
---- 
-title: "Attributevalue And Empty"
+---
+title: "AttributeValue and Empty"
 ---
 
-## attributevalue-empty
+`AttributeValue` and `Empty` are two separate AMPscript functions that are commonly combined to safely check whether a subscriber attribute exists and contains a value before using it. This pattern is considered defensive coding best practice and prevents personalisation errors when attributes are missing or null.
 
-The `attributevalue-empty` function is a combination of the `AttributeValue` and `Empty` functions. It checks if a subscriber attribute is empty or does not exist.
+- `AttributeValue(attributeName)` returns the value of a named subscriber attribute or data extension field. If the attribute does not exist or has no value, it returns an empty string.
+- `Empty(value)` returns `TRUE` if the supplied value is an empty string, null, or zero; otherwise it returns `FALSE`.
 
 ### Arguments
 
-| Ordinal | Type | Required | Description |
-| --- | --- | --- | --- |
-| 1 | String | Yes | The name of the attribute to check. |
+**AttributeValue**
 
-> NOTE: This function is a custom implementation and not a built-in AMPscript function. It simplifies checking for empty or null attributes.
+| Ordinal | Type   | Required | Description                                              |
+|---------|--------|----------|----------------------------------------------------------|
+| 1       | String | Yes      | The name of the subscriber attribute or field to retrieve. |
 
-### Example 1: Basic Use
+**Empty**
 
-This example checks if the `FirstName` attribute is empty. If it is, a default value is used.
+| Ordinal | Type   | Required | Description                                              |
+|---------|--------|----------|----------------------------------------------------------|
+| 1       | Any    | Yes      | The value to evaluate. Returns `TRUE` if empty or null. |
+
+> NOTE: Use double quotes around attribute names in AMPscript. Escaped single quotes (`\'`) are not valid AMPscript syntax.
+
+### Example 1: Using a Fallback When an Attribute Is Empty
+
+This example checks whether the `FirstName` attribute has a value. If it does not, a generic greeting is used instead.
 
 ```html
 %%[
+VAR @firstName, @greeting
 
-/* Check if the FirstName attribute is empty */
-if attributevalue-empty(\'FirstName\') then
-  set @greeting = "Hello, valued customer"
-else
-  set @greeting = concat("Hello, ", AttributeValue(\'FirstName\'))
-endif
+SET @firstName = AttributeValue("FirstName")
 
+IF NOT EMPTY(@firstName) THEN
+  SET @greeting = Concat("Hello, ", @firstName)
+ELSE
+  SET @greeting = "Hello, valued subscriber"
+ENDIF
 ]%%
 
 <p>%%=v(@greeting)=%%</p>
 ```
 
-### Example 2: Advanced Scenario
+### Example 2: Displaying Region-Specific Content
 
-This example checks for a `Region` attribute. If it\'s not empty, it displays region-specific content.
+This example checks for a `Region` attribute and displays targeted content. If the attribute is not set, a default content block is shown.
 
 ```html
 %%[
+VAR @region, @content
 
-/* Check for a region to display targeted content */
-if not attributevalue-empty(\'Region\') then
-  set @region = AttributeValue(\'Region\')
-  if @region == "North" then
-    /* Display content for the North region */
-    set @content = "Here is your content for the North region."
-  elseif @region == "South" then
-    /* Display content for the South region */
-    set @content = "Here is your content for the South region."
-  else
-    /* Display default content */
-    set @content = "Here is your default content."
-  endif
-else
-  /* Display default content if region is not set */
-  set @content = "Here is your default content."
-endif
+SET @region = AttributeValue("Region")
 
+IF NOT EMPTY(@region) THEN
+  IF @region == "North" THEN
+    SET @content = "Special offers for our Northern customers."
+  ELSEIF @region == "South" THEN
+    SET @content = "Special offers for our Southern customers."
+  ELSE
+    SET @content = "Explore our latest offers."
+  ENDIF
+ELSE
+  SET @content = "Explore our latest offers."
+ENDIF
 ]%%
 
 <p>%%=v(@content)=%%</p>

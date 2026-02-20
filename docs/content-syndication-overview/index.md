@@ -66,7 +66,7 @@ This example illustrates a more advanced scenario where content is retrieved fro
 
     /* Check for successful retrieval and non-empty content */
     IF NOT EMPTY(@jsonContent) THEN
-        /* Parse the JSON content (assuming it\'s valid JSON) */
+        /* Parse the JSON content (assuming it's valid JSON) */
         /* In a real scenario, you might use BuildRowsetFromJSON or similar functions */
         SET @parsedContent = @jsonContent /* Simplified for example */
 
@@ -81,7 +81,11 @@ This example illustrates a more advanced scenario where content is retrieved fro
 
     /* Caching Note: In a production environment, you would implement caching logic here.
        For instance, storing @jsonContent in a Data Extension with a timestamp
-       and retrieving it from there if it\'s still fresh, before making an HTTPGet call.
+       and retrieving it from there if it's still fresh, before making an HTTPGet call.
     */
 ]%%
 ```
+
+### See Also
+
+- [Content Syndication Best Practices](/best-practices-content-syndication) — Performance and reliability guidelines, including caching strategies, audience size considerations, and response time recommendations.
