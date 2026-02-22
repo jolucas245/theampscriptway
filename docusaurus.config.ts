@@ -56,6 +56,7 @@ const config: Config = {
           label: 'GitHub',
           position: 'right',
         },
+        { to: '/playground', label: 'Playground', position: 'left' },
       ],
     },
     footer: {
