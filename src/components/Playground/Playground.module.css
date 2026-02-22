@@ -1,0 +1,571 @@
+/* ─── Layout principal ──────────────────────────────────────────────────────── */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--ifm-navbar-height));
+  background: var(--pg-bg);
+  color: var(--pg-text);
+  font-family: var(--ifm-font-family-monospace);
+}
+
+.workspace {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.left {
+  flex: none;
+  overflow: hidden;
+  border-right: 1px solid var(--pg-border);
+}
+
+.right {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ─── Toolbar ───────────────────────────────────────────────────────────────── */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 1rem;
+  background: var(--pg-toolbar-bg);
+  border-bottom: 1px solid var(--pg-border);
+  flex-shrink: 0;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--pg-accent);
+  flex: 1;
+  font-family: var(--ifm-font-family-base);
+}
+
+.autoRunLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: var(--pg-text-muted);
+  font-family: var(--ifm-font-family-base);
+  user-select: none;
+}
+
+.autoRunLabel:hover {
+  color: var(--pg-text);
+}
+
+.runBtn {
+  background: #0e7a0d;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.3rem 1rem;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-family: var(--ifm-font-family-base);
+  transition: background 0.15s;
+}
+
+.runBtn:hover {
+  background: #0f9a0f;
+}
+
+.clearBtn {
+  background: transparent;
+  color: var(--pg-text-muted);
+  border: 1px solid var(--pg-border);
+  border-radius: 4px;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-family: var(--ifm-font-family-base);
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.clearBtn:hover {
+  color: var(--pg-text);
+  border-color: var(--pg-text-muted);
+}
+
+/* ─── Editor ────────────────────────────────────────────────────────────────── */
+
+.editorWrap {
+  height: 100%;
+}
+
+/* ─── Tabs ──────────────────────────────────────────────────────────────────── */
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--pg-border);
+  flex-shrink: 0;
+  background: var(--pg-tab-bg);
+}
+
+.tab {
+  padding: 0.4rem 1.1rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--pg-text-muted);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-family: var(--ifm-font-family-base);
+  transition: color 0.15s;
+}
+
+.tab:hover {
+  color: var(--pg-text);
+}
+
+.tabActive {
+  color: var(--pg-text);
+  border-bottom-color: var(--pg-accent);
+}
+
+.tabError {
+  color: var(--pg-error-border);
+}
+
+/* ─── Output ────────────────────────────────────────────────────────────────── */
+
+.outputPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.outputEmpty {
+  padding: 1rem;
+  color: var(--pg-text-faint);
+  font-size: 0.82rem;
+  font-family: var(--ifm-font-family-base);
+}
+
+.viewToggle {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-bottom: 1px solid var(--pg-border);
+  flex-shrink: 0;
+  background: var(--pg-bg);
+}
+
+.viewToggle button {
+  background: transparent;
+  border: 1px solid var(--pg-border);
+  color: var(--pg-text-muted);
+  border-radius: 3px;
+  padding: 0.15rem 0.55rem;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-family: var(--ifm-font-family-base);
+  transition: color 0.15s, background 0.15s;
+}
+
+.viewToggle button:hover {
+  color: var(--pg-text);
+}
+
+.viewActive {
+  background: var(--pg-bg-raised) !important;
+  color: var(--pg-text) !important;
+  border-color: var(--pg-text-muted) !important;
+}
+
+.preview {
+  flex: 1;
+  padding: 1rem;
+  overflow: auto;
+  background: var(--pg-preview-bg);
+  color: var(--pg-preview-color);
+  font-family: var(--ifm-font-family-base);
+  font-size: 0.9rem;
+}
+
+.htmlSource {
+  flex: 1;
+  padding: 0.75rem;
+  overflow: auto;
+  font-size: 0.78rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+  background: var(--pg-bg);
+  color: var(--pg-string);
+  line-height: 1.5;
+}
+
+/* ─── Erros ─────────────────────────────────────────────────────────────────── */
+
+.noErrors {
+  padding: 0.75rem 1rem;
+  color: var(--pg-success);
+  font-size: 0.82rem;
+  font-family: var(--ifm-font-family-base);
+}
+
+.errorList {
+  padding: 0.5rem;
+  overflow: auto;
+}
+
+.errorItem {
+  background: var(--pg-error-bg);
+  border-left: 3px solid var(--pg-error-border);
+  padding: 0.4rem 0.65rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.8rem;
+  border-radius: 0 3px 3px 0;
+  font-family: var(--ifm-font-family-base);
+  line-height: 1.4;
+}
+
+.errorLine {
+  font-weight: 600;
+  color: var(--pg-error-border);
+  margin-right: 0.25rem;
+}
+
+/* ─── Painéis laterais ──────────────────────────────────────────────────────── */
+
+.panel {
+  border-top: 1px solid var(--pg-border);
+  flex-shrink: 0;
+}
+
+.panelHeader {
+  width: 100%;
+  background: var(--pg-tab-bg);
+  border: none;
+  color: var(--pg-text-muted);
+  text-align: left;
+  padding: 0.38rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-family: var(--ifm-font-family-base);
+  transition: background 0.15s, color 0.15s;
+}
+
+.panelHeader:hover {
+  background: var(--pg-bg-raised);
+  color: var(--pg-text);
+}
+
+.panelBody {
+  padding: 0.5rem;
+  max-height: 180px;
+  overflow-y: auto;
+  background: var(--pg-bg-surface);
+}
+
+/* ─── Subscriber attributes ─────────────────────────────────────────────────── */
+
+.attrRow {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.attrKey {
+  font-size: 0.76rem;
+  color: var(--pg-variable);
+  width: 110px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.attrInput {
+  flex: 1;
+  background: var(--pg-bg-input);
+  border: 1px solid var(--pg-border);
+  color: var(--pg-text);
+  border-radius: 3px;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.76rem;
+  font-family: var(--ifm-font-family-monospace);
+  transition: border-color 0.15s;
+}
+
+.attrInput:focus {
+  outline: none;
+  border-color: var(--pg-accent);
+}
+
+.removeBtn {
+  background: transparent;
+  border: none;
+  color: var(--pg-text-faint);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0 0.2rem;
+  transition: color 0.15s;
+}
+
+.removeBtn:hover {
+  color: var(--pg-error-border);
+}
+
+.addBtn {
+  background: #0e7a0d;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 0.2rem 0.55rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.15s;
+}
+
+.addBtn:hover {
+  background: #0f9a0f;
+}
+
+/* ─── Data Extensions ───────────────────────────────────────────────────────── */
+
+.deList {
+  margin-bottom: 0.5rem;
+}
+
+.deItem {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 0.25rem;
+}
+
+.deNameBtn {
+  flex: 1;
+  background: var(--pg-bg-raised);
+  border: 1px solid var(--pg-border);
+  color: var(--pg-text);
+  border-radius: 3px;
+  padding: 0.2rem 0.5rem;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-family: var(--ifm-font-family-base);
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.deNameActive {
+  border-color: var(--pg-accent);
+  color: var(--pg-accent);
+}
+
+.deTable {
+  border-top: 1px solid var(--pg-border);
+  padding-top: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.deTableActions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.deTableActions button {
+  background: var(--pg-bg-raised);
+  border: 1px solid var(--pg-border);
+  color: var(--pg-text-muted);
+  border-radius: 3px;
+  padding: 0.15rem 0.55rem;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-family: var(--ifm-font-family-base);
+  transition: color 0.15s;
+}
+
+.deTableActions button:hover {
+  color: var(--pg-text);
+}
+
+.tableScroll {
+  overflow-x: auto;
+}
+
+.table {
+  border-collapse: collapse;
+  font-size: 0.74rem;
+  width: 100%;
+}
+
+.table th {
+  background: var(--pg-bg-raised);
+  padding: 0.2rem 0.4rem;
+  border: 1px solid var(--pg-border);
+  color: var(--pg-variable);
+  white-space: nowrap;
+  font-family: var(--ifm-font-family-base);
+  font-weight: 600;
+}
+
+.table td {
+  border: 1px solid var(--pg-border-subtle);
+  padding: 0;
+}
+
+.table td input {
+  background: var(--pg-bg-input);
+  border: none;
+  color: var(--pg-text);
+  padding: 0.2rem 0.4rem;
+  width: 100%;
+  font-size: 0.74rem;
+  font-family: var(--ifm-font-family-monospace);
+  transition: background 0.15s;
+}
+
+.table td input:focus {
+  outline: none;
+  background: var(--pg-bg-raised);
+}
+
+.colHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.3rem;
+}
+
+.removeColBtn {
+  background: transparent;
+  border: none;
+  color: var(--pg-text-faint);
+  cursor: pointer;
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 0;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+
+.removeColBtn:hover {
+  color: var(--pg-error-border);
+}
+
+.addColRow {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.deEmpty {
+  font-size: 0.76rem;
+  color: var(--pg-text-faint);
+  margin: 0;
+  font-family: var(--ifm-font-family-base);
+  line-height: 1.4;
+}
+
+/* ─── CSV Import ─────────────────────────────────────────────────────────── */
+
+.csvImport {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  background: var(--pg-bg-raised);
+  border: 1px solid var(--pg-border);
+  border-radius: 4px;
+  padding: 0.5rem;
+}
+
+.csvHint {
+  font-size: 0.73rem;
+  color: var(--pg-text-muted);
+  margin: 0;
+  line-height: 1.5;
+  font-family: var(--ifm-font-family-base);
+}
+
+.csvTextarea {
+  background: var(--pg-bg-input);
+  border: 1px solid var(--pg-border);
+  color: var(--pg-text);
+  border-radius: 3px;
+  padding: 0.4rem;
+  font-size: 0.73rem;
+  font-family: var(--ifm-font-family-monospace);
+  resize: vertical;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.csvTextarea:focus {
+  outline: none;
+  border-color: var(--pg-accent);
+}
+
+.csvActions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.csvModeLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.73rem;
+  color: var(--pg-text-muted);
+  cursor: pointer;
+  font-family: var(--ifm-font-family-base);
+}
+
+.csvImportBtn {
+  background: #0e7a0d;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 0.25rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-family: var(--ifm-font-family-base);
+  margin-left: auto;
+  transition: background 0.15s;
+}
+
+.csvImportBtn:hover {
+  background: #0f9a0f;
+}
+
+.csvError {
+  font-size: 0.73rem;
+  color: var(--pg-error-border);
+  margin: 0;
+  font-family: var(--ifm-font-family-base);
+}
+
+/* ─── Resizer ────────────────────────────────────────────────────────────── */
+
+.resizer {
+  width: 5px;
+  flex-shrink: 0;
+  background: var(--pg-resizer);
+  cursor: col-resize;
+  transition: background 0.15s;
+}
+
+.resizer:hover,
+.resizer:active {
+  background: var(--pg-accent);
+}
