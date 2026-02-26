@@ -4,8 +4,6 @@ sidebar_label: BuildRowsetFromString
 description: Cria um rowset a partir de uma string de texto, dividindo-a com base em um delimitador especificado.
 ---
 
-<!-- generated-by-script -->
-
 # BuildRowsetFromString
 
 ## Descrição

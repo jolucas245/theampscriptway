@@ -4,8 +4,6 @@ sidebar_label: StringToDate
 description: Converte uma string de data para um objeto datetime do .NET, permitindo que você manipule e compare datas no AMPscript.
 ---
 
-<!-- generated-by-script -->
-
 # StringToDate
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: RetrieveSalesforceJobSources
 description: Retorna um rowset com informações sobre as fontes (sources) de um envio do Salesforce, incluindo SourceID, SourceType e IsInclusionSource.
 ---
 
-<!-- generated-by-script -->
-
 # RetrieveSalesforceJobSources
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: FormatDate
 description: Formata uma string de data em um formato personalizado, com suporte a locales e formatos predefinidos como ISO 8601 e RFC 1123.
 ---
 
-<!-- generated-by-script -->
-
 # FormatDate
 
 ## Descrição

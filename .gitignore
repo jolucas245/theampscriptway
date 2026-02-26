@@ -4,8 +4,9 @@
 # Production
 /build
 
-# Scripts
+# Scripts de padronização de markdown
 /scripts
+.generated-manifest.json
 
 # Generated files
 .docusaurus

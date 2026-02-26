@@ -4,8 +4,6 @@ sidebar_label: RetrieveMscrmRecordsFetchXml
 description: Retorna registros do Microsoft Dynamics CRM utilizando uma consulta Fetch XML personalizada.
 ---
 
-<!-- generated-by-script -->
-
 # RetrieveMscrmRecordsFetchXml
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: ImageByKey
 description: Retorna uma tag HTML img referenciando uma imagem do Content Builder a partir da sua chave externa (external key), com suporte a uma imagem de fallback.
 ---
 
-<!-- generated-by-script -->
-
 # ImageByKey
 
 ## Descrição

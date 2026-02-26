@@ -5,8 +5,6 @@ description: Aprenda os fundamentos da sintaxe AMPscript — blocos de código, 
 sidebar_position: 2
 ---
 
-<!-- generated-by-script -->
-
 # Sintaxe básica
 
 Se você já passou pela [Introdução](/docs/getting-started/introduction), sabe o que o AMPscript pode fazer. Agora vamos entender **como** ele funciona na prática. Nesta página, você vai aprender as três formas de escrever AMPscript e onde usá-las nos seus emails.

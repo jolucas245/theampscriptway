@@ -4,8 +4,6 @@ sidebar_label: AuthenticatedEmployeeId
 description: Retorna o ID do funcionário (employee ID) do usuário autenticado no Marketing Cloud que está acessando a página do Microsite.
 ---
 
-<!-- generated-by-script -->
-
 # AuthenticatedEmployeeId
 
 ## Descrição

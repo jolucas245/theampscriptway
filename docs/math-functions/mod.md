@@ -4,8 +4,6 @@ sidebar_label: Mod
 description: Retorna o resto da divisão do primeiro parâmetro pelo segundo parâmetro.
 ---
 
-<!-- generated-by-script -->
-
 # Mod
 
 ## Descrição

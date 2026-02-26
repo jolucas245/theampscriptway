@@ -4,8 +4,6 @@ sidebar_label: HTTPPost
 description: Envia uma requisição HTTP POST para uma URL especificada, permitindo integrar o Marketing Cloud com APIs e serviços externos.
 ---
 
-<!-- generated-by-script -->
-
 # HTTPPost
 
 ## Descrição

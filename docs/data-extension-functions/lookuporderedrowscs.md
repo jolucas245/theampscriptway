@@ -4,8 +4,6 @@ sidebar_label: LookupOrderedRowsCS
 description: Retorna linhas de uma Data Extension ordenadas de forma ascendente ou descendente, com busca case-sensitive (diferencia maiúsculas de minúsculas).
 ---
 
-<!-- generated-by-script -->
-
 # LookupOrderedRowsCS
 
 ## Descrição

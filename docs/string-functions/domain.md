@@ -4,8 +4,6 @@ sidebar_label: Domain
 description: Retorna a parte do domínio de um endereço de e-mail, ou seja, tudo que vem depois do arroba (@).
 ---
 
-<!-- generated-by-script -->
-
 # Domain
 
 ## Descrição

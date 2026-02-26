@@ -4,8 +4,6 @@ sidebar_label: LocalDateToSystemDate
 description: Converte uma data/hora do fuso horário local da sua conta Marketing Cloud para o horário do sistema (Central Standard Time, UTC-6).
 ---
 
-<!-- generated-by-script -->
-
 # LocalDateToSystemDate
 
 ## Descrição

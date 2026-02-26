@@ -4,8 +4,6 @@ sidebar_label: Length
 description: Retorna o número de caracteres de uma string, útil para validações de tamanho de campos e URLs no Marketing Cloud.
 ---
 
-<!-- generated-by-script -->
-
 # Length
 
 ## Descrição

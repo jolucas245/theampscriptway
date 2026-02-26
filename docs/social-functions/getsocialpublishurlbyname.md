@@ -4,8 +4,6 @@ sidebar_label: GetSocialPublishUrlByName
 description: Retorna código HTML para compartilhar uma região de conteúdo em uma rede social suportada, usando o nome da rede social.
 ---
 
-<!-- generated-by-script -->
-
 # GetSocialPublishUrlByName
 
 ## Descrição

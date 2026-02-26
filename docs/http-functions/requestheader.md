@@ -4,8 +4,6 @@ sidebar_label: RequestHeader
 description: Recupera o valor de um cabeçalho HTTP de uma requisição feita a uma landing page no Marketing Cloud.
 ---
 
-<!-- generated-by-script -->
-
 # RequestHeader
 
 ## Descrição

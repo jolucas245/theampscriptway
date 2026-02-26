@@ -4,8 +4,6 @@ sidebar_label: ImageById
 description: Retorna uma tag img com o caminho de uma imagem armazenada no Content Builder, usando o ID da imagem.
 ---
 
-<!-- generated-by-script -->
-
 # ImageById
 
 ## Descrição

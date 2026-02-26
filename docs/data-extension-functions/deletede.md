@@ -4,8 +4,6 @@ sidebar_label: DeleteDE
 description: Deleta linhas de uma Data Extension com base em critérios de coluna e valor, disponível para uso em emails.
 ---
 
-<!-- generated-by-script -->
-
 # DeleteDE
 
 ## Descrição

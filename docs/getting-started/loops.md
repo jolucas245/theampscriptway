@@ -5,8 +5,6 @@ description: Aprenda a usar loops FOR em AMPScript para iterar sobre dados de Da
 sidebar_position: 5
 ---
 
-<!-- generated-by-script -->
-
 # Loops
 
 Se você já sabe trabalhar com [variáveis](/docs/getting-started/variables) e [condicionais](/docs/getting-started/conditionals), o próximo passo natural é aprender a repetir blocos de código. No AMPScript, o loop `FOR` é a única estrutura de repetição disponível — e, na prática, você vai usá-lo quase sempre junto com **LookupRows**, **Row()** e **Field()** para percorrer linhas de uma Data Extension.

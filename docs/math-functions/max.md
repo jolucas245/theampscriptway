@@ -4,8 +4,6 @@ sidebar_label: Max
 description: Retorna o maior valor entre dois ou mais números fornecidos como parâmetros.
 ---
 
-<!-- generated-by-script -->
-
 # Max
 
 ## Descrição

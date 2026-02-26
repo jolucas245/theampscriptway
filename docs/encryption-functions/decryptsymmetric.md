@@ -4,8 +4,6 @@ sidebar_label: DecryptSymmetric
 description: Descriptografa dados que foram criptografados com a função EncryptSymmetric, usando o algoritmo e valores de criptografia fornecidos.
 ---
 
-<!-- generated-by-script -->
-
 # DecryptSymmetric
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: MD5
 description: Converte uma string em um hash hexadecimal MD5 de 128 bits, útil para ofuscar dados sensíveis e criar identificadores únicos.
 ---
 
-<!-- generated-by-script -->
-
 # MD5
 
 ## Descrição

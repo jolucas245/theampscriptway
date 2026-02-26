@@ -4,8 +4,6 @@ sidebar_label: Floor
 description: Arredonda um número decimal para baixo, retornando o maior inteiro que seja menor ou igual ao valor informado.
 ---
 
-<!-- generated-by-script -->
-
 # Floor
 
 ## Descrição

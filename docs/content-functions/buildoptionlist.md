@@ -4,8 +4,6 @@ sidebar_label: BuildOptionList
 description: Cria um conjunto de tags <option> HTML para uso em formulários de seleção em páginas web como CloudPages.
 ---
 
-<!-- generated-by-script -->
-
 # BuildOptionList
 
 ## Descrição

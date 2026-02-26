@@ -4,8 +4,6 @@ sidebar_label: CloudPagesURL
 description: Retorna uma URL de CloudPages com query string criptografada em AES-GCM, usada para criar links seguros de emails para landing pages.
 ---
 
-<!-- generated-by-script -->
-
 # CloudPagesURL
 
 ## Descrição

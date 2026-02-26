@@ -4,8 +4,6 @@ sidebar_label: LookupOrderedRows
 description: Retorna linhas de uma Data Extension ordenadas de forma ascendente ou descendente com base em uma ou mais colunas especificadas.
 ---
 
-<!-- generated-by-script -->
-
 # LookupOrderedRows
 
 ## Descrição

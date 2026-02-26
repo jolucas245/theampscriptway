@@ -4,8 +4,6 @@ sidebar_label: HTTPPost2
 description: Envia uma requisição HTTP POST para uma URL especificada, com suporte a headers customizados adicionais, e armazena a resposta e os headers retornados em variáveis.
 ---
 
-<!-- generated-by-script -->
-
 # HTTPPost2
 
 ## Descrição

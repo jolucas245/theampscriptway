@@ -4,8 +4,6 @@ sidebar_label: BarcodeUrl
 description: Gera a URL de uma imagem de código de barras a partir de uma string de entrada, suportando diversos padrões lineares e bidimensionais.
 ---
 
-<!-- generated-by-script -->
-
 # BarcodeUrl
 
 ## Descrição

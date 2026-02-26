@@ -4,8 +4,6 @@ sidebar_label: UpdateData
 description: Atualiza dados em uma Data Extension e retorna o número de linhas atualizadas, para uso em CloudPages, landing pages, microsites e SMS.
 ---
 
-<!-- generated-by-script -->
-
 # UpdateData
 
 ## Descrição

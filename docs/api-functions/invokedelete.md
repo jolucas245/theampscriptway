@@ -4,8 +4,6 @@ sidebar_label: InvokeDelete
 description: Invoca o método Delete em um API Object do Marketing Cloud e retorna o código de status da operação.
 ---
 
-<!-- generated-by-script -->
-
 # InvokeDelete
 
 ## Descrição

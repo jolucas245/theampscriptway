@@ -4,8 +4,6 @@ sidebar_label: Lowercase
 description: Converte todos os caracteres de uma string para letras minúsculas.
 ---
 
-<!-- generated-by-script -->
-
 # Lowercase
 
 ## Descrição

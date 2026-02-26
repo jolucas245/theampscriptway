@@ -4,8 +4,6 @@ sidebar_label: Trim
 description: Remove espaços em branco do início e do fim de uma string.
 ---
 
-<!-- generated-by-script -->
-
 # Trim
 
 ## Descrição

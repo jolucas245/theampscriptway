@@ -4,8 +4,6 @@ sidebar_label: Char
 description: Retorna o caractere correspondente a um código ASCII, com opção de repetir o caractere múltiplas vezes.
 ---
 
-<!-- generated-by-script -->
-
 # Char
 
 ## Descrição

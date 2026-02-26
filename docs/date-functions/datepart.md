@@ -4,8 +4,6 @@ sidebar_label: DatePart
 description: Extrai uma parte específica (dia, mês, ano, hora ou minuto) de uma string de data ou timestamp.
 ---
 
-<!-- generated-by-script -->
-
 # DatePart
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: UpsertMscrmRecord
 description: Faz upsert (atualiza ou cria) um registro no Microsoft Dynamics CRM a partir do AMPscript.
 ---
 
-<!-- generated-by-script -->
-
 # UpsertMscrmRecord
 
 ## Descrição

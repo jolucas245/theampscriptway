@@ -4,8 +4,6 @@ sidebar_label: GetPortfolioItem
 description: Retorna o conteúdo de um arquivo armazenado no Portfolio do Marketing Cloud.
 ---
 
-<!-- generated-by-script -->
-
 # GetPortfolioItem
 
 ## Descrição

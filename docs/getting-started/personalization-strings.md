@@ -5,8 +5,6 @@ description: Guia completo sobre personalization strings no Salesforce Marketing
 sidebar_position: 6
 ---
 
-<!-- generated-by-script -->
-
 # Personalization Strings
 
 Sabe quando você recebe um e-mail e ele começa com "Olá, João!"? Pode parecer mágica, mas é uma das funcionalidades mais básicas e poderosas do Marketing Cloud: as **personalization strings**. Elas são o jeito mais simples de inserir dados dinâmicos nos seus e-mails — sem escrever uma única linha de código.

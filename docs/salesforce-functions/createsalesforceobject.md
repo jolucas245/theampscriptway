@@ -4,8 +4,6 @@ sidebar_label: CreateSalesforceObject
 description: Cria um registro em um objeto do Sales Cloud ou Service Cloud e retorna o ID do registro criado.
 ---
 
-<!-- generated-by-script -->
-
 # CreateSalesforceObject
 
 ## Descrição

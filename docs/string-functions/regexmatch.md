@@ -4,8 +4,6 @@ sidebar_label: RegExMatch
 description: Busca um padrão em uma string usando uma expressão regular (regex) e retorna o trecho correspondente.
 ---
 
-<!-- generated-by-script -->
-
 # RegExMatch
 
 ## Descrição

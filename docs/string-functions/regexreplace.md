@@ -4,8 +4,6 @@ sidebar_label: RegExReplace
 description: Substitui partes de uma string que correspondem a um padrão de expressão regular (regex) por um valor de substituição especificado.
 ---
 
-<!-- generated-by-script -->
-
 # RegExReplace
 
 ## Descrição

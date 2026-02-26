@@ -4,8 +4,6 @@ sidebar_label: DataExtensionRowCount
 description: Retorna o número total de linhas (registros) de uma Data Extension específica.
 ---
 
-<!-- generated-by-script -->
-
 # DataExtensionRowCount
 
 ## Descrição

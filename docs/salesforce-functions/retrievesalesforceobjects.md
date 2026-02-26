@@ -4,8 +4,6 @@ sidebar_label: RetrieveSalesforceObjects
 description: Recupera dados de objetos do Salesforce CRM diretamente via AMPscript, retornando um rowset com os registros que correspondem aos critérios de filtro especificados.
 ---
 
-<!-- generated-by-script -->
-
 # RetrieveSalesforceObjects
 
 ## Descrição

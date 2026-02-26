@@ -4,8 +4,6 @@ sidebar_label: RowCount
 description: Retorna o número de linhas em um rowset ou array obtido de uma Data Extension ou outra fonte de dados.
 ---
 
-<!-- generated-by-script -->
-
 # RowCount
 
 ## Descrição

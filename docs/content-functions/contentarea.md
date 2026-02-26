@@ -4,8 +4,6 @@ sidebar_label: ContentArea
 description: Retorna conteúdo de uma Content Area clássica (descontinuada) do Marketing Cloud.
 ---
 
-<!-- generated-by-script -->
-
 # ContentArea
 
 ## Descrição

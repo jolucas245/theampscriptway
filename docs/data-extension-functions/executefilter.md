@@ -4,8 +4,6 @@ sidebar_label: ExecuteFilter
 description: Executa um filtro de dados (Data Filter) e retorna um rowset não ordenado com os resultados filtrados de uma Data Extension.
 ---
 
-<!-- generated-by-script -->
-
 # ExecuteFilter
 
 ## Descrição

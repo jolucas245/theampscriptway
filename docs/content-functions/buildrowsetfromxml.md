@@ -4,8 +4,6 @@ sidebar_label: BuildRowsetFromXml
 description: Carrega dados XML em um rowset para que você possa iterar e extrair valores usando expressões XPath.
 ---
 
-<!-- generated-by-script -->
-
 # BuildRowsetFromXml
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: InvokeRetrieve
 description: Invoca o método Retrieve em um objeto da API do Marketing Cloud e retorna a mensagem de status e o ID da requisição.
 ---
 
-<!-- generated-by-script -->
-
 # InvokeRetrieve
 
 ## Descrição

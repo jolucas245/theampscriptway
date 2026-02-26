@@ -4,8 +4,6 @@ sidebar_label: FormatNumber
 description: Formata um número como moeda, decimal, porcentagem, notação científica e outros tipos numéricos, com suporte a localização por cultura (locale).
 ---
 
-<!-- generated-by-script -->
-
 # FormatNumber
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: Substring
 description: Retorna uma parte de uma string, começando a partir de uma posição específica, com a opção de definir o comprimento do trecho extraído.
 ---
 
-<!-- generated-by-script -->
-
 # Substring
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: ContentBlockById
 description: Retorna o conteúdo de um bloco de conteúdo do Content Builder referenciando seu ID numérico.
 ---
 
-<!-- generated-by-script -->
-
 # ContentBlockById
 
 ## Descrição

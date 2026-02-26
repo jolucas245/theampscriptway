@@ -4,8 +4,6 @@ sidebar_label: IsPhoneNumber
 description: Verifica se o valor informado é um número de telefone válido no padrão NANP (North American Numbering Plan), retornando true ou false.
 ---
 
-<!-- generated-by-script -->
-
 # IsPhoneNumber
 
 ## Descrição

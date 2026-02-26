@@ -4,8 +4,6 @@ sidebar_label: DateDiff
 description: Retorna a diferença entre duas datas ou horários na unidade de tempo especificada (anos, meses, dias, horas ou minutos).
 ---
 
-<!-- generated-by-script -->
-
 # DateDiff
 
 ## Descrição

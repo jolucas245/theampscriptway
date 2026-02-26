@@ -4,8 +4,6 @@ sidebar_label: Ceiling
 description: Arredonda um número decimal para cima, retornando o menor número inteiro que seja maior ou igual ao valor informado.
 ---
 
-<!-- generated-by-script -->
-
 # Ceiling
 
 ## Descrição

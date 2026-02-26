@@ -4,8 +4,6 @@ sidebar_label: Field
 description: Retorna o valor de um campo específico a partir de um objeto de linha (row) de uma Data Extension ou rowset.
 ---
 
-<!-- generated-by-script -->
-
 # Field
 
 ## Descrição

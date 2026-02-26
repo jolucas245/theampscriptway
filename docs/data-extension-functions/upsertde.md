@@ -4,8 +4,6 @@ sidebar_label: UpsertDE
 description: Atualiza dados em uma Data Extension se encontrar correspondência nas colunas de busca, ou insere uma nova linha caso não encontre.
 ---
 
-<!-- generated-by-script -->
-
 # UpsertDE
 
 ## Descrição

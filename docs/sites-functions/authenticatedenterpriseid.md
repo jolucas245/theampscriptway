@@ -4,8 +4,6 @@ sidebar_label: AuthenticatedEnterpriseID
 description: Retorna o Enterprise ID (MID da conta principal) do usuário autenticado que está acessando uma landing page em um Microsite.
 ---
 
-<!-- generated-by-script -->
-
 # AuthenticatedEnterpriseID
 
 ## Descrição

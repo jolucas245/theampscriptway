@@ -4,8 +4,6 @@ sidebar_label: Base64Decode
 description: Decodifica uma string que foi codificada em Base64, retornando o valor original em texto legível.
 ---
 
-<!-- generated-by-script -->
-
 # Base64Decode
 
 ## Descrição

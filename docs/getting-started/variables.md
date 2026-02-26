@@ -5,8 +5,6 @@ description: Aprenda a declarar, atribuir e usar variáveis em AMPScript para pe
 sidebar_position: 3
 ---
 
-<!-- generated-by-script -->
-
 # Variáveis
 
 Variáveis são o coração do AMPScript. É nelas que você guarda informações — nome do assinante, valor de um desconto, resultado de uma busca em Data Extension — para usar ao longo do seu código. Se você já entendeu a [sintaxe básica](/docs/getting-started/syntax), aqui é o próximo passo natural.

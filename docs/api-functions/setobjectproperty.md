@@ -4,8 +4,6 @@ sidebar_label: SetObjectProperty
 description: Define o valor de uma propriedade em um objeto API criado pela função CreateObject().
 ---
 
-<!-- generated-by-script -->
-
 # SetObjectProperty
 
 ## Descrição

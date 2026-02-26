@@ -4,8 +4,6 @@ sidebar_label: DateParse
 description: Converte uma string de data em um objeto DateTime, permitindo interpretar diversos formatos de data como timestamps ISO 8601, datas no formato americano e notações por extenso.
 ---
 
-<!-- generated-by-script -->
-
 # DateParse
 
 ## Descrição

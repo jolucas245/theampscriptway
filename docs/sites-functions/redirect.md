@@ -4,8 +4,6 @@ sidebar_label: Redirect
 description: Redireciona visitantes de uma landing page para uma URL diferente, retornando uma resposta HTTP 302.
 ---
 
-<!-- generated-by-script -->
-
 # Redirect
 
 ## Descrição

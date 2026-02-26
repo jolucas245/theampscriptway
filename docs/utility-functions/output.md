@@ -4,8 +4,6 @@ sidebar_label: Output
 description: Retorna o resultado de uma função AMPscript aninhada e insere esse resultado diretamente no conteúdo renderizado.
 ---
 
-<!-- generated-by-script -->
-
 # Output
 
 ## Descrição

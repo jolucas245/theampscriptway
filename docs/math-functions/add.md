@@ -4,8 +4,6 @@ sidebar_label: Add
 description: Retorna a soma de dois números, podendo ser inteiros ou decimais, positivos ou negativos.
 ---
 
-<!-- generated-by-script -->
-
 # Add
 
 ## Descrição

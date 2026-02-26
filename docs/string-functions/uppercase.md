@@ -4,8 +4,6 @@ sidebar_label: Uppercase
 description: Converte todos os caracteres de uma string para letras maiúsculas.
 ---
 
-<!-- generated-by-script -->
-
 # Uppercase
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: UpdateMscrmRecords
 description: Atualiza um ou mais registros em uma entidade do Microsoft Dynamics CRM e retorna o número de registros atualizados com sucesso.
 ---
 
-<!-- generated-by-script -->
-
 # UpdateMscrmRecords
 
 ## Descrição

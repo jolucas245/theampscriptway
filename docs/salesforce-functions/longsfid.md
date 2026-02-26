@@ -4,8 +4,6 @@ sidebar_label: LongSfid
 description: Converte um ID do Salesforce de 15 caracteres para o formato completo de 18 caracteres, que é case-insensitive e mais seguro para uso em integrações.
 ---
 
-<!-- generated-by-script -->
-
 # LongSfid
 
 ## Descrição

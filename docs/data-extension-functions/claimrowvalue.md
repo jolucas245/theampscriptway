@@ -4,8 +4,6 @@ sidebar_label: ClaimRowValue
 description: Busca uma linha não reivindicada em uma Data Extension, retorna um valor específico dessa linha e a marca como reivindicada, com suporte a valor de fallback caso não haja linhas disponíveis.
 ---
 
-<!-- generated-by-script -->
-
 # ClaimRowValue
 
 ## Descrição

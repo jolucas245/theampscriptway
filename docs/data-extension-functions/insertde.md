@@ -4,8 +4,6 @@ sidebar_label: InsertDE
 description: Insere uma nova linha em uma Data Extension a partir de um contexto de envio de e-mail.
 ---
 
-<!-- generated-by-script -->
-
 # InsertDE
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: DeleteData
 description: Deleta linhas de uma Data Extension e retorna o número de linhas deletadas, para uso em Landing Pages, Microsites e SMS.
 ---
 
-<!-- generated-by-script -->
-
 # DeleteData
 
 ## Descrição

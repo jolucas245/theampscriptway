@@ -4,8 +4,6 @@ sidebar_label: AddObjectArrayItem
 description: Adiciona um objeto a uma propriedade de array dentro de um objeto da API do Marketing Cloud Engagement.
 ---
 
-<!-- generated-by-script -->
-
 # AddObjectArrayItem
 
 ## Descrição

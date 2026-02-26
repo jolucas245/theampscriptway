@@ -4,8 +4,6 @@ sidebar_label: Min
 description: Retorna o menor valor entre dois ou mais números fornecidos como parâmetros.
 ---
 
-<!-- generated-by-script -->
-
 # Min
 
 ## Descrição

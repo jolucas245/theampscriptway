@@ -4,8 +4,6 @@ sidebar_label: ContentBlockByKey
 description: Recupera e renderiza o conteúdo de um Content Block usando sua Customer Key (chave externa) no Salesforce Marketing Cloud.
 ---
 
-<!-- generated-by-script -->
-
 # ContentBlockByKey
 
 ## Descrição

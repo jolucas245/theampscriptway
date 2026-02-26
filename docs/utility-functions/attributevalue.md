@@ -4,8 +4,6 @@ sidebar_label: AttributeValue
 description: Retorna o valor de um atributo do contato ou assinante, retornando null de forma segura caso o dado não exista.
 ---
 
-<!-- generated-by-script -->
-
 # AttributeValue
 
 ## Descrição

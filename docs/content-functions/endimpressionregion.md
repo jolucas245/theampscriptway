@@ -4,8 +4,6 @@ sidebar_label: EndImpressionRegion
 description: Encerra uma região de rastreamento de impressões iniciada por BeginImpressionRegion no e-mail.
 ---
 
-<!-- generated-by-script -->
-
 # EndImpressionRegion
 
 ## Descrição

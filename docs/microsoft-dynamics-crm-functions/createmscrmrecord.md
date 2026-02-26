@@ -4,8 +4,6 @@ sidebar_label: CreateMscrmRecord
 description: Cria um novo registro em uma entidade do Microsoft Dynamics CRM e retorna o GUID do registro criado.
 ---
 
-<!-- generated-by-script -->
-
 # CreateMscrmRecord
 
 ## Descrição

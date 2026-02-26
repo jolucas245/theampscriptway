@@ -4,8 +4,6 @@ sidebar_label: Divide
 description: Retorna o resultado da divisão do primeiro parâmetro pelo segundo parâmetro.
 ---
 
-<!-- generated-by-script -->
-
 # Divide
 
 ## Descrição

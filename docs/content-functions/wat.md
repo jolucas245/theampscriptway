@@ -4,8 +4,6 @@ sidebar_label: WAT
 description: Retorna os valores do parâmetro de Web Analytics Tracking (WAT) com a chave externa especificada, permitindo adicionar parâmetros de rastreamento de analytics aos links dos seus emails.
 ---
 
-<!-- generated-by-script -->
-
 # WAT
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: TreatAsContent
 description: Trata uma string como se fosse conteúdo nativo do Marketing Cloud, processando personalizações e AMPscript embutidos nela.
 ---
 
-<!-- generated-by-script -->
-
 # TreatAsContent
 
 ## Descrição

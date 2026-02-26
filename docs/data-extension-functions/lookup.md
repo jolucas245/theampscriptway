@@ -4,8 +4,6 @@ sidebar_label: Lookup
 description: Retorna o valor de uma coluna específica de uma Data Extension com base em critérios de busca.
 ---
 
-<!-- generated-by-script -->
-
 # Lookup
 
 ## Descrição

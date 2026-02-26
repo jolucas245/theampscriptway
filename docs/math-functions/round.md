@@ -4,8 +4,6 @@ sidebar_label: Round
 description: Arredonda um número para uma quantidade específica de casas decimais.
 ---
 
-<!-- generated-by-script -->
-
 # Round
 
 ## Descrição

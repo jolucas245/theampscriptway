@@ -4,8 +4,6 @@ sidebar_label: IIF
 description: Testa uma condição e retorna um valor se verdadeira ou outro valor se falsa, funcionando como um "if/else" inline no AMPscript.
 ---
 
-<!-- generated-by-script -->
-
 # IIF
 
 ## Descrição

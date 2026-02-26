@@ -4,8 +4,6 @@ sidebar_label: GetPublishedSocialContent
 description: Retorna o conteúdo publicado para compartilhamento em redes sociais com base no ID da região especificada.
 ---
 
-<!-- generated-by-script -->
-
 # GetPublishedSocialContent
 
 ## Descrição

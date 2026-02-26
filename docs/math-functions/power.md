@@ -4,8 +4,6 @@ sidebar_label: Power
 description: Eleva um número a uma potência especificada, retornando o resultado da exponenciação.
 ---
 
-<!-- generated-by-script -->
-
 # Power
 
 ## Descrição

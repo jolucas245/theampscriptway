@@ -4,8 +4,6 @@ sidebar_label: Multiply
 description: Retorna o produto da multiplicação de dois números.
 ---
 
-<!-- generated-by-script -->
-
 # Multiply
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: ToString
 description: Converte um valor numérico ou de outro tipo para sua representação em texto (string) no AMPscript.
 ---
 
-<!-- generated-by-script -->
-
 # ToString
 
 ## Descrição

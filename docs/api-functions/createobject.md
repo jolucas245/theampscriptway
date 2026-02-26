@@ -4,8 +4,6 @@ sidebar_label: CreateObject
 description: Cria um objeto da API do Marketing Cloud Engagement para ser usado em chamadas SOAP API via AMPscript.
 ---
 
-<!-- generated-by-script -->
-
 # CreateObject
 
 ## Descrição

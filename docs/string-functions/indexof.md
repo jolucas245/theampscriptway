@@ -4,8 +4,6 @@ sidebar_label: IndexOf
 description: Retorna a posição em que uma substring aparece dentro de uma string, usando indexação baseada em 1.
 ---
 
-<!-- generated-by-script -->
-
 # IndexOf
 
 ## Descrição

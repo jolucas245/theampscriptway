@@ -4,8 +4,6 @@ sidebar_label: StringToHex
 description: Converte cada caractere de uma string para seu equivalente hexadecimal, usando codificação UTF-8 ou UTF-16.
 ---
 
-<!-- generated-by-script -->
-
 # StringToHex
 
 ## Descrição

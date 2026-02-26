@@ -4,8 +4,6 @@ sidebar_label: UpdateDE
 description: Atualiza dados em uma ou mais colunas de uma linha existente em uma Data Extension durante o envio de e-mails.
 ---
 
-<!-- generated-by-script -->
-
 # UpdateDE
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: GUID
 description: Gera um identificador único global (GUID) de 128 bits em formato hexadecimal, útil para criar chaves únicas em Data Extensions, tokens de transação e códigos de rastreamento.
 ---
 
-<!-- generated-by-script -->
-
 # GUID
 
 ## Descrição

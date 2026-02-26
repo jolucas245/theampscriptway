@@ -4,8 +4,6 @@ sidebar_label: DateAdd
 description: Adiciona um valor de tempo especificado a uma data, retornando uma nova data com o acréscimo de anos, meses, dias, horas ou minutos.
 ---
 
-<!-- generated-by-script -->
-
 # DateAdd
 
 ## Descrição

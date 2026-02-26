@@ -4,8 +4,6 @@ sidebar_label: BeginImpressionRegion
 description: Marca o início de uma região de rastreamento de impressões em emails enviados pelo Marketing Cloud.
 ---
 
-<!-- generated-by-script -->
-
 # BeginImpressionRegion
 
 ## Descrição

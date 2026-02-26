@@ -4,8 +4,6 @@ sidebar_label: InvokeUpdate
 description: Invoca o método Update da API SOAP do Marketing Cloud para atualizar um objeto da API diretamente via AMPscript.
 ---
 
-<!-- generated-by-script -->
-
 # InvokeUpdate
 
 ## Descrição

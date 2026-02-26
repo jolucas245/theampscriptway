@@ -4,8 +4,6 @@ sidebar_label: LookupRows
 description: Retorna um conjunto de linhas (rowset) não ordenado de uma Data Extension com base em critérios de busca.
 ---
 
-<!-- generated-by-script -->
-
 # LookupRows
 
 ## Descrição

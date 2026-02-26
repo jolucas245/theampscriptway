@@ -4,8 +4,6 @@ sidebar_label: DescribeMscrmEntityAttributes
 description: Recupera informações sobre os atributos de uma entidade do Microsoft Dynamics CRM, incluindo nome lógico, nome de exibição, tipo e opções disponíveis.
 ---
 
-<!-- generated-by-script -->
-
 # DescribeMscrmEntityAttributes
 
 ## Descrição

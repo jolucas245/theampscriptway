@@ -4,8 +4,6 @@ sidebar_label: Abs
 description: Retorna o valor absoluto (não negativo) de um número, removendo o sinal negativo caso exista.
 ---
 
-<!-- generated-by-script -->
-
 # Abs
 
 ## Descrição

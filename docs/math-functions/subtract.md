@@ -4,8 +4,6 @@ sidebar_label: Subtract
 description: Retorna o resultado da subtração do segundo parâmetro a partir do primeiro parâmetro.
 ---
 
-<!-- generated-by-script -->
-
 # Subtract
 
 ## Descrição

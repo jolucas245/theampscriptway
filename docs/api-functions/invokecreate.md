@@ -4,8 +4,6 @@ sidebar_label: InvokeCreate
 description: Invoca o método Create em um objeto da API do Marketing Cloud e retorna um código de status da operação.
 ---
 
-<!-- generated-by-script -->
-
 # InvokeCreate
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: Random
 description: Retorna um número aleatório dentro de um intervalo definido por um limite inferior e um limite superior.
 ---
 
-<!-- generated-by-script -->
-
 # Random
 
 ## Descrição

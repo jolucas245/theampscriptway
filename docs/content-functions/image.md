@@ -4,8 +4,6 @@ sidebar_label: Image
 description: Retorna uma tag HTML img com o caminho de uma imagem do Portfolio do Marketing Cloud, incluindo opção de imagem fallback.
 ---
 
-<!-- generated-by-script -->
-
 # Image
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: EncryptSymmetric
 description: Criptografa dados em texto simples usando um algoritmo simétrico e valores de senha, salt e vetor de inicialização (IV).
 ---
 
-<!-- generated-by-script -->
-
 # EncryptSymmetric
 
 ## Descrição

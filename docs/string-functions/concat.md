@@ -4,8 +4,6 @@ sidebar_label: Concat
 description: Concatena (junta) duas ou mais strings de texto em uma única string, na ordem em que são passadas.
 ---
 
-<!-- generated-by-script -->
-
 # Concat
 
 ## Descrição

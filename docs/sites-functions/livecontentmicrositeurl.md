@@ -4,8 +4,6 @@ sidebar_label: LiveContentMicrositeURL
 description: Retorna uma URL de microsite para visualizar conteúdo dinâmico (como cupons) em uma landing page, em vez de exibi-lo diretamente no corpo da mensagem.
 ---
 
-<!-- generated-by-script -->
-
 # LiveContentMicrositeURL
 
 ## Descrição

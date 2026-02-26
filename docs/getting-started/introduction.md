@@ -6,8 +6,6 @@ sidebar_position: 1
 tags: [ampscript, introdução, sfmc, getting-started]
 ---
 
-<!-- generated-by-script -->
-
 # Introdução ao AMPscript
 
 ## O que é AMPscript e para que serve

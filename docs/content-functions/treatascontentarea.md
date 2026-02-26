@@ -4,8 +4,6 @@ sidebar_label: TreatAsContentArea
 description: Trata conteúdo recuperado de uma Data Extension ou outra fonte como se fosse uma Content Area fixa, permitindo reutilização e rastreamento via Impression Regions.
 ---
 
-<!-- generated-by-script -->
-
 # TreatAsContentArea
 
 ## Descrição

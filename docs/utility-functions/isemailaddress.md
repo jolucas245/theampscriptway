@@ -4,8 +4,6 @@ sidebar_label: IsEmailAddress
 description: Verifica se um endereço de e-mail tem uma estrutura válida, retornando true ou false.
 ---
 
-<!-- generated-by-script -->
-
 # IsEmailAddress
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: ExecuteFilterOrderedRows
 description: Executa um filtro de dados e retorna um rowset ordenado com os resultados filtrados de uma Data Extension.
 ---
 
-<!-- generated-by-script -->
-
 # ExecuteFilterOrderedRows
 
 ## Descrição

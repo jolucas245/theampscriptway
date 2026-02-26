@@ -4,8 +4,6 @@ sidebar_label: InsertData
 description: Insere uma nova linha em uma Data Extension e retorna o número de linhas inseridas.
 ---
 
-<!-- generated-by-script -->
-
 # InsertData
 
 ## Descrição

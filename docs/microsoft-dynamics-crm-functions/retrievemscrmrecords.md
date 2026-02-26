@@ -4,8 +4,6 @@ sidebar_label: RetrieveMscrmRecords
 description: Recupera registros de entidades do Microsoft Dynamics CRM diretamente via AMPscript no Marketing Cloud.
 ---
 
-<!-- generated-by-script -->
-
 # RetrieveMscrmRecords
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: TrimLeft
 description: Remove espaços em branco do início (lado esquerdo) de uma string.
 ---
 
-<!-- generated-by-script -->
-
 # TrimLeft
 
 ## Descrição

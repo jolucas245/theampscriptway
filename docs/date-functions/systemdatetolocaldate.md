@@ -4,8 +4,6 @@ sidebar_label: SystemDateToLocalDate
 description: Converte uma data/hora do sistema (Central Standard Time) para o horário local configurado na conta do usuário no Marketing Cloud.
 ---
 
-<!-- generated-by-script -->
-
 # SystemDateToLocalDate
 
 ## Descrição

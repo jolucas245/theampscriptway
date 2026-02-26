@@ -4,8 +4,6 @@ sidebar_label: AuthenticatedEmployeeUserName
 description: Retorna o nome de usuário (username) do usuário do Marketing Cloud que está acessando a página no contexto de Microsites com Sender Authenticated Redirection.
 ---
 
-<!-- generated-by-script -->
-
 # AuthenticatedEmployeeUserName
 
 ## Descrição

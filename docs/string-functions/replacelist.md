@@ -4,8 +4,6 @@ sidebar_label: ReplaceList
 description: Substitui uma ou mais substrings por outra string em uma única chamada de função.
 ---
 
-<!-- generated-by-script -->
-
 # ReplaceList
 
 ## Descrição

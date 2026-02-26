@@ -5,8 +5,6 @@ description: Aprenda a usar comentários em AMPscript para documentar seu códig
 sidebar_position: 7
 ---
 
-<!-- generated-by-script -->
-
 # Comentários
 
 Sabe quando você abre aquele email que criou há seis meses e fica pensando "por que mesmo eu fiz isso aqui?"? Pois é, comentários existem justamente pra evitar esse momento de desespero.

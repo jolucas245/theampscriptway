@@ -4,8 +4,6 @@ sidebar_label: TrimRight
 description: Remove espaços em branco (ou caracteres específicos) do final (lado direito) de uma string.
 ---
 
-<!-- generated-by-script -->
-
 # TrimRight
 
 ## Descrição

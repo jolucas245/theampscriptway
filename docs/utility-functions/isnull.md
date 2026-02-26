@@ -4,8 +4,6 @@ sidebar_label: IsNull
 description: Testa se o valor de uma variável ou função é nulo (null), retornando true em caso positivo e false caso contrário.
 ---
 
-<!-- generated-by-script -->
-
 # IsNull
 
 ## Descrição

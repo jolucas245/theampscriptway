@@ -4,8 +4,6 @@ sidebar_label: IsNullDefault
 description: Define valores padrão para campos vazios em formulários Smart Capture, retornando um valor alternativo quando o campo é nulo.
 ---
 
-<!-- generated-by-script -->
-
 # IsNullDefault
 
 ## Descrição

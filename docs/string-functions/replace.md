@@ -4,8 +4,6 @@ sidebar_label: Replace
 description: Substitui todas as ocorrências de uma substring por outra substring dentro de um texto.
 ---
 
-<!-- generated-by-script -->
-
 # Replace
 
 ## Descrição

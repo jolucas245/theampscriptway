@@ -4,8 +4,6 @@ sidebar_label: DescribeMscrmEntities
 description: Retorna os nomes lógicos e de exibição de todas as entidades de uma conta do Microsoft Dynamics CRM.
 ---
 
-<!-- generated-by-script -->
-
 # DescribeMscrmEntities
 
 ## Descrição

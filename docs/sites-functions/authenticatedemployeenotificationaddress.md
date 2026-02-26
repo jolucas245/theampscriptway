@@ -4,8 +4,6 @@ sidebar_label: AuthenticatedEmployeeNotificationAddress
 description: Retorna o endereço de e-mail do usuário autenticado no Marketing Cloud Engagement que está acessando a página do Microsite.
 ---
 
-<!-- generated-by-script -->
-
 # AuthenticatedEmployeeNotificationAddress
 
 ## Descrição

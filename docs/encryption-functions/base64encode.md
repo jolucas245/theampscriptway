@@ -4,8 +4,6 @@ sidebar_label: Base64Encode
 description: Codifica uma string de texto no formato Base64, útil para transmissão segura de dados em URLs, integrações com APIs e ofuscação de informações sensíveis.
 ---
 
-<!-- generated-by-script -->
-
 # Base64Encode
 
 ## Descrição

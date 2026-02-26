@@ -4,8 +4,6 @@ sidebar_label: ContentBlockByName
 description: Recupera e renderiza o conteúdo de um Content Block (bloco de conteúdo) do Content Builder usando o caminho e nome da pasta.
 ---
 
-<!-- generated-by-script -->
-
 # ContentBlockByName
 
 ## Descrição

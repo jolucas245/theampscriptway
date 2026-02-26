@@ -4,8 +4,6 @@ sidebar_label: ClaimRow
 description: Retorna a primeira linha não reivindicada de uma Data Extension e a marca como reivindicada, sendo ideal para distribuição de cupons e códigos promocionais únicos.
 ---
 
-<!-- generated-by-script -->
-
 # ClaimRow
 
 ## Descrição

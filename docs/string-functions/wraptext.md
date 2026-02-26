@@ -4,8 +4,6 @@ sidebar_label: WrapText
 description: Quebra um texto longo em múltiplas linhas, inserindo uma quebra de linha a cada número especificado de caracteres.
 ---
 
-<!-- generated-by-script -->
-
 # WrapText
 
 ## Descrição

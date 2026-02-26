@@ -4,8 +4,6 @@ sidebar_label: Format
 description: Formata strings como datas, moedas, números e percentuais, com suporte a formatos customizados e códigos de cultura (locale).
 ---
 
-<!-- generated-by-script -->
-
 # Format
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: GetJwt
 description: Cria um JSON Web Token (JWT) a partir de um payload JSON, assinado digitalmente com um secret e algoritmo HMAC especificado.
 ---
 
-<!-- generated-by-script -->
-
 # GetJwt
 
 ## Descrição

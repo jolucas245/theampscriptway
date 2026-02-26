@@ -4,8 +4,6 @@ sidebar_label: UpsertData
 description: Atualiza dados em uma Data Extension se encontrar correspondência nas colunas de busca, ou insere uma nova linha caso não encontre — retornando o número de linhas afetadas.
 ---
 
-<!-- generated-by-script -->
-
 # UpsertData
 
 ## Descrição

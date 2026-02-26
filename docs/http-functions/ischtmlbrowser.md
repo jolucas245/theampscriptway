@@ -4,8 +4,6 @@ sidebar_label: IsChtmlBrowser
 description: Verifica se o user-agent de um dispositivo corresponde a um navegador CHTML (Compact HTML), retornando true ou false.
 ---
 
-<!-- generated-by-script -->
-
 # IsChtmlBrowser
 
 ## Descrição

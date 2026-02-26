@@ -4,8 +4,6 @@ sidebar_label: AuthenticatedMemberID
 description: Retorna o Member ID (MID) do usuário autenticado em uma landing page do tipo Microsite com Sender Authenticated Redirection.
 ---
 
-<!-- generated-by-script -->
-
 # AuthenticatedMemberID
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: LandingPageURL
 description: Gera a URL de uma Landing Page (Microsite Page) do Marketing Cloud, permitindo passar parâmetros personalizados como query strings criptografadas.
 ---
 
-<!-- generated-by-script -->
-
 # LandingPageURL
 
 ## Descrição

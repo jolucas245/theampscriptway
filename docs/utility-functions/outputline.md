@@ -4,8 +4,6 @@ sidebar_label: OutputLine
 description: Retorna o resultado de uma função AMPscript aninhada e insere o conteúdo renderizado seguido de uma quebra de linha (CRLF).
 ---
 
-<!-- generated-by-script -->
-
 # OutputLine
 
 ## Descrição

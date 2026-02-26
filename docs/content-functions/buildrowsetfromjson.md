@@ -4,8 +4,6 @@ sidebar_label: BuildRowsetFromJson
 description: Carrega dados JSON em um rowset para que você possa iterar e exibir o conteúdo dinamicamente em emails e CloudPages.
 ---
 
-<!-- generated-by-script -->
-
 # BuildRowsetFromJson
 
 ## Descrição

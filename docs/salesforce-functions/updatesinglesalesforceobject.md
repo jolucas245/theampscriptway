@@ -4,8 +4,6 @@ sidebar_label: UpdateSingleSalesforceObject
 description: Atualiza um registro em um objeto do Salesforce CRM diretamente a partir do Marketing Cloud usando Marketing Cloud Connect.
 ---
 
-<!-- generated-by-script -->
-
 # UpdateSingleSalesforceObject
 
 ## Descrição

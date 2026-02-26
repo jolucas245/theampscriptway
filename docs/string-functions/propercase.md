@@ -4,8 +4,6 @@ sidebar_label: ProperCase
 description: Retorna a string informada com a primeira letra de cada palavra em maiúscula (capitalizada).
 ---
 
-<!-- generated-by-script -->
-
 # ProperCase
 
 ## Descrição

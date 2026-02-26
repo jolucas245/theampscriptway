@@ -4,8 +4,6 @@ sidebar_label: HTTPGet
 description: Recupera o conteúdo de uma URL usando o método HTTP GET, permitindo buscar dados externos para personalizar emails, CloudPages e outros contextos no Marketing Cloud.
 ---
 
-<!-- generated-by-script -->
-
 # HTTPGet
 
 ## Descrição

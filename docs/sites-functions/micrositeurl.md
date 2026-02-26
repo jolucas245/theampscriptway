@@ -4,8 +4,6 @@ sidebar_label: MicrositeURL
 description: Retorna uma URL de microsite com query string criptografada, usada para criar links seguros para microsites criados no Classic Content a partir de e-mails.
 ---
 
-<!-- generated-by-script -->
-
 # MicrositeURL
 
 ## Descrição

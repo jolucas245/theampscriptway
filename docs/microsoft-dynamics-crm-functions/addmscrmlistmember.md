@@ -4,8 +4,6 @@ sidebar_label: AddMscrmListMember
 description: Adiciona um registro (lead, contato ou conta) a uma lista de marketing do Microsoft Dynamics CRM.
 ---
 
-<!-- generated-by-script -->
-
 # AddMscrmListMember
 
 ## Descrição

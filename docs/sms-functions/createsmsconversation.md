@@ -4,8 +4,6 @@ sidebar_label: CreateSmsConversation
 description: Cria uma conversa SMS com um contato no MobileConnect, permitindo iniciar fluxos de interação por mensagens de texto.
 ---
 
-<!-- generated-by-script -->
-
 # CreateSmsConversation
 
 ## Descrição

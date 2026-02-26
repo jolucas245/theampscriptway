@@ -4,8 +4,6 @@ sidebar_label: V
 description: Retorna o valor de uma variável AMPscript, permitindo acessar seu conteúdo de forma inline.
 ---
 
-<!-- generated-by-script -->
-
 # V
 
 ## Descrição

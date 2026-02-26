@@ -4,8 +4,6 @@ sidebar_label: UpsertContact
 description: Insere ou atualiza atributos de um registro de contato no MobileConnect, usando o número de telefone como identificador.
 ---
 
-<!-- generated-by-script -->
-
 # UpsertContact
 
 ## Descrição

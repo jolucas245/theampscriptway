@@ -4,8 +4,6 @@ sidebar_label: QueryParameter
 description: Retorna o valor de um parâmetro de URL ou campo de formulário em uma Landing Page ou CloudPage.
 ---
 
-<!-- generated-by-script -->
-
 # QueryParameter
 
 ## Descrição

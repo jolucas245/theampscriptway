@@ -4,8 +4,6 @@ sidebar_label: WrapLongURL
 description: Encurta URLs com mais de 975 caracteres para contornar uma limitação conhecida do Microsoft Outlook 2007–2013.
 ---
 
-<!-- generated-by-script -->
-
 # WrapLongURL
 
 ## Descrição

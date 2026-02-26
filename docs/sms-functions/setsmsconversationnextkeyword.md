@@ -4,8 +4,6 @@ sidebar_label: SetSmsConversationNextKeyword
 description: Define a próxima keyword de conversação SMS para direcionar o fluxo da conversa com o contato no MobileConnect.
 ---
 
-<!-- generated-by-script -->
-
 # SetSmsConversationNextKeyword
 
 ## Descrição

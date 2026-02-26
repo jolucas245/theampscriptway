@@ -4,8 +4,6 @@ sidebar_label: LookupRowsCS
 description: Retorna um conjunto de linhas (rowset) de uma Data Extension com busca case-sensitive (diferencia maiúsculas de minúsculas).
 ---
 
-<!-- generated-by-script -->
-
 # LookupRowsCS
 
 ## Descrição

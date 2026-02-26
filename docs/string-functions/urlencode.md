@@ -4,8 +4,6 @@ sidebar_label: URLEncode
 description: Modifica uma string para que ela contenha apenas caracteres seguros para uso em URLs, convertendo espaços e caracteres especiais em seus códigos hexadecimais.
 ---
 
-<!-- generated-by-script -->
-
 # URLEncode
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: SystemDate
 description: Retorna a data e hora atual do sistema do Salesforce Marketing Cloud em UTC (Central Standard Time).
 ---
 
-<!-- generated-by-script -->
-
 # SystemDate
 
 ## Descrição

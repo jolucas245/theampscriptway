@@ -4,8 +4,6 @@ sidebar_label: RaiseError
 description: Interrompe o processamento de um e-mail para um subscriber (ou para o job inteiro) e gera uma mensagem de erro personalizada.
 ---
 
-<!-- generated-by-script -->
-
 # RaiseError
 
 ## Descrição

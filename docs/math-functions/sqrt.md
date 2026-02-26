@@ -4,8 +4,6 @@ sidebar_label: Sqrt
 description: Retorna a raiz quadrada de um número especificado.
 ---
 
-<!-- generated-by-script -->
-
 # Sqrt
 
 ## Descrição

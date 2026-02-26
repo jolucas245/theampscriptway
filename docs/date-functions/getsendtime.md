@@ -4,8 +4,6 @@ sidebar_label: GetSendTime
 description: Retorna o timestamp do início ou término de um envio no nível do job ou do subscriber individual.
 ---
 
-<!-- generated-by-script -->
-
 # GetSendTime
 
 ## Descrição

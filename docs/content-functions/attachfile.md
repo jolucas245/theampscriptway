@@ -4,8 +4,6 @@ sidebar_label: AttachFile
 description: Anexa um arquivo a um e-mail enviado pelo Marketing Cloud, com suporte a arquivos via HTTP, FTP ou Content Builder.
 ---
 
-<!-- generated-by-script -->
-
 # AttachFile
 
 ## Descrição

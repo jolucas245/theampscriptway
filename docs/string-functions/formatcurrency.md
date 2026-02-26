@@ -4,8 +4,6 @@ sidebar_label: FormatCurrency
 description: Formata um número como valor monetário, aplicando o símbolo da moeda, separadores de milhar e decimal conforme o locale informado.
 ---
 
-<!-- generated-by-script -->
-
 # FormatCurrency
 
 ## Descrição

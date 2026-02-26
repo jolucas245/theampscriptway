@@ -4,8 +4,6 @@ sidebar_label: Now
 description: Retorna o timestamp atual do sistema ou o horário de envio do e-mail, dependendo do parâmetro informado.
 ---
 
-<!-- generated-by-script -->
-
 # Now
 
 ## Descrição

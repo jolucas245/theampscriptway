@@ -4,8 +4,6 @@ sidebar_label: GetSocialPublishUrl
 description: Retorna código HTML com um link para compartilhar uma região de conteúdo em uma rede social compatível, usando o recurso Social Forward do Marketing Cloud.
 ---
 
-<!-- generated-by-script -->
-
 # GetSocialPublishUrl
 
 ## Descrição

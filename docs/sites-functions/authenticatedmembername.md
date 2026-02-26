@@ -4,8 +4,6 @@ sidebar_label: AuthenticatedMemberName
 description: Retorna o nome do membro (Member Name) do usuário autenticado em uma landing page de Microsite com Sender Authenticated Redirection.
 ---
 
-<!-- generated-by-script -->
-
 # AuthenticatedMemberName
 
 ## Descrição

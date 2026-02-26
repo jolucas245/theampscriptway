@@ -4,8 +4,6 @@ sidebar_label: EndSmsConversation
 description: Encerra uma conversa SMS ativa com um contato no MobileConnect.
 ---
 
-<!-- generated-by-script -->
-
 # EndSmsConversation
 
 ## Descrição

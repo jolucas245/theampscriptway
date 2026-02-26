@@ -4,8 +4,6 @@ sidebar_label: Row
 description: Retorna uma linha específica de um rowset ou array com base na posição informada.
 ---
 
-<!-- generated-by-script -->
-
 # Row
 
 ## Descrição

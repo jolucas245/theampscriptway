@@ -4,8 +4,6 @@ sidebar_label: ContentAreaByName
 description: Retorna conteúdo de uma classic content area pelo nome — função descontinuada que não deve mais ser utilizada.
 ---
 
-<!-- generated-by-script -->
-
 # ContentAreaByName
 
 ## Descrição

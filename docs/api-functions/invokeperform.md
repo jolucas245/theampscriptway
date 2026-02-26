@@ -4,8 +4,6 @@ sidebar_label: InvokePerform
 description: Invoca o método Perform em um objeto da API do Marketing Cloud e retorna o código de status da operação.
 ---
 
-<!-- generated-by-script -->
-
 # InvokePerform
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: InvokeExecute
 description: Invoca o método Execute em um objeto da API do Marketing Cloud e retorna o código de status da operação.
 ---
 
-<!-- generated-by-script -->
-
 # InvokeExecute
 
 ## Descrição

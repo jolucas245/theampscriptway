@@ -4,8 +4,6 @@ sidebar_label: SHA1
 description: Converte uma string em um hash SHA-1 hexadecimal de 160 bits, útil para gerar identificadores únicos e verificar integridade de dados no Marketing Cloud.
 ---
 
-<!-- generated-by-script -->
-
 # SHA1
 
 ## Descrição

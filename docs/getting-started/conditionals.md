@@ -5,8 +5,6 @@ description: Aprenda a usar estruturas condicionais em AMPscript para criar emai
 sidebar_position: 4
 ---
 
-<!-- generated-by-script -->
-
 # Condicionais
 
 Condicionais são o coração da personalização em AMPscript. É com elas que você decide **o que mostrar** para cada subscriber com base nos dados que tem. Imagina enviar um email de campanha da **MegaStore** onde clientes VIP veem uma oferta exclusiva e os demais veem outra — é exatamente isso que você vai aprender aqui.

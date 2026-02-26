@@ -4,8 +4,6 @@ sidebar_label: SetStateMscrmRecord
 description: Define o estado (state) e status de um registro no Microsoft Dynamics CRM a partir do AMPscript.
 ---
 
-<!-- generated-by-script -->
-
 # SetStateMscrmRecord
 
 ## Descrição

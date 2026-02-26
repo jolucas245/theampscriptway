@@ -4,8 +4,6 @@ sidebar_label: GetJwtByKeyName
 description: Cria um JSON Web Token (JWT) assinado a partir de um payload JSON, usando uma chave armazenada no Key Management do Marketing Cloud.
 ---
 
-<!-- generated-by-script -->
-
 # GetJwtByKeyName
 
 ## Descrição

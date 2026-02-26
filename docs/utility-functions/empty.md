@@ -4,8 +4,6 @@ sidebar_label: Empty
 description: Testa se uma variável está vazia ou nula, retornando true quando não possui valor e false quando possui.
 ---
 
-<!-- generated-by-script -->
-
 # Empty
 
 ## Descrição

@@ -4,8 +4,6 @@ sidebar_label: RedirectTo
 description: Cria um link redirecionável a partir de uma URL armazenada em um atributo, campo de Data Extension ou variável, permitindo rastreamento de cliques em emails.
 ---
 
-<!-- generated-by-script -->
-
 # RedirectTo
 
 ## Descrição
