@@ -3,22 +3,26 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'AMPscript: The Guide',
-  tagline: 'Comprehensive reference manual for AMPscript — the scripting language for Salesforce Marketing Cloud.',
+  title: 'AMPScript Way',
+  tagline: 'Comprehensive reference manual for AMPscript - the scripting language for Salesforce Marketing Cloud.',
   favicon: 'favicon.ico',
 
-  url: 'https://jolucas245.github.io',
-  baseUrl: '/AMPScript-The-Guide/',
+  url: 'https://ampscriptway.dev',
+  baseUrl: '/The-AMPScript-Way/',
 
   organizationName: 'jolucas245',
-  projectName: 'AMPScript-The-Guide',
+  projectName: 'AMPScript-Way',
 
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
 
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+    defaultLocale: 'pt-BR',
+    locales: ['pt-BR', 'en'],
+    localeConfigs: {
+      'pt-BR': { label: 'Português (BR)', direction: 'ltr' },
+      en: { label: 'English', direction: 'ltr' },
+    },
   },
 
   presets: [
@@ -39,9 +43,9 @@ const config: Config = {
 
   themeConfig: {
     navbar: {
-      title: 'AMPscript: The Guide',
+      title: 'The AMPScript Way',
       logo: {
-        alt: 'AMPscript The Guide',
+        alt: 'The AMPScript Way',
         src: 'img/mascot.svg',
       },
       items: [
@@ -52,7 +56,7 @@ const config: Config = {
           label: 'Documentation',
         },
         {
-          href: 'https://github.com/jolucas245/ampscript-the-guide',
+          href: 'https://github.com/jolucas245//theampscriptway',
           label: 'GitHub',
           position: 'right',
         },
@@ -61,7 +65,7 @@ const config: Config = {
     },
     footer: {
       style: 'dark',
-      copyright: `AMPscript: The Guide — Community-maintained reference for Salesforce Marketing Cloud.`,
+      copyright: `AMPscript Way | Community-maintained reference for Salesforce Marketing Cloud.`,
     },
     prism: {
       theme: prismThemes.github,

@@ -13,40 +13,40 @@ type CardItem = {
 
 const cards: CardItem[] = [
   {
-    title: 'Language',
+    title: 'Primeiros Passos',
     icon: '⌥',
-    description: 'Syntax, variables, operators, loops and control flow — everything you need to read and write AMPscript fluently.',
-    link: '/language/',
+    description: 'Sintaxe, variáveis, operadores, loops e controle de fluxo — tudo que você precisa para ler e escrever AMPscript com fluência.',
+    link: '/getting-started/introduction',
   },
   {
-    title: 'Functions',
+    title: 'Índice de Funções',
     icon: 'ƒ',
-    description: 'Complete reference for all 150+ AMPscript functions, organized by category with arguments and real-world examples.',
-    link: '/function-index/',
+    description: 'Referência completa de todas as funções AMPscript, organizadas por categoria com parâmetros e exemplos reais.',
+    link: '/function-index',
   },
   {
-    title: 'Data Strings',
+    title: 'Funções de String',
+    icon: 'Aa',
+    description: 'Concat, Substring, Replace, RegExMatch e todas as funções para manipulação de texto.',
+    link: '/string-functions/concat',
+  },
+  {
+    title: 'Funções de Data Extension',
     icon: '⊕',
-    description: 'Personalization strings, system strings, sender data and subscriber attributes for dynamic content.',
-    link: '/attributes/',
+    description: 'Lookup, LookupRows, InsertDE, UpdateDE, UpsertDE e todas as funções para trabalhar com Data Extensions.',
+    link: '/data-extension-functions/lookup',
   },
   {
-    title: 'Content Syndication',
-    icon: '↗',
-    description: 'Fetch and render external content inside your emails and landing pages using HTTP-based syndication.',
-    link: '/content-syndication/',
+    title: 'Funções de Data',
+    icon: '📅',
+    description: 'Now, DateAdd, DateDiff, FormatDate e todas as funções para manipulação de datas e horários.',
+    link: '/date-functions/now',
   },
   {
-    title: 'Best Practices',
-    icon: '◈',
-    description: 'Patterns for writing reliable, maintainable AMPscript — defensive coding, debugging, error handling and more.',
-    link: '/best-practices/',
-  },
-  {
-    title: 'Integrations',
-    icon: '⇄',
-    description: 'Using AMPscript alongside Server-Side JavaScript, Guide Template Language, Excel formulas and more.',
-    link: '/ampscript-and-server-side-javascript/',
+    title: 'Playground',
+    icon: '▶',
+    description: 'Teste seu código AMPscript diretamente no browser, sem precisar de acesso ao Marketing Cloud.',
+    link: '/playground',
   },
 ];
 
@@ -68,24 +68,23 @@ export default function Home(): ReactNode {
     <Layout description={siteConfig.tagline}>
       <main className={styles.main}>
 
-        {/* Hero */}
         <section className={styles.hero}>
           <div className={styles.heroInner}>
             <div className={styles.badge}>Salesforce Marketing Cloud</div>
             <h1 className={styles.heroTitle}>
-              AMPscript<br />
-              <span className={styles.heroTitleAccent}>The Guide</span>
+              The AMPscript<br />
+              <span className={styles.heroTitleAccent}>Way</span>
             </h1>
             <p className={styles.heroSubtitle}>
-              A comprehensive reference manual for AMPscript —<br />
-              the scripting language powering personalization in Salesforce Marketing Cloud.
+              Referência completa de AMPscript em português —<br />
+              a linguagem de personalização do Salesforce Marketing Cloud.
             </p>
             <div className={styles.heroActions}>
-              <Link to="/introduction/" className={styles.btnPrimary}>
-                Get Started
+              <Link to="/getting-started/introduction" className={styles.btnPrimary}>
+                Começar agora
               </Link>
-              <Link to="/function-index/" className={styles.btnSecondary}>
-                Function Index
+              <Link to="/function-index" className={styles.btnSecondary}>
+                Índice de Funções
               </Link>
             </div>
           </div>
@@ -96,28 +95,27 @@ export default function Home(): ReactNode {
               </div>
               <pre className={styles.codeBlock}>{`%%[
 
-  var @firstName, @rows, @row
-  set @rows = LookupRows(
-    "Subscribers",
+  VAR @nome, @rows, @row
+  SET @rows = LookupRows(
+    "Clientes",
     "Email", emailaddr
   )
 
-  if not empty(@rows) then
-    set @row = Row(@rows, 1)
-    set @firstName = Field(@row, "FirstName")
-  endif
+  IF NOT Empty(@rows) THEN
+    SET @row = Row(@rows, 1)
+    SET @nome = Field(@row, "PrimeiroNome")
+  ENDIF
 
 ]%%
 
-Hello, %%=v(@firstName)=%%!`}</pre>
+Olá, %%=v(@nome)=%%!`}</pre>
             </div>
           </div>
         </section>
 
-        {}
         <section className={styles.cards}>
           <div className={styles.cardsInner}>
-            <h2 className={styles.sectionTitle}>Explore the Guide</h2>
+            <h2 className={styles.sectionTitle}>Explore o conteúdo</h2>
             <div className={styles.cardsGrid}>
               {cards.map((card) => (
                 <Card key={card.title} {...card} />
