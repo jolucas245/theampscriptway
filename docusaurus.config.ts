@@ -53,7 +53,7 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Documentation',
+          label: 'Documentação',
         },
         {
           href: 'https://github.com/jolucas245//theampscriptway',
@@ -61,6 +61,7 @@ const config: Config = {
           position: 'right',
         },
         { to: '/playground', label: 'Playground', position: 'left' },
+        { to: '/about', label: 'Sobre', position: 'right' },
       ],
     },
     footer: {
