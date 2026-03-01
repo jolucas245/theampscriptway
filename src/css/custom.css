@@ -239,8 +239,6 @@ table tr:last-child td {
   background: rgba(79, 110, 247, 0.5);
 }
 
-/* ─── Playground tokens ──────────────────────────────────────────────────── */
-
 :root {
   --pg-bg:              #f4f5f7;
   --pg-bg-surface:      #ffffff;

@@ -40,7 +40,18 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
-
+  plugins: [
+    [
+      require.resolve('@easyops-cn/docusaurus-search-local'),
+      {
+        hashed: true,
+        language: ['pt',],
+        indexDocs: true,
+        indexPages: true,
+        searchBarPosition: 'right'
+      },
+    ],
+  ],
   themeConfig: {
     navbar: {
       title: 'The AMPScript Way',
@@ -72,7 +83,7 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
-    algolia: undefined,
+    
   } satisfies Preset.ThemeConfig,
 };
 

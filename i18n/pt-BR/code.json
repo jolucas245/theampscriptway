@@ -1,0 +1,10 @@
+{
+  "theme.SearchBar.label": {
+    "message": "Pesquisar",
+    "description": "Label da barra de pesquisa"
+  },
+  "theme.SearchPage.inputPlaceholder": {
+    "message": "Digite para pesquisar...",
+    "description": "Placeholder da página de resultados"
+  }
+}
