@@ -13,11 +13,11 @@ Variáveis são o ponto de partida para qualquer lógica em AMPscript. É nelas 
 
 Em AMPscript, toda variável começa com o caractere `@`. Sempre. Sem exceção.
 
-Você escolhe o nome que quiser depois do `@`, mas a boa prática é usar nomes descritivos que deixem claro o que aquela variável guarda. Quando você está mantendo um template de régua de relacionamento com dezenas de variáveis, um nome como `@cidadeContato` vale ouro comparado a `@c`.
+Você escolhe o nome que quiser depois do `@`, mas a boa prática é usar nomes descritivos que deixem claro o que aquela variável guarda. Quando você está mantendo uma régua de relacionamento com dezenas de variáveis em um e-mail, um nome como `@cidadeContato` vale ouro comparado a `@c`.
 
 ## Declarando variáveis com VAR
 
-Para declarar uma variável, você usa a palavra-chave `VAR`. Quando declara uma variável, ela é adicionada a um dicionário interno de variáveis. O valor inicial de qualquer variável recém-declarada é **nulo** (null) — ela existe, mas ainda não carrega nenhum dado.
+Para declarar uma variável, você usa a palavra-chave `VAR`. Quando declara uma variável, ela é adicionada a um dicionário interno de variáveis. O valor inicial de qualquer variável recém-declarada é **nulo** (null), ou seja, ela existe, mas ainda não carrega nenhum dado.
 
 Este exemplo declara uma variável chamada `@primeiroNome`:
 
@@ -39,9 +39,9 @@ Você também pode declarar **múltiplas variáveis em uma única linha**, separ
 
 ## Atribuindo valores com SET
 
-Declarar a variável é só o primeiro passo — ela nasce nula. Para colocar um valor dentro dela, você usa a palavra-chave `SET`.
+Declarar a variável é só o primeiro passo, já que ela nasce nula. Para colocar um valor dentro dela, você usa a palavra-chave `SET`.
 
-Neste exemplo, declaramos a variável `@cidadeContato` e atribuímos o valor `"São Paulo"`:
+No exemplo abaixo, declaramos a variável `@cidadeContato` e atribuímos o valor `"São Paulo"`:
 
 ```ampscript
 %%[
@@ -50,7 +50,7 @@ Neste exemplo, declaramos a variável `@cidadeContato` e atribuímos o valor `"S
 ]%%
 ```
 
-Agora `@cidadeContato` deixou de ser nula e carrega o texto "São Paulo". Você pode usar essa variável em qualquer lugar do seu conteúdo para personalizar a mensagem — imagine um e-mail da Lojas Vitória dizendo "Confira as ofertas na nossa loja em São Paulo!".
+Agora `@cidadeContato` deixou de ser nula e carrega o texto "São Paulo". Você pode usar essa variável em qualquer lugar do seu conteúdo para personalizar a mensagem, como um e-mail da Lojas Vitória dizendo "Confira as ofertas na nossa loja em São Paulo!".
 
 > **💡 Dica:** No dia a dia, você vai declarar e atribuir valor quase sempre em sequência. É um padrão tão comum que se torna automático: `VAR` para criar, `SET` para preencher.
 

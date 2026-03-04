@@ -32,27 +32,7 @@ function saveState(state: SavedState) {
   } catch {}
 }
 
-const DEFAULT_CODE = `%%[
-  VAR @firstName, @score, @grade
-
-  SET @firstName = AttributeValue("FirstName")
-  SET @score = 87
-
-  IF @score >= 90 THEN
-    SET @grade = "A"
-  ELSEIF @score >= 80 THEN
-    SET @grade = "B"
-  ELSEIF @score >= 70 THEN
-    SET @grade = "C"
-  ELSE
-    SET @grade = "F"
-  ENDIF
-]%%
-
-<h2>Hello, %%=V(@firstName)=%%!</h2>
-<p>Your score is <strong>%%=V(@score)=%%</strong> — Grade: <strong>%%=V(@grade)=%%</strong></p>
-<p>Report generated on %%=FormatDate(Now(), "MMMM DD, YYYY")=%%</p>
-`;
+const DEFAULT_CODE = `%%[\n  VAR @firstName, @score, @grade\n\n  SET @firstName = AttributeValue("FirstName")\n  SET @score = 87\n\n  IF @score >= 90 THEN\n    SET @grade = "A"\n  ELSEIF @score >= 80 THEN\n    SET @grade = "B"\n  ELSEIF @score >= 70 THEN\n    SET @grade = "C"\n  ELSE\n    SET @grade = "F"\n  ENDIF\n]%%\n\n<h2>Hello, %%=V(@firstName)=%%!</h2>\n<p>Your score is <strong>%%=V(@score)=%%</strong> — Grade: <strong>%%=V(@grade)=%%</strong></p>\n<p>Report generated on %%=FormatDate(Now(), "MMMM DD, YYYY")=%%</p>\n`;
 
 const DEFAULT_ATTRIBUTES: SubscriberAttributes = {
   FirstName:    'Maria',
@@ -93,7 +73,6 @@ export default function Playground() {
   );
   const [result, setResult]       = useState<RunResult | null>(null);
   const [activeTab, setActiveTab] = useState<'output' | 'errors'>('output');
-  const [autoRun, setAutoRun]     = useState(true);
 
   const [editorWidthPct, setEditorWidthPct] = useState<number>(
     saved?.editorWidth ?? DEFAULT_EDITOR_WIDTH
@@ -136,20 +115,12 @@ export default function Playground() {
       window.removeEventListener('mouseup',   onMouseUp);
     };
   }, []);
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const execute = useCallback(() => {
     const res = run(code, { subscriberAttributes, dataExtensions });
     setResult(res);
     setActiveTab(res.errors.length > 0 ? 'errors' : 'output');
   }, [code, subscriberAttributes, dataExtensions]);
-
-  useEffect(() => {
-    if (!autoRun) return;
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(execute, 600);
-    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
-  }, [code, subscriberAttributes, dataExtensions, autoRun, execute]);
 
   useEffect(() => {
     saveState({ code, subscriberAttributes, dataExtensions, editorWidth: editorWidthPct });
@@ -167,17 +138,8 @@ export default function Playground() {
   return (
     <div className={styles.container}>
 
-      {}
       <div className={styles.toolbar}>
         <span className={styles.title}>AMPscript Playground</span>
-        <label className={styles.autoRunLabel}>
-          <input
-            type="checkbox"
-            checked={autoRun}
-            onChange={e => setAutoRun(e.target.checked)}
-          />
-          Auto-run
-        </label>
         <button className={styles.runBtn} onClick={execute}>▶ Run</button>
         <button className={styles.clearBtn} onClick={handleClear}>Clear</button>
         <button className={styles.clearBtn} onClick={handleReset}>Reset</button>

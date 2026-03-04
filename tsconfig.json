@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@site/*": ["./*"]
+    },
+    "types": [
+      "@docusaurus/module-type-aliases",
+      "@docusaurus/theme-classic"
+    ]
+  },
+  "include": ["src/**/*", "docusaurus.config.ts"]
+}
