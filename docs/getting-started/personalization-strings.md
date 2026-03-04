@@ -14,7 +14,9 @@ Um detalhe que confunde muita gente: elas **não são** AMPscript, mas convivem 
 
 ## Sintaxe
 
-Quando você quer puxar um dado do subscriber direto no HTML, é só envolver o nome do atributo com dois sinais de porcentagem de cada lado, tipo %%emailaddr%%. Não importa se você escreve maiúsculo ou minúsculo — o SFMC entende igual. Agora, dentro de um bloco AMPscript %%[ ]%%, a história muda: você usa o nome do atributo sem os %%, porque o parser já está em modo de código e esses delimitadores extras causariam erro de sintaxe. Outro detalhe importante: se o nome do atributo tem espaço, hífen, parêntese ou qualquer caractere especial, você precisa colocar colchetes em volta, tipo [Nome Completo] ou [Data de Nascimento]. Sem isso, o sistema não vai reconhecer o campo corretamente.
+Quando você quer puxar um dado do subscriber direto no HTML, é só envolver o nome do atributo com dois sinais de porcentagem de cada lado, tipo `%%emailaddr%%`. Não importa se você escreve maiúsculo ou minúsculo — o SFMC entende igual. Agora, dentro de um bloco AMPscript `%%[ ]%%`, a história muda: você usa o nome do atributo sem os `%%`, porque o parser já está em modo de código e esses delimitadores extras causariam erro de sintaxe.
+
+Detalhe importante: se o nome do atributo contém qualquer caractere não-alfanumérico — espaço, hífen, acento, parêntese — você precisa colocar colchetes em volta. **Isso vale tanto no inline quanto dentro de blocos AMPscript.** No inline: `%%[Nome Completo]%%`. Dentro de bloco: `[Nome Completo]`. Sem os colchetes, o sistema não reconhece o campo.
 
 **Uso inline no corpo do e-mail:**
 
@@ -60,9 +62,11 @@ SET @segmento = SegmentoMarketing
 **Referência inline no HTML — com e sem espaço no nome:**
 
 ```html
-Seu código de cliente: %%Código Cliente%%
+Seu código de cliente: %%[Código Cliente]%%
 Segmento: %%SegmentoMarketing%%
 ```
+
+> **⚠️ Atenção:** Quando o nome do atributo contém caracteres não-alfanuméricos — espaço, hífen, acento, parêntese — você precisa envolvê-lo em colchetes, tanto no inline (`%%[Nome Completo]%%`) quanto dentro de blocos AMPscript (`[Nome Completo]`). Sem os colchetes, o SFMC não reconhece o campo.
 
 
 ## System Strings
@@ -122,12 +126,13 @@ O segundo jeito é mais confiável porque respeita o locale brasileiro de verdad
 |--------|-----------|-------------------|
 | `emailname_` | Nome dado ao e-mail no momento da criação no Content Builder | `Cobrança_Maio_2025` |
 | `_emailid` | ID numérico gerado automaticamente pelo sistema para o e-mail | `98712` |
-| `_messagecontext` | Indica o canal/contexto em que a mensagem está sendo renderizada. Possíveis valores: SEND, PREVIEW, VAWP, FTAF, LANDINGPAGE, VALIDATION, LINKRESOLUTION, SMS, SOCIAL | `SEND` |
+| `_messagecontext` | Indica o canal/contexto em que a mensagem está sendo renderizada. Possíveis valores: SEND, PREVIEW, VAWP, VIEWSENT, FTAF, LANDINGPAGE, VALIDATION, LINKRESOLUTION, SMS, SOCIAL, SITE | `SEND` |
 | `_replycontent` | Corpo do e-mail de resposta recebido pelo assinante — disponível apenas em Triggered Sends com Reply Mail Management ativo | `(conteúdo do reply)` |
 | `_IsTestSend` | Indica se o envio foi feito via botão "Test Send". Retorna a string "true" ou "false" — não é um booleano. | `false` |
 | `jobid` | Identificador numérico único gerado para cada job de envio | `7834521` |
 | `_JobSubscriberBatchID` | ID do lote associado ao envio em Triggered Sends. Vale 0 para envios convencionais em lista. | `1003` |
 | `_PreHeader` | Texto de preheader configurado no e-mail. Funciona apenas via AttributeValue("_PreHeader") — não pode ser usado inline. | `Seu extrato chegou — confira agora` |
+| `Email_Preheader` | Popula o preheader a partir das brand tags configuradas na conta. Diferente de `_PreHeader`, que vem das configurações do e-mail individual. | `(definido pelas brand tags)` |
 | `_DataSourceName` | Nome da lista, grupo, Data Extension ou filtro de envio. Retorna vazio quando o envio é feito para All Subscribers. | `Clientes_Ativos_SP` |
 | `_listname` | Nome da lista de envio definido pelo usuário. Retorna vazio para envios em All Subscribers. | `Base_Premium_2025` |
 
@@ -152,8 +157,10 @@ Fica a dica pra você não perder tempo debugando bobeira no SFMC: a `_IsTestSen
 | String | Descrição | Exemplo de Output |
 |--------|-----------|-------------------|
 | `emailaddr` | Endereço de e-mail cadastrado para o assinante | `ana.souza@email.com.br` |
-| `firstname_ ou firstname` | Primeiro nome do assinante vindo do atributo de perfil "FirstName" — não vem de DEs de envio | `Ana` |
-| `lastname_ ou lastname` | Sobrenome do assinante vindo do atributo de perfil "LastName" — não vem de DEs de envio | `Souza` |
+| `fullname_ ou fullname` | Nome completo do assinante vindo do atributo de perfil "Full Name" | `Ana Souza` |
+| `firstname_ ou firstname` | Primeiro nome do assinante — extrai o valor antes do espaço no atributo "Full Name". Não vem de DEs de envio | `Ana` |
+| `lastname_ ou lastname` | Sobrenome do assinante — extrai o valor após o espaço no atributo "Full Name". Não vem de DEs de envio | `Souza` |
+| `comment_ ou comment` | Valor do atributo de perfil definido pelo usuário para este assinante | `(definido pelo usuário)` |
 | `subscriberid` | ID numérico gerado automaticamente pela plataforma para cada assinante | `4490231` |
 | `_subscriberkey` | Chave única do assinante definida pela sua empresa — normalmente CPF, e-mail ou ID interno | `351.204.870-11` |
 | `listid` | ID da lista associada ao assinante neste envio. Retorna o ID de All Subscribers quando não há lista específica. | `8821` |

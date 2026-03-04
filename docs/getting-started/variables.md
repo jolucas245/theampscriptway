@@ -7,11 +7,11 @@ sidebar_position: 3
 
 # Variáveis
 
-Variáveis são o ponto de partida para qualquer lógica em AMPscript. É nelas que você armazena dados — o nome do cliente, uma data formatada, o valor de um produto — para usar ao longo do seu e-mail, CloudPage ou SMS. Entender como declarar e atribuir valores a variáveis é o fundamento de tudo que vem depois.
+Variáveis são o ponto de partida para qualquer lógica em AMPscript. É nelas que você armazena dados: o nome do cliente, uma data formatada, o valor de um produto, para usar ao longo das suas comunicações. Entender como declarar e atribuir valores a variáveis é o fundamento de tudo que vem depois.
 
 ## Nomeando variáveis
 
-Em AMPscript, toda variável começa com o caractere `@` (arroba). Sempre. Sem exceção.
+Em AMPscript, toda variável começa com o caractere `@`. Sempre. Sem exceção.
 
 Você escolhe o nome que quiser depois do `@`, mas a boa prática é usar nomes descritivos que deixem claro o que aquela variável guarda. Quando você está mantendo um template de régua de relacionamento com dezenas de variáveis, um nome como `@cidadeContato` vale ouro comparado a `@c`.
 

@@ -58,4 +58,4 @@ Este guia cobre os fundamentos que você precisa dominar para trabalhar com AMPs
 5. [Comentários](/docs/getting-started/comments) — como documentar seu código
 6. [Strings de personalização](/docs/getting-started/personalization-strings) — como exibir dados dos assinantes no conteúdo
 
-> **💡 Dica:** Se você já programa em qualquer linguagem, vai se sentir confortável rapidamente. Se é sua primeira vez com código, não se preocupe — o AMPscript tem uma curva de aprendizado acessível, e este guia foi feito para acompanhar você passo a passo.
+> **💡 Dica:** Se você já programa em qualquer linguagem, vai se sentir confortável rapidamente. Se é sua primeira vez com código, não se preocupe, o AMPscript tem uma curva de aprendizado acessível, e esse guia foi feito para acompanhar você passo a passo.
