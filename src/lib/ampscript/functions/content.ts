@@ -3,8 +3,6 @@ import { toString } from '../evaluator';
 
 export const contentFunctions: Record<string, (args: AmpValue[]) => AmpValue> = {
 
-  // BuildRowsetFromString("val1,val2,val3", ",")
-  // Retorna rowset onde cada linha tem uma coluna "@v" com o valor
   BUILDROWSETFROMSTRING(args) {
     const str   = toString(args[0]);
     const delim = args[1] !== null && args[1] !== undefined ? toString(args[1]) : ',';
@@ -12,8 +10,6 @@ export const contentFunctions: Record<string, (args: AmpValue[]) => AmpValue> = 
     return str.split(delim).map((val): AmpRow => ({ '@v': val.trim() }));
   },
 
-  // BuildRowsetFromJson('[{"Nome":"João"},{"Nome":"Maria"}]', "Nome,Idade")
-  // Suporta array de objetos ou objeto simples
   BUILDROWSETFROMJSON(args) {
     const jsonStr = toString(args[0]);
     try {
@@ -30,9 +26,7 @@ export const contentFunctions: Record<string, (args: AmpValue[]) => AmpValue> = 
       return [];
     }
   },
-
-  // BuildRowsetFromXml("<rows><row><Nome>João</Nome></row></rows>", "row", "Nome,Idade")
-  // args[0] = XML string, args[1] = tag do elemento que representa cada linha
+  
   BUILDROWSETFROMXML(args) {
     const xmlStr  = toString(args[0]);
     const rowTag  = args[1] !== null && args[1] !== undefined ? toString(args[1]) : 'row';

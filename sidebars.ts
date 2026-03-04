@@ -5,6 +5,11 @@ const sidebars: SidebarsConfig = {
     'about',
     'function-index',
     {
+      type: 'doc',
+      id: 'playground',
+      label: 'Playground',
+    },
+    {
       type: 'category',
       label: 'Primeiros Passos',
       collapsed: false,
@@ -22,6 +27,7 @@ const sidebars: SidebarsConfig = {
         'getting-started/case-sensitivity',
         'getting-started/dynamic-link-aliases',
         'getting-started/mobile-functions',
+        'getting-started/ampscript-vs-ssjs',
         'getting-started/best-practices',
       ],
     },

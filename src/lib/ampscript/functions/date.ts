@@ -26,8 +26,6 @@ export const dateFunctions: Record<string, (...args: ScalarValue[]) => ScalarVal
   },
 
   GETSENDTIME() {
-    // No playground, retorna o momento atual — no SFMC retornaria
-    // a hora configurada no agendamento do job de envio.
     return new Date().toISOString();
   },
 
@@ -123,12 +121,10 @@ export const dateFunctions: Record<string, (...args: ScalarValue[]) => ScalarVal
   },
 
   LOCALDATETOSYSTEMDATE(dateVal) {
-    // No playground não há distinção de fuso — retorna a data como está.
     return parseDate(dateVal).toISOString();
   },
 
   SYSTEMDATETOLOCALDATE(dateVal) {
-    // No playground não há distinção de fuso — retorna a data como está.
     return parseDate(dateVal).toISOString();
   },
 };

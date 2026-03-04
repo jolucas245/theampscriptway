@@ -12,21 +12,17 @@ function getField(row: AmpRow, field: string): AmpValue {
   return key !== undefined ? (row[key] ?? null) : null;
 }
 
-// case-insensitive match (padrão AMPScript)
 function matchRows(rows: AmpRow[], keyField: string, keyValue: string): AmpRow[] {
   return rows.filter(r =>
     toString(getField(r, keyField)).toLowerCase() === keyValue.toLowerCase()
   );
 }
 
-// case-sensitive match (variante CS)
 function matchRowsCS(rows: AmpRow[], keyField: string, keyValue: string): AmpRow[] {
   return rows.filter(r => toString(getField(r, keyField)) === keyValue);
 }
 
 export const dataExtensionFunctions: Record<string, (args: AmpValue[], ctx: EvalContext) => AmpValue> = {
-
-  // ── Leitura ───────────────────────────────────────────────────────────────
 
   LOOKUP(args, ctx) {
     const [deName, retField, keyField, keyValue] = args.map(a => toString(a));
@@ -43,7 +39,6 @@ export const dataExtensionFunctions: Record<string, (args: AmpValue[], ctx: Eval
     return matchRows(de.rows, keyField, keyValue);
   },
 
-  // Versão case-sensitive — diferencia maiúsculas/minúsculas no valor de busca
   LOOKUPROWSCS(args, ctx) {
     const [deName, keyField, keyValue] = args.map(a => toString(a));
     const de = findDE(ctx, deName);
@@ -103,8 +98,6 @@ export const dataExtensionFunctions: Record<string, (args: AmpValue[], ctx: Eval
     const de = findDE(ctx, toString(args[0]));
     return de ? de.rows.length : 0;
   },
-
-  // ── Escrita — variante DE (pares campo/valor simples) ─────────────────────
 
   INSERTDE(args, ctx) {
     const deName = toString(args[0]);
@@ -170,16 +163,6 @@ export const dataExtensionFunctions: Record<string, (args: AmpValue[], ctx: Eval
     return before - de.rows.length;
   },
 
-  // ── Escrita — variante Data (com filterCount) ─────────────────────────────
-  //
-  // InsertData tem a mesma sintaxe que InsertDE.
-  //
-  // UpdateData / UpsertData / DeleteData recebem um filterCount logo após o
-  // nome da DE, indicando quantos pares campo/valor formam o filtro:
-  //   UpdateData("DE", 1, "Email", @email, "Campo", @valor)
-  //   UpsertData("DE", 1, "Email", @email, "Campo", @valor)
-  //   DeleteData("DE", 1, "Email", @email)
-
   INSERTDATA(args, ctx) {
     return dataExtensionFunctions.INSERTDE(args, ctx);
   },
@@ -190,13 +173,11 @@ export const dataExtensionFunctions: Record<string, (args: AmpValue[], ctx: Eval
     const de = findDE(ctx, deName);
     if (!de) return 0;
 
-    // Monta filtro com filterCount pares
     const filterPairs: [string, string][] = [];
     for (let i = 0; i < filterCount; i++) {
       filterPairs.push([toString(args[2 + i * 2]), toString(args[3 + i * 2])]);
     }
 
-    // Campos a atualizar começam após os pares de filtro
     const updateStart = 2 + filterCount * 2;
 
     let updated = 0;
@@ -220,7 +201,6 @@ export const dataExtensionFunctions: Record<string, (args: AmpValue[], ctx: Eval
     const de = findDE(ctx, deName);
     if (!de) return 0;
 
-    // Monta chaves primárias com keyCount pares
     const keyPairs: [string, string][] = [];
     for (let i = 0; i < keyCount; i++) {
       keyPairs.push([toString(args[2 + i * 2]), toString(args[3 + i * 2])]);

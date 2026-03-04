@@ -42,7 +42,6 @@ export const utilityFunctions: Record<string, (args: AmpValue[], ctx: EvalContex
 
   ISPHONENUMBER(args) {
     const phone = toString(args[0]);
-    // Remove caracteres comuns de formatação e valida presença de dígitos suficientes
     const digits = phone.replace(/[\s\-().+]/g, '');
     return /^\d{7,15}$/.test(digits);
   },

@@ -9,12 +9,9 @@ import { httpFunctions }          from './http';
 import { sitesFunctions }         from './sites';
 import { dataExtensionFunctions } from './dataextension';
 
-// Funções puras: recebem args espalhados (...args)
 type PureFunction = (...args: AmpValue[]) => AmpValue;
-// Funções de contexto: recebem (args[], ctx)
 type ContextFunction = (args: AmpValue[], ctx: EvalContext) => AmpValue;
 
-// content e http recebem (args[]) — adaptamos para PureFunction com wrapper
 function wrapArrayFn(
   fn: (args: AmpValue[]) => AmpValue
 ): PureFunction {

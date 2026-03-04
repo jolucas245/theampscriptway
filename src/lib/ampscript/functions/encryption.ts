@@ -1,8 +1,6 @@
 import type { AmpValue } from '../types';
 import { toString } from '../evaluator';
 
-// ── helpers ───────────────────────────────────────────────────────────────────
-
 function strToBytes(str: string): number[] {
   const bytes: number[] = [];
   for (let i = 0; i < str.length; i++) {
@@ -25,8 +23,6 @@ function toHex(n: number, bytes = 4): string {
 function rotLeft(n: number, s: number): number {
   return (n << s) | (n >>> (32 - s));
 }
-
-// ── MD5 (pure JS) ─────────────────────────────────────────────────────────────
 
 function md5(input: string): string {
   function safe(x: number, y: number) {
@@ -96,8 +92,6 @@ function md5(input: string): string {
   return w(a) + w(b) + w(c) + w(d);
 }
 
-// ── SHA-1 (pure JS) ───────────────────────────────────────────────────────────
-
 function sha1(str: string): string {
   const bytes = strToBytes(str);
   const bitLen = bytes.length * 8;
@@ -132,8 +126,6 @@ function sha1(str: string): string {
   }
   return [h0, h1, h2, h3, h4].map(h => toHex(h >>> 0)).join('');
 }
-
-// ── SHA-256 (pure JS) ─────────────────────────────────────────────────────────
 
 function sha256(str: string): string {
   const K = [
@@ -185,10 +177,7 @@ function sha256(str: string): string {
   return [h0,h1,h2,h3,h4,h5,h6,h7].map(h => toHex(h)).join('');
 }
 
-// ── SHA-512 (pure JS) ─────────────────────────────────────────────────────────
-
 function sha512(str: string): string {
-  // SHA-512 usa aritmética de 64-bit — simulamos com pares de 32-bit [hi, lo]
   type U64 = [number, number];
   const add64 = (a: U64, b: U64): U64 => {
     const lo = (a[1] + b[1]) >>> 0;
@@ -232,7 +221,6 @@ function sha512(str: string): string {
   const bitLen = bytes.length * 8;
   bytes.push(0x80);
   while (bytes.length % 128 !== 112) bytes.push(0);
-  // 128-bit length (we only use lower 64 bits)
   for (let i = 0; i < 8; i++) bytes.push(0);
   for (let i = 7; i >= 0; i--) bytes.push((bitLen / Math.pow(2, i * 8)) & 0xff);
 
@@ -275,8 +263,6 @@ function sha512(str: string): string {
     .join('');
 }
 
-// ── exports ───────────────────────────────────────────────────────────────────
-
 export const encryptionFunctions: Record<string, (args: AmpValue[]) => AmpValue> = {
 
   BASE64ENCODE(args) {
@@ -295,19 +281,6 @@ export const encryptionFunctions: Record<string, (args: AmpValue[]) => AmpValue>
   SHA512(args) { return sha512(toString(args[0])); },
 };
 
-// ── EncryptSymmetric / DecryptSymmetric ───────────────────────────────────────
-//
-// Assinatura AMPScript:
-//   EncryptSymmetric(plaintext, 'AES', @null, @key, @null, @IV)
-//   DecryptSymmetric(ciphertext, 'AES', @null, @key, @null, @IV)
-//
-// O playground implementa AES-CBC em pure JS. A chave e o IV devem ser
-// strings — elas são convertidas para blocos de 16 bytes (padding com zeros).
-// O resultado é retornado em Base64.
-//
-// ⚠️ Esta implementação é para fins educacionais no playground.
-//    No SFMC, use EncryptSymmetric com chaves gerenciadas pela plataforma.
-
 function padTo16(str: string): number[] {
   const bytes = strToBytes(str);
   const padded = new Array(16).fill(0);
@@ -315,7 +288,6 @@ function padTo16(str: string): number[] {
   return padded;
 }
 
-// AES S-Box e tabelas de suporte
 const SBOX = [
   0x63,0x7c,0x77,0x7b,0xf2,0x6b,0x6f,0xc5,0x30,0x01,0x67,0x2b,0xfe,0xd7,0xab,0x76,
   0xca,0x82,0xc9,0x7d,0xfa,0x59,0x47,0xf0,0xad,0xd4,0xa2,0xaf,0x9c,0xa4,0x72,0xc0,
@@ -446,7 +418,6 @@ function aesCBCEncrypt(plaintext: string, keyStr: string, ivStr: string): string
   const w      = keyExpansion(key);
   const bytes  = strToBytes(plaintext);
 
-  // PKCS#7 padding
   const pad    = 16 - (bytes.length % 16);
   for (let i = 0; i < pad; i++) bytes.push(pad);
 
@@ -476,19 +447,15 @@ function aesCBCDecrypt(cipherB64: string, keyStr: string, ivStr: string): string
     result.push(...dec);
   }
 
-  // Remover padding PKCS#7
   const pad = result[result.length - 1];
   const unpadded = result.slice(0, result.length - pad);
   return new TextDecoder().decode(new Uint8Array(unpadded));
 }
 
-// Adicionar ao objeto exportado
 Object.assign(encryptionFunctions, {
 
-  // EncryptSymmetric(plaintext, 'AES', null, key, null, IV)
   ENCRYPTSYMMETRIC(args: AmpValue[]): AmpValue {
     const plaintext = toString(args[0]);
-    // args[1] = cipher ('AES'), args[2] = null, args[3] = key, args[4] = null, args[5] = IV
     const key = toString(args[3] ?? '');
     const iv  = toString(args[5] ?? '');
     try {
@@ -498,7 +465,6 @@ Object.assign(encryptionFunctions, {
     }
   },
 
-  // DecryptSymmetric(ciphertext, 'AES', null, key, null, IV)
   DECRYPTSYMMETRIC(args: AmpValue[]): AmpValue {
     const ciphertext = toString(args[0]);
     const key = toString(args[3] ?? '');
