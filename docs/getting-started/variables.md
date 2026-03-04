@@ -69,7 +69,7 @@ Neste exemplo, usamos as funções `FormatDate()` e `Now()` para capturar a data
 
 Se hoje fosse 05 de agosto de 2023, a variável `@dataAtual` teria o valor `"05/08/2023"`. Isso é muito usado em e-mails transacionais — confirmações de pedido, comprovantes, notificações — onde a data precisa aparecer no corpo da mensagem.
 
-Imagine um e-mail do Banco Meridional confirmando uma transação:
+Imagine um e-mail do Banco Brasilão confirmando uma transação:
 
 ```ampscript
 %%[

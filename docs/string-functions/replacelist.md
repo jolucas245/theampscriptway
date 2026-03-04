@@ -93,6 +93,5 @@ Caso precise de suporte, ligue para (11) 3000-1234.
 ## Funções relacionadas
 
 - [Replace()](../string-functions/replace.md) — substitui uma única substring por outra (quando cada busca precisa de uma substituição diferente)
-- [RegExReplace()](../string-functions/regexreplace.md) — substituição usando expressões regulares, para padrões mais complexos
 - [Trim()](../string-functions/trim.md) — remove espaços em branco das extremidades de uma string
 - [Concat()](../string-functions/concat.md) — concatena strings, útil para reconstruir textos após substituições

@@ -53,7 +53,7 @@ O subscriber é pulado e o e-mail não é enviado para ele. O job continua para 
 
 ## Exemplo avançado
 
-Em uma régua de relacionamento do Banco Meridional, o e-mail precisa exibir dados da conta do cliente. Se o registro não for encontrado na Data Extension, o erro é registrado em uma DE de log antes de pular o subscriber — e o parâmetro `boolPreserveDataExt` garante que esse log seja mantido:
+Em uma régua de relacionamento do Banco Brasilão, o e-mail precisa exibir dados da conta do cliente. Se o registro não for encontrado na Data Extension, o erro é registrado em uma DE de log antes de pular o subscriber — e o parâmetro `boolPreserveDataExt` garante que esse log seja mantido:
 
 ```ampscript
 %%[
@@ -96,14 +96,14 @@ SET @saldo = Field(@row, "Saldo")
 
 Olá, %%=v(@nomeConta)=%%!
 
-Seu saldo atual no Banco Meridional é de R$ %%=FormatNumber(@saldo, "N", 2, "pt-BR")=%%.
+Seu saldo atual no Banco Brasilão é de R$ %%=FormatNumber(@saldo, "N", 2, "pt-BR")=%%.
 ```
 
 **Saída (quando a conta é encontrada):**
 ```
 Olá, João Silva!
 
-Seu saldo atual no Banco Meridional é de R$ 3.450,00.
+Seu saldo atual no Banco Brasilão é de R$ 3.450,00.
 ```
 
 **Saída (quando a conta NÃO é encontrada):**

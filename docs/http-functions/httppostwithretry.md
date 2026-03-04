@@ -75,7 +75,7 @@ Status: 200
 
 ## Exemplo avançado
 
-Cenário de régua de relacionamento: ao enviar um e-mail de boas-vindas, você notifica a API interna do Banco Meridional para registrar a ativação do cliente, incluindo um token de autenticação no header. Se a API estiver fora, o sistema reagenda a tentativa automaticamente:
+Cenário de régua de relacionamento: ao enviar um e-mail de boas-vindas, você notifica a API interna do Banco Brasilão para registrar a ativação do cliente, incluindo um token de autenticação no header. Se a API estiver fora, o sistema reagenda a tentativa automaticamente:
 
 ```ampscript
 %%[
@@ -84,7 +84,7 @@ SET @email = "maria.santos@email.com.br"
 SET @cpf = "987.654.321-00"
 SET @dataAtivacao = FormatDate(Now(), "DD/MM/YYYY")
 
-SET @url = "https://api.bancomeridional.com.br/clientes/ativacao"
+SET @url = "https://api.bancobrasilao.com.br/clientes/ativacao"
 SET @contentType = "application/json"
 
 SET @payload = Concat(

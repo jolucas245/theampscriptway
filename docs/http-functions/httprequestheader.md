@@ -90,7 +90,6 @@ Obrigado pelo cadastro, Maria Santos! Vimos que você está no celular — em br
 
 ## Funções relacionadas
 
-- [RequestHeader](../http-functions/requestheader.md)
 - [HTTPGet](../http-functions/httpget.md)
 - [HTTPPost](../http-functions/httppost.md)
 - [RequestParameter](../sites-functions/requestparameter.md)

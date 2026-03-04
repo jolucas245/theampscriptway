@@ -57,7 +57,7 @@ Produto: Teclado Mecânico — R$ 349,90
 
 ## Exemplo avançado
 
-Cenário real de régua de relacionamento: o Banco Meridional retorna dados de transações recentes do cliente via API em XML. Você precisa montar uma tabela no e-mail com as últimas movimentações, incluindo atributos dos nós.
+Cenário real de régua de relacionamento: o Banco Brasilão retorna dados de transações recentes do cliente via API em XML. Você precisa montar uma tabela no e-mail com as últimas movimentações, incluindo atributos dos nós.
 
 ```ampscript
 %%[

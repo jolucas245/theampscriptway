@@ -45,7 +45,7 @@ Produto por apenas R$ 1.299,90!
 
 ## Exemplo avançado
 
-Em um e-mail de régua de relacionamento do Banco Meridional, você precisa exibir o saldo do cliente e o rendimento mensal. O rendimento tem 4 casas decimais para maior precisão, e o saldo usa o símbolo customizado `BRL` para reforçar a moeda em contexto internacional:
+Em um e-mail de régua de relacionamento do Banco Brasilão, você precisa exibir o saldo do cliente e o rendimento mensal. O rendimento tem 4 casas decimais para maior precisão, e o saldo usa o símbolo customizado `BRL` para reforçar a moeda em contexto internacional:
 
 ```ampscript
 %%[
@@ -90,4 +90,3 @@ Rendimento no mês: R$ 387,4567
 - [Concat](../string-functions/concat.md) — concatenação de strings, útil para montar textos com valores formatados
 - [Multiply](../math-functions/multiply.md) — cálculos antes de formatar (ex: aplicar desconto no preço)
 - [Subtract](../math-functions/subtract.md) — calcular diferenças de valores antes de exibir
-- [Round](../math-functions/round.md) — arredondar valores antes da formatação

@@ -49,19 +49,19 @@ Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJtZWdhc3RvcmUtc2ZtYyIsImlh
 
 ## Exemplo avançado
 
-Em uma régua de relacionamento do Banco Meridional, uma CloudPage gera um JWT com RSA para autenticar o cliente em um portal de segunda via de boleto. O payload inclui dados do assinante recuperados via [Lookup](../data-extension-functions/lookup.md):
+Em uma régua de relacionamento do Banco Brasilão, uma CloudPage gera um JWT com RSA para autenticar o cliente em um portal de segunda via de boleto. O payload inclui dados do assinante recuperados via [Lookup](../data-extension-functions/lookup.md):
 
 ```ampscript
 %%[
 
 SET @email = AttributeValue("EmailAddress")
-SET @cpf = Lookup("Clientes_Meridional", "CPF", "Email", @email)
-SET @nome = Lookup("Clientes_Meridional", "NomeCompleto", "Email", @email)
-SET @conta = Lookup("Clientes_Meridional", "NumeroConta", "Email", @email)
+SET @cpf = Lookup("Clientes_Brasilão", "CPF", "Email", @email)
+SET @nome = Lookup("Clientes_Brasilão", "NomeCompleto", "Email", @email)
+SET @conta = Lookup("Clientes_Brasilão", "NumeroConta", "Email", @email)
 
 IF NOT Empty(@cpf) THEN
 
-  SET @keyName = "meridional-rsa-private-key"
+  SET @keyName = "brasilao-rsa-private-key"
   SET @algorithm = "RS256"
 
   SET @payload = Concat(
@@ -70,12 +70,12 @@ IF NOT Empty(@cpf) THEN
     '"conta":"', @conta, '",',
     '"iat":1718000000,',
     '"exp":1718003600,',
-    '"iss":"sfmc-banco-meridional"}'
+    '"iss":"sfmc-banco-brasilao"}'
   )
 
   SET @jwt = GetJwtByKeyName(@keyName, @algorithm, @payload)
 
-  Output(Concat('<a href="https://boletos.bancomeridional.com.br/validar?token=', @jwt, '">Acessar segunda via do boleto</a>'))
+  Output(Concat('<a href="https://boletos.bancobrasilao.com.br/validar?token=', @jwt, '">Acessar segunda via do boleto</a>'))
 
 ELSE
 
@@ -88,7 +88,7 @@ ENDIF
 
 **Saída:**
 ```html
-<a href="https://boletos.bancomeridional.com.br/validar?token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2FvLnNpbHZhQG1lcmlkaW9uYWwuY29tLmJyIiwibm9tZSI6Ikpvw6NvIFNpbHZhIiwiY29udGEiOiIxMjM0NTYiLCJpYXQiOjE3MTgwMDAwMDAsImV4cCI6MTcxODAwMzYwMCwiaXNzIjoic2ZtYy1iYW5jby1tZXJpZGlvbmFsIn0.XXXXXXXXXXXXX">Acessar segunda via do boleto</a>
+<a href="https://boletos.bancobrasilao.com.br/validar?token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2FvLnNpbHZhQG1lcmlkaW9uYWwuY29tLmJyIiwibm9tZSI6Ikpvw6NvIFNpbHZhIiwiY29udGEiOiIxMjM0NTYiLCJpYXQiOjE3MTgwMDAwMDAsImV4cCI6MTcxODAwMzYwMCwiaXNzIjoic2ZtYy1iYW5jby1tZXJpZGlvbmFsIn0.XXXXXXXXXXXXX">Acessar segunda via do boleto</a>
 ```
 
 ## Observações

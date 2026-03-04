@@ -50,7 +50,7 @@ SET @callStatus = HTTPPost(@endpoint, @contentType, @payload, @response)
 
 ## Exemplo avançado
 
-Cenário de régua de relacionamento: ao enviar um e-mail de boas-vindas, a função notifica a API interna do Banco Meridional com os dados do novo correntista, incluindo um token de autenticação no header:
+Cenário de régua de relacionamento: ao enviar um e-mail de boas-vindas, a função notifica a API interna do Banco Brasilão com os dados do novo correntista, incluindo um token de autenticação no header:
 
 ```ampscript
 %%[
@@ -60,7 +60,7 @@ SET @cpf = AttributeValue("CPF")
 SET @email = AttributeValue("EmailAddress")
 SET @dataCadastro = FormatDate(Now(), "dd/MM/yyyy")
 
-SET @endpoint = "https://api.bancomeridional.com.br/v1/onboarding/notificacao"
+SET @endpoint = "https://api.bancobrasilao.com.br/v1/onboarding/notificacao"
 SET @contentType = "application/json"
 
 SET @payload = Concat('{"nome": "', @nome, '", "cpf": "', @cpf, '", "email": "', @email, '", "data_envio_boasvindas": "', @dataCadastro, '", "canal": "email"}')

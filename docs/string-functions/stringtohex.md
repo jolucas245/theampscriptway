@@ -46,7 +46,7 @@ Hexadecimal (UTF-8): 4ac3a34f20536976616c
 
 ## Exemplo avançado
 
-Comparando a codificação de uma string em UTF-8 e UTF-16 — útil quando você precisa decidir qual encoding usar para uma integração com um sistema externo do Banco Meridional:
+Comparando a codificação de uma string em UTF-8 e UTF-16 — útil quando você precisa decidir qual encoding usar para uma integração com um sistema externo do Banco Brasilão:
 
 ```ampscript
 %%[

@@ -81,7 +81,7 @@ Número limpo para integração: 11998765432
 
 - Você pode encadear múltiplas chamadas de `Replace` para fazer várias substituições em sequência, como no exemplo de limpeza de telefone acima.
 
-- Para substituições que exigem correspondência por padrão (regex) em vez de texto fixo, considere usar [RegExReplace](../string-functions/regexreplace.md). Já para identificar um trecho antes de substituir, o [RegExMatch](../string-functions/regexmatch.md) pode ser combinado com `Replace`.
+- Para identificar um trecho antes de substituir, o [RegExMatch](../string-functions/regexmatch.md) pode ser combinado com `Replace`.
 
 > **💡 Dica:** `Replace` é ótima para montar templates reutilizáveis com placeholders customizados (ex: `{{NOME_CLIENTE}}`, `{{VALOR_PEDIDO}}`), substituindo cada um pelo valor real no momento do envio.
 
@@ -93,6 +93,5 @@ Número limpo para integração: 11998765432
 - [Substring](../string-functions/substring.md) — para extrair parte de uma string
 - [IndexOf](../string-functions/indexof.md) — para localizar a posição de uma substring antes de decidir substituir
 - [RegExMatch](../string-functions/regexmatch.md) — para identificar trechos por padrão regex
-- [RegExReplace](../string-functions/regexreplace.md) — para substituições baseadas em expressões regulares
 - [ReplaceList](../string-functions/replacelist.md) — para substituir um valor por outro a partir de uma lista de opções
 - [Trim](../string-functions/trim.md) — para remover espaços em branco das extremidades após substituições

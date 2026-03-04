@@ -43,7 +43,7 @@ ID completo: 0036000000QKv5TAAT
 
 ## Exemplo avançado
 
-Em uma régua de relacionamento do Banco Meridional, você precisa buscar o ID do contato na Data Extension, converter para 18 caracteres e montar um link para o consultor visualizar o registro diretamente no Salesforce:
+Em uma régua de relacionamento do Banco Brasilão, você precisa buscar o ID do contato na Data Extension, converter para 18 caracteres e montar um link para o consultor visualizar o registro diretamente no Salesforce:
 
 ```ampscript
 %%[
@@ -54,7 +54,7 @@ SET @nomeCliente = AttributeValue("PrimeiroNome")
 
 IF NOT Empty(@sfid15) THEN
   SET @sfid18 = LongSfid(@sfid15)
-  SET @linkSF = Concat("https://bancomeridional.my.salesforce.com/", @sfid18)
+  SET @linkSF = Concat("https://bancobrasilao.my.salesforce.com/", @sfid18)
 ENDIF
 ]%%
 
@@ -69,7 +69,7 @@ ENDIF
 ```
 Olá, João. Seu código de cliente é: 0036000000QKv5TAAT
 
-Consultor, acesse o registro: https://bancomeridional.my.salesforce.com/0036000000QKv5TAAT
+Consultor, acesse o registro: https://bancobrasilao.my.salesforce.com/0036000000QKv5TAAT
 ```
 
 ## Observações

@@ -68,7 +68,7 @@ Request ID: a1b2c3d4-e5f6-7890-abcd-ef1234567890
 
 ## Exemplo avançado
 
-Cenário de uma CloudPage de descadastro para o Banco Meridional, onde o assinante confirma que quer sair da lista. O código valida o resultado e trata o caso em que o assinante já estava descadastrado.
+Cenário de uma CloudPage de descadastro para o Banco Brasilão, onde o assinante confirma que quer sair da lista. O código valida o resultado e trata o caso em que o assinante já estava descadastrado.
 
 ```ampscript
 %%[
@@ -101,7 +101,7 @@ AddObjectArrayItem(@logUnsub, "Parameters", @emailParam)
 /* Parâmetro: Reason */
 SET @reasonParam = CreateObject("APIProperty")
 SetObjectProperty(@reasonParam, "Name", "Reason")
-SetObjectProperty(@reasonParam, "Value", "Descadastro via página de preferências - Banco Meridional")
+SetObjectProperty(@reasonParam, "Value", "Descadastro via página de preferências - Banco Brasilão")
 AddObjectArrayItem(@logUnsub, "Parameters", @reasonParam)
 
 /* Executa o LogUnsubEvent */
@@ -109,7 +109,7 @@ SET @statusCode = InvokeExecute(@logUnsub, @statusMessage, @requestId)
 
 /* Verifica se a operação foi bem-sucedida ou se já estava descadastrado */
 IF @statusCode == "OK" THEN
-  SET @resultado = "Pronto! Você foi descadastrado com sucesso das comunicações do Banco Meridional."
+  SET @resultado = "Pronto! Você foi descadastrado com sucesso das comunicações do Banco Brasilão."
 ELSEIF IndexOf(@statusMessage, "already unsubscribed") > 0 THEN
   SET @resultado = "Você já estava descadastrado das nossas comunicações. Nenhuma ação adicional necessária."
 ELSE
@@ -123,7 +123,7 @@ ENDIF
 
 **Saída:**
 ```
-Pronto! Você foi descadastrado com sucesso das comunicações do Banco Meridional.
+Pronto! Você foi descadastrado com sucesso das comunicações do Banco Brasilão.
 Protocolo: f8a3b1c2-d4e5-6789-abcd-0123456789ab
 ```
 

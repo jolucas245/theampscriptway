@@ -49,7 +49,7 @@ Olá!
 
 ## Exemplo avançado
 
-Em uma régua de relacionamento do Banco Meridional, o e-mail precisa exibir a categoria do cliente com base no campo `Segmento` e construir uma frase de abertura completa combinando `IIF` com [Concat](../string-functions/concat.md) e [ProperCase](../string-functions/propercase.md).
+Em uma régua de relacionamento do Banco Brasilão, o e-mail precisa exibir a categoria do cliente com base no campo `Segmento` e construir uma frase de abertura completa combinando `IIF` com [Concat](../string-functions/concat.md) e [ProperCase](../string-functions/propercase.md).
 
 ```ampscript
 %%[
@@ -70,7 +70,7 @@ SET @labelSegmento = IIF(
 
 SET @mensagem = Concat(
   "Olá, ", @nomeFormatado, "! ",
-  "Você faz parte do segmento ", @labelSegmento, " do Banco Meridional."
+  "Você faz parte do segmento ", @labelSegmento, " do Banco Brasilão."
 )
 ]%%
 
@@ -79,12 +79,12 @@ SET @mensagem = Concat(
 
 **Saída (quando PrimeiroNome = "joão" e Segmento = "PF_Premium"):**
 ```
-Olá, João! Você faz parte do segmento Premium do Banco Meridional.
+Olá, João! Você faz parte do segmento Premium do Banco Brasilão.
 ```
 
 **Saída (quando PrimeiroNome está vazio e Segmento = "PF_Basico"):**
 ```
-Olá, Cliente! Você faz parte do segmento Essencial do Banco Meridional.
+Olá, Cliente! Você faz parte do segmento Essencial do Banco Brasilão.
 ```
 
 ## Observações

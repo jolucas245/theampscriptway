@@ -56,7 +56,7 @@ Este e-mail foi gerado em: 15/07/2025, 14:32
 
 ## Exemplo avançado
 
-Saudação dinâmica baseada no horário e registro de timestamp de abertura em uma régua de relacionamento do Banco Meridional:
+Saudação dinâmica baseada no horário e registro de timestamp de abertura em uma régua de relacionamento do Banco Brasilão:
 
 ```ampscript
 %%[
@@ -86,14 +86,14 @@ InsertDE(
 
 %%=v(@saudacao)=%%, %%=v(@nomeCliente)=%%!
 
-Sua conta digital no Banco Meridional foi ativada com sucesso.
+Sua conta digital no Banco Brasilão foi ativada com sucesso.
 ```
 
 **Saída:**
 ```
 Boa tarde, Maria!
 
-Sua conta digital no Banco Meridional foi ativada com sucesso.
+Sua conta digital no Banco Brasilão foi ativada com sucesso.
 ```
 
 ## Exemplo com Now(true)
@@ -134,7 +134,6 @@ Tempo de processamento: 47 minuto(s)
 ## Funções relacionadas
 
 - [`GetSendTime`](../date-functions/getsendtime.md) — retorna o horário em que o envio individual de cada subscriber foi concluído
-- [`SystemDate`](../date-functions/systemdate.md) — retorna a data atual do sistema (sem hora)
 - [`FormatDate`](../date-functions/formatdate.md) — formata a data retornada por `Now()` no padrão desejado (ex: DD/MM/AAAA)
 - [`DateAdd`](../date-functions/dateadd.md) — adiciona ou subtrai intervalos de tempo (útil para ajuste de fuso horário)
 - [`DateDiff`](../date-functions/datediff.md) — calcula a diferença entre duas datas

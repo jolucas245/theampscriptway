@@ -26,7 +26,7 @@ DescribeMscrmEntityAttributes(entityName)
 
 ## Exemplo básico
 
-Neste exemplo, recuperamos os atributos da entidade **Lead** do Dynamics CRM e exibimos uma tabela com as informações de cada campo — cenário comum quando o Banco Meridional precisa mapear os campos de leads vindos do CRM para disparos de e-mail.
+Neste exemplo, recuperamos os atributos da entidade **Lead** do Dynamics CRM e exibimos uma tabela com as informações de cada campo — cenário comum quando o Banco Brasilão precisa mapear os campos de leads vindos do CRM para disparos de e-mail.
 
 ```ampscript
 %%[

@@ -45,7 +45,7 @@ AddMscrmListMember(@recordGuid, @listGuid)
 
 ## Exemplo avançado
 
-Em uma régua de relacionamento do Banco Meridional, ao enviar um e-mail de boas-vindas, o sistema busca o GUID do contato em uma Data Extension e o adiciona automaticamente à lista de marketing "Clientes Ativos" no Dynamics CRM.
+Em uma régua de relacionamento do Banco Brasilão, ao enviar um e-mail de boas-vindas, o sistema busca o GUID do contato em uma Data Extension e o adiciona automaticamente à lista de marketing "Clientes Ativos" no Dynamics CRM.
 
 ```ampscript
 %%[

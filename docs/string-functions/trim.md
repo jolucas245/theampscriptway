@@ -83,8 +83,6 @@ Cadastro atualizado: Maria Santos (maria.santos@megastore.com.br) - São Paulo
 
 ## Funções relacionadas
 
-- [TrimLeft](../string-functions/trimleft.md) — remove espaços apenas do início da string
-- [TrimRight](../string-functions/trimright.md) — remove espaços apenas do fim da string
 - [Lowercase](../string-functions/lowercase.md) — converte a string para minúsculas
 - [Uppercase](../string-functions/uppercase.md) — converte a string para maiúsculas
 - [ProperCase](../string-functions/propercase.md) — capitaliza a primeira letra de cada palavra

@@ -94,6 +94,5 @@ Total: R$ 1149.89
 - [Subtract](../math-functions/subtract.md) — subtrai um número de outro
 - [Multiply](../math-functions/multiply.md) — multiplica dois números
 - [Divide](../math-functions/divide.md) — divide um número por outro
-- [Round](../math-functions/round.md) — arredonda um número
 - [FormatNumber](../string-functions/formatnumber.md) — formata a exibição de números
 - [FormatCurrency](../string-functions/formatcurrency.md) — formata valores como moeda

@@ -72,7 +72,7 @@ Pedido #90102 - Fone Bluetooth Pro - R$ 449,90 (02/06/2025)
 
 ## Exemplo avançado
 
-Montando uma tabela HTML dos últimos programas de fidelidade ativos de um cliente no Banco Meridional, filtrando pelo status exato "Ativo" (case-sensitive) e ordenando por saldo de pontos e nome do programa:
+Montando uma tabela HTML dos últimos programas de fidelidade ativos de um cliente no Banco Brasilão, filtrando pelo status exato "Ativo" (case-sensitive) e ordenando por saldo de pontos e nome do programa:
 
 ```ampscript
 %%[
@@ -147,9 +147,9 @@ ENDIF
 **Saída:**
 ```
 #   Programa              Categoria    Pontos    Validade
-1   Meridional Platinum    Cartão       45.280    31/12/2025
-2   Meridional Viagens     Viagens      12.750    30/06/2026
-3   Cashback Meridional    Compras       3.410    31/03/2026
+1   Brasilão Platinum    Cartão       45.280    31/12/2025
+2   Brasilão Viagens     Viagens      12.750    30/06/2026
+3   Cashback Brasilão    Compras       3.410    31/03/2026
 
 Você participa de 3 programas ativos.
 ```

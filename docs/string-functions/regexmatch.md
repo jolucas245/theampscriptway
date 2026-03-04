@@ -103,7 +103,6 @@ Olá, Pedro Rocha! Confira as ofertas da Lojas Vitória.
 
 ## Funções relacionadas
 
-- [RegExReplace](../string-functions/regexreplace.md) — substitui trechos com base em regex, sem precisar combinar `RegExMatch` + `Replace` manualmente
 - [Replace](../string-functions/replace.md) — substituição simples de strings, ideal para combinar com `RegExMatch`
 - [ReplaceList](../string-functions/replacelist.md) — substitui múltiplas strings estáticas de uma vez (sem suporte a regex)
 - [IndexOf](../string-functions/indexof.md) — localiza a posição de uma substring (alternativa mais simples quando não precisa de regex)

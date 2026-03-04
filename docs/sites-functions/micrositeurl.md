@@ -41,7 +41,7 @@ http://pub.s10.exacttarget.com/xxxxxxxxx?qs=abc123def456...
 
 ## Exemplo avançado
 
-Em uma régua de relacionamento do Banco Meridional, você precisa direcionar o cliente para um microsite de atualização cadastral, passando múltiplos parâmetros criptografados. Para adicionar query strings extras à URL, use [Concat](../string-functions/concat.md) para inserir um `&` após a URL gerada:
+Em uma régua de relacionamento do Banco Brasilão, você precisa direcionar o cliente para um microsite de atualização cadastral, passando múltiplos parâmetros criptografados. Para adicionar query strings extras à URL, use [Concat](../string-functions/concat.md) para inserir um `&` após a URL gerada:
 
 ```ampscript
 %%[
@@ -75,7 +75,6 @@ Em uma régua de relacionamento do Banco Meridional, você precisa direcionar o 
 ## Funções relacionadas
 
 - [CloudPagesURL](../sites-functions/cloudpagesurl.md) — alternativa moderna para landing pages no CloudPages, com criptografia de parâmetros
-- [LandingPageURL](../sites-functions/landingpageurl.md) — outra opção para gerar URLs de landing pages
 - [LiveContentMicrositeURL](../sites-functions/livecontentmicrositeurl.md) — variação para conteúdo dinâmico em microsites
 - [RedirectTo](../http-functions/redirectto.md) — para redirecionar corretamente links gerados por funções de URL
 - [Concat](../string-functions/concat.md) — para concatenar parâmetros adicionais à URL

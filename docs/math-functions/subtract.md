@@ -103,6 +103,5 @@ Faltam apenas 1.400 pontos para você resgatar seu próximo prêmio!
 - [Multiply](../math-functions/multiply.md) — multiplica dois números
 - [Divide](../math-functions/divide.md) — divide dois números
 - [Mod](../math-functions/mod.md) — retorna o resto da divisão
-- [Abs](../math-functions/abs.md) — retorna o valor absoluto (útil quando a subtração pode resultar em negativo)
 - [FormatNumber](../string-functions/formatnumber.md) — formata o resultado numérico para exibição
 - [FormatCurrency](../string-functions/formatcurrency.md) — formata valores monetários

@@ -86,8 +86,7 @@ ENDIF
 - [ContentBlockById](../content-functions/contentblockbyid.md) — **substituta recomendada**, recupera blocos de conteúdo do Content Builder pelo ID
 - [ContentBlockByName](../content-functions/contentblockbyname.md) — recupera blocos do Content Builder pelo nome
 - [ContentBlockByKey](../content-functions/contentblockbykey.md) — recupera blocos do Content Builder pela customer key
-- [ContentAreaByName](../content-functions/contentareabyname.md) — versão por nome (também descontinuada)
-- [ContentAreaById](../content-functions/contentareabyid.md) — versão por ID (também descontinuada)
+- [ContentAreaByName](../content-functions/contentareabyname.md) — versão por nome (descontinuada)
 - [TreatAsContentArea](../content-functions/treatascontentarea.md) — trata string como content area
 - [BeginImpressionRegion](../content-functions/beginimpressionregion.md) — inicia uma impression region
 - [EndImpressionRegion](../content-functions/endimpressionregion.md) — encerra uma impression region

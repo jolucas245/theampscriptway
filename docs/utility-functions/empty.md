@@ -66,7 +66,7 @@ Nenhum cupom disponível no momento.
 
 ## Exemplo avançado
 
-Cenário real de régua de relacionamento: um e-mail transacional do Banco Meridional que valida múltiplos campos do cliente antes de montar o conteúdo, usando `Empty()` combinado com [IIF](../utility-functions/iif.md) para tratamentos inline:
+Cenário real de régua de relacionamento: um e-mail transacional do Banco Brasilão que valida múltiplos campos do cliente antes de montar o conteúdo, usando `Empty()` combinado com [IIF](../utility-functions/iif.md) para tratamentos inline:
 
 ```ampscript
 %%[
@@ -89,7 +89,7 @@ SET @infoCpf = IIF(NOT Empty(@cpf), Concat("CPF cadastrado: ", @cpf), "CPF não 
 
 SET @infoTelefone = IIF(NOT Empty(@telefone), Concat("Telefone: ", @telefone), "Cadastre seu telefone para receber alertas por SMS.")
 
-SET @infoLimite = IIF(NOT Empty(@limiteCredito), Concat("Seu limite disponível: R$ ", FormatNumber(@limiteCredito, "N", 2)), "Consulte seu limite pelo app do Banco Meridional.")
+SET @infoLimite = IIF(NOT Empty(@limiteCredito), Concat("Seu limite disponível: R$ ", FormatNumber(@limiteCredito, "N", 2)), "Consulte seu limite pelo app do Banco Brasilão.")
 ]%%
 
 %%=v(@saudacao)=%%

@@ -41,7 +41,7 @@ Tentativa de recuperar uma classic content area com o cabeçalho padrão da Loja
 
 ## Exemplo avançado
 
-Uso com tratamento de erro e variável de status para identificar falhas — cenário de uma régua de boas-vindas do Banco Meridional:
+Uso com tratamento de erro e variável de status para identificar falhas — cenário de uma régua de boas-vindas do Banco Brasilão:
 
 ```ampscript
 %%[
@@ -52,13 +52,13 @@ Uso com tratamento de erro e variável de status para identificar falhas — cen
 %%[ IF @status == 0 THEN ]%%
   %%=v(@conteudo)=%%
 %%[ ELSE ]%%
-  <p>Olá! Bem-vindo ao Banco Meridional.</p>
+  <p>Olá! Bem-vindo ao Banco Brasilão.</p>
 %%[ ENDIF ]%%
 ```
 
 **Saída:**
 ```
-Olá! Bem-vindo ao Banco Meridional.
+Olá! Bem-vindo ao Banco Brasilão.
 ```
 
 > **⚠️ Atenção:** Como as classic content areas foram descontinuadas, o `statusCode` sempre retornará `-1`, caindo no bloco `ELSE`. Este exemplo serve apenas para referência histórica.
@@ -77,8 +77,7 @@ Olá! Bem-vindo ao Banco Meridional.
 - [ContentBlockByName](../content-functions/contentblockbyname.md) — **substituta recomendada**, recupera blocos do Content Builder pelo nome
 - [ContentBlockById](../content-functions/contentblockbyid.md) — recupera blocos do Content Builder pelo ID
 - [ContentBlockByKey](../content-functions/contentblockbykey.md) — recupera blocos do Content Builder pela customer key
-- [ContentArea](../content-functions/contentarea.md) — recupera classic content area pelo ID (também descontinuada)
-- [ContentAreaById](../content-functions/contentareabyid.md) — recupera classic content area pelo ID (também descontinuada)
+- [ContentArea](../content-functions/contentarea.md) — recupera classic content area pelo ID
 - [TreatAsContentArea](../content-functions/treatascontentarea.md) — trata uma string como content area
 - [BeginImpressionRegion](../content-functions/beginimpressionregion.md) — inicia uma impression region
 - [EndImpressionRegion](../content-functions/endimpressionregion.md) — encerra uma impression region

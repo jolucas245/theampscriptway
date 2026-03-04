@@ -96,7 +96,7 @@ ENDIF
 ]%%
 ```
 
-> **💡 Dica:** Como `Divide` retorna o quociente com casas decimais, combine com [Round](../math-functions/round.md) quando precisar arredondar o resultado, ou com [FormatNumber](../string-functions/formatnumber.md) para exibir o valor formatado ao cliente. Para cálculos de parcelas em R$, isso é essencial para não mostrar valores com muitas casas decimais.
+> **💡 Dica:** Como `Divide` retorna o quociente com casas decimais, combine com [FormatNumber](../string-functions/formatnumber.md) para exibir o valor formatado ao cliente. Para cálculos de parcelas em R$, isso é essencial para não mostrar valores com muitas casas decimais.
 
 > **💡 Dica:** Se você precisa do resto da divisão (e não do quociente), use a função [Mod](../math-functions/mod.md).
 
@@ -106,7 +106,4 @@ ENDIF
 - [Subtract](../math-functions/subtract.md) — subtrai dois números
 - [Multiply](../math-functions/multiply.md) — multiplica dois números
 - [Mod](../math-functions/mod.md) — retorna o resto da divisão
-- [Round](../math-functions/round.md) — arredonda um número
-- [Floor](../math-functions/floor.md) — arredonda para baixo
-- [Ceiling](../math-functions/ceiling.md) — arredonda para cima
 - [FormatNumber](../string-functions/formatnumber.md) — formata números para exibição

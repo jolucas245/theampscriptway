@@ -61,14 +61,14 @@ Olá João Silva, da Lojas Vitória!
 
 ## Exemplo avançado
 
-Cenário real de régua de relacionamento: um e-mail do Banco Meridional que lista as oportunidades em aberto acima de R$ 1.000.000,00 para a região "Sul", exibindo cada uma em uma tabela para o gerente de contas.
+Cenário real de régua de relacionamento: um e-mail do Banco Brasilão que lista as oportunidades em aberto acima de R$ 1.000.000,00 para a região Sudeste, exibindo cada uma em uma tabela para o gerente de contas.
 
 ```ampscript
 %%[
 SET @oportunidades = RetrieveSalesforceObjects(
   "Opportunity",
   "Name,Amount,StageName,CloseDate,Account_Name__c",
-  "Region__c", "=", "Sul",
+  "Region__c", "=", "Sudeste",
   "Amount", ">", "1000000",
   "IsClosed", "=", "false"
 )
@@ -78,7 +78,7 @@ SET @total = RowCount(@oportunidades)
 IF @total > 0 THEN
 ]%%
 
-<h2>Oportunidades em aberto - Região Sul</h2>
+<h2>Oportunidades em aberto - Região Sudeste</h2>
 <p>Total encontrado: %%=v(@total)=%%</p>
 
 <table border="1" cellpadding="8" cellspacing="0">
@@ -120,14 +120,14 @@ ENDIF
 
 **Saída:**
 ```
-Oportunidades em aberto - Região Sul
+Oportunidades em aberto - Região Sudeste
 Total encontrado: 3
 
-| Conta                    | Oportunidade              | Valor            | Fase         | Previsão de Fechamento |
-|--------------------------|---------------------------|------------------|--------------|------------------------|
-| Grupo Horizonte          | Expansão Curitiba 2024    | R$ 2.500.000,00  | Negociação   | 15/03/2025             |
-| Supermercados Bela Vista | Novo Centro Distribuição  | R$ 1.800.000,00  | Proposta     | 28/04/2025             |
-| Conecta Telecom          | Contrato Fibra Corporativo| R$ 1.250.000,00  | Qualificação | 10/06/2025             |
+| Conta                    | Oportunidade                  | Valor            | Fase         | Previsão de Fechamento |
+|--------------------------|-------------------------------|------------------|--------------|------------------------|
+| Grupo Horizonte          | Expansão São Paulo 2024       | R$ 2.500.000,00  | Negociação   | 15/03/2025             |
+| Supermercados Bela Vista | Novo Centro de Distribuição   | R$ 1.800.000,00  | Proposta     | 28/04/2025             |
+| Conecta Telecom          | Fibra Corporativo Poços de Caldas | R$ 1.250.000,00 | Qualificação | 10/06/2025          |
 ```
 
 ## Observações

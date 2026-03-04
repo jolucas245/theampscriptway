@@ -50,7 +50,7 @@ Horário de Brasília: 1/15/2025 10:00:00 AM
 
 ## Exemplo avançado
 
-E-mail transacional do Banco Meridional que registra o horário de envio de um alerta de segurança, convertendo o horário do sistema para o fuso local e formatando no padrão brasileiro.
+E-mail transacional do Banco Brasilão que registra o horário de envio de um alerta de segurança, convertendo o horário do sistema para o fuso local e formatando no padrão brasileiro.
 
 ```ampscript
 %%[
@@ -73,7 +73,7 @@ Data: %%=V(@dataFormatada)=%%
 Horário: %%=V(@horaFormatada)=%% (horário de Brasília)
 
 Se não foi você, entre em contato com a central:
-(11) 3000-9999 ou acesse www.bancomeridional.com.br
+(11) 3000-9999 ou acesse www.bancobrasilao.com.br
 ```
 
 **Saída:**
@@ -87,7 +87,7 @@ Data: 15/01/2025
 Horário: 10:00:00 (horário de Brasília)
 
 Se não foi você, entre em contato com a central:
-(11) 3000-9999 ou acesse www.bancomeridional.com.br
+(11) 3000-9999 ou acesse www.bancobrasilao.com.br
 ```
 
 ## Observações
@@ -103,7 +103,6 @@ Se não foi você, entre em contato com a central:
 ## Funções relacionadas
 
 - [Now](../date-functions/now.md) — retorna a data/hora atual do sistema
-- [SystemDate](../date-functions/systemdate.md) — retorna a data do sistema
 - [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md) — operação inversa: converte horário local para horário do sistema
 - [FormatDate](../date-functions/formatdate.md) — formata datas para exibição (ex: padrão brasileiro DD/MM/AAAA)
 - [DateAdd](../date-functions/dateadd.md) — adiciona intervalos a uma data

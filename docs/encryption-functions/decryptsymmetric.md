@@ -37,7 +37,7 @@ DecryptSymmetric(
 
 ## Exemplo básico
 
-Descriptografando o CPF de um cliente do Banco Meridional que foi armazenado criptografado em uma Data Extension, usando valores fornecidos diretamente (sem chaves externas do Key Management):
+Descriptografando o CPF de um cliente do Banco Brasilão que foi armazenado criptografado em uma Data Extension, usando valores fornecidos diretamente (sem chaves externas do Key Management):
 
 ```ampscript
 %%[

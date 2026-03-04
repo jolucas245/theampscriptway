@@ -85,7 +85,6 @@ Olá, Maria Santos. Este e-mail foi gerado em 25/06/2025 10:30.
 
 - [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) — faz a conversão inversa, do horário do sistema para o horário local
 - [Now](../date-functions/now.md) — retorna a data/hora atual
-- [SystemDate](../date-functions/systemdate.md) — retorna a data/hora do sistema diretamente
 - [FormatDate](../date-functions/formatdate.md) — formata datas para exibição
 - [DateDiff](../date-functions/datediff.md) — calcula a diferença entre duas datas
 - [DateAdd](../date-functions/dateadd.md) — adiciona intervalos a uma data

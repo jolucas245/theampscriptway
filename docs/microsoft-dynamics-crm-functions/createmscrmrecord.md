@@ -51,7 +51,7 @@ Registro criado com GUID: a1b2c3d4-e5f6-7890-abcd-ef1234567890
 
 ## Exemplo avançado
 
-Em uma régua de relacionamento do Banco Meridional, ao capturar um lead via CloudPage, você cria o contato no Dynamics CRM e registra o GUID em uma Data Extension para rastreamento posterior:
+Em uma régua de relacionamento do Banco Brasilão, ao capturar um lead via CloudPage, você cria o contato no Dynamics CRM e registra o GUID em uma Data Extension para rastreamento posterior:
 
 ```ampscript
 %%[

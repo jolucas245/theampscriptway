@@ -68,7 +68,7 @@ Considerando a data extension `Ofertas_Cliente`:
 
 ## Exemplo avançado
 
-Uma régua de relacionamento do Banco Meridional envia um e-mail com link personalizado para simulação de crédito, concatenando o ID do cliente na URL para rastreamento no site de destino.
+Uma régua de relacionamento do Banco Brasilão envia um e-mail com link personalizado para simulação de crédito, concatenando o ID do cliente na URL para rastreamento no site de destino.
 
 ```ampscript
 %%[

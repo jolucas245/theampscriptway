@@ -110,6 +110,5 @@ Resumo do seu pedido:
 - [Subtract](../math-functions/subtract.md) — subtrai dois números
 - [Divide](../math-functions/divide.md) — divide dois números
 - [Mod](../math-functions/mod.md) — retorna o resto da divisão entre dois números
-- [Round](../math-functions/round.md) — arredonda um número
 - [FormatNumber](../string-functions/formatnumber.md) — formata números para exibição
 - [FormatCurrency](../string-functions/formatcurrency.md) — formata valores como moeda

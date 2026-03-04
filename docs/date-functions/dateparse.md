@@ -121,7 +121,6 @@ Você ainda tem 12 dias para efetuar o pagamento.
 - [DateDiff](../date-functions/datediff.md) — calcula a diferença entre duas datas
 - [DatePart](../date-functions/datepart.md) — extrai partes específicas de uma data (dia, mês, ano, hora)
 - [Now](../date-functions/now.md) — retorna a data/hora atual da Business Unit
-- [SystemDate](../date-functions/systemdate.md) — retorna a data/hora atual do sistema em Central Standard Time
 - [StringToDate](../date-functions/stringtodate.md) — outra função para converter strings em datas
 - [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md) — converte horário local para horário do sistema
 - [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) — converte horário do sistema para horário local

@@ -68,7 +68,7 @@ Seu e-mail cadastrado: carlos.mendes@conectatelecom.com.br
 
 ## Exemplo avançado
 
-Cenário de régua de relacionamento: o Banco Meridional envia um e-mail personalizado listando todos os contatos vinculados a uma conta específica no Dynamics CRM, exibindo nome e e-mail de cada um.
+Cenário de régua de relacionamento: o Banco Brasilão envia um e-mail personalizado listando todos os contatos vinculados a uma conta específica no Dynamics CRM, exibindo nome e e-mail de cada um.
 
 ```ampscript
 %%[
@@ -126,8 +126,8 @@ ENDIF
 Encontramos 3 contato(s) vinculado(s) à sua conta:
 
 Nome              | E-mail
-João Silva        | joao.silva@bancomeridional.com.br
-Maria Santos      | maria.santos@bancomeridional.com.br
+João Silva        | joao.silva@bancobrasilao.com.br
+Maria Santos      | maria.santos@bancobrasilao.com.br
 Ana Lima          | não informado
 ```
 

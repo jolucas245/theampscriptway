@@ -147,12 +147,11 @@ A função aceita datas de entrada nos seguintes formatos:
 
 > **⚠️ Atenção:** Os nomes de dias e meses por extenso (como `ddddd` e `MMMM`) são gerados no idioma do locale. Para exibir "segunda-feira" e "agosto" em vez de "Monday" e "August", passe o `localeCode` como `"pt_BR"`.
 
-> **💡 Dica:** Para combinar data formatada com outras informações em uma única string, use [Concat](../string-functions/concat.md). Para trabalhar com a data/hora atual do sistema, combine com [Now](../date-functions/now.md) ou [SystemDate](../date-functions/systemdate.md).
+> **💡 Dica:** Para combinar data formatada com outras informações em uma única string, use [Concat](../string-functions/concat.md). Para trabalhar com a data/hora atual do sistema, combine com [Now](../date-functions/now.md).
 
 ## Funções relacionadas
 
 - [Now](../date-functions/now.md) — retorna a data/hora atual, útil para formatar o momento do envio
-- [SystemDate](../date-functions/systemdate.md) — retorna a data do sistema sem ajuste de fuso
 - [GetSendTime](../date-functions/getsendtime.md) — retorna a data/hora do envio
 - [DateAdd](../date-functions/dateadd.md) — adiciona intervalos a uma data antes de formatá-la
 - [DateDiff](../date-functions/datediff.md) — calcula a diferença entre duas datas

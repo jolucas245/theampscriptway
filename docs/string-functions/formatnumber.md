@@ -45,7 +45,7 @@ Preço do produto: R$ 1.299,90
 
 ## Exemplo avançado
 
-E-mail de régua de relacionamento do Banco Meridional informando o saldo do cliente, a variação percentual do investimento e o valor formatado como moeda — tudo localizado para o Brasil:
+E-mail de régua de relacionamento do Banco Brasilão informando o saldo do cliente, a variação percentual do investimento e o valor formatado como moeda — tudo localizado para o Brasil:
 
 ```ampscript
 %%[
@@ -103,4 +103,3 @@ Rendimento no período: 1,263%
 - [Divide](../math-functions/divide.md) — para cálculos de divisão antes de formatar como porcentagem
 - [Replace](../string-functions/replace.md) — útil para trocar vírgula por ponto antes de formatar
 - [Concat](../string-functions/concat.md) — para montar strings combinando prefixos com valores formatados
-- [Round](../math-functions/round.md) — arredondamento numérico como alternativa

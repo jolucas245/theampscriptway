@@ -66,18 +66,25 @@ const config: Config = {
           position: 'left',
           label: 'Documentação',
         },
-        {
-          href: 'https://github.com/jolucas245//theampscriptway',
-          label: 'GitHub',
-          position: 'right',
-        },
         { to: '/playground', label: 'Playground', position: 'left' },
         { to: '/about', label: 'Sobre', position: 'right' },
+        {
+          href: 'https://github.com/jolucas245/theampscriptway',
+          position: 'right',
+          className: 'navbar-icon-link navbar-github-link',
+          'aria-label': 'GitHub',
+        },
+        {
+          href: 'https://linkedin.com/in/jolucas245',
+          position: 'right',
+          className: 'navbar-icon-link navbar-linkedin-link',
+          'aria-label': 'LinkedIn',
+        },
       ],
     },
     footer: {
       style: 'dark',
-      copyright: `AMPscript Way | Community-maintained reference for Salesforce Marketing Cloud.`,
+      copyright: `AMPscript Way | Guia mantido pela comunidade do Salesforce Marketing Cloud`,
     },
     prism: {
       theme: prismThemes.github,

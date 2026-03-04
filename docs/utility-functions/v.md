@@ -82,5 +82,4 @@ Produto 3: Smartwatch Pulse - R$ 899,90
 - [Concat](../string-functions/concat.md) — construa nomes de variáveis dinamicamente para usar com `V()`
 - [TreatAsContent](../utility-functions/treatascontent.md) — processa strings que contêm AMPscript embutido
 - [AttributeValue](../utility-functions/attributevalue.md) — recupera valores de atributos do assinante
-- [GetValue](../utility-functions/getvalue.md) — obtém o valor de uma propriedade de um objeto
 - [Empty](../utility-functions/empty.md) — valida se o retorno de `V()` está vazio antes de usar

@@ -37,14 +37,14 @@ Notificando um sistema externo da Lojas Vitória de que um envio de campanha foi
 
 ## Exemplo avançado
 
-Cenário de régua de relacionamento do Banco Meridional: antes de enviar a campanha de aniversário para toda a base, o sistema externo é acionado para registrar o início do job e retornar um aviso legal atualizado que será exibido no rodapé de todos os e-mails.
+Cenário de régua de relacionamento do Banco Brasilão: antes de enviar a campanha de aniversário para toda a base, o sistema externo é acionado para registrar o início do job e retornar um aviso legal atualizado que será exibido no rodapé de todos os e-mails.
 
 ```ampscript
 %%[
 VAR @avisoLegal
 ]%%
 
-%%[ SET @avisoLegal = ]%%%%Before;HTTPGet "https://api.bancomeridional.com.br/campanhas/aviso-legal"%%%%[ ]%%
+%%[ SET @avisoLegal = ]%%%%Before;HTTPGet "https://api.bancobrasilao.com.br/campanhas/aviso-legal"%%%%[ ]%%
 
 %%[
 /* O conteúdo do e-mail personalizado por subscriber continua normalmente */
@@ -65,7 +65,7 @@ Olá, Maria!
 
 Parabéns pelo seu aniversário! 🎂
 
-Banco Meridional S.A. – CNPJ 00.000.000/0001-00. Ouvidoria: 0800 123 4567.
+Banco Brasilão S.A. – CNPJ 00.000.000/0001-00. Ouvidoria: 0800 123 4567.
 ```
 
 ## Observações

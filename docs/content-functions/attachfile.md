@@ -63,14 +63,14 @@ AttachFile(fileLocationType, fileLocation, attachmentFileName, boolViewOnWeb, vi
 
 ## Exemplo básico
 
-Anexando um boleto em PDF hospedado em um servidor web ao e-mail de cobrança do Banco Meridional:
+Anexando um boleto em PDF hospedado em um servidor web ao e-mail de cobrança do Banco Brasilão:
 
 ```ampscript
 %%[
 VAR @urlBoleto
-SET @urlBoleto = Concat("https://boletos.bancomeridional.com.br/gerar/", AttributeValue("NumeroDocumento"), ".pdf")
+SET @urlBoleto = Concat("https://boletos.bancobrasilao.com.br/gerar/", AttributeValue("NumeroDocumento"), ".pdf")
 
-AttachFile("http", @urlBoleto, "boleto-banco-meridional.pdf")
+AttachFile("http", @urlBoleto, "boleto-banco-brasilao.pdf")
 ]%%
 
 <p>Olá, %%=v(@PrimeiroNome)=%%!</p>
@@ -79,7 +79,7 @@ AttachFile("http", @urlBoleto, "boleto-banco-meridional.pdf")
 
 **Saída:**
 ```
-O e-mail é enviado com o arquivo "boleto-banco-meridional.pdf" anexado.
+O e-mail é enviado com o arquivo "boleto-banco-brasilao.pdf" anexado.
 ```
 
 ## Exemplo avançado

@@ -26,13 +26,13 @@ GetJWT(secret, algorithm, jsonPayload)
 
 ## Exemplo básico
 
-Gerando um JWT simples com dados de um cliente para autenticação em um sistema externo do Banco Meridional:
+Gerando um JWT simples com dados de um cliente para autenticação em um sistema externo do Banco Brasilão:
 
 ```ampscript
 %%[
-SET @segredo = "minha-chave-secreta-banco-meridional-2024"
+SET @segredo = "minha-chave-secreta-banco-brasilao-2024"
 SET @algoritmo = "HS256"
-SET @payload = '{"sub":"joao.silva@bancomeridional.com.br","nome":"João Silva","cpf":"123.456.789-00"}'
+SET @payload = '{"sub":"joao.silva@bancobrasilao.com.br","nome":"João Silva","cpf":"123.456.789-00"}'
 
 SET @token = GetJWT(@segredo, @algoritmo, @payload)
 ]%%

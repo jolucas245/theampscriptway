@@ -50,7 +50,7 @@ Fonte: 00Q5e000002XyZwVUT | Tipo: List | Inclusão: false
 
 ## Exemplo avançado
 
-Cenário de auditoria para a equipe de CRM do Banco Meridional: ao acessar uma CloudPage interna, o analista informa o Job ID e visualiza um resumo formatado de todas as fontes utilizadas no envio, diferenciando fontes de inclusão e exclusão.
+Cenário de auditoria para a equipe de CRM do Banco Brasilão: ao acessar uma CloudPage interna, o analista informa o Job ID e visualiza um resumo formatado de todas as fontes utilizadas no envio, diferenciando fontes de inclusão e exclusão.
 
 ```ampscript
 %%[

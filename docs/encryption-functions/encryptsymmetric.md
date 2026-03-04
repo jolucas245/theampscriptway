@@ -63,7 +63,7 @@ Especifique após o modo com `;padding=`:
 
 ## Exemplo básico
 
-Criptografando o CPF de um cliente do Banco Meridional usando AES com valores fornecidos diretamente.
+Criptografando o CPF de um cliente do Banco Brasilão usando AES com valores fornecidos diretamente.
 
 ```ampscript
 %%[

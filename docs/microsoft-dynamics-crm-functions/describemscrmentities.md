@@ -55,7 +55,7 @@ Nome lógico: opportunity | Nome de exibição: Oportunidade
 
 ## Exemplo avançado
 
-Imagine que a equipe do Banco Meridional precisa de uma CloudPage interna que liste todas as entidades do Dynamics CRM, filtrando apenas aquelas cujo nome de exibição contenha a palavra "Cliente", para facilitar o mapeamento de dados na integração com o Marketing Cloud.
+Imagine que a equipe do Banco Brasilão precisa de uma CloudPage interna que liste todas as entidades do Dynamics CRM, filtrando apenas aquelas cujo nome de exibição contenha a palavra "Cliente", para facilitar o mapeamento de dados na integração com o Marketing Cloud.
 
 ```ampscript
 %%[
@@ -66,7 +66,7 @@ SET @total = RowCount(@entidades)
 SET @contadorExibidos = 0
 ]%%
 
-<h2>Entidades do Dynamics CRM - Banco Meridional</h2>
+<h2>Entidades do Dynamics CRM - Banco Brasilão</h2>
 <p>Total de entidades encontradas: %%=V(@total)=%%</p>
 
 <table border="1" cellpadding="5">
@@ -104,7 +104,7 @@ NEXT @i
 
 **Saída:**
 ```
-Entidades do Dynamics CRM - Banco Meridional
+Entidades do Dynamics CRM - Banco Brasilão
 Total de entidades encontradas: 187
 
 #   | Nome Lógico          | Nome de Exibição

@@ -55,7 +55,7 @@ E-mail atualizado com sucesso!
 
 ## Exemplo avançado
 
-Em uma régua de relacionamento do Banco Meridional, após o cliente informar seu novo telefone via CloudPage, o sistema atualiza o contato no Salesforce e exibe uma confirmação personalizada. O ID do contato e o novo telefone vêm como parâmetros da página.
+Em uma régua de relacionamento do Banco Brasilão, após o cliente informar seu novo telefone via CloudPage, o sistema atualiza o contato no Salesforce e exibe uma confirmação personalizada. O ID do contato e o novo telefone vêm como parâmetros da página.
 
 ```ampscript
 %%[

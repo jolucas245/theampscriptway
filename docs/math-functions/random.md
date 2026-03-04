@@ -88,15 +88,12 @@ Válido até 31/12/2025. Aproveite!
 
 - O valor retornado é maior ou igual ao menor número e menor ou igual ao maior número do intervalo — ou seja, ambos os limites podem ser retornados.
 
-> **💡 Dica:** Como o resultado é aleatório, cada subscriber pode receber um valor diferente no mesmo envio. Isso é ótimo para campanhas de "desconto surpresa" ou gamificação em e-mails. Se você precisa de um número inteiro "redondo" a partir de um resultado decimal, combine com [Floor](../math-functions/floor.md) ou [Ceiling](../math-functions/ceiling.md).
+> **💡 Dica:** Como o resultado é aleatório, cada subscriber pode receber um valor diferente no mesmo envio. Isso é ótimo para campanhas de "desconto surpresa" ou gamificação em e-mails. Se você precisa de um número inteiro "redondo" a partir de um resultado decimal, combine com [FormatNumber](../string-functions/formatnumber.md).
 
 > **⚠️ Atenção:** Por ser aleatório, o valor gerado muda a cada renderização. Se você usar `Random` em um e-mail e o subscriber abrir o e-mail várias vezes (em contextos com conteúdo dinâmico em tempo de abertura), o valor pode variar. Para garantir consistência, capture o valor com `SET` em uma variável e use essa variável ao longo do conteúdo.
 
 ## Funções relacionadas
 
-- [Floor](../math-functions/floor.md) — arredonda para baixo, útil para obter inteiros a partir do resultado de `Random`
-- [Ceiling](../math-functions/ceiling.md) — arredonda para cima
-- [Round](../math-functions/round.md) — arredonda para o inteiro mais próximo
 - [Mod](../math-functions/mod.md) — resto da divisão, útil para distribuir resultados em grupos
 - [Concat](../string-functions/concat.md) — para montar códigos ou cupons concatenando o número aleatório com prefixos
 - [Format](../string-functions/format.md) — para formatar o número gerado

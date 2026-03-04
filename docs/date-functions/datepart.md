@@ -66,7 +66,7 @@ SET @anoAtual = DatePart(@dataAtual, "Y")
 
 ## Exemplo avançado
 
-Personalizando um e-mail de aniversário na régua de relacionamento do Banco Meridional, exibindo o mês e montando uma saudação com base no horário do envio:
+Personalizando um e-mail de aniversário na régua de relacionamento do Banco Brasilão, exibindo o mês e montando uma saudação com base no horário do envio:
 
 ```ampscript
 %%[
@@ -117,7 +117,7 @@ ENDIF
 %%=v(@saudacao)=%%, Maria Santos!
 
 Dia %%=v(@diaAniversario)=%% de %%=v(@nomeMes)=%% é o seu dia especial! 🎂
-O Banco Meridional preparou uma condição exclusiva para você.
+O Banco Brasilão preparou uma condição exclusiva para você.
 ```
 
 **Saída:**
@@ -125,7 +125,7 @@ O Banco Meridional preparou uma condição exclusiva para você.
 Boa tarde, Maria Santos!
 
 Dia 15 de março é o seu dia especial! 🎂
-O Banco Meridional preparou uma condição exclusiva para você.
+O Banco Brasilão preparou uma condição exclusiva para você.
 ```
 
 ## Observações
@@ -139,7 +139,6 @@ O Banco Meridional preparou uma condição exclusiva para você.
 ## Funções relacionadas
 
 - [Now](../date-functions/now.md) — retorna a data e hora atuais (útil como input para `DatePart`)
-- [SystemDate](../date-functions/systemdate.md) — retorna a data/hora do sistema (fuso central dos EUA)
 - [FormatDate](../date-functions/formatdate.md) — formata a exibição de uma data
 - [DateAdd](../date-functions/dateadd.md) — adiciona intervalos a uma data
 - [DateDiff](../date-functions/datediff.md) — calcula a diferença entre duas datas

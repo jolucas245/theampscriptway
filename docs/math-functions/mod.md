@@ -97,7 +97,7 @@ Resto com negativos (-25.5 / 7.88): -1.88300000000001
 
 > **💡 Dica:** O uso mais comum de `Mod()` no dia a dia de SFMC é verificar par/ímpar com `Mod(valor, 2)`. Se o resultado for 0, o número é par — perfeito para alternar estilos em tabelas de e-mail, distribuir clientes em grupos de teste A/B ou rotacionar banners.
 
-> **⚠️ Atenção:** Ao trabalhar com números decimais e negativos, o resultado pode apresentar imprecisão de ponto flutuante (como `-1.88300000000001` em vez de `-1.883`). Se você precisa exibir o resultado para o cliente, considere usar [Round](../math-functions/round.md) para arredondar as casas decimais.
+> **⚠️ Atenção:** Ao trabalhar com números decimais e negativos, o resultado pode apresentar imprecisão de ponto flutuante (como `-1.88300000000001` em vez de `-1.883`). Se você precisa exibir o resultado para o cliente, considere usar [FormatNumber](../string-functions/formatnumber.md) para arredondar as casas decimais.
 
 ## Funções relacionadas
 
@@ -105,6 +105,3 @@ Resto com negativos (-25.5 / 7.88): -1.88300000000001
 - [Subtract](../math-functions/subtract.md) — subtrai dois números
 - [Multiply](../math-functions/multiply.md) — multiplica dois números
 - [Divide](../math-functions/divide.md) — divide dois números
-- [Round](../math-functions/round.md) — arredonda um número para o número de casas decimais desejado
-- [Floor](../math-functions/floor.md) — arredonda para baixo (útil para obter a parte inteira da divisão)
-- [Ceiling](../math-functions/ceiling.md) — arredonda para cima

@@ -37,7 +37,7 @@ Este e-mail foi enviado por Lojas Vitória LTDA, CNPJ 12.345.678/0001-90, Rua Au
 
 ## Exemplo avançado
 
-Cenário de régua de relacionamento: um e-mail transacional do Banco Meridional que monta o corpo da mensagem combinando saudação personalizada com um bloco de texto jurídico centralizado no Portfolio, usando [Concat](../string-functions/concat.md) para compor a saída final.
+Cenário de régua de relacionamento: um e-mail transacional do Banco Brasilão que monta o corpo da mensagem combinando saudação personalizada com um bloco de texto jurídico centralizado no Portfolio, usando [Concat](../string-functions/concat.md) para compor a saída final.
 
 ```ampscript
 SET @nome = "Maria Santos"
@@ -61,7 +61,7 @@ Olá, Maria Santos!
 
 Segue abaixo o extrato da sua conta referente a 01/12/2024.
 
-Banco Meridional S.A. - Instituição financeira autorizada pelo Banco Central do Brasil. As informações contidas neste e-mail são confidenciais e destinadas exclusivamente ao titular da conta. Ouvidoria: 0800 123 4567.
+Banco Brasilão S.A. - Instituição financeira autorizada pelo Banco Central do Brasil. As informações contidas neste e-mail são confidenciais e destinadas exclusivamente ao titular da conta. Ouvidoria: 0800 123 4567.
 ```
 
 ## Observações
