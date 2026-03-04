@@ -1,14 +1,14 @@
 ---
 title: ContentAreaByName
 sidebar_label: ContentAreaByName
-description: Retorna conteúdo de uma classic content area pelo nome — função descontinuada que não deve mais ser utilizada.
+description: Recupera conteúdo de uma classic content area pelo nome (função descontinuada — não deve ser usada).
 ---
 
 # ContentAreaByName
 
 ## Descrição
 
-A função `ContentAreaByName()` foi criada para recuperar conteúdo de uma **classic content area** (área de conteúdo clássica) pelo seu nome. Porém, as classic content areas **não são mais suportadas** no Marketing Cloud Engagement, então essa função **não recupera mais nenhum conteúdo** e **não deve ser usada**. Essa documentação existe apenas para referência histórica. Se você precisa recuperar blocos de conteúdo criados no **Content Builder**, use a função [`ContentBlockByName()`](../content-functions/contentblockbyname.md).
+A função `ContentAreaByName` retorna o conteúdo de uma **classic content area** a partir do seu nome. No entanto, as classic content areas **não são mais suportadas** no Marketing Cloud Engagement, o que significa que essa função não recupera nenhum conteúdo e **não deve ser utilizada**. Esta documentação é mantida apenas para fins históricos — se você precisa recuperar blocos de conteúdo criados no Content Builder, use a função [ContentBlockByName](../content-functions/contentblockbyname.md).
 
 ## Sintaxe
 
@@ -20,99 +20,65 @@ ContentAreaByName(contentAreaName, impressionRegionName, boolErrorOnMissingConte
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| contentAreaName | String | Sim | O nome da content area clássica que você quer recuperar. |
-| impressionRegionName | String | Não | O nome da impression region a ser associada à content area. |
-| boolErrorOnMissingContentArea | Boolean | Não | Se `true`, a função retorna um erro caso a content area não seja encontrada. Se `false`, não retorna erro. O valor padrão é `true`. |
-| errorMessage | String | Não | O conteúdo a ser retornado caso ocorra um erro ao recuperar a content area. |
-| statusCode | Número | Não | Variável de saída que recebe o código de status da função. `0` indica que a content area foi encontrada e o conteúdo renderizado com sucesso. `-1` indica que não há conteúdo ou que a content area é inválida. |
+| contentAreaName | string | Sim | Nome da content area a ser recuperada. |
+| impressionRegionName | string | Não | Nome da impression region a ser associada à content area. |
+| boolErrorOnMissingContentArea | boolean | Não | Se `true`, retorna erro quando a content area não é encontrada. Se `false`, não retorna erro. O valor padrão é `true`. |
+| errorMessage | string | Não | Conteúdo a ser exibido caso ocorra um erro ao recuperar a content area. |
+| statusCode | number | Não | Variável de saída que contém o código de retorno da função. `0` indica que a content area foi encontrada e o conteúdo renderizado com sucesso. `-1` indica que não há conteúdo ou a content area é inválida. |
 
 ## Exemplo básico
 
-> ⚠️ **Atenção:** Os exemplos abaixo são apenas para referência histórica. Essa função **não funciona mais** no Marketing Cloud. Use [`ContentBlockByName()`](../content-functions/contentblockbyname.md) no lugar.
+Tentativa de recuperar uma classic content area com o cabeçalho padrão da Lojas Vitória:
 
 ```ampscript
-%%=ContentAreaByName("banner_natal_2024")=%%
+%%=ContentAreaByName("cabecalho_lojas_vitoria")=%%
 ```
 
 **Saída:**
 ```
-(Nenhum conteúdo retornado — função descontinuada)
+(sem conteúdo — classic content areas não são mais suportadas)
 ```
 
 ## Exemplo avançado
 
-Este exemplo mostra como a função era usada com tratamento de erro e variável de status — novamente, apenas para fins históricos:
+Uso com tratamento de erro e variável de status para identificar falhas — cenário de uma régua de boas-vindas do Banco Meridional:
 
 ```ampscript
 %%[
-VAR @statusCode
-VAR @conteudo
-
-SET @conteudo = ContentAreaByName(
-  "promo_black_friday_megastore",
-  "hero_banner",
-  false,
-  "<p>Ops! Não foi possível carregar o banner promocional.</p>",
-  @statusCode
-)
-
-IF @statusCode == 0 THEN
+  VAR @status
+  SET @conteudo = ContentAreaByName("banner_boas_vindas", "regiao_header", false, "Conteúdo indisponível no momento.", @status)
 ]%%
 
-%%=v(@conteudo)=%%
-
+%%[ IF @status == 0 THEN ]%%
+  %%=v(@conteudo)=%%
 %%[ ELSE ]%%
-
-<p>Confira nossas ofertas de Black Friday em <a href="https://www.megastore.com.br/black-friday">www.megastore.com.br</a></p>
-
+  <p>Olá! Bem-vindo ao Banco Meridional.</p>
 %%[ ENDIF ]%%
 ```
 
 **Saída:**
 ```
-Confira nossas ofertas de Black Friday em www.megastore.com.br
+Olá! Bem-vindo ao Banco Meridional.
 ```
 
-*(Como a função não recupera mais conteúdo, o `statusCode` sempre retornaria `-1`, caindo no bloco `ELSE`.)*
-
-## Equivalente atual com ContentBlockByName
-
-Se você encontrou `ContentAreaByName()` em um código legado e precisa migrar, veja como ficaria usando a função moderna:
-
-```ampscript
-%%[
-/* ❌ Código antigo (não funciona mais) */
-/* %%=ContentAreaByName("header_lojas_vitoria")=%% */
-
-/* ✅ Código atual — usando Content Builder */
-]%%
-%%=ContentBlockByName("Content Builder\Lojas Vitória\Headers\header_principal")=%%
-```
-
-**Saída:**
-```html
-<div style="background-color:#2E86AB; padding:20px; text-align:center;">
-  <img src="https://www.lojasvitoria.com.br/images/logo.png" alt="Lojas Vitória" />
-  <p style="color:#fff;">Frete grátis acima de R$299 para todo o Brasil!</p>
-</div>
-```
+> **⚠️ Atenção:** Como as classic content areas foram descontinuadas, o `statusCode` sempre retornará `-1`, caindo no bloco `ELSE`. Este exemplo serve apenas para referência histórica.
 
 ## Observações
 
-- ⛔ **Função descontinuada.** As classic content areas não são mais suportadas no Marketing Cloud Engagement. Essa função **não recupera nenhum conteúdo** atualmente.
-- 🔄 **Migre para [`ContentBlockByName()`](../content-functions/contentblockbyname.md)** — essa é a alternativa moderna que trabalha com blocos de conteúdo do Content Builder.
-- O parâmetro `statusCode` é uma **variável de saída** (output variable) — você precisa declarar a variável com `VAR` antes de passá-la para a função.
-- O valor padrão de `boolErrorOnMissingContentArea` é `true`. Ou seja, se você não passar esse parâmetro e a content area não existir, a função gera um erro no envio.
-- Se você encontrar essa função em templates antigos, **substitua imediatamente** para evitar problemas de renderização nos seus e-mails.
-- A função funcionava apenas no contexto de **classic content areas** — nunca funcionou com blocos do Content Builder.
+> **⚠️ Atenção:** Esta função está **efetivamente descontinuada**. As classic content areas não são mais suportadas no Marketing Cloud Engagement, então `ContentAreaByName` não recupera nenhum conteúdo. Se você encontrar essa função em templates legados, substitua por [ContentBlockByName](../content-functions/contentblockbyname.md) (ou [ContentBlockById](../content-functions/contentblockbyid.md) / [ContentBlockByKey](../content-functions/contentblockbykey.md)) apontando para o bloco equivalente no Content Builder.
+
+- O parâmetro `boolErrorOnMissingContentArea` tem valor padrão `true` — em código legado sem esse parâmetro explícito, a função gera erro quando não encontra a content area (o que hoje acontece sempre).
+- O parâmetro `statusCode` é uma **variável de saída**: você declara a variável e a função preenche o valor. `0` = sucesso, `-1` = conteúdo não encontrado ou inválido.
+
+> **💡 Dica:** Se você está migrando templates antigos que usam `ContentAreaByName`, mapeie o nome da content area para o caminho de pasta equivalente no Content Builder e troque para `ContentBlockByName("Content Builder\caminho\bloco")`.
 
 ## Funções relacionadas
 
-- [ContentBlockByName](../content-functions/contentblockbyname.md) — alternativa moderna; recupera blocos de conteúdo do Content Builder pelo nome
-- [ContentBlockById](../content-functions/contentblockbyid.md) — recupera blocos de conteúdo do Content Builder pelo ID numérico
-- [ContentBlockByKey](../content-functions/contentblockbykey.md) — recupera blocos de conteúdo do Content Builder pela customer key
-- [ContentArea](../content-functions/contentarea.md) — outra função descontinuada que recuperava classic content areas pelo ID
-- [TreatAsContentArea](../content-functions/treatascontentarea.md) — trata uma string como content area para fins de tracking
-- [TreatAsContent](../utility-functions/treatascontent.md) — processa uma string como se fosse conteúdo AMPscript/HTML
-- [BeginImpressionRegion](../content-functions/beginimpressionregion.md) — inicia uma impression region para rastreamento de conteúdo
-- [EndImpressionRegion](../content-functions/endimpressionregion.md) — finaliza uma impression region
+- [ContentBlockByName](../content-functions/contentblockbyname.md) — **substituta recomendada**, recupera blocos do Content Builder pelo nome
+- [ContentBlockById](../content-functions/contentblockbyid.md) — recupera blocos do Content Builder pelo ID
+- [ContentBlockByKey](../content-functions/contentblockbykey.md) — recupera blocos do Content Builder pela customer key
+- [ContentArea](../content-functions/contentarea.md) — recupera classic content area pelo ID (também descontinuada)
+- [ContentAreaById](../content-functions/contentareabyid.md) — recupera classic content area pelo ID (também descontinuada)
+- [TreatAsContentArea](../content-functions/treatascontentarea.md) — trata uma string como content area
+- [BeginImpressionRegion](../content-functions/beginimpressionregion.md) — inicia uma impression region
+- [EndImpressionRegion](../content-functions/endimpressionregion.md) — encerra uma impression region

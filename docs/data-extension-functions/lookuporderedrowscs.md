@@ -1,143 +1,126 @@
 ---
 title: LookupOrderedRowsCS
 sidebar_label: LookupOrderedRowsCS
-description: Retorna linhas de uma Data Extension ordenadas de forma ascendente ou descendente, com busca case-sensitive (diferencia maiúsculas de minúsculas).
+description: Busca linhas de uma Data Extension com ordenação e comparação case-sensitive nos valores de busca.
 ---
 
 # LookupOrderedRowsCS
 
 ## Descrição
 
-A função `LookupOrderedRowsCS` busca linhas em uma Data Extension e retorna os resultados ordenados por uma ou mais colunas, em ordem ascendente (`ASC`) ou descendente (`DESC`). A diferença crucial dessa função é que ela é **case-sensitive** — ou seja, ela diferencia maiúsculas de minúsculas tanto nos nomes das colunas de busca quanto nos valores procurados. Se o valor na DE for `"Premium"` e você buscar por `"premium"`, a função **não** vai encontrar. Se nenhuma linha corresponder à busca, a função retorna um rowset vazio.
+Retorna linhas de uma Data Extension ordenadas de forma ascendente ou descendente com base em uma ou mais colunas que você especificar, fazendo a busca com **diferenciação entre maiúsculas e minúsculas** (case-sensitive). Se os valores de busca não forem encontrados, retorna um rowset vazio. É a versão case-sensitive da função [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) — use quando a distinção exata entre "Premium", "premium" e "PREMIUM" fizer diferença na sua lógica.
 
 ## Sintaxe
 
 ```ampscript
-LookupOrderedRowsCS(dataExt, numRows, sortColumn, searchColumn1, searchValue1 [, searchColumn2, searchValue2, ...])
+LookupOrderedRowsCS(dataExt, numRows, sortColumn, searchColumn1, searchValue1, ...)
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| dataExt | string | Sim | Nome da Data Extension onde os dados serão buscados. |
-| numRows | número | Sim | Quantidade de linhas a retornar. Se o valor for menor que 1 (ex: `0`), retorna todas as linhas encontradas, até o máximo de 2.000. |
-| sortColumn | string | Sim | Coluna usada para ordenação, seguida de um espaço e `ASC` (ascendente) ou `DESC` (descendente). Esse valor é case-sensitive. Para ordenar por múltiplas colunas, separe-as com vírgula. Ex: `"Nome ASC, DataCompra DESC"`. |
-| searchColumn1 | string | Sim | Nome da coluna onde a busca será feita. Esse valor é case-sensitive. |
-| searchValue1 | string | Sim | Valor a ser procurado na coluna especificada. Esse valor é case-sensitive. |
-| searchColumnN | string | Não | Colunas adicionais de busca (sempre em pares coluna/valor). |
-| searchValueN | string | Não | Valores adicionais de busca correspondentes às colunas extras. |
+| `dataExt` | string | Sim | Nome da Data Extension que contém os dados que você quer consultar. |
+| `numRows` | number | Sim | Número de linhas a retornar. Se o valor for menor que 1, retorna todas as linhas até o máximo de 2.000. |
+| `sortColumn` | string | Sim | Coluna usada para ordenação, seguida de um espaço e `ASC` (ascendente) ou `DESC` (descendente). O valor é case-sensitive. Para múltiplas colunas, separe com vírgula (ex: `"Nome ASC, Data DESC"`). |
+| `searchColumn1` | string | Sim | Nome da coluna onde a busca será feita. O valor é case-sensitive. |
+| `searchValue1` | string | Sim | Valor a ser procurado na coluna especificada. O valor é case-sensitive. Você pode adicionar pares extras de coluna/valor ao final. |
 
 ## Exemplo básico
 
-Imagine que você tem uma Data Extension chamada **"Pedidos_Clientes"** com os seguintes dados:
-
-| PedidoID | NomeCliente | Email | Valor | Status | DataPedido |
-|---|---|---|---|---|---|
-| 1001 | João Silva | joao@email.com | 459.90 | Entregue | 15/03/2024 |
-| 1002 | João Silva | joao@email.com | 129.90 | Entregue | 22/04/2024 |
-| 1003 | Maria Santos | maria@email.com | 899.00 | Entregue | 10/05/2024 |
-| 1004 | João Silva | joao@email.com | 1299.00 | Entregue | 01/06/2024 |
-| 1005 | João silva | joaosilva2@email.com | 75.00 | Entregue | 05/06/2024 |
-
-Queremos listar os pedidos do cliente **"João Silva"** (com S maiúsculo) ordenados pelo valor do pedido do maior para o menor:
+Buscando os 5 pedidos mais recentes de um cliente na categoria "Eletrônicos" (com case exato) em uma Data Extension de pedidos da MegaStore:
 
 ```ampscript
 %%[
 
-VAR @pedidos, @totalLinhas
-SET @pedidos = LookupOrderedRowsCS(
-  "Pedidos_Clientes",
-  0,
-  "Valor DESC",
-  "NomeCliente", "João Silva"
+SET @rows = LookupOrderedRowsCS(
+  "Pedidos_MegaStore",
+  5,
+  "DataPedido DESC",
+  "Categoria", "Eletrônicos"
 )
 
-SET @totalLinhas = RowCount(@pedidos)
-
-IF @totalLinhas > 0 THEN
-  FOR @i = 1 TO @totalLinhas DO
-    VAR @linha, @pedidoId, @valor, @dataPedido
-    SET @linha = Row(@pedidos, @i)
-    SET @pedidoId = Field(@linha, "PedidoID")
-    SET @valor = Field(@linha, "Valor")
-    SET @dataPedido = Field(@linha, "DataPedido")
+IF RowCount(@rows) > 0 THEN
+  FOR @i = 1 TO RowCount(@rows) DO
+    SET @row = Row(@rows, @i)
+    SET @numeroPedido = Field(@row, "NumeroPedido")
+    SET @produto = Field(@row, "Produto")
+    SET @valor = Field(@row, "Valor")
+    SET @data = Field(@row, "DataPedido")
 ]%%
 
-Pedido #%%=v(@pedidoId)=%% — R$ %%=v(@valor)=%% — %%=v(@dataPedido)=%%
+Pedido #%%=V(@numeroPedido)=%% - %%=V(@produto)=%% - R$ %%=V(@valor)=%% (%%=FormatDate(@data, "dd/MM/yyyy")=%%)
 
 %%[
   NEXT @i
-ENDIF
+ELSE
+]%%
 
+Nenhum pedido encontrado nesta categoria.
+
+%%[
+ENDIF
 ]%%
 ```
 
 **Saída:**
 ```
-Pedido #1004 — R$ 1299.00 — 01/06/2024
-Pedido #1001 — R$ 459.90 — 15/03/2024
-Pedido #1002 — R$ 129.90 — 22/04/2024
+Pedido #90210 - Smart TV 55" - R$ 3.299,90 (15/06/2025)
+Pedido #90185 - Notebook Ultra - R$ 5.499,00 (10/06/2025)
+Pedido #90102 - Fone Bluetooth Pro - R$ 449,90 (02/06/2025)
 ```
-
-Repare que o pedido **#1005** de "João **s**ilva" (com "s" minúsculo) **não** aparece no resultado. Isso é o comportamento case-sensitive em ação.
 
 ## Exemplo avançado
 
-Cenário real: a **MegaStore** quer enviar um e-mail de resumo para clientes do programa de fidelidade, mostrando os **3 últimos resgates de pontos** do nível **"Gold"** (exatamente com essa capitalização). A Data Extension **"Resgates_Pontos"** tem a seguinte estrutura:
-
-| ResgateID | EmailCliente | NomeCliente | Nivel | PontosResgatados | Descricao | DataResgate |
-|---|---|---|---|---|---|---|
-| R001 | carlos@email.com | Carlos Oliveira | Gold | 5000 | Vale R$ 50 em compras | 2024-06-01 |
-| R002 | carlos@email.com | Carlos Oliveira | Gold | 12000 | Frete grátis por 3 meses | 2024-05-15 |
-| R003 | carlos@email.com | Carlos Oliveira | Gold | 3000 | Cupom R$ 30 FarmaRede | 2024-04-20 |
-| R004 | carlos@email.com | Carlos Oliveira | Gold | 8000 | Ingresso cinema duplo | 2024-03-10 |
-| R005 | ana@email.com | Ana Pereira | gold | 2000 | Vale R$ 20 | 2024-06-02 |
+Montando uma tabela HTML dos últimos programas de fidelidade ativos de um cliente no Banco Meridional, filtrando pelo status exato "Ativo" (case-sensitive) e ordenando por saldo de pontos e nome do programa:
 
 ```ampscript
 %%[
 
-VAR @emailAssinante, @resgates, @totalResgates
-SET @emailAssinante = AttributeValue("emailaddr")
-
-/* Busca os 3 últimos resgates do nível "Gold" (case-sensitive) para o assinante */
-SET @resgates = LookupOrderedRowsCS(
-  "Resgates_Pontos",
-  3,
-  "DataResgate DESC",
-  "EmailCliente", @emailAssinante,
-  "Nivel", "Gold"
+SET @cpf = AttributeValue("CPF")
+SET @programas = LookupOrderedRowsCS(
+  "Programas_Fidelidade",
+  0,
+  "SaldoPontos DESC, NomePrograma ASC",
+  "Status", "Ativo",
+  "CPF", @cpf
 )
 
-SET @totalResgates = RowCount(@resgates)
+SET @totalProgramas = RowCount(@programas)
 
-IF @totalResgates > 0 THEN
+IF @totalProgramas > 0 THEN
 ]%%
 
-<h2>Olá, seus últimos resgates no programa MegaStore Fidelidade:</h2>
-<table border="1" cellpadding="8" cellspacing="0">
-  <tr>
-    <th>#</th>
-    <th>Descrição</th>
-    <th>Pontos</th>
-    <th>Data</th>
+<table style="width:100%; border-collapse:collapse;">
+  <tr style="background-color:#003366; color:#ffffff;">
+    <th style="padding:8px; text-align:left;">#</th>
+    <th style="padding:8px; text-align:left;">Programa</th>
+    <th style="padding:8px; text-align:left;">Categoria</th>
+    <th style="padding:8px; text-align:right;">Pontos</th>
+    <th style="padding:8px; text-align:left;">Validade</th>
   </tr>
 
 %%[
-  FOR @i = 1 TO @totalResgates DO
-    VAR @linha, @descricao, @pontos, @data
-    SET @linha = Row(@resgates, @i)
-    SET @descricao = Field(@linha, "Descricao")
-    SET @pontos = Field(@linha, "PontosResgatados")
-    SET @data = Field(@linha, "DataResgate")
-    SET @dataFormatada = FormatDate(@data, "dd/MM/yyyy")
+  FOR @i = 1 TO @totalProgramas DO
+    SET @row = Row(@programas, @i)
+    SET @nome = Field(@row, "NomePrograma")
+    SET @categoria = Field(@row, "Categoria")
+    SET @pontos = Field(@row, "SaldoPontos")
+    SET @validade = FormatDate(Field(@row, "DataValidade"), "dd/MM/yyyy")
+
+    IF Mod(@i, 2) == 0 THEN
+      SET @bgColor = "#f2f2f2"
+    ELSE
+      SET @bgColor = "#ffffff"
+    ENDIF
 ]%%
 
-  <tr>
-    <td>%%=v(@i)=%%</td>
-    <td>%%=v(@descricao)=%%</td>
-    <td>%%=FormatNumber(@pontos, "N0")=%%</td>
-    <td>%%=v(@dataFormatada)=%%</td>
+  <tr style="background-color:%%=V(@bgColor)=%%;">
+    <td style="padding:8px;">%%=V(@i)=%%</td>
+    <td style="padding:8px;">%%=V(@nome)=%%</td>
+    <td style="padding:8px;">%%=V(@categoria)=%%</td>
+    <td style="padding:8px; text-align:right;">%%=FormatNumber(@pontos, "N0")=%%</td>
+    <td style="padding:8px;">%%=V(@validade)=%%</td>
   </tr>
 
 %%[
@@ -146,50 +129,47 @@ IF @totalResgates > 0 THEN
 
 </table>
 
-<p>Acesse <a href="https://www.megastore.com.br/fidelidade">www.megastore.com.br/fidelidade</a> para ver todos os seus resgates.</p>
+<p style="font-size:12px; color:#666;">
+  Você participa de %%=V(@totalProgramas)=%% programa%%=IIF(@totalProgramas > 1, "s", "")=%% ativo%%=IIF(@totalProgramas > 1, "s", "")=%%.
+</p>
 
 %%[
 ELSE
 ]%%
 
-<p>Você ainda não tem resgates no programa MegaStore Fidelidade. Acumule pontos e aproveite!</p>
+<p>Você ainda não possui programas de fidelidade ativos. Fale com seu gerente!</p>
 
 %%[
 ENDIF
 ]%%
 ```
 
-**Saída (para carlos@email.com):**
-
+**Saída:**
 ```
-Olá, seus últimos resgates no programa MegaStore Fidelidade:
+#   Programa              Categoria    Pontos    Validade
+1   Meridional Platinum    Cartão       45.280    31/12/2025
+2   Meridional Viagens     Viagens      12.750    30/06/2026
+3   Cashback Meridional    Compras       3.410    31/03/2026
 
-#  | Descrição                  | Pontos | Data
-1  | Vale R$ 50 em compras      | 5.000  | 01/06/2024
-2  | Frete grátis por 3 meses   | 12.000 | 15/05/2024
-3  | Cupom R$ 30 FarmaRede      | 3.000  | 20/04/2024
+Você participa de 3 programas ativos.
 ```
-
-Repare que a Ana Pereira (com nível `"gold"` minúsculo) **nunca** seria retornada por essa busca, pois a função diferencia `"Gold"` de `"gold"`.
 
 ## Observações
 
-- **Case-sensitive em tudo**: tanto o nome da coluna de busca (`searchColumn`) quanto o valor buscado (`searchValue`) diferenciam maiúsculas de minúsculas. Se a coluna na DE se chama `"Status"` e você passar `"status"`, o comportamento pode ser inesperado. Preste muita atenção na capitalização.
-- **O parâmetro `sortColumn` também é case-sensitive**: certifique-se de que o nome da coluna de ordenação está escrito exatamente como na Data Extension.
-- **Limite de 2.000 linhas**: mesmo passando `0` para retornar tudo, o máximo absoluto é 2.000 linhas. Se precisar de mais, considere usar filtros mais específicos ou outra abordagem.
-- **Rowset vazio**: se nenhuma linha for encontrada, a função retorna um rowset vazio. Sempre use [RowCount](../data-extension-functions/rowcount.md) para verificar antes de iterar, evitando erros no render do e-mail.
-- **Múltiplas colunas de ordenação**: você pode ordenar por mais de uma coluna separando-as com vírgula, por exemplo: `"DataResgate DESC, PontosResgatados ASC"`.
-- **Múltiplos critérios de busca**: você pode adicionar quantos pares de coluna/valor precisar ao final dos parâmetros. Todos os critérios funcionam com lógica AND (todas as condições precisam ser verdadeiras).
-- **Quando usar a versão case-sensitive?** Use `LookupOrderedRowsCS` quando os dados na sua DE tiverem variações de capitalização significativas e você precisar buscar com exatidão. Exemplos comuns: códigos de produto, SKUs, identificadores que misturam maiúsculas e minúsculas. Se a diferenciação de caixa não importar, prefira a versão [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md), que é mais permissiva.
+> **⚠️ Atenção:** Esta função é **case-sensitive em todos os aspectos**: tanto os nomes das colunas de busca (`searchColumn`) quanto os valores buscados (`searchValue`) e a coluna de ordenação (`sortColumn`) diferenciam maiúsculas de minúsculas. Se na sua Data Extension o status está gravado como "ativo" e você busca por "Ativo", a função **não vai retornar** esses registros.
+
+> **⚠️ Atenção:** O limite máximo de retorno é de **2.000 linhas**, mesmo que você passe um valor menor que 1 para `numRows`. Se a sua DE tem mais registros que isso, considere refinar os filtros adicionando mais pares de coluna/valor.
+
+> **💡 Dica:** No mercado brasileiro é comum ter dados com inconsistência de capitalização (ex: "PREMIUM", "Premium", "premium") vindos de integrações diversas. Se você **não precisa** dessa distinção, prefira a versão [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) que é case-insensitive e mais tolerante. Use `LookupOrderedRowsCS` apenas quando a diferença de caixa for semanticamente relevante — por exemplo, códigos de SKU, siglas ou identificadores técnicos.
+
+> **💡 Dica:** Para ordenar por múltiplas colunas, separe com vírgula dentro do mesmo parâmetro: `"SaldoPontos DESC, NomePrograma ASC"`. A ordenação segue a prioridade da esquerda para a direita.
 
 ## Funções relacionadas
 
-- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) — Mesma funcionalidade, mas **case-insensitive** (não diferencia maiúsculas/minúsculas). Use quando a capitalização não importar.
-- [LookupRows](../data-extension-functions/lookuprows.md) — Retorna linhas sem ordenação e de forma case-insensitive.
-- [LookupRowsCS](../data-extension-functions/lookuprowscs.md) — Retorna linhas sem ordenação, mas com busca case-sensitive.
-- [Lookup](../data-extension-functions/lookup.md) — Retorna o valor de uma única coluna da primeira linha encontrada.
-- [Row](../data-extension-functions/row.md) — Extrai uma linha específica de um rowset pelo índice.
-- [RowCount](../data-extension-functions/rowcount.md) — Retorna a quantidade de linhas em um rowset.
-- [Field](../data-extension-functions/field.md) — Extrai o valor de uma coluna específica de uma linha.
-- [FormatDate](../date-functions/formatdate.md) — Formata datas para exibição (útil para mostrar datas no padrão DD/MM/AAAA).
-- [FormatNumber](../string-functions/formatnumber.md) — Formata números com separadores de milhar e casas decimais.
+- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) — versão case-insensitive desta função
+- [LookupRows](../data-extension-functions/lookuprows.md) — retorna linhas sem ordenação (case-insensitive)
+- [LookupRowsCS](../data-extension-functions/lookuprowscs.md) — retorna linhas sem ordenação (case-sensitive)
+- [Lookup](../data-extension-functions/lookup.md) — retorna um único valor de uma coluna
+- [Row](../data-extension-functions/row.md) — acessa uma linha específica do rowset
+- [RowCount](../data-extension-functions/rowcount.md) — conta o número de linhas no rowset
+- [Field](../data-extension-functions/field.md) — extrai o valor de uma coluna de uma linha

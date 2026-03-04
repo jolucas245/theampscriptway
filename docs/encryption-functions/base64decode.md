@@ -1,111 +1,85 @@
 ---
 title: Base64Decode
 sidebar_label: Base64Decode
-description: Decodifica uma string que foi codificada em Base64, retornando o valor original em texto legível.
+description: Decodifica uma string codificada em Base64, convertendo-a de volta para texto simples.
 ---
 
 # Base64Decode
 
 ## Descrição
 
-A função `Base64Decode` pega uma string codificada em Base64 e converte de volta para o texto original. É a operação inversa da função `Base64Encode`. Você vai usar bastante essa função quando receber dados codificados em Base64 — por exemplo, parâmetros passados via URL em CloudPages, dados vindos de APIs externas, ou valores armazenados em Data Extensions que foram previamente codificados para transporte seguro.
+A função `Base64Decode` converte dados binários codificados em Base64 de volta para uma string de texto simples. É muito útil quando você recebe dados codificados de sistemas externos, APIs ou Data Extensions que armazenam informações em Base64 — cenário comum em integrações entre SFMC e plataformas de e-commerce ou CRMs no mercado brasileiro. O retorno é a string decodificada no formato de texto legível.
 
 ## Sintaxe
 
 ```ampscript
-Base64Decode(1)
+Base64Decode(stringToDecode, characterEncoding, abortSendOnFail)
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|-----------|------|-------------|-----------|
-| 1 | String | Sim | A string codificada em Base64 que você deseja decodificar para texto legível. |
+|---|---|---|---|
+| stringToDecode | String | Sim | A string codificada em Base64 que você quer decodificar. |
+| characterEncoding | String | Não | O tipo de codificação de caracteres a ser usado na decodificação. Valores aceitos: `ASCII`, `UTF-7`, `UTF-8`, `UTF-16` e `UTF-32`. |
+| abortSendOnFail | Boolean | Não | Define o comportamento em caso de falha na decodificação durante um envio de e-mail. Se `1`, o envio é abortado quando a string não pode ser decodificada. Se `0`, o envio continua mesmo com falha. O valor padrão é `1`. |
 
 ## Exemplo básico
 
+Decodificando o nome de um cliente que foi armazenado em Base64 numa Data Extension alimentada por um sistema externo.
+
 ```ampscript
 %%[
-VAR @codificado, @decodificado
-
-SET @codificado = "T2zDoSwgSm/Do28hIFNlbSBjdXBvbSBkZSBkZXNjb250byBhcXVpLg=="
-SET @decodificado = Base64Decode(@codificado)
+SET @nomeCodeado = "Sm/Do28gU2lsdmE="
+SET @nomeDecodificado = Base64Decode(@nomeCodeado)
 ]%%
 
-Mensagem decodificada: %%=v(@decodificado)=%%
+Nome do cliente: %%=v(@nomeDecodificado)=%%
 ```
 
 **Saída:**
 ```
-Mensagem decodificada: Olá, João! Seu cupom de desconto aqui.
+Nome do cliente: João Silva
 ```
 
 ## Exemplo avançado
 
-Imagine que a **MegaStore** passa dados do cliente codificados em Base64 pela URL de uma CloudPage para garantir que os dados não fiquem expostos de forma legível na barra do navegador. Na CloudPage, você decodifica e usa as informações para personalizar a página:
+Cenário de régua de relacionamento onde os dados do pedido chegam codificados em Base64 via integração com o e-commerce, e você precisa decodificar para montar o e-mail de confirmação de compra.
 
 ```ampscript
 %%[
-/* Captura os parâmetros codificados da URL da CloudPage */
-VAR @nomeBase64, @emailBase64, @cupomBase64
-VAR @nome, @email, @cupom
+SET @dadosPedidoBase64 = Lookup("Pedidos_Integração", "DadosBase64", "Email", emailaddr)
 
-SET @nomeBase64 = RequestParameter("n")
-SET @emailBase64 = RequestParameter("e")
-SET @cupomBase64 = RequestParameter("c")
-
-/* Decodifica os valores recebidos */
-SET @nome = Base64Decode(@nomeBase64)
-SET @email = Base64Decode(@emailBase64)
-SET @cupom = Base64Decode(@cupomBase64)
-
-/* Registra o acesso na Data Extension de controle */
-InsertDE(
-  "LogAcessoCupons",
-  "Email", @email,
-  "Nome", @nome,
-  "Cupom", @cupom,
-  "DataAcesso", Now()
-)
+IF NOT Empty(@dadosPedidoBase64) THEN
+  SET @dadosPedido = Base64Decode(@dadosPedidoBase64, "UTF-8", 0)
+ELSE
+  SET @dadosPedido = "Dados do pedido indisponíveis"
+ENDIF
 ]%%
 
-<h1>Olá, %%=v(@nome)=%%! 🎉</h1>
-<p>A <strong>MegaStore</strong> preparou uma oferta especial pra você nesta Black Friday!</p>
-<p>Seu cupom de <strong>R$ 50,00 de desconto</strong> em compras acima de R$ 299,00:</p>
-<div style="font-size: 28px; font-weight: bold; color: #e91e63; padding: 15px; border: 2px dashed #e91e63; display: inline-block;">
-  %%=v(@cupom)=%%
-</div>
-<p>Frete grátis acima de R$ 299,00 para todo o Brasil! 🚚</p>
-<p style="font-size: 12px; color: #999;">
-  Válido até 30/11/2024. Cupom vinculado ao e-mail %%=v(@email)=%%.
-</p>
+Olá, aqui estão os detalhes do seu pedido na MegaStore:
+
+%%=v(@dadosPedido)=%%
 ```
 
-**Saída (exemplo com parâmetros `n=Q2FybG9zIE9saXZlaXJh`, `e=Y2FybG9zQGVtYWlsLmNvbS5icg==`, `c=QkY1ME1FR0E=`):**
-```html
-Olá, Carlos Oliveira! 🎉
-A MegaStore preparou uma oferta especial pra você nesta Black Friday!
-Seu cupom de R$ 50,00 de desconto em compras acima de R$ 299,00:
-BF50MEGA
-Frete grátis acima de R$ 299,00 para todo o Brasil! 🚚
-Válido até 30/11/2024. Cupom vinculado ao e-mail carlos@email.com.br.
+**Saída:**
+```
+Olá, aqui estão os detalhes do seu pedido na MegaStore:
+
+Pedido #48712 - Smartphone Galaxy - R$ 1.299,90 - Entrega: Rua das Flores, 123 - São Paulo/SP - CEP 01234-567
 ```
 
 ## Observações
 
-- **Base64 não é criptografia.** É apenas uma codificação. Qualquer pessoa pode decodificar uma string Base64 facilmente. Se você precisa proteger dados sensíveis como CPF ou dados de pagamento, use funções de criptografia de verdade como [EncryptSymmetric](../encryption-functions/encryptsymmetric.md).
-- Se a string passada não for uma codificação Base64 válida, a função pode retornar resultados inesperados ou gerar erro. Sempre valide os dados de entrada quando possível.
-- A função espera receber exatamente uma string. Passar um valor nulo ou vazio pode causar erro. Considere usar [Empty](../utility-functions/empty.md) para verificar antes de decodificar.
-- Muito útil em cenários de **CloudPages** onde você recebe parâmetros via [RequestParameter](../sites-functions/requestparameter.md) ou [QueryParameter](../sites-functions/queryparameter.md) que foram codificados no lado do e-mail com [Base64Encode](../encryption-functions/base64encode.md).
-- A codificação/decodificação Base64 trabalha com caracteres UTF-8, então acentos e caracteres especiais do português (como é, ã, ç) são preservados corretamente.
-- Funciona em todos os contextos do SFMC: e-mails, CloudPages, SMS e automações (Script Activities).
+- Especifique `UTF-8` no parâmetro `characterEncoding` quando trabalhar com dados que contenham caracteres acentuados do português (como ã, é, ç, ô). Sem isso, nomes como "João" ou "Conceição" podem aparecer com caracteres estranhos no e-mail.
+
+> **⚠️ Atenção:** O comportamento padrão de `abortSendOnFail` é `1`, ou seja, se a string não puder ser decodificada, o envio do e-mail será **abortado** para aquele subscriber. Em réguas de alto volume, considere usar `0` e tratar a falha manualmente com uma verificação via [Empty](../utility-functions/empty.md), para evitar que um dado corrompido impeça o envio inteiro.
+
+> **💡 Dica:** Se você precisa fazer o caminho inverso — codificar texto em Base64 para enviar dados a uma API externa via [HTTPPost](../http-functions/httppost.md), por exemplo — use a função [Base64Encode](../encryption-functions/base64encode.md).
 
 ## Funções relacionadas
 
-- [Base64Encode](../encryption-functions/base64encode.md) — Codifica uma string em Base64 (operação inversa do `Base64Decode`)
-- [EncryptSymmetric](../encryption-functions/encryptsymmetric.md) — Criptografa dados de forma segura com chave simétrica (use quando precisar de segurança real)
-- [DecryptSymmetric](../encryption-functions/decryptsymmetric.md) — Descriptografa dados criptografados com `EncryptSymmetric`
-- [RequestParameter](../sites-functions/requestparameter.md) — Captura parâmetros de URL ou POST em CloudPages (frequentemente usado junto com `Base64Decode`)
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — Gera URLs de CloudPages com parâmetros criptografados
-- [MD5](../encryption-functions/md5.md) — Gera hash MD5 de uma string (hash de mão única, diferente de codificação)
-- [SHA256](../encryption-functions/sha256.md) — Gera hash SHA-256 de uma string (mais seguro que MD5)
+- [Base64Encode](../encryption-functions/base64encode.md) — função complementar que codifica texto simples em Base64.
+- [Lookup](../data-extension-functions/lookup.md) — para buscar a string codificada em uma Data Extension.
+- [Empty](../utility-functions/empty.md) — para validar se o valor retornado está vazio antes de decodificar.
+- [TreatAsContent](../utility-functions/treatascontent.md) — útil quando o conteúdo decodificado contém HTML ou AMPscript que precisa ser renderizado.

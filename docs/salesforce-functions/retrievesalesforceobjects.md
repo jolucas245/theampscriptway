@@ -1,180 +1,154 @@
 ---
 title: RetrieveSalesforceObjects
 sidebar_label: RetrieveSalesforceObjects
-description: Recupera dados de objetos do Salesforce CRM diretamente via AMPscript, retornando um rowset com os registros que correspondem aos critérios de filtro especificados.
+description: Retorna um rowset com dados de objetos do Salesforce CRM que correspondem aos critérios de filtro especificados, usando Marketing Cloud Connect.
 ---
 
 # RetrieveSalesforceObjects
 
 ## Descrição
 
-A função `RetrieveSalesforceObjects` busca informações de objetos do Salesforce CRM (Sales Cloud ou Service Cloud) e retorna os resultados em formato de rowset. Para usá-la, você precisa ter o **Marketing Cloud Connect** configurado e integrado com seu org Salesforce. É muito útil quando você quer personalizar e-mails ou CloudPages com dados que estão no CRM — como informações de contatos, oportunidades, cases, ou qualquer objeto padrão ou customizado.
-
-Os resultados são limitados a **1.000 linhas** para evitar impacto na performance de envio de e-mails. Quando chamada, a função faz uma requisição SOAP para o seu org Salesforce, mas essas requisições **não contam** nos limites de uso de API do seu org.
+Consulta objetos do Salesforce CRM (Sales Cloud ou Service Cloud) diretamente do AMPscript e retorna um rowset com os registros que correspondem aos filtros informados. Para funcionar, é obrigatório ter o **Marketing Cloud Connect** configurado e integrado com o seu org Salesforce. Essa função é muito usada em e-mails e CloudPages para puxar dados em tempo real do CRM — como oportunidades, casos de suporte, leads ou qualquer objeto padrão ou customizado — sem precisar sincronizar tudo em Data Extensions.
 
 ## Sintaxe
 
 ```ampscript
-RetrieveSalesforceObjects(
-  objectName,
-  fieldsToRetrieve,
-  queryFieldName1, queryFieldOperator1, queryFieldValue1
-  [, queryFieldName2, queryFieldOperator2, queryFieldValue2, ...]
-)
+RetrieveSalesforceObjects(objectName, fieldsToRetrieve, queryFieldName, queryFieldOperator, queryFieldValue [, queryFieldName2, queryFieldOperator2, queryFieldValue2 ...])
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| objectName | String | Sim | Nome da API do objeto do Salesforce de onde você quer buscar os dados (ex: `"Contact"`, `"Lead"`, `"Account"`, `"Opportunity"`, `"Objeto_Custom__c"`). |
-| fieldsToRetrieve | String | Sim | Lista de campos separados por vírgula que você quer recuperar (ex: `"FirstName,LastName,Email"`). |
+| objectName | String | Sim | Nome da API do objeto do Salesforce de onde você quer recuperar os dados (ex: `"Lead"`, `"Contact"`, `"Opportunity"`). |
+| fieldsToRetrieve | String | Sim | Lista de campos separados por vírgula que você quer trazer no retorno (ex: `"FirstName,LastName,Email"`). |
 | queryFieldName | String | Sim | Nome do campo usado como filtro na consulta. |
-| queryFieldOperator | String | Sim | Operador de comparação para o filtro (ex: `"="`, `">"`, `"<"`, `">="`, `"<="`, `"!="`, `"like"`). |
-| queryFieldValue | String | Sim | Valor a ser comparado no filtro. |
+| queryFieldOperator | String | Sim | Operador de comparação do filtro (ex: `"="`, `">"`, `"<"`). |
+| queryFieldValue | String | Sim | Valor que será comparado no filtro. |
 
-> Você pode adicionar **conjuntos adicionais** de filtros (queryFieldName, queryFieldOperator, queryFieldValue) como parâmetros extras. Quando há múltiplos filtros, eles são combinados com lógica **AND** (ou seja, todos os critérios precisam ser verdadeiros).
+Você pode adicionar **conjuntos adicionais** de `queryFieldName`, `queryFieldOperator` e `queryFieldValue` para aplicar múltiplos filtros. Todos os filtros são conectados por lógica **AND**.
 
 ## Exemplo básico
 
-Imagine que a **Conecta Telecom** quer personalizar um e-mail com o nome e telefone do contato que está no Salesforce CRM. O contato é identificado pelo e-mail do assinante:
+Buscando todos os leads da região "Sudeste" no Salesforce para personalizar um e-mail de prospecção da MegaStore:
 
 ```ampscript
 %%[
-
-SET @email = AttributeValue("EmailAddress")
-
-SET @registros = RetrieveSalesforceObjects(
-  "Contact",
-  "FirstName,LastName,Phone",
-  "Email", "=", @email
+SET @leads = RetrieveSalesforceObjects(
+  "Lead",
+  "FirstName,LastName,Email,Company",
+  "Region__c", "=", "Sudeste"
 )
 
-IF RowCount(@registros) > 0 THEN
-  SET @linha = Row(@registros, 1)
+SET @total = RowCount(@leads)
+
+IF @total > 0 THEN
+  SET @linha = Row(@leads, 1)
   SET @nome = Field(@linha, "FirstName")
   SET @sobrenome = Field(@linha, "LastName")
-  SET @telefone = Field(@linha, "Phone")
-ELSE
-  SET @nome = "Cliente"
-  SET @sobrenome = ""
-  SET @telefone = ""
-ENDIF
-
+  SET @empresa = Field(@linha, "Company")
 ]%%
 
-Olá, %%=v(@nome)=%% %%=v(@sobrenome)=%%!
+Olá %%=v(@nome)=%% %%=v(@sobrenome)=%%, da %%=v(@empresa)=%%!
 
-%%[ IF NOT Empty(@telefone) THEN ]%%
-Seu telefone cadastrado é: %%=v(@telefone)=%%
 %%[ ENDIF ]%%
 ```
 
 **Saída:**
 ```
-Olá, Maria Santos!
-
-Seu telefone cadastrado é: (11) 99876-5432
+Olá João Silva, da Lojas Vitória!
 ```
 
 ## Exemplo avançado
 
-A **Lojas Vitória** quer enviar um e-mail para seus vendedores com a lista de oportunidades abertas acima de R$ 50.000 na região Sudeste. Cada vendedor recebe apenas as oportunidades da sua região:
+Cenário real de régua de relacionamento: um e-mail do Banco Meridional que lista as oportunidades em aberto acima de R$ 1.000.000,00 para a região "Sul", exibindo cada uma em uma tabela para o gerente de contas.
 
 ```ampscript
 %%[
-
-SET @ownerEmail = AttributeValue("EmailAddress")
-
-/* Busca o ID do vendedor no Salesforce pelo e-mail */
-SET @usuarios = RetrieveSalesforceObjects(
-  "User",
-  "Id,Name",
-  "Email", "=", @ownerEmail
+SET @oportunidades = RetrieveSalesforceObjects(
+  "Opportunity",
+  "Name,Amount,StageName,CloseDate,Account_Name__c",
+  "Region__c", "=", "Sul",
+  "Amount", ">", "1000000",
+  "IsClosed", "=", "false"
 )
 
-IF RowCount(@usuarios) > 0 THEN
-  SET @userId = Field(Row(@usuarios, 1), "Id")
-  SET @nomeVendedor = Field(Row(@usuarios, 1), "Name")
+SET @total = RowCount(@oportunidades)
 
-  /* Busca oportunidades abertas do vendedor com valor acima de R$ 50.000 */
-  SET @oportunidades = RetrieveSalesforceObjects(
-    "Opportunity",
-    "Name,Amount,StageName,CloseDate",
-    "OwnerId", "=", @userId,
-    "StageName", "!=", "Closed Won",
-    "Amount", ">", "50000"
-  )
-
-  SET @totalOps = RowCount(@oportunidades)
-
+IF @total > 0 THEN
 ]%%
 
-Olá, %%=v(@nomeVendedor)=%%!
+<h2>Oportunidades em aberto - Região Sul</h2>
+<p>Total encontrado: %%=v(@total)=%%</p>
 
-%%[ IF @totalOps > 0 THEN ]%%
+<table border="1" cellpadding="8" cellspacing="0">
+  <tr>
+    <th>Conta</th>
+    <th>Oportunidade</th>
+    <th>Valor</th>
+    <th>Fase</th>
+    <th>Previsão de Fechamento</th>
+  </tr>
 
-Você tem %%=v(@totalOps)=%% oportunidade(s) aberta(s) acima de R$ 50.000:
-
-%%[ FOR @i = 1 TO @totalOps DO
-
-  SET @linha = Row(@oportunidades, @i)
-  SET @nomeOp = Field(@linha, "Name")
-  SET @valor = Field(@linha, "Amount")
-  SET @estagio = Field(@linha, "StageName")
-  SET @dataFech = Field(@linha, "CloseDate")
-
+%%[
+  FOR @i = 1 TO @total DO
+    SET @linha = Row(@oportunidades, @i)
+    SET @conta = Field(@linha, "Account_Name__c")
+    SET @nomeOp = Field(@linha, "Name")
+    SET @valor = Field(@linha, "Amount")
+    SET @fase = Field(@linha, "StageName")
+    SET @dataFechamento = Field(@linha, "CloseDate")
+    SET @valorFormatado = FormatCurrency(@valor, "pt-BR", 2)
+    SET @dataFormatada = FormatDate(@dataFechamento, "dd/MM/yyyy")
 ]%%
-- %%=v(@nomeOp)=%% | R$ %%=FormatNumber(@valor, "N", 2)=%% | Estágio: %%=v(@estagio)=%% | Previsão: %%=FormatDate(@dataFech, "dd/MM/yyyy")=%%
-%%[ NEXT @i ]%%
 
-Acesse o CRM para atualizar suas oportunidades antes do fechamento mensal.
+  <tr>
+    <td>%%=v(@conta)=%%</td>
+    <td>%%=v(@nomeOp)=%%</td>
+    <td>%%=v(@valorFormatado)=%%</td>
+    <td>%%=v(@fase)=%%</td>
+    <td>%%=v(@dataFormatada)=%%</td>
+  </tr>
 
-%%[ ELSE ]%%
+%%[
+  NEXT @i
+ENDIF
+]%%
 
-Nenhuma oportunidade acima de R$ 50.000 encontrada no momento. Bora prospectar! 💪
-
-%%[ ENDIF ]%%
-
-%%[ ELSE ]%%
-
-Não foi possível localizar seu cadastro no Salesforce. Entre em contato com o administrador.
-
-%%[ ENDIF ]%%
+</table>
 ```
 
 **Saída:**
 ```
-Olá, Carlos Oliveira!
+Oportunidades em aberto - Região Sul
+Total encontrado: 3
 
-Você tem 3 oportunidade(s) aberta(s) acima de R$ 50.000:
-
-- Projeto Natal MegaStore | R$ 125.000,00 | Estágio: Negotiation | Previsão: 15/12/2024
-- Contrato Anual FarmaRede | R$ 87.500,00 | Estágio: Proposal | Previsão: 20/12/2024
-- Expansão Banco Meridional | R$ 210.000,00 | Estágio: Qualification | Previsão: 30/01/2025
-
-Acesse o CRM para atualizar suas oportunidades antes do fechamento mensal.
+| Conta                    | Oportunidade              | Valor            | Fase         | Previsão de Fechamento |
+|--------------------------|---------------------------|------------------|--------------|------------------------|
+| Grupo Horizonte          | Expansão Curitiba 2024    | R$ 2.500.000,00  | Negociação   | 15/03/2025             |
+| Supermercados Bela Vista | Novo Centro Distribuição  | R$ 1.800.000,00  | Proposta     | 28/04/2025             |
+| Conecta Telecom          | Contrato Fibra Corporativo| R$ 1.250.000,00  | Qualificação | 10/06/2025             |
 ```
 
 ## Observações
 
-- **Requer Marketing Cloud Connect:** Essa função só funciona se o seu Marketing Cloud estiver integrado com o Sales Cloud ou Service Cloud via Marketing Cloud Connect. Sem essa integração, a função não vai funcionar.
-- **Limite de 1.000 linhas:** O rowset retornado é limitado a 1.000 registros. Se a sua consulta retornar mais que isso, apenas os primeiros 1.000 serão incluídos. Planeje seus filtros para manter os resultados dentro desse limite.
-- **Requisições SOAP, mas sem impacto no limite de API:** As chamadas feitas por essa função usam SOAP API, porém **não são contabilizadas** nos limites de uso de API do seu org Salesforce. Isso é ótimo, mas não abuse — cada chamada adiciona latência ao processamento.
-- **Performance em envios:** Como cada execução faz uma chamada SOAP para o Salesforce, usar essa função em envios para grandes volumes pode deixar o processamento bem mais lento. Se possível, considere trazer os dados para uma Data Extension antes do envio usando Automation Studio ou Query Activities.
-- **Múltiplos filtros usam AND:** Quando você passa mais de um conjunto de filtro, todos são combinados com lógica AND. Não existe suporte nativo para lógica OR nessa função.
-- **Campos de relacionamento:** Use o nome da API do campo exatamente como ele aparece no Salesforce. Para objetos customizados, lembre-se do sufixo `__c` (ex: `"Regiao__c"`).
-- **Rowset vazio:** Sempre verifique com `RowCount()` se a consulta retornou resultados antes de tentar acessar linhas com `Row()` e `Field()`. Caso contrário, você pode gerar erros no envio.
-- **Use em conjunto com Row() e Field():** Os dados retornados vêm em formato rowset. Você precisa usar [Row](../data-extension-functions/row.md) para acessar uma linha e [Field](../data-extension-functions/field.md) para acessar o valor de um campo específico.
+> **⚠️ Atenção:** O rowset retornado é **limitado a 1.000 linhas**. Se o seu filtro pode trazer mais registros do que isso, refine os critérios de busca para garantir que os dados mais relevantes estejam dentro desse limite.
+
+> **⚠️ Atenção:** Cada chamada dessa função dispara uma **requisição SOAP** para o seu org Salesforce. Essas requisições **não** contam nos limites de uso de API do org, mas podem impactar a performance do envio de e-mail se forem muito demoradas. Evite usar essa função em loops pesados dentro de envios de alto volume.
+
+> **💡 Dica:** Essa função exige que o **Marketing Cloud Connect** esteja configurado e ativo. Sem essa integração, a função simplesmente não vai funcionar. Se você só precisa de dados que já estão sincronizados em Data Extensions, prefira usar [LookupRows](../data-extension-functions/lookuprows.md) — é mais rápido e não depende de chamada externa.
+
+> **💡 Dica:** Quando você adiciona múltiplos conjuntos de filtro, todos são conectados com lógica **AND**. Não existe suporte nativo a **OR** nessa função. Se precisar de lógica OR, você terá que fazer múltiplas chamadas e combinar os resultados.
+
+- O retorno é um **rowset**. Use [Row()](../data-extension-functions/row.md) para acessar uma linha específica, [Field()](../data-extension-functions/field.md) para extrair o valor de um campo e [RowCount()](../data-extension-functions/rowcount.md) para saber quantos registros vieram.
 
 ## Funções relacionadas
 
-- [CreateSalesforceObject](../salesforce-functions/createsalesforceobject.md) — Cria um novo registro em um objeto do Salesforce CRM
-- [UpdateSingleSalesforceObject](../salesforce-functions/updatesinglesalesforceobject.md) — Atualiza um registro existente em um objeto do Salesforce CRM
-- [RetrieveSalesforceJobSources](../salesforce-functions/retrievesalesforcejobsources.md) — Recupera as fontes de dados de jobs do Salesforce
-- [LongSfid](../salesforce-functions/longsfid.md) — Converte um Salesforce ID de 15 caracteres para o formato de 18 caracteres
-- [Row](../data-extension-functions/row.md) — Acessa uma linha específica dentro de um rowset
-- [Field](../data-extension-functions/field.md) — Recupera o valor de um campo específico dentro de uma linha
-- [RowCount](../data-extension-functions/rowcount.md) — Retorna o número total de linhas em um rowset
-- [LookupRows](../data-extension-functions/lookuprows.md) — Busca linhas em uma Data Extension (alternativa quando os dados já estão no Marketing Cloud)
-- [AttributeValue](../utility-functions/attributevalue.md) — Recupera o valor de um atributo do assinante ou coluna da Data Extension de envio
+- [CreateSalesforceObject](../salesforce-functions/createsalesforceobject.md) — cria registros em objetos do Salesforce
+- [UpdateSingleSalesforceObject](../salesforce-functions/updatesinglesalesforceobject.md) — atualiza um registro específico no Salesforce
+- [RetrieveSalesforceJobSources](../salesforce-functions/retrievesalesforcejobsources.md) — recupera fontes de jobs do Salesforce
+- [LongSfid](../salesforce-functions/longsfid.md) — converte Salesforce ID de 15 para 18 caracteres
+- [Row](../data-extension-functions/row.md) — acessa uma linha específica do rowset
+- [Field](../data-extension-functions/field.md) — extrai o valor de um campo de uma linha
+- [RowCount](../data-extension-functions/rowcount.md) — conta o número de linhas no rowset
+- [LookupRows](../data-extension-functions/lookuprows.md) — alternativa para consultar dados já sincronizados em Data Extensions

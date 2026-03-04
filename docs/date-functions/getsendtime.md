@@ -1,19 +1,18 @@
 ---
 title: GetSendTime
 sidebar_label: GetSendTime
-description: Retorna o timestamp do início ou término de um envio no nível do job ou do subscriber individual.
+description: Retorna o timestamp do início do job ou do momento em que o envio foi concluído para um subscriber individual, em Central Standard Time (CST).
 ---
 
 # GetSendTime
 
 ## Descrição
 
-A função `GetSendTime` retorna um timestamp relacionado ao envio de um e-mail. Dependendo do parâmetro passado, ela pode retornar o horário em que o envio foi concluído para um subscriber individual ou o horário em que o job inteiro começou/foi publicado. O valor retornado está sempre em **Central Standard Time (CST)**, sem ajuste de horário de verão (daylight saving time). Ela é especialmente útil quando você precisa registrar ou exibir o momento exato em que cada subscriber recebeu a mensagem, ou quando precisa referenciar o horário de início do job para lógicas de personalização.
+A função `GetSendTime` retorna um timestamp relacionado ao envio de um e-mail — pode ser o horário em que o job começou (nível geral) ou o horário em que o envio foi concluído para aquele subscriber específico (nível individual). O valor retornado está sempre em **Central Standard Time (CST), sem horário de verão**. É especialmente útil quando você precisa registrar ou exibir o momento exato em que cada contato recebeu a comunicação, algo comum em réguas de relacionamento com SLAs de envio ou auditorias.
 
 ## Sintaxe
 
 ```ampscript
-GetSendTime()
 GetSendTime(boolAllSubscribers)
 ```
 
@@ -21,106 +20,98 @@ GetSendTime(boolAllSubscribers)
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| boolAllSubscribers | Boolean | Não | Se `true`, retorna o horário de início do job (job start time) ou o horário de publicação (job publish time). Se `false` ou omitido, retorna o timestamp em que o envio foi concluído para o subscriber individual. O valor padrão é `false`. |
-
-### Comportamento por contexto
-
-| Função | Durante um envio | Após envio de lista, DE ou manual | Após envio triggered ou journey |
-|---|---|---|---|
-| `GetSendTime()` | Horário atual do sistema | Horário em que o envio foi concluído para o subscriber individual | Horário em que o envio foi concluído para o subscriber individual |
-| `GetSendTime(true)` | Horário atual do sistema | Horário de início do job | Horário de publicação do job |
+| boolAllSubscribers | Boolean | Não | Se `true`, retorna o horário de início do job (ou publish time). Se `false` (ou omitido), retorna o horário em que o envio foi concluído para o subscriber individual. O valor padrão é `false`. |
 
 ## Exemplo básico
 
-Imagine que a **Lojas Vitória** quer registrar o horário exato em que cada cliente recebeu o e-mail da campanha de Black Friday:
+Exibindo no e-mail da Lojas Vitória o horário em que a mensagem foi processada para aquele subscriber específico.
 
 ```ampscript
 %%[
-VAR @horarioEnvio
-SET @horarioEnvio = GetSendTime()
+VAR @horaEnvio
+SET @horaEnvio = GetSendTime()
 ]%%
 
-Olá, este e-mail foi enviado para você em: %%=FormatDate(@horarioEnvio, "dd/MM/yyyy HH:mm:ss")=%%
+Olá, João Silva!
+
+Esta mensagem foi enviada para você em: %%=v(@horaEnvio)=%%
 ```
 
 **Saída:**
 ```
-Olá, este e-mail foi enviado para você em: 28/11/2024 14:32:17
+Olá, João Silva!
+
+Esta mensagem foi enviada para você em: 11/15/2024 3:42:18 PM
 ```
 
 ## Exemplo avançado
 
-A **Conecta Telecom** envia uma campanha de reativação para uma Data Extension com milhares de subscribers. Eles querem mostrar no e-mail tanto o horário de início do job quanto o horário individual de envio, e também gravar essas informações em uma DE de log para auditoria:
+Cenário de auditoria da Conecta Telecom: o e-mail registra tanto o horário de início do job quanto o horário individual do subscriber, convertendo para o fuso de Brasília (CST + 3h em horário padrão dos EUA) e formatando no padrão brasileiro.
 
 ```ampscript
 %%[
-VAR @inicioJob, @horarioIndividual, @emailSubscriber, @nomeSubscriber
+VAR @horaIndividual, @horaJob, @horaBrasiliaIndividual, @horaBrasiliaJob
 
-SET @inicioJob = GetSendTime(true)
-SET @horarioIndividual = GetSendTime(false)
-SET @emailSubscriber = AttributeValue("EmailAddress")
-SET @nomeSubscriber = AttributeValue("PrimeiroNome")
+/* Horário em que o envio completou para este subscriber (CST) */
+SET @horaIndividual = GetSendTime()
 
-/* Converte de CST para horário de Brasília (CST + 3h = BRT) */
-VAR @horarioBrasilia
-SET @horarioBrasilia = DateAdd(@horarioIndividual, 3, "H")
+/* Horário em que o job iniciou/foi publicado (CST) */
+SET @horaJob = GetSendTime(true)
 
-/* Registra o log na DE "LogEnvios" */
-InsertDE(
-  "LogEnvios",
-  "EmailAddress", @emailSubscriber,
-  "InicioJob", FormatDate(@inicioJob, "dd/MM/yyyy HH:mm:ss"),
-  "HorarioEnvioIndividual", FormatDate(@horarioIndividual, "dd/MM/yyyy HH:mm:ss"),
-  "HorarioBrasilia", FormatDate(@horarioBrasilia, "dd/MM/yyyy HH:mm:ss"),
-  "Campanha", "Reativacao_Dezembro_2024"
-)
+/* Convertendo CST para horário de Brasília (UTC-3 = CST+1 no horário padrão dos EUA) */
+SET @horaBrasiliaIndividual = DateAdd(@horaIndividual, 1, "H")
+SET @horaBrasiliaJob = DateAdd(@horaJob, 1, "H")
 ]%%
 
-Olá, %%=v(@nomeSubscriber)=%%! 👋
+Conecta Telecom — Confirmação de envio
 
-Sentimos sua falta na Conecta Telecom! Esta oferta especial foi preparada para você.
+Prezado(a) %%=v(@primeiroNome)=%%,
 
-📧 Este e-mail foi enviado em: %%=FormatDate(@horarioBrasilia, "dd/MM/yyyy 'às' HH:mm")=%% (horário de Brasília)
-🚀 A campanha iniciou em: %%=FormatDate(DateAdd(@inicioJob, 3, "H"), "dd/MM/yyyy 'às' HH:mm")=%% (horário de Brasília)
+Início da campanha: %%=FormatDate(@horaBrasiliaJob, "dd/MM/yyyy", "HH:mm:ss")=%%
+Seu e-mail processado em: %%=FormatDate(@horaBrasiliaIndividual, "dd/MM/yyyy", "HH:mm:ss")=%%
 
 %%[
-/* Verifica se o envio demorou mais de 2 horas para este subscriber */
-VAR @diferencaMinutos
-SET @diferencaMinutos = DateDiff(@inicioJob, @horarioIndividual, "MI")
+VAR @diffMinutos
+SET @diffMinutos = DateDiff(@horaJob, @horaIndividual, "MI")
 
-IF @diferencaMinutos > 120 THEN
+IF @diffMinutos > 30 THEN
 ]%%
-⚠️ Desculpe pela demora — tivemos um volume alto de envios hoje!
+<p style="color:#cc0000;">⚠ Seu e-mail levou mais de 30 minutos para ser processado após o início do job.</p>
 %%[ ENDIF ]%%
 ```
 
 **Saída:**
 ```
-Olá, Maria Santos! 👋
+Conecta Telecom — Confirmação de envio
 
-Sentimos sua falta na Conecta Telecom! Esta oferta especial foi preparada para você.
+Prezado(a) Maria,
 
-📧 Este e-mail foi enviado em: 15/12/2024 às 18:32 (horário de Brasília)
-🚀 A campanha iniciou em: 15/12/2024 às 16:00 (horário de Brasília)
+Início da campanha: 15/11/2024 16:00:00
+Seu e-mail processado em: 15/11/2024 16:42:18
 
-⚠️ Desculpe pela demora — tivemos um volume alto de envios hoje!
+⚠ Seu e-mail levou mais de 30 minutos para ser processado após o início do job.
 ```
 
 ## Observações
 
-- **Fuso horário CST:** O valor retornado está sempre em Central Standard Time (CST, UTC-6), **sem** ajuste para horário de verão. Se você precisa exibir no horário de Brasília (BRT, UTC-3), some 3 horas usando [DateAdd](../date-functions/dateadd.md). Fique atento: dependendo do horário de verão dos EUA, essa diferença pode variar.
-- **Valor padrão:** Chamar `GetSendTime()` sem parâmetros é equivalente a `GetSendTime(false)` — retorna o timestamp individual do subscriber.
-- **Durante o envio vs. após o envio:** Durante o processamento ativo de um envio, tanto `GetSendTime()` quanto `GetSendTime(true)` retornam o horário atual do sistema. Os valores específicos (horário individual e horário de início do job) só ficam disponíveis após a conclusão do envio.
-- **Triggered sends e Journey Builder:** Em envios triggered ou de journey, `GetSendTime(true)` retorna o **horário de publicação** do job (não o horário de início), enquanto `GetSendTime(false)` retorna o horário em que o envio foi concluído para aquele subscriber específico.
-- **Diferença em relação a `Now()`:** A função [Now](../date-functions/now.md) sem parâmetros **sempre** retorna o horário atual do sistema, mesmo após o envio. Já `GetSendTime()` sem parâmetros retorna o horário em que o envio foi concluído para o subscriber. Use `Now()` quando precisa do horário atual e `GetSendTime()` quando precisa do horário real do envio.
-- **Contexto de uso:** Esta função é projetada para uso em e-mails. O comportamento em CloudPages ou outros contextos pode não ser o esperado, já que não há um "envio" associado.
+> **⚠️ Atenção:** O valor retornado está sempre em **Central Standard Time (CST) sem ajuste de horário de verão**. Para exibir no fuso de Brasília, você precisa fazer a conversão manualmente com [DateAdd](../date-functions/dateadd.md). A diferença entre CST e Brasília varia conforme o período do ano — fique atento.
+
+- **Durante o envio** (enquanto o job está em execução), tanto `GetSendTime()` quanto `GetSendTime(true)` retornam o horário atual do sistema — comportamento idêntico a [Now](../date-functions/now.md).
+- **Após um envio de lista, Data Extension ou envio manual:**
+  - `GetSendTime()` (sem parâmetro ou `false`) → horário em que o envio completou para aquele subscriber individual.
+  - `GetSendTime(true)` → horário de início do job.
+- **Após um envio Triggered ou Journey:**
+  - `GetSendTime()` → horário em que o envio completou para o subscriber individual.
+  - `GetSendTime(true)` → horário de publicação (publish time) do job.
+
+> **💡 Dica:** A diferença entre `GetSendTime()` e `Now()` só aparece **após** o envio (por exemplo, em uma open-time render ou preview). Durante o processamento do envio, ambas retornam o mesmo valor. Se você precisa sempre do horário atual do sistema independentemente do contexto, use [Now](../date-functions/now.md). Se precisa do horário real em que aquele subscriber foi processado, `GetSendTime()` é a escolha certa.
+
+> **💡 Dica:** `GetSendTime(true)` e `Now(true)` retornam o mesmo valor — ambas trazem o horário de início/publicação do job. A diferença está na versão sem parâmetro: `GetSendTime()` congela o timestamp do subscriber, enquanto `Now()` sempre retorna o horário atual.
 
 ## Funções relacionadas
 
-- [Now](../date-functions/now.md) — retorna o horário atual do sistema ou o horário de início do job (com parâmetro `true`)
-- [SystemDate](../date-functions/systemdate.md) — retorna a data/hora atual do sistema
-- [FormatDate](../date-functions/formatdate.md) — formata valores de data/hora para exibição
-- [DateAdd](../date-functions/dateadd.md) — adiciona ou subtrai intervalos de tempo a uma data (útil para converter fuso horário)
-- [DateDiff](../date-functions/datediff.md) — calcula a diferença entre duas datas
-- [DatePart](../date-functions/datepart.md) — extrai uma parte específica de uma data (dia, mês, hora, etc.)
-- [InsertDE](../data-extension-functions/insertde.md) — insere registros em uma Data Extension (útil para logar horários de envio)
+- [Now](../date-functions/now.md) — retorna o horário atual do sistema (ou o horário de início do job quando usada com `true`)
+- [FormatDate](../date-functions/formatdate.md) — para formatar o timestamp retornado no padrão brasileiro DD/MM/AAAA
+- [DateAdd](../date-functions/dateadd.md) — para converter o horário CST para o fuso de Brasília
+- [DateDiff](../date-functions/datediff.md) — para calcular a diferença entre o início do job e o processamento individual
+- [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) — para conversão de fuso horário do sistema

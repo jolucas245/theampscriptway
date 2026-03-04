@@ -1,14 +1,14 @@
 ---
 title: RequestParameter
 sidebar_label: RequestParameter
-description: Retorna o valor de um parâmetro de URL ou campo de formulário em uma Landing Page ou CloudPage.
+description: Recupera o valor de um parâmetro de URL ou campo de formulário em Landing Pages e CloudPages.
 ---
 
 # RequestParameter
 
 ## Descrição
 
-A função `RequestParameter()` retorna o valor de um parâmetro passado via URL (query string) ou enviado por um campo de formulário em uma Landing Page ou CloudPage. Ela também consegue recuperar parâmetros de uma query string criptografada gerada pela função `CloudPagesURL()`. Essa função se comporta exatamente da mesma forma que a função `QueryParameter()` — as duas existem por questões de compatibilidade com versões anteriores. Na prática, `RequestParameter()` é a mais usada no dia a dia e a que você vai encontrar na maioria dos exemplos e projetos.
+A função `RequestParameter` recupera o valor de um parâmetro vindo de uma URL, campo de formulário ou query string criptografada gerada pela função [CloudPagesURL](../sites-functions/cloudpagesurl.md). É a função essencial para capturar dados dinâmicos em CloudPages — seja para personalizar uma página de confirmação de cadastro, processar um formulário de atualização de dados ou identificar o assinante que clicou em um link do e-mail. Essa função tem o mesmo comportamento da função [QueryParameter](../sites-functions/queryparameter.md), e ambas são mantidas por compatibilidade.
 
 ## Sintaxe
 
@@ -19,168 +19,110 @@ RequestParameter("queryParameter")
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|----------------|--------|-------------|-----------|
-| queryParameter | String | Sim | O nome do parâmetro da URL ou campo de formulário cujo valor você quer recuperar. |
+|---|---|---|---|
+| queryParameter | String | Sim | Nome do parâmetro cujo valor você deseja recuperar da URL, campo de formulário ou query string criptografada. |
 
 ## Exemplo básico
 
-Imagine que você tem um e-mail da **Lojas Vitória** com um link para uma CloudPage de confirmação de compra. No e-mail, você monta o link assim com `CloudPagesURL()`:
-
-```ampscript
-%%[
-VAR @linkConfirmacao
-SET @linkConfirmacao = CloudPagesURL(123, "primeiroNome", "Maria", "nomeProduto", "Bolsa Couro Caramelo")
-]%%
-
-<a href="%%=RedirectTo(@linkConfirmacao)=%%">Ver confirmação do pedido</a>
-```
-
-Na **CloudPage**, você recupera os valores assim:
+Uma CloudPage da MegaStore recebe o nome do cliente e o produto de interesse via parâmetros passados pelo [CloudPagesURL](../sites-functions/cloudpagesurl.md) no e-mail:
 
 ```ampscript
 %%[
 VAR @primeiroNome, @nomeProduto
+
 SET @primeiroNome = RequestParameter("primeiroNome")
 SET @nomeProduto = RequestParameter("nomeProduto")
 ]%%
 
-Obrigado pela sua compra, %%=ProperCase(@primeiroNome)=%%!
-
-Seu produto "%%=v(@nomeProduto)=%%" já está sendo preparado para envio.
-Fique de olho no seu e-mail para acompanhar o rastreio! 📦
+<h1>Olá, %%=v(@primeiroNome)=%%!</h1>
+<p>Você demonstrou interesse no produto: %%=v(@nomeProduto)=%%</p>
 ```
 
 **Saída:**
 ```
-Obrigado pela sua compra, Maria!
-
-Seu produto "Bolsa Couro Caramelo" já está sendo preparado para envio.
-Fique de olho no seu e-mail para acompanhar o rastreio! 📦
+Olá, Maria!
+Você demonstrou interesse no produto: Smart TV 55" 4K
 ```
 
 ## Exemplo avançado
 
-Agora vamos a um cenário mais completo: uma CloudPage de atualização de cadastro para o programa de fidelidade do **Banco Meridional**. O cliente clica no link do e-mail, chega na página com seus dados pré-preenchidos, faz alterações e envia o formulário. A própria CloudPage processa o POST.
-
-**No e-mail** — montando o link com os dados do cliente:
+Uma CloudPage da Lojas Vitória funciona como centro de preferências. O e-mail envia o link usando [CloudPagesURL](../sites-functions/cloudpagesurl.md) com os dados do assinante. Na CloudPage, os parâmetros são recuperados para personalizar a página e, após o envio do formulário, os dados são gravados numa Data Extension:
 
 ```ampscript
 %%[
-VAR @linkAtualizacao
-SET @linkAtualizacao = CloudPagesURL(
-  456,
-  "email", EmailAddress,
-  "nome", [PrimeiroNome],
-  "cpf", [CPF],
-  "pontos", [SaldoPontos]
-)
+VAR @email, @nome, @cidade, @submitted
+
+SET @email = RequestParameter("email")
+SET @nome = RequestParameter("nome")
+SET @cidade = RequestParameter("cidade")
+SET @submitted = RequestParameter("submitted")
+
+IF @submitted == "true" THEN
+  /* Dados vindos do formulário após o submit */
+  VAR @novaCidade, @novoTelefone
+  SET @novaCidade = RequestParameter("novaCidade")
+  SET @novoTelefone = RequestParameter("novoTelefone")
+
+  UpsertDE(
+    "CentroPreferencias", 1,
+    "Email", @email,
+    "Nome", @nome,
+    "Cidade", @novaCidade,
+    "Telefone", @novoTelefone
+  )
 ]%%
 
-<a href="%%=RedirectTo(@linkAtualizacao)=%%">Atualizar meu cadastro</a>
-```
-
-**Na CloudPage** — exibindo os dados e processando o formulário:
-
-```ampscript
-%%[
-VAR @email, @nome, @cpf, @pontos, @novoTelefone, @novoCep, @enviado
-
-/* Verifica se o formulário foi enviado (POST) */
-SET @enviado = RequestParameter("enviado")
-
-IF @enviado == "sim" THEN
-  /* Recupera os dados do formulário (campos hidden + campos editáveis) */
-  SET @email = RequestParameter("email")
-  SET @nome = RequestParameter("nome")
-  SET @novoTelefone = RequestParameter("telefone")
-  SET @novoCep = RequestParameter("cep")
-
-  /* Valida se os campos obrigatórios foram preenchidos */
-  IF Empty(@novoTelefone) OR Empty(@novoCep) THEN
-    SET @mensagem = "Por favor, preencha todos os campos obrigatórios."
-  ELSE
-    /* Atualiza a Data Extension com os novos dados */
-    UpsertDE(
-      "Cadastro_Fidelidade", 1,
-      "Email", @email,
-      "Nome", @nome,
-      "Telefone", @novoTelefone,
-      "CEP", @novoCep,
-      "DataAtualizacao", FormatDate(Now(), "dd/MM/yyyy HH:mm")
-    )
-    SET @mensagem = Concat("Cadastro atualizado com sucesso, ", ProperCase(@nome), "! 🎉")
-  ENDIF
-
-ELSE
-  /* Primeira carga — dados vindos da query string criptografada */
-  SET @email = RequestParameter("email")
-  SET @nome = RequestParameter("nome")
-  SET @cpf = RequestParameter("cpf")
-  SET @pontos = RequestParameter("pontos")
-ENDIF
-]%%
-
-%%[ IF @enviado == "sim" AND NOT Empty(@novoTelefone) AND NOT Empty(@novoCep) THEN ]%%
-
-  <h2>%%=v(@mensagem)=%%</h2>
-  <p>Seu saldo continua em <strong>%%=FormatNumber(@pontos, "N0")=%% pontos</strong>.</p>
-  <p>Aproveite para trocar seus pontos em <a href="https://www.bancomeridional.com.br/fidelidade">nossa loja de recompensas</a>!</p>
+<h1>Obrigado, %%=v(@nome)=%%!</h1>
+<p>Seus dados foram atualizados com sucesso.</p>
 
 %%[ ELSE ]%%
 
-  <h2>Atualize seu cadastro, %%=ProperCase(@nome)=%%!</h2>
-  <p>CPF: %%=v(@cpf)=%%</p>
-  <p>Saldo de pontos: <strong>%%=FormatNumber(@pontos, "N0")=%%</strong></p>
+<h1>Olá, %%=v(@nome)=%%!</h1>
+<p>Atualize seus dados abaixo:</p>
 
-  %%[ IF NOT Empty(@mensagem) THEN ]%%
-    <p style="color:red;">%%=v(@mensagem)=%%</p>
-  %%[ ENDIF ]%%
+<form method="post">
+  <input type="hidden" name="email" value="%%=v(@email)=%%" />
+  <input type="hidden" name="nome" value="%%=v(@nome)=%%" />
+  <input type="hidden" name="submitted" value="true" />
 
-  <form method="POST">
-    <input type="hidden" name="email" value="%%=v(@email)=%%" />
-    <input type="hidden" name="nome" value="%%=v(@nome)=%%" />
-    <input type="hidden" name="pontos" value="%%=v(@pontos)=%%" />
-    <input type="hidden" name="enviado" value="sim" />
+  <label>Cidade:</label>
+  <input type="text" name="novaCidade" value="%%=v(@cidade)=%%" />
 
-    <label>Telefone:</label>
-    <input type="text" name="telefone" placeholder="(11) 99999-9999" />
+  <label>Telefone:</label>
+  <input type="text" name="novoTelefone" placeholder="(11) 99999-9999" />
 
-    <label>CEP:</label>
-    <input type="text" name="cep" placeholder="01310-100" />
-
-    <button type="submit">Salvar alterações</button>
-  </form>
+  <button type="submit">Salvar</button>
+</form>
 
 %%[ ENDIF ]%%
 ```
 
-**Saída (após envio do formulário):**
+**Saída (antes do submit):**
 ```
-Cadastro atualizado com sucesso, Maria! 🎉
+Olá, João Silva!
+Atualize seus dados abaixo:
 
-Seu saldo continua em 12.450 pontos.
-Aproveite para trocar seus pontos em nossa loja de recompensas!
+[Formulário com campo Cidade preenchido com "São Paulo" e campo Telefone vazio]
+```
+
+**Saída (após o submit):**
+```
+Obrigado, João Silva!
+Seus dados foram atualizados com sucesso.
 ```
 
 ## Observações
 
-- **Funciona igual a `QueryParameter()`**: as duas funções fazem exatamente a mesma coisa. A Salesforce mantém ambas por compatibilidade. Na prática, a comunidade usa mais `RequestParameter()`.
-- **Contexto principal: CloudPages e Landing Pages.** Essa função é usada principalmente em CloudPages, Landing Pages e microsites. Em e-mails, você normalmente usa personalização via Data Extensions ou atributos de assinante — não `RequestParameter()`.
-- **Recupera parâmetros criptografados:** quando você usa `CloudPagesURL()` para gerar links, os parâmetros são passados de forma criptografada na URL. O `RequestParameter()` consegue descriptografar e ler esses valores automaticamente.
-- **Funciona tanto com GET quanto com POST:** você pode usar para capturar valores da query string (GET) e também de campos de formulário enviados via POST.
-- **Se o parâmetro não existir, retorna vazio:** caso você passe um nome de parâmetro que não está na URL nem no formulário, a função retorna uma string vazia. É uma boa prática sempre validar com [Empty](../utility-functions/empty.md) antes de usar o valor.
-- **Cuidado com segurança:** parâmetros passados em texto puro na URL (sem `CloudPagesURL()`) ficam visíveis para o usuário. Evite passar dados sensíveis como CPF ou e-mail em URLs não criptografadas. Sempre prefira `CloudPagesURL()` para trafegar informações sensíveis.
-- **Nome do parâmetro é case-insensitive:** geralmente não faz diferença escrever `"nome"` ou `"Nome"`, mas é uma boa prática manter consistência entre o envio e a leitura.
+> **💡 Dica:** Use `RequestParameter` tanto para capturar parâmetros de URL (GET) quanto valores de campos de formulário (POST). Isso torna a função perfeita para CloudPages que exibem dados personalizados e também processam formulários — como no exemplo do centro de preferências acima.
+
+> **💡 Dica:** Quando o link no e-mail é gerado com [CloudPagesURL](../sites-functions/cloudpagesurl.md), os parâmetros trafegam criptografados na query string. A `RequestParameter` consegue recuperar esses valores automaticamente, sem necessidade de descriptografar manualmente.
+
+> **⚠️ Atenção:** `RequestParameter` e [QueryParameter](../sites-functions/queryparameter.md) têm exatamente o mesmo comportamento. Ambas são mantidas por compatibilidade. Você pode padronizar seu código usando qualquer uma delas — o importante é manter consistência no projeto.
 
 ## Funções relacionadas
 
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — gera URLs de CloudPages com parâmetros criptografados, perfeita para usar em conjunto com `RequestParameter()`
-- [QueryParameter](../sites-functions/queryparameter.md) — funciona de forma idêntica a `RequestParameter()`, mantida por compatibilidade
-- [RedirectTo](../http-functions/redirectto.md) — usada para redirecionar links em e-mails, frequentemente combinada com `CloudPagesURL()`
+- [QueryParameter](../sites-functions/queryparameter.md) — função idêntica, mantida por compatibilidade
+- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — gera URLs com parâmetros criptografados que podem ser recuperados por `RequestParameter`
 - [Redirect](../sites-functions/redirect.md) — redireciona o usuário para outra URL a partir de uma CloudPage
-- [Empty](../utility-functions/empty.md) — valida se o valor retornado pelo `RequestParameter()` está vazio
-- [IsNullDefault](../utility-functions/isnulldefault.md) — define um valor padrão caso o parâmetro retorne nulo
-- [ProperCase](../string-functions/propercase.md) — formata nomes com a primeira letra maiúscula, muito usada junto com `RequestParameter()`
-- [Trim](../string-functions/trim.md) — remove espaços extras do valor capturado, útil para limpar dados de formulários
-- [UpsertDE](../data-extension-functions/upsertde.md) — insere ou atualiza registros em Data Extensions com os dados capturados do formulário
-- [Lookup](../data-extension-functions/lookup.md) — busca dados em Data Extensions para validar ou complementar informações recebidas via parâmetro
+- [Empty](../utility-functions/empty.md) — útil para validar se o parâmetro retornado está vazio antes de usá-lo
+- [UpsertDE](../data-extension-functions/upsertde.md) — comum em conjunto com `RequestParameter` para gravar dados recebidos de formulários

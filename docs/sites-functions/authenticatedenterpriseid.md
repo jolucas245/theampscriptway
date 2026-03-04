@@ -1,14 +1,14 @@
 ---
 title: AuthenticatedEnterpriseID
 sidebar_label: AuthenticatedEnterpriseID
-description: Retorna o Enterprise ID (MID da conta principal) do usuário autenticado que está acessando uma landing page em um Microsite.
+description: Retorna o Enterprise ID do usuário autenticado em uma landing page de Microsite com Sender Authenticated Redirection.
 ---
 
 # AuthenticatedEnterpriseID
 
 ## Descrição
 
-A função `AuthenticatedEnterpriseID()` retorna o **Enterprise ID** (o MID da conta principal/pai) do usuário que está autenticado em uma landing page de um Microsite. Esse ID identifica a conta Enterprise no Salesforce Marketing Cloud. Essa função é usada exclusivamente com **Microsites** quando você está usando **Sender Authenticated Redirection** — ela **não funciona com CloudPages**. É útil quando você precisa identificar qual conta Enterprise está por trás da sessão autenticada, por exemplo, para registrar logs, controlar acessos ou direcionar conteúdo de acordo com a conta.
+Retorna o Enterprise ID (identificador da conta enterprise) do usuário autenticado que está acessando uma landing page. Essa função é usada exclusivamente em **Microsites** configurados com **Sender Authenticated Redirection** — ou seja, cenários onde o usuário do Marketing Cloud acessa a página de forma autenticada. **Não funciona com CloudPages.**
 
 ## Sintaxe
 
@@ -24,75 +24,67 @@ AuthenticatedEnterpriseID()
 
 ## Exemplo básico
 
+Exibindo o Enterprise ID do usuário autenticado em uma landing page de Microsite da Conecta Telecom.
+
 ```ampscript
 %%[
-VAR @enterpriseID
-SET @enterpriseID = AuthenticatedEnterpriseID()
+VAR @enterpriseId
+SET @enterpriseId = AuthenticatedEnterpriseID()
 ]%%
 
-O Enterprise ID da conta autenticada é: %%=v(@enterpriseID)=%%
+Enterprise ID: %%=v(@enterpriseId)=%%
 ```
 
 **Saída:**
 ```
-O Enterprise ID da conta autenticada é: 123456789
+Enterprise ID: 123456789
 ```
 
 ## Exemplo avançado
 
-Imagine que a **Conecta Telecom** tem uma estrutura multi-BU no Marketing Cloud e usa Microsites para páginas internas de gestão de campanhas. Nesse cenário, você quer registrar em uma Data Extension qual usuário autenticado acessou a página, de qual conta Enterprise, e quando isso aconteceu — tudo para fins de auditoria.
+Em um Microsite interno do Grupo Horizonte, exibindo informações do usuário autenticado para fins de auditoria, combinando com outras funções de autenticação.
 
 ```ampscript
 %%[
-VAR @enterpriseID, @memberID, @nomeUsuario, @dataAcesso
+VAR @enterpriseId, @memberId, @memberName, @dataAcesso
 
-SET @enterpriseID = AuthenticatedEnterpriseID()
-SET @memberID = AuthenticatedMemberID()
-SET @nomeUsuario = AuthenticatedEmployeeUserName()
-SET @dataAcesso = FormatDate(Now(), "dd/MM/yyyy HH:mm:ss")
-
-/* Registra o acesso na DE de auditoria */
-InsertDE(
-  "Log_Acessos_Microsite",
-  "EnterpriseID", @enterpriseID,
-  "MemberID", @memberID,
-  "NomeUsuario", @nomeUsuario,
-  "DataAcesso", @dataAcesso,
-  "Pagina", "painel-campanhas"
-)
+SET @enterpriseId = AuthenticatedEnterpriseID()
+SET @memberId = AuthenticatedMemberID()
+SET @memberName = AuthenticatedMemberName()
+SET @dataAcesso = FormatDate(Now(), "dd/MM/yyyy", "HH:mm")
 ]%%
 
-<h1>Painel de Campanhas — Conecta Telecom</h1>
-<p>Bem-vindo(a), %%=v(@nomeUsuario)=%%!</p>
-<p>Enterprise ID: %%=v(@enterpriseID)=%% | BU (Member ID): %%=v(@memberID)=%%</p>
-<p>Acesso registrado em: %%=v(@dataAcesso)=%%</p>
+<h2>Painel de Auditoria - Grupo Horizonte</h2>
+<table>
+  <tr><td><strong>Enterprise ID:</strong></td><td>%%=v(@enterpriseId)=%%</td></tr>
+  <tr><td><strong>Member ID:</strong></td><td>%%=v(@memberId)=%%</td></tr>
+  <tr><td><strong>Nome do Member:</strong></td><td>%%=v(@memberName)=%%</td></tr>
+  <tr><td><strong>Data de acesso:</strong></td><td>%%=v(@dataAcesso)=%%</td></tr>
+</table>
 ```
 
 **Saída:**
 ```
-Painel de Campanhas — Conecta Telecom
-Bem-vindo(a), carlos.oliveira@conectatelecom.com.br!
-Enterprise ID: 123456789 | BU (Member ID): 987654321
-Acesso registrado em: 15/06/2025 14:32:07
+Painel de Auditoria - Grupo Horizonte
+
+Enterprise ID:    123456789
+Member ID:        987654
+Nome do Member:   Conecta Telecom
+Data de acesso:   15/07/2025 - 14:32
 ```
 
 ## Observações
 
-- ⚠️ **Funciona exclusivamente com Microsites** — essa função **não é compatível com CloudPages**. Se você tentar usá-la em uma CloudPage, ela não vai retornar o valor esperado.
-- Requer que o **Sender Authenticated Redirection (SAR)** esteja configurado no Microsite para que a autenticação funcione corretamente.
-- A função **não aceita nenhum parâmetro**. Qualquer argumento passado será ignorado ou poderá causar erro.
-- O Enterprise ID é o MID da **conta pai** (top-level), diferente do Member ID que pode ser de uma Business Unit filha. Se a sua conta não é multi-BU, Enterprise ID e Member ID podem ser iguais.
-- Essa função é considerada de **uso muito específico e restrito**. A maioria dos projetos modernos no Marketing Cloud usa CloudPages ao invés de Microsites, então avalie se esse é realmente o contexto certo para o seu caso.
-- Se nenhum usuário estiver autenticado, o retorno pode ser vazio ou gerar erro — sempre valide o resultado antes de utilizá-lo em lógica condicional.
+> **⚠️ Atenção:** Essa função funciona **apenas em Microsites** com **Sender Authenticated Redirection** habilitado. **Não use em CloudPages** — ela não retornará o valor esperado nesse contexto.
+
+- A função não aceita nenhum parâmetro. Qualquer argumento passado será ignorado ou causará erro.
+- O Enterprise ID é o identificador da conta principal (parent account) na estrutura do Marketing Cloud. Em contas com múltiplas Business Units, esse valor representa a conta enterprise de nível superior.
 
 ## Funções relacionadas
 
-- [AuthenticatedMemberID](../sites-functions/authenticatedmemberid.md) — retorna o Member ID (MID da Business Unit) do usuário autenticado no Microsite
-- [AuthenticatedMemberName](../sites-functions/authenticatedmembername.md) — retorna o nome da conta/BU do usuário autenticado no Microsite
-- [AuthenticatedEmployeeId](../sites-functions/authenticatedemployeeid.md) — retorna o ID do funcionário autenticado no Microsite
-- [AuthenticatedEmployeeUserName](../sites-functions/authenticatedemployeeusername.md) — retorna o nome de usuário do funcionário autenticado no Microsite
-- [AuthenticatedEmployeeNotificationAddress](../sites-functions/authenticatedemployeenotificationaddress.md) — retorna o endereço de notificação do funcionário autenticado
-- [MicrositeURL](../sites-functions/micrositeurl.md) — gera URLs para páginas de Microsites
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — gera URLs para CloudPages (alternativa moderna aos Microsites)
-- [RequestParameter](../sites-functions/requestparameter.md) — captura parâmetros de query string ou POST em landing pages
-- [InsertDE](../data-extension-functions/insertde.md) — insere registros em uma Data Extension
+- [AuthenticatedMemberID](../sites-functions/authenticatedmemberid.md) — retorna o Member ID do usuário autenticado
+- [AuthenticatedMemberName](../sites-functions/authenticatedmembername.md) — retorna o nome do Member autenticado
+- [AuthenticatedEmployeeId](../sites-functions/authenticatedemployeeid.md) — retorna o ID do funcionário autenticado
+- [AuthenticatedEmployeeUserName](../sites-functions/authenticatedemployeeusername.md) — retorna o username do funcionário autenticado
+- [AuthenticatedEmployeeNotificationAddress](../sites-functions/authenticatedemployeenotificationaddress.md) — retorna o e-mail de notificação do funcionário autenticado
+- [MicrositeURL](../sites-functions/micrositeurl.md) — gera URLs para Microsites

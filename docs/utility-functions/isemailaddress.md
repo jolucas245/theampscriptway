@@ -1,14 +1,14 @@
 ---
 title: IsEmailAddress
 sidebar_label: IsEmailAddress
-description: Verifica se um endereço de e-mail tem uma estrutura válida, retornando true ou false.
+description: Verifica se um endereço de e-mail possui formato estruturalmente válido, retornando true ou false.
 ---
 
 # IsEmailAddress
 
 ## Descrição
 
-A função `IsEmailAddress` verifica se um endereço de e-mail está bem formado estruturalmente. Ela retorna `true` se o formato for válido e `false` caso contrário. É importante saber que essa função **não verifica se o e-mail ou domínio realmente existem** — ela apenas analisa se a estrutura do endereço está correta (por exemplo, se tem um `@`, se tem a parte local antes do `@`, etc.). Super útil para validar dados de formulários em CloudPages, fazer limpeza de Data Extensions ou evitar envios para endereços claramente inválidos.
+Verifica se um endereço de e-mail está bem formado do ponto de vista estrutural. **Não valida se o e-mail ou domínio realmente existem** — apenas checa se a formatação é válida (presença do `@`, parte local, domínio etc.). Retorna `true` se o formato for válido e `false` caso contrário. É uma função essencial para higienizar dados de contato antes de disparos ou no momento de captura em CloudPages.
 
 ## Sintaxe
 
@@ -20,129 +20,102 @@ IsEmailAddress(emailAddress)
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| emailAddress | String | Sim | O endereço de e-mail que você quer validar estruturalmente. |
-
-## Retorno
-
-Retorna `true` se o endereço de e-mail for estruturalmente válido, ou `false` se não for.
-
-## Tabela de resultados
-
-Aqui vai uma referência rápida pra você entender como a função se comporta em diferentes cenários:
-
-| Chamada | Resultado | Observação |
-|---|---|---|
-| `IsEmailAddress("joao.silva@lojasvitoria.com.br")` | `true` | Formato válido e completo. |
-| `IsEmailAddress("maria.santos@megastore")` | `true` | Tecnicamente possível, embora raro, ter um domínio sem TLD (como `.com`). |
-| `IsEmailAddress("carlos.oliveirafarmarede.com.br")` | `false` | Falta o arroba (`@`), então é inválido. |
-| `IsEmailAddress("ana@souza@conectatelecom.com.br")` | `false` | Tem dois arrobas, o que torna inválido. |
-| `IsEmailAddress("@bancomeridional.com.br")` | `false` | Falta a parte local (antes do `@`). |
-| `IsEmailAddress("pedro.lima@.com.br")` | `false` | Falta o domínio de segundo nível (tem só o TLD). |
+| emailAddress | String | Sim | O endereço de e-mail a ser validado estruturalmente. |
 
 ## Exemplo básico
 
-Imagine que você quer verificar se o e-mail de um assinante é válido antes de exibir uma mensagem personalizada:
+Verificando se o e-mail de um cliente da Lojas Vitória possui formato válido antes de exibir uma mensagem personalizada.
 
 ```ampscript
 %%[
-VAR @email, @valido
+
 SET @email = "joao.silva@lojasvitoria.com.br"
 SET @valido = IsEmailAddress(@email)
 
 IF @valido == "true" THEN
-]%%
-
-Olá! Seu e-mail %%=v(@email)=%% está cadastrado corretamente. 🎉
-
-%%[ ELSE ]%%
-
-Ops! O e-mail informado não parece ser válido. Por favor, atualize seu cadastro.
-
-%%[ ENDIF ]%%
-```
-
-**Saída:**
-```
-Olá! Seu e-mail joao.silva@lojasvitoria.com.br está cadastrado corretamente. 🎉
-```
-
-## Exemplo avançado
-
-Cenário real: você tem uma CloudPage com formulário de cadastro para a campanha de **Dia das Mães** da MegaStore. Antes de salvar os dados na Data Extension, você precisa validar o e-mail e limpar espaços em branco:
-
-```ampscript
-%%[
-VAR @emailRaw, @email, @nome, @valido, @mensagem
-
-/* Captura os dados do formulário */
-SET @emailRaw = RequestParameter("email")
-SET @nome = RequestParameter("nome")
-
-/* Remove espaços extras antes e depois do e-mail */
-SET @email = Trim(@emailRaw)
-
-/* Converte pra minúsculo pra padronizar */
-SET @email = Lowercase(@email)
-
-/* Valida a estrutura do e-mail */
-SET @valido = IsEmailAddress(@email)
-
-IF @valido == "true" AND NOT Empty(@nome) THEN
-
-  /* Salva na Data Extension de cadastro da campanha */
-  UpsertDE(
-    "CadastroDiaDasMaes",
-    1,
-    "Email", @email,
-    "Nome", ProperCase(@nome),
-    "Email", @email,
-    "DataCadastro", FormatDate(Now(), "dd/MM/yyyy"),
-    "Origem", "CloudPage"
-  )
-
-  SET @mensagem = Concat("Obrigado, ", ProperCase(@nome), "! Você foi cadastrado(a) na promoção Dia das Mães da MegaStore. Fique de olho no e-mail ", @email, " para receber cupons de até R$ 150,00 e frete grátis acima de R$ 299,00!")
-
-ELSEIF Empty(@nome) THEN
-
-  SET @mensagem = "Por favor, preencha seu nome para continuar."
-
+  SET @mensagem = Concat("O e-mail ", @email, " é válido!")
 ELSE
-
-  SET @mensagem = Concat("O e-mail '", @email, "' não parece ser válido. Verifique se digitou corretamente (exemplo: seunome@email.com.br).")
-
+  SET @mensagem = Concat("O e-mail ", @email, " não é válido.")
 ENDIF
+
 ]%%
 
 %%=v(@mensagem)=%%
 ```
 
-**Saída (caso de sucesso):**
+**Saída:**
 ```
-Obrigado, Maria Santos! Você foi cadastrado(a) na promoção Dia das Mães da MegaStore. Fique de olho no e-mail maria.santos@email.com.br para receber cupons de até R$ 150,00 e frete grátis acima de R$ 299,00!
+O e-mail joao.silva@lojasvitoria.com.br é válido!
 ```
 
-**Saída (caso de e-mail inválido):**
+## Exemplo avançado
+
+Em uma CloudPage de atualização cadastral da FarmaRede, você valida o e-mail informado pelo cliente antes de gravar na Data Extension. Se o formato for inválido, exibe um alerta; se for válido, salva o dado com o e-mail em minúsculas (padronizado).
+
+```ampscript
+%%[
+
+SET @emailInformado = RequestParameter("email")
+SET @nome = RequestParameter("nome")
+SET @cpf = RequestParameter("cpf")
+
+/* Remove espaços acidentais nas pontas */
+SET @emailInformado = Trim(@emailInformado)
+
+IF Empty(@emailInformado) THEN
+  SET @resultado = "Por favor, informe seu e-mail."
+ELSEIF IsEmailAddress(@emailInformado) == "false" THEN
+  SET @resultado = Concat("O e-mail '", @emailInformado, "' não possui um formato válido. Verifique e tente novamente.")
+ELSE
+  /* Padroniza para minúsculas antes de salvar */
+  SET @emailPadronizado = Lowercase(@emailInformado)
+
+  UpsertDE(
+    "CadastroClientes_FarmaRede", 1,
+    "CPF", @cpf,
+    "NomeCompleto", @nome,
+    "EmailAddress", @emailPadronizado,
+    "DataAtualizacao", FormatDate(Now(), "dd/MM/yyyy HH:mm")
+  )
+
+  SET @resultado = Concat("Obrigado, ", @nome, "! Seu e-mail ", @emailPadronizado, " foi atualizado com sucesso.")
+ENDIF
+
+]%%
+
+%%=v(@resultado)=%%
 ```
-O e-mail 'mariasantos.email.com.br' não parece ser válido. Verifique se digitou corretamente (exemplo: seunome@email.com.br).
+
+**Saída (e-mail válido):**
+```
+Obrigado, Maria Santos! Seu e-mail maria.santos@gmail.com foi atualizado com sucesso.
+```
+
+**Saída (e-mail inválido):**
+```
+O e-mail 'maria.santosgmail.com' não possui um formato válido. Verifique e tente novamente.
 ```
 
 ## Observações
 
-- A função **não valida se o e-mail ou domínio realmente existem**. Ela apenas checa se a estrutura está correta. Um e-mail como `zzz@dominioquenaoexiste.com.br` vai retornar `true`.
-- Um endereço sem TLD (como `joao@megastore`, sem o `.com.br`) é considerado **válido** pela função, pois é tecnicamente possível, embora raro na prática.
-- Endereços com dois `@`, sem a parte local (antes do `@`), ou sem domínio de segundo nível são considerados **inválidos**.
-- É uma boa prática combinar `IsEmailAddress` com [Trim](../string-functions/trim.md) e [Lowercase](../string-functions/lowercase.md) para limpar e padronizar o e-mail antes da validação.
-- Funciona em todos os contextos do SFMC: e-mails, CloudPages, SMS Landing Pages, Script Activities, etc.
-- Para uma validação mais robusta (como verificar domínios específicos ou padrões avançados), considere usar [RegExMatch](../string-functions/regexmatch.md) com uma expressão regular customizada.
-- Se o valor passado for nulo ou vazio, a função retorna `false`.
+- A função valida **apenas a estrutura** do e-mail. Um endereço como `carlos@exemplo` retorna `true`, pois tecnicamente é possível (embora raro) ter um domínio sem TLD como `.com` ou `.com.br`.
+
+> **⚠️ Atenção:** `IsEmailAddress` **não garante que o e-mail existe**. Endereços como `aaa@bbb.ccc` passam na validação. Para reduzir bounces, combine essa checagem com boas práticas de confirmação (double opt-in) e higienização periódica da base.
+
+- Exemplos de formatos que retornam `false`:
+  - Falta do `@` → `joao.silvaempresa.com.br`
+  - Dois `@` → `joao@silva@empresa.com.br`
+  - Sem parte local (antes do `@`) → `@empresa.com.br`
+  - Sem domínio de segundo nível → `joao.silva@.com.br`
+
+> **💡 Dica:** Combine com [Trim](../string-functions/trim.md) antes da validação para eliminar espaços acidentais que o cliente pode digitar, e com [Lowercase](../string-functions/lowercase.md) para padronizar o e-mail antes de gravar na Data Extension.
 
 ## Funções relacionadas
 
-- [IsPhoneNumber](../utility-functions/isphonenumber.md) — Verifica se um número de telefone tem estrutura válida.
-- [Empty](../utility-functions/empty.md) — Verifica se um valor é vazio ou nulo, útil para validações complementares.
-- [IsNull](../utility-functions/isnull.md) — Verifica se um valor é nulo.
-- [Trim](../string-functions/trim.md) — Remove espaços em branco no início e fim de uma string. Ótimo pra limpar e-mails antes de validar.
-- [Lowercase](../string-functions/lowercase.md) — Converte uma string para minúsculas, ideal para padronizar e-mails.
-- [RegExMatch](../string-functions/regexmatch.md) — Permite validações mais avançadas usando expressões regulares.
-- [RaiseError](../utility-functions/raiseerror.md) — Levanta um erro e interrompe o processamento, útil para bloquear envios quando o e-mail é inválido.
-- [RequestParameter](../sites-functions/requestparameter.md) — Captura parâmetros de formulários em CloudPages, onde a validação de e-mail é muito comum.
+- [Empty](../utility-functions/empty.md) — verifica se um valor está vazio (útil para checar antes de validar o formato)
+- [IsNull](../utility-functions/isnull.md) — verifica se o valor é nulo
+- [IsPhoneNumber](../utility-functions/isphonenumber.md) — validação estrutural equivalente para números de telefone
+- [Trim](../string-functions/trim.md) — remove espaços nas extremidades da string
+- [Lowercase](../string-functions/lowercase.md) — converte para minúsculas, ideal para padronizar e-mails
+- [Domain](../string-functions/domain.md) — extrai o domínio de um endereço de e-mail
+- [RaiseError](../utility-functions/raiseerror.md) — interrompe o envio em caso de dados inválidos

@@ -8,7 +8,7 @@ sidebar_position: 6
 # Personalization Strings
 
 
-Personalization Strings são aqueles marcadores entre `%%` duplos que você joga no meio do HTML e o SFMC troca pelo valor real na hora do envio, por exemplo `%%FirstName%%` vira "Carlos". Existem dois sabores: as baseadas em atributo, que puxam dados do subscriber, de uma Data Extension ou do contato no Journey; e as de sistema, que trazem info do próprio envio, como data de disparo ou nome do Job.
+Personalization Strings são aqueles marcadores entre `%%` duplos que você joga no meio do HTML e o SFMC troca pelo valor real na hora do envio, por exemplo `%%FirstName%%` vira "Carlos". Existem duas formas: as baseadas em atributo, que puxam dados do subscriber, de uma Data Extension ou do contato no Journey; e as de sistema, que trazem info do próprio envio, como data de disparo ou nome do Job.
 
 Um detalhe que confunde muita gente: elas **não são** AMPscript, mas convivem bem juntas. Você pode usar uma Personalization String dentro de um `IF`, atribuir o valor dela a uma variável com `SET` ou passar como argumento em funções tranquilamente.
 

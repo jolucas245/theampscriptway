@@ -1,124 +1,122 @@
 ---
 title: InvokeUpdate
 sidebar_label: InvokeUpdate
-description: Invoca o método Update da API SOAP do Marketing Cloud para atualizar um objeto da API diretamente via AMPscript.
+description: Executa o método Update em um objeto da API do SFMC, permitindo atualizar registros como Subscribers e outros objetos do sistema via AMPscript.
 ---
 
 # InvokeUpdate
 
 ## Descrição
 
-A função `InvokeUpdate` executa o método **Update** da API SOAP do Salesforce Marketing Cloud sobre um objeto da API previamente criado e configurado. Ela é usada quando você precisa atualizar registros de objetos do sistema — como Subscribers, Data Extensions gerenciadas via API, listas, entre outros — diretamente pelo AMPscript, sem precisar de uma chamada externa. A função retorna uma mensagem de status e, opcionalmente, um código de erro que você pode capturar em variáveis AMPscript para validar se a operação foi bem-sucedida.
+A função `InvokeUpdate` invoca o método Update em um objeto da API do Marketing Cloud. É a função que você usa quando precisa atualizar programaticamente objetos do sistema — como dados de um Subscriber — diretamente via AMPscript, sem precisar recorrer a chamadas SOAP externas. Após a execução, ela armazena a mensagem de status e o código de erro em variáveis AMPscript para que você possa validar se a operação foi bem-sucedida.
 
 ## Sintaxe
 
 ```ampscript
-InvokeUpdate(@apiObject, @statusMessage, @errorCode)
-InvokeUpdate(@apiObject, @statusMessage, @errorCode, @updateOptions)
+InvokeUpdate(apiObject, statusMessage, errorCode, updateOptions)
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|----------------|-----------|---------------|----------------|
-| apiObject | API Object | Sim | O objeto da API que será atualizado. Deve ser criado previamente com `CreateObject` e configurado com `SetObjectProperty`. |
-| statusMessage | Variável AMPscript | Não | Variável que armazenará a mensagem de status retornada pela API após a execução. |
-| errorCode | Variável AMPscript | Não | Variável que armazenará o código de erro retornado pela API. Se a execução for bem-sucedida, o valor será `0`. |
-| updateOptions | API Object | Não | Um objeto `UpdateOptions` da API, criado com `CreateObject`, que permite configurar opções adicionais para a operação de update. |
+|---|---|---|---|
+| apiObject | API object | Sim | O objeto da API que será atualizado. |
+| statusMessage | Variável AMPscript | Não | Variável que armazena a mensagem de status retornada pela API. |
+| errorCode | Variável AMPscript | Não | Variável que armazena o código de erro da resposta (se ocorrer algum). |
+| updateOptions | API object | Não | Um objeto API do tipo UpdateOptions com opções adicionais para a operação de update. |
 
 ## Exemplo básico
 
-Neste exemplo, vamos atualizar o endereço de e-mail de um assinante (Subscriber) existente no Marketing Cloud. Imagine que o João Silva trocou de e-mail e precisamos atualizar o cadastro dele.
+Atualizando o e-mail de um subscriber existente no Marketing Cloud, associando-o a uma Business Unit específica.
 
 ```ampscript
 %%[
-/* Cria o objeto Subscriber */
-SET @sub = CreateObject("Subscriber")
-SetObjectProperty(@sub, "SubscriberKey", "joao.silva.12345")
-SetObjectProperty(@sub, "EmailAddress", "joao.silva.novo@email.com.br")
+VAR @subscriber, @clientId, @statusMsg, @errorCode
 
-/* Executa o update */
-SET @update_status = InvokeUpdate(@sub, @statusMsg, @errorCode)
+SET @subscriber = CreateObject("Subscriber")
+SetObjectProperty(@subscriber, "EmailAddress", "joao.silva@lojasVitoria.com.br")
+SetObjectProperty(@subscriber, "SubscriberKey", "JS-00012345")
+
+SET @clientId = CreateObject("ClientID")
+SetObjectProperty(@clientId, "ID", "5765432")
+SetObjectProperty(@subscriber, "Client", @clientId)
+
+SET @statusMsg = ""
+SET @errorCode = ""
+
+InvokeUpdate(@subscriber, @statusMsg, @errorCode)
+
+IF @errorCode == "0" THEN
+  Output(Concat("Sucesso! Status: ", @statusMsg))
+ELSE
+  Output(Concat("Erro ", @errorCode, ": ", @statusMsg))
+ENDIF
 ]%%
-
-Status: %%=v(@statusMsg)=%%
-Código de erro: %%=v(@errorCode)=%%
 ```
 
 **Saída:**
 ```
-Status: OK
-Código de erro: 0
+Sucesso! Status: OK
 ```
 
 ## Exemplo avançado
 
-Neste cenário mais completo, a **Conecta Telecom** precisa atualizar o e-mail de um assinante em uma Business Unit específica (conta filha) dentro de uma estrutura Enterprise. Isso é útil quando você trabalha com múltiplas BUs e precisa direcionar a atualização para a unidade correta.
+Cenário de régua de relacionamento: ao processar um e-mail de boas-vindas, você atualiza o endereço de e-mail do subscriber e vincula à Business Unit correta do Grupo Horizonte. O código valida o resultado e exibe uma mensagem apropriada.
 
 ```ampscript
 %%[
-/* Cria o objeto Subscriber */
-SET @sub = CreateObject("Subscriber")
-SetObjectProperty(@sub, "SubscriberKey", "maria.santos.67890")
-SetObjectProperty(@sub, "EmailAddress", "maria.santos@conectatelecom.com.br")
+VAR @sub, @cid, @statusMsg, @errorCode
+VAR @novoEmail, @subscriberKey, @buId
 
-/* Cria o objeto ClientID para especificar a Business Unit */
-SET @clientId = CreateObject("ClientID")
-SetObjectProperty(@clientId, "ID", "123456789")
+SET @novoEmail = Lookup("Cadastros_Atualizados", "NovoEmail", "SubscriberKey", _subscriberkey)
+SET @subscriberKey = _subscriberkey
+SET @buId = "8891234"
 
-/* Associa o ClientID ao Subscriber */
-SetObjectProperty(@sub, "Client", @clientId)
+IF NOT Empty(@novoEmail) THEN
 
-/* Executa o update do assinante na BU específica */
-SET @update_result = InvokeUpdate(@sub, @update_sub_status, @update_sub_errorcode)
+  SET @sub = CreateObject("Subscriber")
+  SetObjectProperty(@sub, "EmailAddress", @novoEmail)
+  SetObjectProperty(@sub, "SubscriberKey", @subscriberKey)
 
-/* Verifica o resultado */
-IF @update_sub_errorcode == "0" THEN
-  SET @mensagem = Concat("Cadastro de Maria Santos atualizado com sucesso na BU 123456789!")
+  SET @cid = CreateObject("ClientID")
+  SetObjectProperty(@cid, "ID", @buId)
+  SetObjectProperty(@sub, "Client", @cid)
+
+  SET @statusMsg = ""
+  SET @errorCode = ""
+
+  InvokeUpdate(@sub, @statusMsg, @errorCode)
+
+  IF @errorCode == "0" THEN
+    Output(Concat("E-mail do subscriber ", @subscriberKey, " atualizado para ", @novoEmail))
+  ELSE
+    Output(Concat("Falha ao atualizar subscriber ", @subscriberKey, " - Erro ", @errorCode, ": ", @statusMsg))
+  ENDIF
+
 ELSE
-  SET @mensagem = Concat("Erro ao atualizar cadastro. Status: ", @update_sub_status, " | Código: ", @update_sub_errorcode)
+  Output("Nenhuma atualização de e-mail pendente para este subscriber.")
 ENDIF
 ]%%
-
-%%=v(@mensagem)=%%
-
-<br>
-Detalhes técnicos:<br>
-Status: %%=v(@update_sub_status)=%%<br>
-Código de erro: %%=v(@update_sub_errorcode)=%%
 ```
 
-**Saída (sucesso):**
+**Saída:**
 ```
-Cadastro de Maria Santos atualizado com sucesso na BU 123456789!
-
-Detalhes técnicos:
-Status: OK
-Código de erro: 0
+E-mail do subscriber JS-00012345 atualizado para joao.novo@grupohorizonte.com.br
 ```
 
 ## Observações
 
-- A função `InvokeUpdate` trabalha com **objetos da API SOAP** do Marketing Cloud. Você precisa primeiro criar o objeto com [CreateObject](../api-functions/createobject.md) e definir suas propriedades com [SetObjectProperty](../api-functions/setobjectproperty.md) antes de chamar o update.
-- Se a execução for **bem-sucedida**, o código de erro retornado será `0` e a mensagem de status indicará sucesso (ex: "OK").
-- Se o objeto que você está tentando atualizar **não existir**, a API retornará um erro. Certifique-se de que o registro já existe antes de usar `InvokeUpdate`. Se não tiver certeza, considere usar uma lógica de verificação antes da chamada.
-- O parâmetro `updateOptions` é **opcional** e permite configurar comportamentos adicionais da operação, como SaveOptions para controle de upsert. Na maioria dos casos de uso simples, você não vai precisar dele.
-- Para associar um objeto filho (como `ClientID`) a um objeto pai (como `Subscriber`), use [SetObjectProperty](../api-functions/setobjectproperty.md) passando o objeto filho como valor da propriedade.
-- Essa função é mais indicada para **operações sobre objetos do sistema** (Subscribers, Lists, etc.). Para atualizar registros em Data Extensions, geralmente é mais simples usar [UpdateDE](../data-extension-functions/updatede.md) ou [UpdateData](../data-extension-functions/updatedata.md).
-- Fique atento ao **contexto de execução**: chamadas à API SOAP via AMPscript podem ter impacto na performance do envio, especialmente em volumes altos. Use com moderação em emails com grandes audiências.
-- As variáveis de `statusMessage` e `errorCode` são extremamente úteis para **debug e logging**. Sempre capture esses valores para poder diagnosticar problemas.
+- Quando a função executa com sucesso, o código de erro retornado é `0`. Sempre valide essa variável antes de prosseguir com qualquer lógica dependente da atualização.
+
+> **⚠️ Atenção:** O objeto da API precisa ser criado com [CreateObject](../api-functions/createobject.md) e ter suas propriedades definidas com [SetObjectProperty](../api-functions/setobjectproperty.md) antes de ser passado para `InvokeUpdate`. Sem isso, a chamada não terá os dados necessários para a operação.
+
+> **💡 Dica:** Use as variáveis `@statusMsg` e `@errorCode` para implementar tratamento de erros robusto. Em cenários de régua automatizada, isso evita que falhas silenciosas passem despercebidas — registre os erros em uma Data Extension de log para acompanhamento posterior.
 
 ## Funções relacionadas
 
-- [CreateObject](../api-functions/createobject.md) — cria um objeto da API SOAP para uso com as funções Invoke
-- [SetObjectProperty](../api-functions/setobjectproperty.md) — define propriedades em um objeto da API
-- [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) — adiciona itens a uma propriedade de array de um objeto da API
-- [InvokeCreate](../api-functions/invokecreate.md) — invoca o método Create da API para criar novos registros
-- [InvokeDelete](../api-functions/invokedelete.md) — invoca o método Delete da API para excluir registros
-- [InvokeRetrieve](../api-functions/invokeretrieve.md) — invoca o método Retrieve da API para consultar registros
-- [InvokeExecute](../api-functions/invokeexecute.md) — invoca o método Execute da API
-- [InvokePerform](../api-functions/invokeperform.md) — invoca o método Perform da API
-- [UpdateDE](../data-extension-functions/updatede.md) — atualiza registros em uma Data Extension (alternativa mais simples para DEs)
-- [UpdateData](../data-extension-functions/updatedata.md) — atualiza dados em uma Data Extension usando nomes de coluna
-- [UpsertDE](../data-extension-functions/upsertde.md) — insere ou atualiza registros em uma Data Extension
-- [V](../utility-functions/v.md) — exibe o valor de uma variável AMPscript no conteúdo renderizado
+- [CreateObject](../api-functions/createobject.md) — cria o objeto da API que será atualizado
+- [SetObjectProperty](../api-functions/setobjectproperty.md) — define as propriedades do objeto antes do update
+- [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) — adiciona itens a arrays de objetos da API
+- [InvokeCreate](../api-functions/invokecreate.md) — invoca o método Create em um objeto da API
+- [InvokeDelete](../api-functions/invokedelete.md) — invoca o método Delete em um objeto da API
+- [InvokeRetrieve](../api-functions/invokeretrieve.md) — invoca o método Retrieve em um objeto da API

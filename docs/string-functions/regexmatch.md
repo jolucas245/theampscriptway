@@ -1,195 +1,111 @@
 ---
 title: RegExMatch
 sidebar_label: RegExMatch
-description: Busca um padrão em uma string usando uma expressão regular (regex) e retorna o trecho correspondente.
+description: Busca um padrão em uma string usando expressões regulares e retorna o grupo correspondente.
 ---
 
 # RegExMatch
 
 ## Descrição
 
-A função `RegExMatch` permite buscar padrões dentro de uma string usando expressões regulares (regex). Ela é super útil quando você precisa validar, extrair ou identificar formatos específicos de texto — como CPFs, CEPs, cupons de desconto, códigos de rastreio, etc. Você passa a string de origem, o padrão regex, o grupo de captura que quer retornar e, opcionalmente, parâmetros como `IgnoreCase`. Se o padrão for encontrado, a função retorna o trecho correspondente; se não, retorna uma string vazia.
+A função `RegExMatch` busca um padrão dentro de uma string usando expressões regulares (regex). É extremamente útil no dia a dia de SFMC quando você precisa validar formatos de dados como CPF, CEP, telefone ou extrair partes específicas de um texto — situações comuns ao lidar com dados de clientes brasileiros que nem sempre vêm padronizados. Você passa a string, o padrão regex, o grupo de correspondência que quer retornar e, opcionalmente, parâmetros de repetição como `IgnoreCase` ou `Multiline`.
 
 ## Sintaxe
 
 ```ampscript
-RegExMatch(sourceString, regExPattern, returnValue [, repeatParameter])
+RegExMatch(sourceString, regExPattern, returnValue, repeatParameter)
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| sourceString | String | Sim | A string onde a busca será realizada. |
-| regExPattern | String | Sim | A expressão regular (regex) que define o padrão a ser buscado. |
-| returnValue | String | Sim | O nome ou número ordinal do grupo de captura a ser retornado. Use `0` para retornar o match completo. |
-| repeatParameter | String | Não | Opção adicional da enumeração .NET `RegexOptions`, como `IgnoreCase` ou `Multiline`. |
+| sourceString | string | Sim | A string onde a busca será realizada. |
+| regExPattern | string | Sim | A expressão regular usada na busca. |
+| returnValue | string | Sim | O nome ou ordinal do grupo de correspondência a ser retornado. |
+| repeatParameter | string | Não | Parâmetro de repetição a ser aplicado. Aceita qualquer valor da enumeração .NET `RegexOptions`, como `IgnoreCase` e `Multiline`. |
 
 ## Exemplo básico
 
-Imagine que a **MegaStore** envia cupons de desconto por e-mail e precisa validar se o código do cupom tem entre 5 e 7 caracteres alfanuméricos antes de exibi-lo:
+Validando se um código promocional informado pelo cliente contém entre 5 e 7 caracteres alfanuméricos:
 
 ```ampscript
 %%[
-VAR @cupom, @regExMatch
 
-SET @cupom = "NATAL23"
-SET @regExMatch = RegExMatch(@cupom, "^[a-zA-Z0-9]{5,7}$", 0)
+SET @codigoPromo = "MEGA23"
+SET @resultado = RegExMatch(@codigoPromo, "^[a-zA-Z0-9]{5,7}$", 0)
 
-IF Length(@regExMatch) > 0 THEN
+IF NOT EMPTY(@resultado) THEN
+
 ]%%
 
-Seu cupom de desconto é: %%=v(@regExMatch)=%%
+O código <b>%%=v(@resultado)=%%</b> é válido! Aproveite seu desconto na MegaStore.
 
 %%[ ELSE ]%%
 
-Não encontramos um cupom válido para você.
+O código informado não é válido. Verifique e tente novamente.
 
 %%[ ENDIF ]%%
 ```
 
 **Saída:**
 ```
-Seu cupom de desconto é: NATAL23
+O código MEGA23 é válido! Aproveite seu desconto na MegaStore.
 ```
 
-## Exemplo avançado — Extraindo CPF de um texto
+## Exemplo avançado
 
-Digamos que o **Banco Meridional** recebe dados em formato livre e precisa extrair o CPF do assinante para validação:
+Removendo prefixos de tratamento (Sr., Sra., Dr., Dra.) dos nomes de clientes em um rowset para padronizar a saudação em uma campanha de e-mail da Lojas Vitória:
 
 ```ampscript
 %%[
-VAR @texto, @cpf
 
-SET @texto = "Olá, meu nome é João Silva e meu CPF é 123.456.789-00. Preciso de ajuda."
-SET @cpf = RegExMatch(@texto, "\d{3}\.\d{3}\.\d{3}-\d{2}", 0)
+SET @nomes = BuildRowsetFromString("Sr. João Silva,Sra. Maria Santos,Dr. Carlos Mendes,Dra. Ana Lima,Pedro Rocha", ",")
 
-IF Length(@cpf) > 0 THEN
+FOR @i = 1 TO RowCount(@nomes) DO
+
+  SET @linhaAtual = Field(Row(@nomes, @i), 1)
+  SET @prefixo = RegExMatch(@linhaAtual, "^(Sr\.?a?|Sra\.?|Dr\.?a?|Dra\.?)\s+", 0, "IgnoreCase")
+
+  IF NOT EMPTY(@prefixo) THEN
+    SET @nomeLimpo = Replace(@linhaAtual, @prefixo, "")
+  ELSE
+    SET @nomeLimpo = @linhaAtual
+  ENDIF
+
 ]%%
 
-CPF identificado: %%=v(@cpf)=%%
+Olá, %%=v(@nomeLimpo)=%%! Confira as ofertas da Lojas Vitória.<br>
 
-%%[ ELSE ]%%
-
-Nenhum CPF encontrado na mensagem.
-
-%%[ ENDIF ]%%
+%%[ NEXT @i ]%%
 ```
 
 **Saída:**
 ```
-CPF identificado: 123.456.789-00
-```
-
-## Exemplo avançado — Removendo prefixos de nomes com Replace
-
-A **Conecta Telecom** tem uma lista de clientes com prefixos variados (Sr., Sra., Dr., Dra.) e quer padronizar exibindo apenas o nome. Aqui combinamos `RegExMatch` com `Replace` para limpar os dados:
-
-```ampscript
-%%[
-VAR @nomesRaw, @rows, @row, @nome, @nomeNormalizado, @regexPattern
-
-SET @nomesRaw = "Sr. Carlos Oliveira, Sra. Maria Santos, Dr João Pereira, Dra. Ana Costa, Pedro Almeida"
-SET @rows = BuildRowSetFromString(@nomesRaw, ",")
-SET @regexPattern = "(Sr\.?\s|Sra\.?\s|Dr\.?\s|Dra\.?\s)"
-
-IF RowCount(@rows) >= 1 THEN
-  FOR @i = 1 TO RowCount(@rows) DO
-    SET @row = Row(@rows, @i)
-    SET @nome = Field(@row, 1)
-    SET @nomeNormalizado = Replace(@nome, RegExMatch(@nome, @regexPattern, 0), "")
-]%%
-
-%%=v(@nomeNormalizado)=%%
-
-%%[
-  NEXT @i
-ENDIF
-]%%
-```
-
-**Saída:**
-```
-Carlos Oliveira
-Maria Santos
-João Pereira
-Ana Costa
-Pedro Almeida
-```
-
-## Exemplo avançado — Validando CEP brasileiro
-
-A **FarmaRede** oferece frete grátis para compras acima de R$ 299,00, mas antes precisa validar se o CEP informado está no formato correto:
-
-```ampscript
-%%[
-VAR @cep, @cepValido
-
-SET @cep = "01310-100"
-SET @cepValido = RegExMatch(@cep, "^\d{5}-\d{3}$", 0)
-
-IF Length(@cepValido) > 0 THEN
-]%%
-
-CEP %%=v(@cepValido)=%% validado! Frete grátis para compras acima de R$ 299,00. 🎉
-
-%%[ ELSE ]%%
-
-O CEP informado não está em um formato válido. Use o formato 00000-000.
-
-%%[ ENDIF ]%%
-```
-
-**Saída:**
-```
-CEP 01310-100 validado! Frete grátis para compras acima de R$ 299,00. 🎉
-```
-
-## Exemplo avançado — Usando IgnoreCase
-
-Quando você não tem certeza se o texto virá em maiúsculas ou minúsculas, use o parâmetro `IgnoreCase`:
-
-```ampscript
-%%[
-VAR @resposta, @match
-
-SET @resposta = "sim, quero participar"
-SET @match = RegExMatch(@resposta, "^SIM", 0, "IgnoreCase")
-
-IF Length(@match) > 0 THEN
-]%%
-
-Oba! Você foi inscrito no programa de pontos da Lojas Vitória!
-
-%%[ ELSE ]%%
-
-Tudo bem, fica pra próxima!
-
-%%[ ENDIF ]%%
-```
-
-**Saída:**
-```
-Oba! Você foi inscrito no programa de pontos da Lojas Vitória!
+Olá, João Silva! Confira as ofertas da Lojas Vitória.
+Olá, Maria Santos! Confira as ofertas da Lojas Vitória.
+Olá, Carlos Mendes! Confira as ofertas da Lojas Vitória.
+Olá, Ana Lima! Confira as ofertas da Lojas Vitória.
+Olá, Pedro Rocha! Confira as ofertas da Lojas Vitória.
 ```
 
 ## Observações
 
-- O `RegExMatch` utiliza o motor de expressões regulares do **.NET (System.Text.RegularExpressions)**. Então a sintaxe regex segue esse padrão — você pode consultar a [documentação oficial da Microsoft](https://learn.microsoft.com/dotnet/standard/base-types/regular-expressions) para referência.
-- O parâmetro `returnValue` com valor `0` retorna o match completo. Valores maiores (`1`, `2`, etc.) retornam grupos de captura específicos definidos com parênteses na regex.
-- Se o padrão **não** for encontrado, a função retorna uma string vazia. Sempre faça a verificação com `Length()` ou `Empty()` antes de usar o resultado.
-- O parâmetro `repeatParameter` aceita qualquer valor da enumeração .NET `RegexOptions`, como `IgnoreCase`, `Multiline`, `Singleline`, entre outros.
-- A combinação de `RegExMatch` com [Replace](../string-functions/replace.md) é muito poderosa para limpar e normalizar dados. A vantagem sobre a [ReplaceList](../string-functions/replacelist.md) é que regex lida com variações no texto (espaços extras, pontuação opcional, etc.), enquanto `ReplaceList` só substitui strings estáticas.
-- Cuidado com regex muito complexas em envios de alto volume — elas podem impactar a performance do processamento.
-- A função funciona em e-mails, CloudPages, SMS e Landing Pages.
+- A `RegExMatch` utiliza o motor de expressões regulares do .NET, então a sintaxe de padrões segue essa especificação. Se você já trabalhou com regex em C# ou PowerShell, vai se sentir em casa.
+
+- O parâmetro `returnValue` aceita o ordinal do grupo de captura. Use `0` para retornar a correspondência completa, `1` para o primeiro grupo entre parênteses, `2` para o segundo, e assim por diante.
+
+- O parâmetro `repeatParameter` aceita valores da enumeração .NET `RegexOptions`. Os mais úteis no dia a dia são `IgnoreCase` (ignora maiúsculas/minúsculas) e `Multiline` (trata cada linha como início/fim separado).
+
+> **💡 Dica:** Ao combinar `RegExMatch` com [Replace](../string-functions/replace.md), você consegue substituir trechos de texto baseados em padrões regex — algo que a [ReplaceList](../string-functions/replacelist.md) não faz, já que ela só trabalha com strings estáticas. Use regex quando os dados de origem tiverem variações e inconsistências (espaços extras, pontuação opcional, etc.).
+
+> **⚠️ Atenção:** Se a expressão regular não encontrar correspondência na string, o retorno será vazio. Sempre valide o resultado com [Empty](../utility-functions/empty.md) antes de usar o valor, especialmente em réguas automatizadas onde dados inconsistentes são comuns.
 
 ## Funções relacionadas
 
-- [Replace](../string-functions/replace.md) — substitui trechos de uma string; combina muito bem com `RegExMatch` para limpar dados.
-- [ReplaceList](../string-functions/replacelist.md) — substitui múltiplas strings estáticas de uma vez (alternativa mais simples quando não precisa de regex).
-- [IndexOf](../string-functions/indexof.md) — encontra a posição de uma substring (mais simples, sem regex).
-- [Substring](../string-functions/substring.md) — extrai uma parte da string por posição e comprimento.
-- [Length](../string-functions/length.md) — retorna o tamanho da string; útil para verificar se o `RegExMatch` retornou resultado.
-- [Trim](../string-functions/trim.md) — remove espaços no início e fim da string.
-- [Empty](../utility-functions/empty.md) — verifica se uma string está vazia; útil para checar o retorno do `RegExMatch`.
-- [BuildRowsetFromString](../content-functions/buildrowsetfromstring.md) — transforma uma string delimitada em um rowset para iterar com `FOR`.
+- [RegExReplace](../string-functions/regexreplace.md) — substitui trechos com base em regex, sem precisar combinar `RegExMatch` + `Replace` manualmente
+- [Replace](../string-functions/replace.md) — substituição simples de strings, ideal para combinar com `RegExMatch`
+- [ReplaceList](../string-functions/replacelist.md) — substitui múltiplas strings estáticas de uma vez (sem suporte a regex)
+- [IndexOf](../string-functions/indexof.md) — localiza a posição de uma substring (alternativa mais simples quando não precisa de regex)
+- [Substring](../string-functions/substring.md) — extrai parte de uma string por posição
+- [Trim](../string-functions/trim.md) — remove espaços em branco das extremidades

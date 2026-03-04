@@ -1,14 +1,14 @@
 ---
 title: StringToDate
 sidebar_label: StringToDate
-description: Converte uma string de data para um objeto datetime do .NET, permitindo que você manipule e compare datas no AMPscript.
+description: Converte uma string de data em um objeto datetime .NET para uso em operações de data no AMPscript.
 ---
 
 # StringToDate
 
 ## Descrição
 
-A função `StringToDate` converte uma string que representa uma data (ou data e hora) em um objeto `datetime` do .NET. Isso é essencial quando você precisa transformar datas que vêm como texto — por exemplo, de uma Data Extension ou de um parâmetro de URL — em um formato que o AMPscript consiga realmente entender como data. Depois da conversão, você pode usar o resultado com funções como [DateAdd](../date-functions/dateadd.md), [DateDiff](../date-functions/datediff.md) e [FormatDate](../date-functions/formatdate.md) para fazer cálculos e formatações.
+Converte uma string de data em um objeto datetime do .NET. Essa função é essencial quando você recebe datas como texto (de Data Extensions, APIs ou parâmetros de URL) e precisa transformá-las em objetos de data reais para fazer cálculos, comparações ou formatações. Aceita diversos formatos de entrada, mas exige atenção especial porque **não suporta o formato brasileiro DD/MM/AAAA** — ela interpreta datas numéricas com barra no padrão americano (MM/DD/AAAA).
 
 ## Sintaxe
 
@@ -19,110 +19,115 @@ StringToDate(dateString)
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|------------|--------|-------------|-----------|
-| dateString | String | Sim | A string contendo a data ou timestamp que você quer converter em um objeto datetime do .NET. Precisa estar em um dos formatos suportados (veja as observações abaixo). |
+|-----------|------|-------------|-----------|
+| dateString | String | Sim | A string de data ou timestamp que será convertida em um objeto datetime .NET. Aceita diversos formatos como ISO 8601, notação americana, notação por extenso em inglês, entre outros. |
 
-## Retorno
+## Formatos suportados
 
-Retorna um objeto `datetime` do .NET correspondente à string de data informada.
+| Formato | Exemplo |
+|---------|---------|
+| ISO 8601 timestamp | `2023-08-05T13:41:23-06:00` |
+| ISO 8601 date | `2023-08-05` |
+| Notação americana (data e hora) | `8/5/2023 1:41 PM` |
+| Por extenso em inglês | `5 August 2023` ou `August 5, 2023` |
+| Data e hora | `2023-08-05 1:41:23 PM` |
+| Somente hora | `1:41 PM` |
+| Notação chinesa/japonesa | `2023年8月5日` |
+| Notação coreana | `2023년 8월 5일` |
+
+## Formatos NÃO suportados
+
+| Formato | Exemplo |
+|---------|---------|
+| Dia com sufixo ordinal | `August 5th, 2023` ou `5th August 2023` |
+| Notação little-endian (DD/MM/AAAA) | `5/8/2023` para representar 5 de agosto |
+| Nomes de meses em outros idiomas | `5 août 2023` |
+| Numerais não ocidentais | `٢٠٢٣/٨/٥` |
+| Calendários não-gregorianos | `18 Av, 5783` ou `18 Muharram, 1445` |
 
 ## Exemplo básico
 
-Imagine que a **Lojas Vitória** está enviando um e-mail com a data de expiração de um cupom de desconto. A data vem como texto de uma Data Extension:
+Convertendo uma data no formato ISO 8601 (o formato mais seguro para uso no Brasil, já que evita ambiguidade entre dia e mês):
 
 ```ampscript
 %%[
-SET @dataTexto = "2024-12-25"
-SET @dataConvertida = StringToDate(@dataTexto)
+VAR @dataTexto, @dataObjeto
+
+SET @dataTexto = "2024-03-15"
+SET @dataObjeto = StringToDate(@dataTexto)
 ]%%
 
-Seu cupom de R$50 de desconto é válido até %%=FormatDate(@dataConvertida, "DD/MM/YYYY")=%%. Aproveite!
+Data convertida: %%=V(@dataObjeto)=%%
 ```
 
 **Saída:**
 ```
-Seu cupom de R$50 de desconto é válido até 25/12/2024. Aproveite!
+Data convertida: 3/15/2024 12:00:00 AM
 ```
 
 ## Exemplo avançado
 
-A **MegaStore** quer enviar um e-mail de lembrete para clientes cujo cupom de Black Friday está prestes a vencer. O e-mail verifica quantos dias faltam e exibe uma mensagem personalizada:
+Cenário de régua de relacionamento da Lojas Vitória: um e-mail de lembrete de vencimento de crédito. A data de vencimento vem de uma Data Extension como texto no formato ISO 8601 e precisa ser convertida para calcular os dias restantes e exibir no formato brasileiro:
 
 ```ampscript
 %%[
+VAR @nome, @dataVencimentoTexto, @dataVencimento, @hoje, @diasRestantes, @dataFormatada
+
 SET @nome = "Maria Santos"
-SET @dataExpiracao = Lookup("Cupons_BlackFriday", "DataExpiracao", "Email", emailaddr)
+SET @dataVencimentoTexto = "2024-12-20T00:00:00-03:00"
 
-/* A data vem como string no formato ISO da DE */
-SET @dataExpiracaoObj = StringToDate(@dataExpiracao)
+SET @dataVencimento = StringToDate(@dataVencimentoTexto)
 SET @hoje = Now()
-SET @diasRestantes = DateDiff(@hoje, @dataExpiracaoObj, "D")
+SET @diasRestantes = DateDiff(@hoje, @dataVencimento, "D")
+SET @dataFormatada = FormatDate(@dataVencimento, "dd/MM/yyyy")
 
-IF @diasRestantes > 0 AND @diasRestantes <= 3 THEN
-  SET @mensagem = Concat("Corre, ", @nome, "! Seu cupom de 30% OFF expira em apenas ", @diasRestantes, " dia(s)!")
-  SET @urgencia = "⚠️ ÚLTIMOS DIAS!"
-ELSEIF @diasRestantes > 3 THEN
-  SET @mensagem = Concat("Oi, ", @nome, "! Você ainda tem ", @diasRestantes, " dias para usar seu cupom de 30% OFF.")
-  SET @urgencia = ""
-ELSE
-  SET @mensagem = Concat("Oi, ", @nome, ", infelizmente seu cupom expirou. Mas temos outras ofertas para você!")
-  SET @urgencia = ""
-ENDIF
+IF @diasRestantes > 0 THEN
 ]%%
 
-%%=v(@urgencia)=%%
+Olá, %%=V(@nome)=%%!
 
-%%=v(@mensagem)=%%
+Seu crédito na Lojas Vitória vence em %%=V(@dataFormatada)=%%.
+Faltam apenas %%=V(@diasRestantes)=%% dias. Aproveite antes que expire!
 
-Válido até: %%=FormatDate(@dataExpiracaoObj, "DD/MM/YYYY")=%%
+%%[
+ELSE
+]%%
 
-Frete grátis em compras acima de R$299!
-Acesse: www.megastore.com.br/blackfriday
+Olá, %%=V(@nome)=%%!
+
+Seu crédito na Lojas Vitória venceu em %%=V(@dataFormatada)=%%.
+Renove agora e continue aproveitando condições especiais.
+
+%%[
+ENDIF
+]%%
 ```
 
-**Saída (exemplo com 2 dias restantes):**
+**Saída (supondo que hoje é 10/12/2024):**
 ```
-⚠️ ÚLTIMOS DIAS!
+Olá, Maria Santos!
 
-Corre, Maria Santos! Seu cupom de 30% OFF expira em apenas 2 dia(s)!
-
-Válido até: 28/11/2024
-
-Frete grátis em compras acima de R$299!
-Acesse: www.megastore.com.br/blackfriday
+Seu crédito na Lojas Vitória vence em 20/12/2024.
+Faltam apenas 10 dias. Aproveite antes que expire!
 ```
-
-## Formatos suportados
-
-A função aceita datas em diversos formatos, incluindo:
-
-| Formato | Exemplo |
-|---------|---------|
-| ISO 8601 com timestamp | `2024-08-05T13:41:23-06:00` |
-| ISO 8601 apenas data | `2024-08-05` |
-| Notação americana (data e hora) | `8/5/2024 1:41 PM` |
-| Formato longo em inglês | `5 August 2024` ou `August 5, 2024` |
-| Data e hora combinados | `2024-08-05 1:41:23 PM` |
-| Apenas hora | `1:41 PM` |
-| Notação chinesa/japonesa | `2024年8月5日` |
-| Notação coreana | `2024년 8월 5일` |
 
 ## Observações
 
-- **Formato brasileiro (DD/MM/AAAA) NÃO é suportado diretamente.** A notação little-endian numérica como `05/08/2024` para representar 5 de agosto de 2024 **não funciona** — o sistema vai interpretar como 8 de maio (formato americano MM/DD). Isso é muito importante para nós brasileiros! Use sempre o formato ISO (`2024-08-05`) para evitar confusão.
-- **Nomes de meses em português não são suportados.** Strings como `5 agosto 2024` ou `5 de dezembro de 2024` **não funcionam**. Os nomes de meses precisam estar em inglês (ex: `5 August 2024`).
-- **Sufixos ordinais não são suportados.** Datas como `August 5th, 2024` ou `5th August 2024` vão gerar erro.
-- **Numerais não-arábicos ocidentais não são suportados**, assim como calendários que não sejam o gregoriano.
-- Se a string de data estiver vazia ou em um formato inválido, a função pode gerar um erro. Considere usar [Empty](../utility-functions/empty.md) para verificar o valor antes de converter.
-- **Dica para dados brasileiros:** se você armazena datas no formato `DD/MM/AAAA` na sua Data Extension, uma boa prática é armazenar no formato ISO (`AAAA-MM-DD`) ou usar [Substring](../string-functions/substring.md) e [Concat](../string-functions/concat.md) para reorganizar a string antes de converter.
+> **⚠️ Atenção:** A função **não suporta o formato brasileiro DD/MM/AAAA com barras**. Se você passar `05/08/2023`, ela vai interpretar como **5 de agosto** (formato americano MM/DD/AAAA), não como 8 de maio. E se passar `25/12/2024`, pode gerar erro, já que não existe mês 25. **Sempre use o formato ISO 8601 (`AAAA-MM-DD`) para evitar ambiguidade** — esse é o formato mais seguro para o cenário brasileiro.
+
+> **💡 Dica:** Se seus dados vêm de sistemas brasileiros no formato `DD/MM/AAAA`, use [Replace](../string-functions/replace.md) e [Substring](../string-functions/substring.md) para reorganizar a string para o formato ISO antes de passar para `StringToDate`. Por exemplo, converta `15/03/2024` para `2024-03-15`.
+
+> **💡 Dica:** Nomes de meses em português (como "agosto", "dezembro") **não são suportados**. Se precisar converter textos com nomes de meses, eles precisam estar em inglês (ex: `15 August 2024`).
+
+- A função retorna um objeto datetime .NET, que pode ser usado diretamente com [FormatDate](../date-functions/formatdate.md), [DateAdd](../date-functions/dateadd.md), [DateDiff](../date-functions/datediff.md) e [DatePart](../date-functions/datepart.md).
 
 ## Funções relacionadas
 
-- [FormatDate](../date-functions/formatdate.md) — formata um objeto datetime para exibição em diferentes formatos
-- [DateAdd](../date-functions/dateadd.md) — adiciona ou subtrai intervalos de tempo de uma data
+- [FormatDate](../date-functions/formatdate.md) — formata o objeto datetime retornado para exibição (ex: `dd/MM/yyyy`)
+- [DateParse](../date-functions/dateparse.md) — outra função para conversão de strings em datas
+- [DateAdd](../date-functions/dateadd.md) — adiciona intervalos de tempo a uma data
 - [DateDiff](../date-functions/datediff.md) — calcula a diferença entre duas datas
-- [DatePart](../date-functions/datepart.md) — extrai uma parte específica de uma data (dia, mês, ano, etc.)
-- [DateParse](../date-functions/dateparse.md) — outra função para interpretar strings de data
-- [Now](../date-functions/now.md) — retorna a data e hora atuais do sistema
-- [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) — converte a data do sistema para o fuso horário local
-- [Format](../string-functions/format.md) — formata valores diversos, incluindo datas, como string
+- [DatePart](../date-functions/datepart.md) — extrai partes específicas de uma data (dia, mês, ano)
+- [Now](../date-functions/now.md) — retorna a data/hora atual
+- [Replace](../string-functions/replace.md) — útil para reformatar strings de data antes da conversão
+- [Substring](../string-functions/substring.md) — útil para extrair partes de strings de data

@@ -1,80 +1,79 @@
 ---
 title: Row
 sidebar_label: Row
-description: Retorna uma linha específica de um rowset ou array com base na posição informada.
+description: Retorna uma linha específica de um rowset ou array a partir da posição informada.
 ---
 
 # Row
 
 ## Descrição
 
-A função `Row()` extrai uma linha específica de um rowset (conjunto de linhas) ou array. Você passa o rowset e o número da posição da linha que quer acessar, e ela retorna essa linha como um objeto. É uma função essencial no dia a dia do AMPscript, porque quase sempre que você busca dados com funções como `LookupRows()` ou `BuildRowsetFromJson()`, precisa usar `Row()` para acessar cada linha individualmente — e depois combinar com `Field()` para pegar o valor de um campo específico.
+A função `Row` extrai uma linha específica de um rowset ou array, com base na posição numérica que você indicar. É uma função essencial no dia a dia de SFMC porque quase sempre que você consulta dados com [LookupRows](../data-extension-functions/lookuprows.md) ou monta um rowset com [BuildRowsetFromString](../content-functions/buildrowsetfromstring.md), precisa acessar as linhas individualmente para trabalhar com os valores. Ela retorna um objeto de linha (row), que você depois combina com [Field](../data-extension-functions/field.md) para extrair campos específicos.
 
 ## Sintaxe
 
 ```ampscript
-Row(rowset, rowPosition)
+Row(@rowset, rowPosition)
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| rowset | string | Sim | O rowset (conjunto de linhas) ou array de onde você quer extrair uma linha. |
-| rowPosition | string | Sim | O número da linha que você quer retornar. A primeira linha é a posição **1** (não zero). |
+| @rowset | String | Sim | O rowset ou array de onde a linha será extraída. |
+| rowPosition | String | Sim | O número da linha que você quer retornar. A primeira linha é 1. |
 
 ## Exemplo básico
 
-Imagine que você tem uma Data Extension chamada **Pedidos** com os pedidos de cada cliente. Você quer exibir os dados do primeiro pedido encontrado.
+Buscando a primeira linha de um rowset com pedidos de um cliente da MegaStore:
 
 ```ampscript
 %%[
-SET @cpf = "123.456.789-00"
-SET @rowset = LookupRows("Pedidos", "CPF", @cpf)
+SET @rowset = LookupRows("Pedidos", "EmailCliente", "joao.silva@gmail.com")
 SET @row = Row(@rowset, 1)
-SET @numeroPedido = Field(@row, "NumeroPedido")
-SET @valorTotal = Field(@row, "ValorTotal")
+SET @nomeProduto = Field(@row, "NomeProduto")
 ]%%
 
-Olá! Seu pedido nº %%=v(@numeroPedido)=%% no valor de R$ %%=v(@valorTotal)=%% está sendo preparado.
+Seu último pedido: %%=v(@nomeProduto)=%%
 ```
 
 **Saída:**
 ```
-Olá! Seu pedido nº 98754 no valor de R$ 259,90 está sendo preparado.
+Seu último pedido: Smartphone Galaxy Ultra
 ```
 
 ## Exemplo avançado
 
-Vamos a um cenário real: a **MegaStore** quer enviar um e-mail de Dia das Mães mostrando os 3 últimos produtos visualizados pelo cliente. Os dados vêm de uma Data Extension chamada **ProdutosVisualizados**, e queremos listar todos eles dinamicamente.
+Listando os três últimos pedidos de um cliente em um e-mail de régua de relacionamento da Lojas Vitória, combinando `Row` com [RowCount](../data-extension-functions/rowcount.md), [Field](../data-extension-functions/field.md) e [FormatCurrency](../string-functions/formatcurrency.md):
 
 ```ampscript
 %%[
-SET @email = AttributeValue("EmailAddress")
-SET @rowset = LookupOrderedRows("ProdutosVisualizados", 3, "DataVisualizacao DESC", "Email", @email)
-SET @totalLinhas = RowCount(@rowset)
+SET @pedidos = LookupOrderedRows("Pedidos", 3, "DataPedido DESC", "CPF", "123.456.789-00")
+SET @totalPedidos = RowCount(@pedidos)
 
-IF @totalLinhas > 0 THEN
+IF @totalPedidos > 0 THEN
 ]%%
 
-<h2>Que tal presentear sua mãe com algo que você já estava de olho? 💐</h2>
+<h2>Seus últimos pedidos, João!</h2>
 <table>
   <tr>
     <th>Produto</th>
-    <th>Preço</th>
+    <th>Valor</th>
+    <th>Data</th>
   </tr>
 
 %%[
-  FOR @i = 1 TO @totalLinhas DO
-    SET @row = Row(@rowset, @i)
-    SET @nomeProduto = Field(@row, "NomeProduto")
-    SET @preco = Field(@row, "Preco")
-    SET @urlProduto = Field(@row, "URL")
+  FOR @i = 1 TO @totalPedidos DO
+    SET @row = Row(@pedidos, @i)
+    SET @produto = Field(@row, "NomeProduto")
+    SET @valor = FormatCurrency(Field(@row, "Valor"), "R$", 2)
+    SET @data = FormatDate(Field(@row, "DataPedido"), "dd/MM/yyyy")
 ]%%
 
   <tr>
-    <td><a href="%%=RedirectTo(@urlProduto)=%%">%%=v(@nomeProduto)=%%</a></td>
-    <td>R$ %%=FormatNumber(@preco, "N2")=%%</td>
+    <td>%%=v(@produto)=%%</td>
+    <td>%%=v(@valor)=%%</td>
+    <td>%%=v(@data)=%%</td>
   </tr>
 
 %%[
@@ -82,66 +81,33 @@ IF @totalLinhas > 0 THEN
 ]%%
 
 </table>
-<p>Frete grátis acima de R$ 299,00! Aproveite 🎁</p>
-
-%%[ ELSE ]%%
-
-<p>Confira nossas ofertas especiais de Dia das Mães em <a href="https://www.megastore.com.br/diadasmaes">www.megastore.com.br</a>!</p>
 
 %%[ ENDIF ]%%
 ```
 
-**Saída (exemplo com 3 produtos):**
-```
-Que tal presentear sua mãe com algo que você já estava de olho? 💐
-
-Produto                     | Preço
-Bolsa Couro Milano          | R$ 389,90
-Kit Perfume Floral          | R$ 179,50
-Relógio Classic Rose        | R$ 459,00
-
-Frete grátis acima de R$ 299,00! Aproveite 🎁
-```
-
-### Exemplo com JSON
-
-A função `Row()` também funciona perfeitamente com rowsets criados a partir de JSON, usando `BuildRowsetFromJson()`. Aqui um exemplo de cashback da **Conecta Telecom**:
-
-```ampscript
-%%[
-SET @json = '[{"Mes":"Janeiro","Cashback":25.50},{"Mes":"Fevereiro","Cashback":18.90},{"Mes":"Março","Cashback":32.00}]'
-SET @rowset = BuildRowsetFromJson(@json, "$.*")
-SET @primeiraLinha = Row(@rowset, 1)
-SET @mesCashback = Field(@primeiraLinha, "Mes")
-SET @valorCashback = Field(@primeiraLinha, "Cashback")
-]%%
-
-No mês de %%=v(@mesCashback)=%% você ganhou R$ %%=v(@valorCashback)=%% de cashback!
-```
-
 **Saída:**
 ```
-No mês de Janeiro você ganhou R$ 25.50 de cashback!
+Seus últimos pedidos, João!
+
+Produto                  | Valor        | Data
+Notebook Pro 15          | R$ 4.299,90  | 15/06/2025
+Fone Bluetooth ANC       | R$ 349,90    | 02/06/2025
+Capa Protetora Premium   | R$ 89,90     | 28/05/2025
 ```
 
 ## Observações
 
-- **A contagem começa em 1**, não em 0. A primeira linha do rowset é `Row(@rowset, 1)`.
-- `Row()` retorna um objeto de linha. Para acessar o valor de um campo específico dessa linha, você precisa usar a função [Field](../data-extension-functions/field.md) em seguida.
-- Se você tentar acessar uma posição que não existe no rowset (por exemplo, `Row(@rowset, 5)` quando só existem 3 linhas), vai ocorrer um erro. Sempre use [RowCount](../data-extension-functions/rowcount.md) para verificar quantas linhas existem antes de iterar.
-- A função funciona com rowsets retornados por diversas funções, como [LookupRows](../data-extension-functions/lookuprows.md), [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md), [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md), [BuildRowsetFromXml](../content-functions/buildrowsetfromxml.md) e [BuildRowsetFromString](../content-functions/buildrowsetfromstring.md).
-- Funciona em todos os contextos do SFMC: e-mails, CloudPages, SMS, etc.
-- Quando usar dentro de um loop `FOR`, combine com [RowCount](../data-extension-functions/rowcount.md) para definir o limite do loop e `Row(@rowset, @i)` para percorrer cada linha.
+> **⚠️ Atenção:** A primeira linha de um rowset é a posição **1**, não 0. Se você passar uma posição que não existe no rowset (por exemplo, pedir a linha 5 de um rowset com 3 registros), vai gerar erro. Sempre valide o número de linhas com [RowCount](../data-extension-functions/rowcount.md) antes de chamar `Row`.
+
+> **💡 Dica:** `Row` sozinha não retorna um valor exibível — ela retorna um objeto de linha. Para acessar o dado de uma coluna específica, você sempre vai precisar combinar com [Field](../data-extension-functions/field.md). Pense nelas como uma dupla inseparável: `Row` seleciona a linha, `Field` seleciona a coluna.
+
+> **💡 Dica:** Você pode usar `Row` com rowsets vindos de diversas origens: [LookupRows](../data-extension-functions/lookuprows.md), [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md), [BuildRowsetFromString](../content-functions/buildrowsetfromstring.md), [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) e [BuildRowsetFromXml](../content-functions/buildrowsetfromxml.md). O comportamento é o mesmo independentemente da origem.
 
 ## Funções relacionadas
 
-- [Field](../data-extension-functions/field.md) — Extrai o valor de um campo específico a partir de uma linha retornada por `Row()`.
-- [RowCount](../data-extension-functions/rowcount.md) — Retorna o número total de linhas em um rowset.
-- [LookupRows](../data-extension-functions/lookuprows.md) — Busca múltiplas linhas de uma Data Extension, retornando um rowset para usar com `Row()`.
-- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) — Busca múltiplas linhas com ordenação, retornando um rowset.
-- [LookupRowsCS](../data-extension-functions/lookuprowscs.md) — Versão case-sensitive do `LookupRows()`.
-- [LookupOrderedRowsCS](../data-extension-functions/lookuporderedrowscs.md) — Versão case-sensitive do `LookupOrderedRows()`.
-- [BuildRowsetFromString](../content-functions/buildrowsetfromstring.md) — Cria um rowset a partir de uma string delimitada.
-- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) — Cria um rowset a partir de dados JSON.
-- [BuildRowsetFromXml](../content-functions/buildrowsetfromxml.md) — Cria um rowset a partir de dados XML.
-- [Lookup](../data-extension-functions/lookup.md) — Busca um único valor de uma Data Extension (quando você não precisa de um rowset completo).
+- [Field](../data-extension-functions/field.md) — extrai o valor de um campo específico da linha retornada por `Row`
+- [RowCount](../data-extension-functions/rowcount.md) — conta o número de linhas em um rowset (use antes de `Row` para evitar erros)
+- [LookupRows](../data-extension-functions/lookuprows.md) — retorna um rowset a partir de uma Data Extension
+- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) — retorna um rowset ordenado a partir de uma Data Extension
+- [BuildRowsetFromString](../content-functions/buildrowsetfromstring.md) — cria um rowset a partir de uma string delimitada
+- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) — cria um rowset a partir de dados JSON

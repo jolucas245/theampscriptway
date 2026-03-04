@@ -1,119 +1,87 @@
 ---
 title: BeforeHTTPGet
 sidebar_label: BeforeHTTPGet
-description: Intercepta e modifica uma URL antes que uma requisição HTTPGet seja executada, permitindo adicionar parâmetros ou alterar a URL dinamicamente.
+description: Executa uma requisição HTTP GET uma única vez no início do envio de e-mail, antes que qualquer subscriber receba a mensagem.
 ---
-
-<!-- generated-by-script -->
 
 # BeforeHTTPGet
 
 ## Descrição
 
-A função `BeforeHTTPGet` é usada como um manipulador (handler) que intercepta a URL antes que uma chamada [HTTPGet](../http-functions/httpget.md) seja executada. Ela permite que você modifique a URL de destino dinamicamente — adicionando parâmetros, tokens de autenticação ou qualquer outra alteração necessária — antes que a requisição HTTP GET realmente aconteça. Essa função trabalha em conjunto com [HTTPGet](../http-functions/httpget.md) e [AfterHTTPGet](../http-functions/afterhttpget.md), formando um ciclo de pré-processamento, execução e pós-processamento de chamadas HTTP.
-
-> ⚠️ **Nota importante:** A documentação oficial da Salesforce para esta função não está disponível (retorna erro 404). As informações abaixo são baseadas no comportamento conhecido dentro do ecossistema SFMC e na relação com funções associadas. Use com cautela e teste sempre em ambiente de desenvolvimento antes de colocar em produção.
+`BeforeHTTPGet` é um comando que prefixa o [HTTPGet](../http-functions/httpget.md) com a diretiva `Before;`, fazendo com que a requisição HTTP GET seja executada **uma única vez no início do job de envio**, antes de qualquer subscriber receber o e-mail. Isso é extremamente útil quando você precisa acionar um webhook, registrar um log ou buscar um conteúdo compartilhado que não precisa (e não deve) ser repetido para cada destinatário. Diferente do `HTTPGet` padrão, que roda uma vez por subscriber, o `BeforeHTTPGet` roda uma vez por envio.
 
 ## Sintaxe
 
 ```ampscript
-BeforeHTTPGet(URL)
+%%Before;HTTPGet "url"%%
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |-----------|------|-------------|-----------|
-| URL | String | Sim | A URL que será processada/modificada antes da execução da requisição HTTP GET. |
+| url | String | Sim | URL completa para a qual a requisição GET será feita. Deve estar entre aspas duplas. |
 
 ## Exemplo básico
 
+Notificando um sistema externo da Lojas Vitória de que um envio de campanha foi iniciado:
+
 ```ampscript
-%%[
-/* Define a URL base de uma API de consulta de ofertas */
-SET @urlBase = "https://api.megastore.com.br/ofertas"
-
-/* Adiciona um parâmetro de categoria antes da chamada */
-SET @urlCompleta = Concat(@urlBase, "?categoria=eletronicos&formato=json")
-
-/* Usa BeforeHTTPGet para preparar a URL */
-BeforeHTTPGet(@urlCompleta)
-]%%
+%%Before;HTTPGet "https://api.lojasvitoria.com.br/webhook/envio-iniciado"%%
 ```
 
 **Saída:**
 ```
-A URL é interceptada e preparada antes da execução do HTTPGet, permitindo que a requisição seja feita com os parâmetros adicionados.
+(A requisição GET é feita uma única vez no início do envio. O conteúdo retornado pela URL, se houver, é renderizado nesse ponto do e-mail.)
 ```
 
 ## Exemplo avançado
 
+Cenário de régua de relacionamento do Banco Meridional: antes de enviar a campanha de aniversário para toda a base, o sistema externo é acionado para registrar o início do job e retornar um aviso legal atualizado que será exibido no rodapé de todos os e-mails.
+
 ```ampscript
 %%[
-/* 
-   Cenário: A Lojas Vitória quer buscar ofertas personalizadas 
-   para cada assinante no e-mail de Black Friday.
-   Antes de fazer o GET, precisamos montar a URL com o CPF 
-   do cliente e um token de autenticação.
-*/
-
-SET @cpfCliente = AttributeValue("CPF")
-SET @tokenAPI = "Bearer abc123xyz"
-SET @urlBase = "https://api.lojasvitoria.com.br/v1/ofertas-personalizadas"
-
-/* Monta a URL com parâmetros do cliente */
-SET @urlCompleta = Concat(
-  @urlBase, 
-  "?cpf=", URLEncode(@cpfCliente), 
-  "&campanha=blackfriday2024",
-  "&frete_gratis_acima=299"
-)
-
-/* Intercepta a URL antes da chamada HTTP */
-BeforeHTTPGet(@urlCompleta)
-
-/* Executa a requisição GET */
-SET @resposta = HTTPGet(@urlCompleta)
-
-/* Exibe as ofertas retornadas */
+VAR @avisoLegal
 ]%%
 
-<div style="font-family: Arial, sans-serif;">
-  <h2>🖤 Black Friday Lojas Vitória</h2>
-  <p>Olá! Preparamos ofertas especiais pra você.</p>
-  <p>Frete grátis acima de R$ 299,00!</p>
-  %%=TreatAsContent(@resposta)=%%
-</div>
+%%[ SET @avisoLegal = ]%%%%Before;HTTPGet "https://api.bancomeridional.com.br/campanhas/aviso-legal"%%%%[ ]%%
+
+%%[
+/* O conteúdo do e-mail personalizado por subscriber continua normalmente */
+VAR @nomeCliente
+SET @nomeCliente = AttributeValue("PrimeiroNome")
+]%%
+
+Olá, %%=v(@nomeCliente)=%%!
+
+Parabéns pelo seu aniversário! 🎂
+
+%%=v(@avisoLegal)=%%
 ```
 
 **Saída:**
-```html
-<div style="font-family: Arial, sans-serif;">
-  <h2>🖤 Black Friday Lojas Vitória</h2>
-  <p>Olá! Preparamos ofertas especiais pra você.</p>
-  <p>Frete grátis acima de R$ 299,00!</p>
-  <!-- Conteúdo dinâmico retornado pela API com as ofertas personalizadas -->
-</div>
+```
+Olá, Maria!
+
+Parabéns pelo seu aniversário! 🎂
+
+Banco Meridional S.A. – CNPJ 00.000.000/0001-00. Ouvidoria: 0800 123 4567.
 ```
 
 ## Observações
 
-- **Documentação oficial indisponível:** A página de referência da Salesforce para `BeforeHTTPGet` retorna erro 404. Isso pode indicar que a função foi descontinuada, renomeada ou que a documentação foi removida. Sempre teste o comportamento atual no seu ambiente SFMC.
-- **Uso em conjunto:** Essa função faz parte de um trio: `BeforeHTTPGet` (pré-processamento), [HTTPGet](../http-functions/httpget.md) (execução) e [AfterHTTPGet](../http-functions/afterhttpget.md) (pós-processamento). Use as três juntas quando precisar de controle total sobre o ciclo da requisição.
-- **Raramente usada:** Na prática, a maioria dos desenvolvedores SFMC usa diretamente o [HTTPGet](../http-functions/httpget.md) ou o [HTTPGetWrap](../http-functions/httpgetwrap.md) sem precisar de `BeforeHTTPGet`. Considere se você realmente precisa dessa função antes de implementá-la.
-- **Contexto de execução:** Chamadas HTTP em AMPscript podem ter restrições dependendo do contexto (e-mail, CloudPages, SMS). Em e-mails, chamadas HTTP são feitas no momento do envio e podem impactar a performance se a API externa for lenta.
-- **Timeout e limites:** As requisições HTTP no SFMC têm limite de timeout. Se a URL montada via `BeforeHTTPGet` apontar para um serviço lento, a chamada pode falhar silenciosamente.
-- **Segurança:** Nunca exponha tokens de autenticação ou dados sensíveis (como CPF completo) diretamente em URLs sem criptografia. Considere usar [EncryptSymmetric](../encryption-functions/encryptsymmetric.md) ou [SHA256](../encryption-functions/sha256.md) para proteger dados sensíveis nos parâmetros.
-- **Whitelisting de URLs:** Lembre-se de que o SFMC exige que domínios externos estejam na lista de permissões (whitelist) do Setup para que chamadas HTTP funcionem.
+> **⚠️ Atenção:** O `BeforeHTTPGet` é executado **uma única vez por job de envio**, não uma vez por destinatário. Se você precisa fazer uma chamada HTTP para cada subscriber individualmente, use o [HTTPGet](../http-functions/httpget.md) padrão.
+
+- Este é um **comando**, não uma função. A sintaxe usa `%%Before;HTTPGet "url"%%` diretamente no corpo do e-mail, e não dentro de um bloco `%%[ ]%%` com `SET`.
+
+- Cenários típicos de uso incluem: acionar webhooks de início de campanha, registrar logs em sistemas externos, buscar conteúdo compartilhado (avisos legais, banners dinâmicos) que seja o mesmo para todos os destinatários, e disparar processos de pré-envio em plataformas integradas.
+
+> **💡 Dica:** Se você precisa executar uma ação uma vez **após** o envio (depois que o último subscriber for processado), confira o [AfterHTTPGet](../http-functions/afterhttpget.md). Combinando `BeforeHTTPGet` e `AfterHTTPGet`, você consegue criar um fluxo completo de notificação para sistemas externos — marcando início e fim da campanha.
 
 ## Funções relacionadas
 
-- [HTTPGet](../http-functions/httpget.md) — Executa uma requisição HTTP GET para buscar conteúdo de uma URL externa
-- [AfterHTTPGet](../http-functions/afterhttpget.md) — Intercepta e processa a resposta após a execução de um HTTPGet
-- [HTTPGetWrap](../http-functions/httpgetwrap.md) — Variação do HTTPGet que encapsula links para rastreamento
-- [HTTPPost](../http-functions/httppost.md) — Executa uma requisição HTTP POST para enviar dados a uma URL externa
-- [HTTPPost2](../http-functions/httppost2.md) — Versão estendida do HTTPPost com suporte a headers customizados
-- [URLEncode](../string-functions/urlencode.md) — Codifica strings para uso seguro em URLs
-- [TreatAsContent](../utility-functions/treatascontent.md) — Renderiza uma string como conteúdo AMPscript/HTML
-- [RedirectTo](../http-functions/redirectto.md) — Redireciona o usuário para uma URL específica
-- [Concat](../string-functions/concat.md) — Concatena strings, útil para montar URLs dinamicamente
+- [HTTPGet](../http-functions/httpget.md) — requisição GET executada uma vez por subscriber
+- [AfterHTTPGet](../http-functions/afterhttpget.md) — requisição GET executada uma vez ao final do envio
+- [HTTPGetWrap](../http-functions/httpgetwrap.md) — requisição GET com quebra de linha automática
+- [HTTPPost](../http-functions/httppost.md) — requisição POST para envio de dados a endpoints externos
+- [HTTPRequestHeader](../http-functions/httprequestheader.md) — define headers customizados para requisições HTTP

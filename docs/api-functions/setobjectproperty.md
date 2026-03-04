@@ -1,14 +1,14 @@
 ---
 title: SetObjectProperty
 sidebar_label: SetObjectProperty
-description: Define o valor de uma propriedade em um objeto API criado pela função CreateObject().
+description: Define o valor de uma propriedade em um objeto da API criado com CreateObject.
 ---
 
 # SetObjectProperty
 
 ## Descrição
 
-A função `SetObjectProperty` define o valor de uma propriedade em um objeto API que foi previamente criado com a função `CreateObject()`. Basicamente, depois de criar um objeto (como um Subscriber, uma DataExtension, um TriggeredSend, etc.), você usa `SetObjectProperty` para preencher cada propriedade desse objeto com os valores desejados. Essa função é essencial no fluxo de trabalho das funções SOAP API do AMPscript — você cria o objeto, define as propriedades e depois invoca uma ação (criar, atualizar, deletar) sobre ele.
+A função `SetObjectProperty` define o valor de uma propriedade em um objeto da API do Marketing Cloud que foi previamente criado com a função [`CreateObject`](../api-functions/createobject.md). No dia a dia de SFMC, você vai usar essa função sempre que precisar montar objetos da API via AMPscript — por exemplo, para criar subscribers, disparar e-mails ou manipular Data Extensions diretamente pela API. Ela trabalha em conjunto com `CreateObject` e as funções de invocação como `InvokeCreate`.
 
 ## Sintaxe
 
@@ -19,107 +19,68 @@ SetObjectProperty(@apiObject, "propertyName", "propertyValue")
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|----------------|-----------|---------------|----------------|
-| @apiObject | API Object | Sim | O objeto API criado pela função `CreateObject()` no qual você quer definir a propriedade. |
-| propertyName | String | Sim | O nome da propriedade do objeto API que receberá o valor. |
-| propertyValue | String | Sim | O valor que será atribuído à propriedade especificada. |
+|---|---|---|---|
+| @apiObject | API Object | Sim | O objeto da API no qual você quer definir a propriedade. Deve ter sido criado previamente com `CreateObject`. |
+| propertyName | String | Sim | O nome da propriedade que receberá o valor. |
+| propertyValue | String | Sim | O valor que será atribuído à propriedade. |
 
 ## Exemplo básico
 
-Este exemplo cria um objeto Subscriber, define o endereço de e-mail e a chave do assinante:
+Criando um objeto Subscriber e definindo o endereço de e-mail de um cliente:
 
 ```ampscript
 %%[
-VAR @sub
-SET @sub = CreateObject("Subscriber")
-SetObjectProperty(@sub, "EmailAddress", "joao.silva@email.com.br")
-SetObjectProperty(@sub, "SubscriberKey", "joao.silva@email.com.br")
+VAR @assinante
+SET @assinante = CreateObject("Subscriber")
+SetObjectProperty(@assinante, "EmailAddress", "joao.silva@lojasvitoria.com.br")
 ]%%
 ```
 
 **Saída:**
 ```
-(Sem saída visível — o objeto Subscriber é criado em memória com as propriedades EmailAddress e SubscriberKey definidas.)
+(Nenhuma saída visível — o objeto @assinante agora possui a propriedade EmailAddress com o valor "joao.silva@lojasvitoria.com.br")
 ```
 
 ## Exemplo avançado
 
-Cenário real: a **Lojas Vitória** quer adicionar automaticamente um novo assinante a uma lista específica quando ele preenche um formulário em uma CloudPage de cadastro para receber ofertas de Black Friday. O código cria o objeto Subscriber, define suas propriedades e usa `InvokeCreate` para efetivar a criação:
+Montando um objeto Subscriber completo para adicionar um novo cliente da MegaStore à lista de assinantes via API, definindo múltiplas propriedades antes de invocar a criação:
 
 ```ampscript
 %%[
-VAR @sub, @list, @statusCode, @statusMsg
+VAR @assinante, @statusMsg, @errorCode
 
-/* Captura os dados do formulário */
-VAR @email, @nome
-SET @email = RequestParameter("email")
-SET @nome = RequestParameter("nome")
+SET @assinante = CreateObject("Subscriber")
+SetObjectProperty(@assinante, "EmailAddress", "maria.santos@megastore.com.br")
+SetObjectProperty(@assinante, "SubscriberKey", "MS-2024-00458")
 
-/* Cria o objeto Subscriber */
-SET @sub = CreateObject("Subscriber")
-SetObjectProperty(@sub, "EmailAddress", @email)
-SetObjectProperty(@sub, "SubscriberKey", @email)
+SET @statusMsg = InvokeCreate(@assinante, @createStatus, @errorCode)
 
-/* Cria o objeto SubscriberList para associar a uma lista */
-SET @list = CreateObject("SubscriberList")
-SetObjectProperty(@list, "ID", "12345")
-SetObjectProperty(@list, "Status", "Active")
-
-/* Adiciona a lista ao array de Lists do Subscriber */
-AddObjectArrayItem(@sub, "Lists", @list)
-
-/* Define atributos adicionais */
-VAR @attr
-SET @attr = CreateObject("Attribute")
-SetObjectProperty(@attr, "Name", "NomeCompleto")
-SetObjectProperty(@attr, "Value", @nome)
-AddObjectArrayItem(@sub, "Attributes", @attr)
-
-VAR @attrOrigem
-SET @attrOrigem = CreateObject("Attribute")
-SetObjectProperty(@attrOrigem, "Name", "Origem")
-SetObjectProperty(@attrOrigem, "Value", "BlackFriday2024-CloudPage")
-AddObjectArrayItem(@sub, "Attributes", @attrOrigem)
-
-/* Invoca a criação do Subscriber */
-SET @statusCode = InvokeCreate(@sub, @statusMsg, @errorCode)
-
-IF @statusCode == "OK" THEN
-  Output(Concat("Obrigado, ", @nome, "! Você está cadastrado para as ofertas de Black Friday da Lojas Vitória!"))
+IF @createStatus == "OK" THEN
+  Output(Concat("Assinante criado com sucesso: ", "maria.santos@megastore.com.br"))
 ELSE
-  Output(Concat("Ops, ocorreu um erro: ", @statusMsg))
+  Output(Concat("Erro ao criar assinante. Status: ", @createStatus))
 ENDIF
 ]%%
 ```
 
-**Saída (caso de sucesso):**
+**Saída:**
 ```
-Obrigado, Maria Santos! Você está cadastrado para as ofertas de Black Friday da Lojas Vitória!
-```
-
-**Saída (caso de erro):**
-```
-Ops, ocorreu um erro: [mensagem de erro retornada pelo sistema]
+Assinante criado com sucesso: maria.santos@megastore.com.br
 ```
 
 ## Observações
 
-- A função `SetObjectProperty` **não retorna nenhum valor** e **não gera saída visível**. Ela apenas atribui um valor a uma propriedade do objeto em memória.
-- O objeto API precisa **obrigatoriamente** ter sido criado com `CreateObject()` antes de usar `SetObjectProperty`. Caso contrário, ocorrerá um erro.
-- O nome da propriedade (`propertyName`) deve corresponder exatamente ao nome definido na API SOAP do Marketing Cloud. Nomes incorretos vão gerar erro na hora de invocar a ação (create, update, etc.).
-- Você pode chamar `SetObjectProperty` múltiplas vezes no mesmo objeto para definir diferentes propriedades — cada chamada define uma propriedade por vez.
-- Essa função faz parte do fluxo típico das funções SOAP API do AMPscript: **CreateObject → SetObjectProperty → AddObjectArrayItem (se necessário) → InvokeCreate/InvokeUpdate/InvokeDelete**.
-- É usada principalmente em **CloudPages**, **Landing Pages** e em cenários de automação onde você precisa manipular objetos do Marketing Cloud diretamente via AMPscript (criar subscribers, disparar triggered sends, gerenciar Data Extensions via API, etc.).
-- Cuidado com permissões: algumas operações de API exigem que a Business Unit tenha as devidas permissões habilitadas.
+> **💡 Dica:** Você sempre vai usar `SetObjectProperty` em combinação com [`CreateObject`](../api-functions/createobject.md). Primeiro cria o objeto, depois define as propriedades uma a uma com `SetObjectProperty`, e por fim executa a ação desejada com funções como [`InvokeCreate`](../api-functions/invokecreate.md).
+
+> **⚠️ Atenção:** O parâmetro `@apiObject` precisa ser um objeto válido criado por `CreateObject`. Se você tentar usar `SetObjectProperty` em uma variável que não seja um API Object, o código vai gerar erro.
+
+> **💡 Dica:** Quando o objeto precisa de várias propriedades, chame `SetObjectProperty` uma vez para cada propriedade. Não existe sintaxe para definir múltiplas propriedades em uma única chamada — é uma chamada por propriedade.
 
 ## Funções relacionadas
 
-- [CreateObject](../api-functions/createobject.md) — Cria um objeto API em memória para ser manipulado com SetObjectProperty
-- [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) — Adiciona um item a uma propriedade de array de um objeto API
-- [InvokeCreate](../api-functions/invokecreate.md) — Executa a criação do objeto API no Marketing Cloud
-- [InvokeUpdate](../api-functions/invokeupdate.md) — Executa a atualização de um objeto API existente
-- [InvokeDelete](../api-functions/invokedelete.md) — Executa a exclusão de um objeto API
-- [InvokeRetrieve](../api-functions/invokeretrieve.md) — Recupera dados de objetos API do Marketing Cloud
-- [InvokePerform](../api-functions/invokeperform.md) — Executa uma ação (como start ou stop) em um objeto API
-- [RequestParameter](../sites-functions/requestparameter.md) — Captura parâmetros de formulários em CloudPages
-- [Output](../utility-functions/output.md) — Exibe conteúdo na página ou e-mail
+- [`CreateObject`](../api-functions/createobject.md) — cria o objeto da API que será configurado com `SetObjectProperty`
+- [`AddObjectArrayItem`](../api-functions/addobjectarrayitem.md) — adiciona itens a propriedades do tipo array no objeto
+- [`InvokeCreate`](../api-functions/invokecreate.md) — executa a criação do objeto configurado na API
+- [`InvokeUpdate`](../api-functions/invokeupdate.md) — executa a atualização de um objeto na API
+- [`InvokeDelete`](../api-functions/invokedelete.md) — executa a exclusão de um objeto na API
+- [`InvokeRetrieve`](../api-functions/invokeretrieve.md) — recupera dados de um objeto da API

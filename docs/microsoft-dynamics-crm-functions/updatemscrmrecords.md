@@ -8,106 +8,99 @@ description: Atualiza um ou mais registros em uma entidade do Microsoft Dynamics
 
 ## Descrição
 
-A função `UpdateMscrmRecords` atualiza um ou mais registros em uma entidade do Microsoft Dynamics CRM. Você passa os GUIDs dos registros que quer alterar, junto com os nomes e valores dos atributos que devem ser atualizados. A função retorna o número de registros que foram atualizados com sucesso, o que é bem útil para validação e logging. Essa função exige que sua conta do Marketing Cloud tenha a integração com o Microsoft Dynamics CRM configurada.
+Atualiza um ou mais registros em uma entidade do Microsoft Dynamics CRM, permitindo modificar múltiplos atributos de uma só vez. Você passa uma lista de GUIDs separados por vírgula e a função aplica as alterações em todos eles, retornando o número de registros que foram atualizados com sucesso. É muito útil quando você precisa fazer atualizações em lote a partir de campanhas de e-mail marketing ou CloudPages que se integram com o Dynamics CRM.
 
 ## Sintaxe
 
 ```ampscript
-UpdateMscrmRecords(entityName, guidsToUpdate, attributeName1, attributeValue1 [, attributeName2, attributeValue2, ...])
+UpdateMscrmRecords(entityName, guidsToUpdate, attributeName1, attributeValue1 [, attributeName2, attributeValue2 ...])
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|----------------|-----------|---------------|----------------|
-| entityName | String | Sim | Nome da entidade do Microsoft Dynamics CRM que contém os registros a serem atualizados. |
-| guidsToUpdate | String | Sim | Lista de GUIDs separados por vírgula, identificando os registros que serão atualizados. |
-| attributeName1 | String | Sim | Nome do atributo a ser atualizado nos registros de destino. |
-| attributeValue1 | String | Sim | Valor do atributo a ser definido nos registros de destino. |
-| attributeNameN | String | Não | Nome de um atributo adicional a ser atualizado. Você pode passar quantos pares nome-valor precisar. |
-| attributeValueN | String | Não | Valor do atributo adicional correspondente. |
+|---|---|---|---|
+| entityName | string | Sim | Nome da entidade do Microsoft Dynamics CRM que contém os registros a serem atualizados. |
+| guidsToUpdate | string | Sim | Lista de GUIDs separados por vírgula identificando os registros que serão atualizados. |
+| attributeName1 | string | Sim | Nome do atributo a ser atualizado nos registros de destino. |
+| attributeValue1 | string | Sim | Valor do atributo a ser atualizado nos registros de destino. Você pode passar múltiplos pares nome-valor adicionando-os ao final da função (attributeName2, attributeValue2 ...). |
 
 ## Exemplo básico
 
-Imagine que a **Conecta Telecom** precisa atualizar a origem de alguns leads no Dynamics CRM para "Web", indicando que vieram de uma campanha digital:
+Atualizando a origem do lead para "Web" em vários registros de leads capturados por uma campanha da Lojas Vitória.
 
 ```ampscript
 %%[
-SET @guid1 = "A1B2C3D4-E5F6-7890-ABCD-EF1234567890"
-SET @guid2 = "B2C3D4E5-F6A7-8901-BCDE-F12345678901"
-SET @guid3 = "C3D4E5F6-A7B8-9012-CDEF-123456789012"
+VAR @numAtualizados
 
-SET @guids = Concat(@guid1, ",", @guid2, ",", @guid3)
-
-SET @records_updated = UpdateMscrmRecords(
+SET @numAtualizados = UpdateMscrmRecords(
   "lead",
-  @guids,
+  "a1b2c3d4-e5f6-7890-abcd-ef1234567890,b2c3d4e5-f6a7-8901-bcde-f12345678901,c3d4e5f6-a7b8-9012-cdef-123456789012",
   "leadsourcecode", "Web"
 )
 ]%%
 
-Total de registros atualizados: %%=V(@records_updated)=%%
+Registros atualizados: %%=V(@numAtualizados)=%%
 ```
 
 **Saída:**
 ```
-Total de registros atualizados: 3
+Registros atualizados: 3
 ```
 
 ## Exemplo avançado
 
-Agora um cenário mais completo: a **MegaStore** está rodando uma campanha de Black Friday e quer atualizar vários atributos de contatos no Dynamics CRM. Os leads que se cadastraram na landing page precisam ter a origem atualizada para "Campanha Black Friday", o tópico de interesse para "Ofertas Sazonais" e a descrição com a data da campanha:
+Cenário de régua de relacionamento: após um cliente da Conecta Telecom preencher um formulário de interesse em um plano empresarial, o sistema atualiza os registros de contato no Dynamics CRM com a origem da campanha e a cidade informada.
 
 ```ampscript
 %%[
-/* GUIDs dos leads capturados na landing page da Black Friday */
-SET @guid1 = "D4E5F6A7-B8C9-0123-DEFA-234567890ABC"
-SET @guid2 = "E5F6A7B8-C9D0-1234-EFAB-3456789012CD"
+VAR @guid1, @guid2, @listaGuids, @numAtualizados, @origemCampanha, @cidade
 
-SET @guids = Concat(@guid1, ",", @guid2)
+SET @guid1 = "d4e5f6a7-b8c9-0123-def0-456789abcdef"
+SET @guid2 = "e5f6a7b8-c9d0-1234-ef01-56789abcdef0"
+SET @listaGuids = Concat(@guid1, ",", @guid2)
 
-/* Atualiza múltiplos atributos de uma vez */
-SET @records_updated = UpdateMscrmRecords(
-  "lead",
-  @guids,
-  "leadsourcecode", "Campanha Black Friday",
-  "subject", "Ofertas Sazonais",
-  "description", "Lead capturado na Black Friday 2024 - 29/11/2024"
+SET @origemCampanha = "Campanha Plano Empresarial 2024"
+SET @cidade = "São Paulo"
+
+SET @numAtualizados = UpdateMscrmRecords(
+  "contact",
+  @listaGuids,
+  "leadsourcecode", "Web",
+  "campaignorigin", @origemCampanha,
+  "address1_city", @cidade
 )
 
-IF @records_updated > 0 THEN
-  SET @mensagem = Concat("Sucesso! ", V(@records_updated), " lead(s) atualizado(s) no Dynamics CRM.")
+IF @numAtualizados > 0 THEN
+  Output(Concat("Sucesso! ", @numAtualizados, " contato(s) atualizado(s) no Dynamics CRM."))
 ELSE
-  SET @mensagem = "Nenhum registro foi atualizado. Verifique os GUIDs informados."
+  Output("Nenhum registro foi atualizado. Verifique os GUIDs informados.")
 ENDIF
 ]%%
-
-%%=V(@mensagem)=%%
 ```
 
 **Saída:**
 ```
-Sucesso! 2 lead(s) atualizado(s) no Dynamics CRM.
+Sucesso! 2 contato(s) atualizado(s) no Dynamics CRM.
 ```
 
 ## Observações
 
-- **Integração obrigatória:** essa função só funciona se a sua conta do Salesforce Marketing Cloud estiver com a integração com o Microsoft Dynamics CRM devidamente configurada. Sem isso, a função vai falhar.
-- **GUIDs separados por vírgula:** o parâmetro `guidsToUpdate` espera uma string com os GUIDs separados por vírgula. Você pode usar a função [Concat](../string-functions/concat.md) para montar essa lista dinamicamente.
-- **Múltiplos atributos:** você pode atualizar vários atributos de uma vez só, bastando adicionar pares nome-valor ao final da chamada da função.
-- **Valor de retorno:** a função retorna um número inteiro representando quantos registros foram atualizados com sucesso. Use esse valor para validação — se retornar 0, pode ser que os GUIDs estejam incorretos ou os registros não existam.
-- **Uso em contexto:** essa função é voltada para cenários de integração com o Dynamics CRM. Se você trabalha com Salesforce CRM (Sales Cloud / Service Cloud), veja as funções específicas do Salesforce, como [UpdateSingleSalesforceObject](../salesforce-functions/updatesinglesalesforceobject.md).
-- **Cuidado com volume:** ao atualizar muitos registros de uma vez, fique atento a possíveis limites de timeout e de chamadas à API do Dynamics CRM.
-- **Verificação prévia:** é uma boa prática usar [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) antes para confirmar que os registros existem e que os GUIDs estão corretos.
+- A função retorna o número de registros atualizados com sucesso. Utilize esse retorno para validar se a operação foi concluída conforme o esperado.
+
+- Você pode passar múltiplos pares de atributo nome-valor, adicionando-os ao final da chamada da função. Isso permite atualizar vários campos de uma só vez sem precisar fazer múltiplas chamadas.
+
+> **💡 Dica:** Use a função [Concat](../string-functions/concat.md) para montar dinamicamente a lista de GUIDs separados por vírgula, especialmente quando os identificadores vêm de consultas ou variáveis diferentes.
+
+> **⚠️ Atenção:** Certifique-se de que os GUIDs informados existem na entidade especificada. Registros não encontrados não serão contabilizados no retorno.
 
 ## Funções relacionadas
 
-- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) — cria um novo registro em uma entidade do Dynamics CRM.
-- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) — insere ou atualiza um registro no Dynamics CRM (insert + update).
-- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) — recupera registros de uma entidade do Dynamics CRM.
-- [RetrieveMscrmRecordsFetchXml](../microsoft-dynamics-crm-functions/retrievemscrmrecordsfetchxml.md) — recupera registros usando FetchXML para consultas mais complexas.
-- [SetStateMscrmRecord](../microsoft-dynamics-crm-functions/setstatemscrmrecord.md) — altera o estado de um registro no Dynamics CRM.
-- [DescribeMscrmEntityAttributes](../microsoft-dynamics-crm-functions/describemscrmentityattributes.md) — lista os atributos disponíveis de uma entidade do Dynamics CRM.
-- [AddMscrmListMember](../microsoft-dynamics-crm-functions/addmscrmlistmember.md) — adiciona um membro a uma lista de marketing no Dynamics CRM.
-- [Concat](../string-functions/concat.md) — concatena strings, útil para montar a lista de GUIDs separados por vírgula.
-- [V](../utility-functions/v.md) — exibe o valor de uma variável no conteúdo renderizado.
+- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) — cria um novo registro no Dynamics CRM
+- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) — insere ou atualiza um registro no Dynamics CRM
+- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) — consulta registros no Dynamics CRM
+- [RetrieveMscrmRecordsFetchXml](../microsoft-dynamics-crm-functions/retrievemscrmrecordsfetchxml.md) — consulta registros usando FetchXML
+- [SetStateMscrmRecord](../microsoft-dynamics-crm-functions/setstatemscrmrecord.md) — altera o estado de um registro no Dynamics CRM
+- [DescribeMscrmEntities](../microsoft-dynamics-crm-functions/describemscrmentities.md) — lista as entidades disponíveis no Dynamics CRM
+- [DescribeMscrmEntityAttributes](../microsoft-dynamics-crm-functions/describemscrmentityattributes.md) — lista os atributos de uma entidade
+- [Concat](../string-functions/concat.md) — útil para montar a lista de GUIDs dinamicamente

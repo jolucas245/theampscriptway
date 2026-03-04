@@ -1,14 +1,14 @@
 ---
 title: LongSfid
 sidebar_label: LongSfid
-description: Converte um ID do Salesforce de 15 caracteres para o formato completo de 18 caracteres, que é case-insensitive e mais seguro para uso em integrações.
+description: Converte um Salesforce ID de 15 caracteres para o formato completo de 18 caracteres.
 ---
 
 # LongSfid
 
 ## Descrição
 
-A função `LongSfid` recebe um ID do Salesforce no formato curto (15 caracteres) e retorna o mesmo ID no formato longo (18 caracteres). O ID de 18 caracteres inclui um sufixo de 3 caracteres que funciona como checksum, tornando o ID case-insensitive — ou seja, seguro para uso em comparações, exports para Excel, fórmulas e integrações onde a diferença entre maiúsculas e minúsculas pode se perder. Sempre que você estiver trabalhando com IDs do Salesforce dentro do Marketing Cloud, é uma boa prática converter para o formato de 18 caracteres para evitar problemas de correspondência.
+A função `LongSfid` recebe um Salesforce ID no formato curto (15 caracteres) e retorna o ID completo de 18 caracteres. Isso é essencial quando você precisa garantir compatibilidade entre sistemas, já que o ID de 15 caracteres é case-sensitive e o de 18 caracteres é case-insensitive — evitando problemas em comparações, lookups e integrações entre o Sales Cloud e o Marketing Cloud.
 
 ## Sintaxe
 
@@ -19,86 +19,70 @@ LongSfid(shortSfid)
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|-----------|--------|-------------|-----------|
-| shortSfid | String | Sim | Um ID do Salesforce com 15 caracteres que você deseja converter para o formato de 18 caracteres. |
+|-----------|------|-------------|-----------|
+| shortSfid | String | Sim | Salesforce ID de 15 caracteres que será convertido para o formato de 18 caracteres. |
 
 ## Exemplo básico
 
-Imagine que você tem o ID curto de um contato do Salesforce e precisa exibir o ID completo em um e-mail de confirmação:
+Convertendo o ID curto de um contato do Sales Cloud para usar em um link personalizado de e-mail:
 
 ```ampscript
 %%[
-  SET @shortId = "0036000000QKv5T"
-  SET @longId = LongSfid(@shortId)
+VAR @sfid15, @sfid18
+SET @sfid15 = "0036000000QKv5T"
+SET @sfid18 = LongSfid(@sfid15)
 ]%%
 
-O ID completo do seu registro é %%=v(@longId)=%%
+ID completo: %%=v(@sfid18)=%%
 ```
 
 **Saída:**
 ```
-O ID completo do seu registro é 0036000000QKv5TAAT
+ID completo: 0036000000QKv5TAAT
 ```
 
 ## Exemplo avançado
 
-Cenário real: a **Conecta Telecom** envia um e-mail mensal para seus clientes com um link personalizado para a área do cliente em uma CloudPage. O ID do Salesforce do contato vem de uma Data Extension no formato curto (15 caracteres). Você precisa converter para 18 caracteres antes de usar na URL, garantindo que a busca no Salesforce funcione corretamente.
+Em uma régua de relacionamento do Banco Meridional, você precisa buscar o ID do contato na Data Extension, converter para 18 caracteres e montar um link para o consultor visualizar o registro diretamente no Salesforce:
 
 ```ampscript
 %%[
-  /* Busca os dados do assinante na DE */
-  SET @sfContactId = AttributeValue("SalesforceContactId")
-  SET @nomeCliente = AttributeValue("NomeCliente")
-  SET @plano = AttributeValue("Plano")
+VAR @sfid15, @sfid18, @nomeCliente, @linkSF
 
-  /* Converte o ID curto para o formato longo de 18 caracteres */
-  IF NOT Empty(@sfContactId) THEN
-    SET @longId = LongSfid(@sfContactId)
-  ELSE
-    SET @longId = ""
-  ENDIF
+SET @sfid15 = AttributeValue("ContactId")
+SET @nomeCliente = AttributeValue("PrimeiroNome")
 
-  /* Monta a URL da CloudPage com o ID longo */
-  SET @urlAreaCliente = Concat(
-    "https://cloud.conectatelecom.com.br/minha-conta?cid=",
-    @longId
-  )
+IF NOT Empty(@sfid15) THEN
+  SET @sfid18 = LongSfid(@sfid15)
+  SET @linkSF = Concat("https://bancomeridional.my.salesforce.com/", @sfid18)
+ENDIF
 ]%%
 
-Olá, %%=v(@nomeCliente)=%%!
-
-Seu plano atual: %%=v(@plano)=%%
-Seu ID de cliente Salesforce: %%=v(@longId)=%%
-
-<a href="%%=RedirectTo(@urlAreaCliente)=%%">
-  Acesse sua área do cliente
-</a>
+%%[ IF NOT Empty(@sfid18) THEN ]%%
+  Olá, %%=v(@nomeCliente)=%%. Seu código de cliente é: %%=v(@sfid18)=%%
+  
+  Consultor, acesse o registro: %%=RedirectTo(@linkSF)=%%
+%%[ ENDIF ]%%
 ```
 
 **Saída:**
 ```
-Olá, Maria Santos!
+Olá, João. Seu código de cliente é: 0036000000QKv5TAAT
 
-Seu plano atual: Fibra 300 Mega
-Seu ID de cliente Salesforce: 0036000000QKv5TAAT
-
-Acesse sua área do cliente
+Consultor, acesse o registro: https://bancomeridional.my.salesforce.com/0036000000QKv5TAAT
 ```
 
 ## Observações
 
-- A função é específica para cenários de integração com o **Salesforce CRM (Sales Cloud / Service Cloud)**. Ela só faz sentido quando você está trabalhando com IDs do Salesforce dentro do Marketing Cloud.
-- O parâmetro **deve ter exatamente 15 caracteres**. Se você passar um ID que já tem 18 caracteres ou um valor com tamanho diferente, o comportamento pode ser inesperado.
-- Sempre valide se o ID não está vazio antes de chamar a função, usando [Empty](../utility-functions/empty.md) ou [IsNull](../utility-functions/isnull.md), para evitar erros em tempo de execução.
-- IDs de 15 caracteres são **case-sensitive** no Salesforce (ex: `001A0` é diferente de `001a0`). O formato de 18 caracteres resolve isso adicionando um sufixo de checksum. Isso é especialmente importante quando você exporta dados para planilhas ou sistemas que não preservam maiúsculas/minúsculas.
-- Essa função é útil quando você recebe IDs do Salesforce via **Synchronized Data Extensions**, **Salesforce Data Extensions** ou campos personalizados e precisa garantir compatibilidade em lookups, comparações ou chamadas de API.
+> **⚠️ Atenção:** O parâmetro deve ser um Salesforce ID válido de exatamente 15 caracteres. Certifique-se de validar o valor antes de passar para a função — se o campo vier vazio ou com um ID já no formato de 18 caracteres, o comportamento pode ser inesperado.
+
+> **💡 Dica:** No dia a dia de SFMC, é comum receber IDs de 15 caracteres vindos de relatórios do Salesforce ou exportações de Data Extensions sincronizadas. Sempre que for comparar IDs entre sistemas diferentes (por exemplo, em um [Lookup](../data-extension-functions/lookup.md) cruzando dados de uma DE com registros do Sales Cloud), converta para 18 caracteres primeiro — isso evita falhas em comparações case-sensitive.
 
 ## Funções relacionadas
 
-- [RetrieveSalesforceObjects](../salesforce-functions/retrievesalesforceobjects.md) — busca registros diretamente do Salesforce CRM usando filtros
-- [CreateSalesforceObject](../salesforce-functions/createsalesforceobject.md) — cria um novo registro no Salesforce CRM
-- [UpdateSingleSalesforceObject](../salesforce-functions/updatesinglesalesforceobject.md) — atualiza um registro existente no Salesforce CRM
-- [Lookup](../data-extension-functions/lookup.md) — busca um valor em uma Data Extension, útil para encontrar registros pelo ID convertido
-- [Concat](../string-functions/concat.md) — concatena strings, útil para montar URLs com o ID longo
-- [Empty](../utility-functions/empty.md) — verifica se um valor está vazio antes de tentar converter o ID
-- [AttributeValue](../utility-functions/attributevalue.md) — recupera o valor de um atributo do assinante ou campo da Data Extension
+- [RetrieveSalesforceObjects](../salesforce-functions/retrievesalesforceobjects.md) — para consultar objetos do Salesforce diretamente via AMPscript
+- [CreateSalesforceObject](../salesforce-functions/createsalesforceobject.md) — para criar registros no Salesforce a partir do Marketing Cloud
+- [UpdateSingleSalesforceObject](../salesforce-functions/updatesinglesalesforceobject.md) — para atualizar registros no Salesforce usando o ID completo
+- [Concat](../string-functions/concat.md) — para montar URLs e strings combinando o ID convertido
+- [Empty](../utility-functions/empty.md) — para validar se o ID existe antes de converter
+- [Lookup](../data-extension-functions/lookup.md) — para buscar dados em Data Extensions usando o ID convertido

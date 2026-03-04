@@ -1,131 +1,94 @@
 ---
 title: Concat
 sidebar_label: Concat
-description: Concatena (junta) duas ou mais strings de texto em uma única string, na ordem em que são passadas.
+description: Concatena duas ou mais strings de texto, unindo-as em uma única string na ordem informada.
 ---
 
 # Concat
 
 ## Descrição
 
-A função `Concat` junta duas ou mais strings de texto em uma única string, adicionando cada valor ao final do anterior, na ordem em que você passar os parâmetros. É uma das funções mais usadas no dia a dia do AMPscript — perfeita para montar nomes completos, URLs dinâmicas, mensagens personalizadas, códigos de cupom e muito mais. Ela retorna uma string com todos os valores concatenados. Se você precisa de espaços, hífens ou qualquer separador entre os valores, precisa incluí-los explicitamente como parâmetros.
+A função **Concat** junta duas ou mais strings de texto em uma só, na ordem em que você passa os parâmetros. É uma das funções mais usadas no dia a dia de SFMC — desde montar o nome completo de um cliente até construir URLs dinâmicas, mensagens personalizadas e endereços formatados. Para incluir espaços entre as strings, você precisa adicioná-los explicitamente como parâmetro.
 
 ## Sintaxe
 
 ```ampscript
-Concat(string1, string2[, string3, ...])
+Concat(string1, string2, ...)
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|-----------|--------|-------------|-----------|
-| string1 | String | Sim | Primeira string de texto. |
-| string2 | String | Sim | Segunda string de texto, adicionada ao final de `string1`. |
-| stringN | String | Não | Você pode passar quantas strings adicionais quiser. Cada uma é adicionada ao final da anterior, na ordem. |
+|-----------|------|-------------|-----------|
+| string1 | string | Sim | Primeira string de texto. |
+| string2 | string | Sim | String de texto que será adicionada ao final de `string1`. Você pode incluir quantos valores adicionais quiser, adicionando mais parâmetros ao final da lista. |
 
 ## Exemplo básico
 
-Um cenário clássico: montar o nome completo do assinante a partir de campos separados (primeiro nome, nome do meio e sobrenome), incluindo espaços entre eles.
+Montando o nome completo de um cliente a partir de primeiro nome, nome do meio e sobrenome — cenário clássico de personalização de e-mail:
 
 ```ampscript
 %%[
-  SET @primeiroNome = "Maria"
-  SET @nomeDoMeio = "Clara"
-  SET @sobrenome = "Santos"
+SET @PrimeiroNome = "Maria"
+SET @NomeMeio = "Santos"
+SET @Sobrenome = "Lima"
 
-  SET @nomeCompleto = Concat(@primeiroNome, " ", @nomeDoMeio, " ", @sobrenome)
+SET @NomeCompleto = Concat(@PrimeiroNome, " ", @NomeMeio, " ", @Sobrenome)
 ]%%
 
-Olá, %%=v(@nomeCompleto)=%%! Seja bem-vinda.
+Olá, %%=v(@NomeCompleto)=%%! Bem-vinda à Lojas Vitória.
 ```
 
 **Saída:**
 ```
-Olá, Maria Clara Santos! Seja bem-vinda.
+Olá, Maria Santos Lima! Bem-vinda à Lojas Vitória.
 ```
+
+> **💡 Dica:** Note que os espaços entre os nomes precisam ser incluídos explicitamente como `" "`. Sem eles, o resultado seria `"MariaSantosLima"`.
 
 ## Exemplo avançado
 
-Imagine que a **MegaStore** quer enviar um e-mail de Dia das Mães com um cupom personalizado e um link dinâmico para a página de ofertas. O código do cupom é montado combinando o prefixo da campanha, o ID do cliente e o valor do desconto.
+Construindo uma linha de endereço completo para um e-mail de confirmação de entrega, combinando `Concat` com [ProperCase](../string-functions/propercase.md) para padronizar a capitalização:
 
 ```ampscript
 %%[
-  SET @primeiroNome = AttributeValue("PrimeiroNome")
-  SET @sobrenome = AttributeValue("Sobrenome")
-  SET @clienteId = AttributeValue("ClienteId")
-  SET @pontosAcumulados = AttributeValue("Pontos")
+SET @Rua = "rua das flores"
+SET @Numero = "1250"
+SET @Complemento = "apto 42"
+SET @Bairro = "jardim paulista"
+SET @Cidade = "São Paulo"
+SET @UF = "SP"
+SET @CEP = "01401-000"
 
-  /* Monta o nome completo */
-  SET @nomeCompleto = Concat(@primeiroNome, " ", @sobrenome)
-
-  /* Gera o código do cupom: MAES24-00158-50 */
-  SET @prefixoCampanha = "MAES24"
-  SET @valorDesconto = "50"
-  SET @codigoCupom = Concat(@prefixoCampanha, "-", @clienteId, "-", @valorDesconto)
-
-  /* Monta a URL personalizada com parâmetros */
-  SET @urlBase = "https://www.megastore.com.br/ofertas-maes"
-  SET @urlCompleta = Concat(@urlBase, "?cupom=", @codigoCupom, "&cliente=", @clienteId)
-
-  /* Monta a linha de saudação com pontos do programa de fidelidade */
-  SET @mensagemPontos = Concat(
-    "Você tem ", 
-    @pontosAcumulados, 
-    " pontos no programa MegaPontos. ",
-    "Use o cupom abaixo e ganhe R$ ", 
-    @valorDesconto, 
-    ",00 de desconto em compras acima de R$ 299,00!"
-  )
+SET @EnderecoLinha1 = Concat(ProperCase(@Rua), ", ", @Numero, " - ", ProperCase(@Complemento))
+SET @EnderecoLinha2 = Concat(ProperCase(@Bairro), " — ", @Cidade, "/", Uppercase(@UF), " — CEP: ", @CEP)
 ]%%
 
-<h1>%%=v(Concat("Feliz Dia das Mães, ", @primeiroNome, "! 💐"))=%%</h1>
-
-<p>%%=v(@mensagemPontos)=%%</p>
-
-<p>Seu cupom exclusivo: <strong>%%=v(@codigoCupom)=%%</strong></p>
-
-<a href="%%=RedirectTo(@urlCompleta)=%%">Aproveitar ofertas</a>
-
-<p style="font-size: 12px; color: #999;">
-  %%=v(Concat("E-mail enviado para ", @nomeCompleto, " — ClienteId: ", @clienteId))=%%
-</p>
+Seu pedido será entregue em:
+%%=v(@EnderecoLinha1)=%%
+%%=v(@EnderecoLinha2)=%%
 ```
 
-**Saída (exemplo para a assinante Maria Santos, ID 00158, com 1.250 pontos):**
+**Saída:**
 ```
-Feliz Dia das Mães, Maria! 💐
-
-Você tem 1250 pontos no programa MegaPontos. Use o cupom abaixo e ganhe R$ 50,00 de desconto em compras acima de R$ 299,00!
-
-Seu cupom exclusivo: MAES24-00158-50
-
-[Botão: Aproveitar ofertas → https://www.megastore.com.br/ofertas-maes?cupom=MAES24-00158-50&cliente=00158]
-
-E-mail enviado para Maria Santos — ClienteId: 00158
+Seu pedido será entregue em:
+Rua Das Flores, 1250 - Apto 42
+Jardim Paulista — São Paulo/SP — CEP: 01401-000
 ```
 
 ## Observações
 
-- **Mínimo de dois parâmetros:** você precisa passar pelo menos duas strings para a função funcionar. Com apenas uma, vai dar erro.
-- **Espaços não são automáticos:** a função simplesmente gruda um valor no outro. Se você quer espaço, vírgula, hífen ou qualquer separador, inclua como um parâmetro separado (ex: `Concat(@nome, " ", @sobrenome)`).
-- **Sem limite de parâmetros:** você pode concatenar quantos valores quiser — basta ir adicionando parâmetros separados por vírgula.
-- **Valores não-string:** na prática, valores numéricos e de outros tipos são convertidos para string automaticamente ao serem passados para `Concat`. Porém, se você precisa de formatação específica (casas decimais, moeda), use funções como [Format](../string-functions/format.md) ou [FormatCurrency](../string-functions/formatcurrency.md) antes de concatenar.
-- **Campos nulos ou vazios:** se um dos campos vier vazio ou nulo da Data Extension, ele será tratado como string vazia. Isso pode resultar em espaços duplos ou separadores soltos. Combine com [Empty](../utility-functions/empty.md) ou [IsNullDefault](../utility-functions/isnulldefault.md) para tratar esses casos.
-- **Funciona em todos os contextos:** e-mails, SMS, CloudPages, Landing Pages — sem restrições.
-- **Alternativa inline:** para concatenações simples dentro de HTML, você também pode usar múltiplas chamadas `%%=v()=%%` lado a lado, mas `Concat` deixa o código mais limpo e organizado, especialmente quando há muitos valores.
+- A função exige no mínimo dois parâmetros. Você pode passar quantos valores quiser além disso — todos serão concatenados na ordem em que aparecem.
+- As strings são unidas exatamente como informadas. Espaços, hífens, barras ou qualquer separador precisam ser incluídos como parâmetros explícitos.
+
+> **⚠️ Atenção:** Se você precisa juntar valores que não são texto (como números ou datas), considere usar funções como [Format](../string-functions/format.md) ou [FormatDate](../date-functions/formatdate.md) antes de passá-los para `Concat`, garantindo que o resultado fique no formato esperado.
 
 ## Funções relacionadas
 
-- [Trim](../string-functions/trim.md) — remove espaços em branco do início e do fim de uma string. Útil para limpar valores antes de concatenar.
-- [Replace](../string-functions/replace.md) — substitui partes de uma string por outro texto.
-- [Substring](../string-functions/substring.md) — extrai uma parte de uma string, útil quando você quer concatenar apenas um trecho de um valor.
-- [ProperCase](../string-functions/propercase.md) — formata a string com a primeira letra de cada palavra em maiúscula. Ótimo para padronizar nomes antes de juntar.
-- [Uppercase](../string-functions/uppercase.md) — converte a string para maiúsculas, útil para códigos de cupom.
-- [Lowercase](../string-functions/lowercase.md) — converte a string para minúsculas.
-- [Format](../string-functions/format.md) — formata números e datas antes de incluí-los em uma concatenação.
-- [FormatCurrency](../string-functions/formatcurrency.md) — formata valores monetários (ex: R$ 50,00) para uso em textos concatenados.
-- [V](../utility-functions/v.md) — exibe o valor de uma variável no conteúdo renderizado.
-- [IsNullDefault](../utility-functions/isnulldefault.md) — retorna um valor padrão quando o campo é nulo, evitando concatenações com valores vazios.
-- [Empty](../utility-functions/empty.md) — verifica se uma string está vazia antes de concatenar.
-- [AttributeValue](../utility-functions/attributevalue.md) — recupera o valor de um atributo do assinante, muito usado em conjunto com `Concat`.
+- [Trim](../string-functions/trim.md) — remove espaços antes e depois de strings, útil para limpar dados antes de concatenar
+- [ProperCase](../string-functions/propercase.md) — padroniza capitalização de nomes antes de juntar
+- [Uppercase](../string-functions/uppercase.md) — converte para maiúsculas, comum para UF e siglas
+- [Lowercase](../string-functions/lowercase.md) — converte para minúsculas
+- [Replace](../string-functions/replace.md) — substitui trechos dentro de uma string
+- [Substring](../string-functions/substring.md) — extrai parte de uma string
+- [Format](../string-functions/format.md) — formata valores antes de concatenar

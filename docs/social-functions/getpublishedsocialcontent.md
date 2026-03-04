@@ -8,7 +8,7 @@ description: Retorna o conteúdo publicado para compartilhamento em redes sociai
 
 ## Descrição
 
-A função `GetPublishedSocialContent` retorna o conteúdo configurado para compartilhamento em uma rede social, identificado pelo ID da região (region ID) da área de conteúdo social. Pense nela como uma forma de puxar dinamicamente o conteúdo que foi preparado para ser compartilhado nas redes sociais do seu assinante. Essa função é de uso exclusivo em **Landing Pages** ou no recurso **Social Forward** do Marketing Cloud — ela não funciona em emails comuns ou em outros contextos.
+Retorna o conteúdo destinado a compartilhamento em redes sociais, identificado pelo ID da região (region ID) configurada no Marketing Cloud. Essa função é usada exclusivamente em **landing pages** ou no recurso **Social Forward**, que permite que assinantes compartilhem conteúdo de e-mails nas redes sociais. No contexto brasileiro, é útil quando você quer que o destinatário de uma campanha — por exemplo, uma promoção da MegaStore — compartilhe ofertas diretamente no Facebook ou Twitter a partir de uma landing page.
 
 ## Sintaxe
 
@@ -19,74 +19,56 @@ GetPublishedSocialContent(regionId)
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|-----------|--------|-------------|-----------|
-| regionId | String | Sim | O ID da região (region ID) da área de conteúdo social configurada no Marketing Cloud. |
+|-----------|------|-------------|-----------|
+| regionId | String | Sim | O ID da região (region ID) que identifica a área de conteúdo social configurada no Marketing Cloud. |
 
 ## Exemplo básico
 
-Imagine que a **Lojas Vitória** configurou uma região de conteúdo social chamada `SocialRegion` para a campanha de Dia das Mães. Numa Landing Page, você pode recuperar esse conteúdo assim:
+Recuperando o conteúdo social de uma região configurada para uma campanha de compartilhamento da Lojas Vitória.
+
+```ampscript
+%%=GetPublishedSocialContent("SocialRegion")=%%
+```
+
+**Saída:**
+```
+[Conteúdo HTML/texto configurado na região "SocialRegion" para compartilhamento social]
+```
+
+## Exemplo avançado
+
+Em uma landing page de campanha promocional da MegaStore, você pode recuperar o conteúdo social e combiná-lo com informações dinâmicas para personalizar a experiência de compartilhamento.
 
 ```ampscript
 %%[
-VAR @conteudoSocial
-SET @conteudoSocial = GetPublishedSocialContent("SocialRegion")
+  VAR @conteudoSocial, @nomeCliente
+
+  SET @nomeCliente = AttributeValue("PrimeiroNome")
+  SET @conteudoSocial = GetPublishedSocialContent("PromoVeraoRegion")
 ]%%
 
+<h2>Olá, %%=v(@nomeCliente)=%%!</h2>
+<p>Compartilhe esta oferta com seus amigos:</p>
 %%=v(@conteudoSocial)=%%
 ```
 
 **Saída:**
 ```
-🌹 Dia das Mães na Lojas Vitória! Presentes a partir de R$49,90 com frete grátis acima de R$299. Acesse: www.lojasvitoria.com.br/maes
-```
-
-## Exemplo avançado
-
-Agora digamos que a **MegaStore** quer montar uma Landing Page de Social Forward para a campanha de Black Friday, combinando o conteúdo social com informações personalizadas do assinante. Nesse cenário, a página exibe o conteúdo social publicado e uma mensagem personalizada incentivando o compartilhamento:
-
-```ampscript
-%%[
-VAR @conteudoSocial, @nomeAssinante, @mensagemFinal
-
-SET @conteudoSocial = GetPublishedSocialContent("BlackFridayRegion")
-SET @nomeAssinante = AttributeValue("FirstName")
-SET @nomeAssinante = IIF(Empty(@nomeAssinante), "Amigo(a)", ProperCase(@nomeAssinante))
-
-SET @mensagemFinal = Concat(
-  "Oi, ", @nomeAssinante, "! Compartilhe essa oferta incrível com seus amigos:"
-)
-]%%
-
-<h2>%%=v(@mensagemFinal)=%%</h2>
-<div class="social-content">
-  %%=v(@conteudoSocial)=%%
-</div>
-<p>Aproveite a Black Friday MegaStore — descontos de até 70% e cashback de R$50 em compras acima de R$299!</p>
-```
-
-**Saída:**
-```
-Oi, Maria! Compartilhe essa oferta incrível com seus amigos:
-
-🔥 Black Friday MegaStore! Até 70% OFF + cashback de R$50. Corre que é só até 24/11/2024! www.megastore.com.br/blackfriday
-
-Aproveite a Black Friday MegaStore — descontos de até 70% e cashback de R$50 em compras acima de R$299!
+Olá, Maria!
+Compartilhe esta oferta com seus amigos:
+[Conteúdo da região "PromoVeraoRegion" renderizado para compartilhamento social]
 ```
 
 ## Observações
 
-- ⚠️ **Contexto restrito:** essa função funciona **apenas** em Landing Pages e no recurso **Social Forward**. Ela **não** vai funcionar em emails, SMS ou outros contextos do Marketing Cloud.
-- O parâmetro `regionId` precisa corresponder exatamente ao ID da região de conteúdo social configurada na sua conta. Se o ID estiver errado ou não existir, a função não vai retornar conteúdo útil.
-- Essa é uma função bastante específica e de uso relativamente raro. Ela está atrelada ao recurso de Social Forward, que permite que assinantes compartilhem conteúdo de email nas redes sociais.
-- Se você não utiliza o recurso Social Forward na sua conta, provavelmente não vai precisar dessa função.
-- Certifique-se de que o conteúdo social já foi publicado antes de tentar recuperá-lo com essa função.
+> **⚠️ Atenção:** Esta função é para uso **exclusivamente em landing pages ou no recurso Social Forward**. Não utilize em e-mails enviados diretamente ou em CloudPages fora desse contexto — ela depende da infraestrutura de publicação social do Marketing Cloud para funcionar corretamente.
+
+- O valor de `regionId` deve corresponder exatamente ao ID da região de conteúdo social configurada na sua conta. Verifique a grafia e o case do ID antes de publicar.
+- O conteúdo retornado é aquele que foi previamente configurado e publicado na área de conteúdo social referenciada pelo region ID.
 
 ## Funções relacionadas
 
-- [GetSocialPublishUrl](../social-functions/getsocialpublishurl.md) — retorna a URL de publicação social para uma rede específica
-- [GetSocialPublishUrlByName](../social-functions/getsocialpublishurlbyname.md) — retorna a URL de publicação social pelo nome da rede
-- [ContentBlockByName](../content-functions/contentblockbyname.md) — recupera blocos de conteúdo pelo nome, útil para montar Landing Pages dinâmicas
-- [AttributeValue](../utility-functions/attributevalue.md) — obtém o valor de um atributo do assinante, útil para personalização
-- [V](../utility-functions/v.md) — exibe o valor de uma variável inline no HTML
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — gera URLs para CloudPages, contexto onde essa função pode ser usada
-- [RedirectTo](../http-functions/redirectto.md) — redireciona o usuário para uma URL, útil em Landing Pages sociais
+- [GetSocialPublishUrl](../social-functions/getsocialpublishurl.md) — retorna a URL de publicação social para uma rede específica.
+- [GetSocialPublishUrlByName](../social-functions/getsocialpublishurlbyname.md) — retorna a URL de publicação social usando o nome da rede.
+- [ContentBlockByName](../content-functions/contentblockbyname.md) — para recuperar blocos de conteúdo por nome quando precisar de conteúdo dinâmico em outros contextos.
+- [RedirectTo](../http-functions/redirectto.md) — útil para redirecionar o usuário após interação na landing page social.

@@ -1,125 +1,106 @@
 ---
 title: DeleteDE
 sidebar_label: DeleteDE
-description: Deleta linhas de uma Data Extension com base em critérios de coluna e valor, disponível para uso em emails.
+description: Remove linhas de uma Data Extension com base em critérios de coluna e valor, para uso em contexto de e-mail.
 ---
 
 # DeleteDE
 
 ## Descrição
 
-A função `DeleteDE` deleta uma ou mais linhas de uma Data Extension com base em critérios de busca que você define (coluna + valor). Ela **não retorna nenhum valor** — simplesmente remove os registros que correspondem aos critérios informados. Essa função é específica para uso em **emails**. Se você precisa deletar dados em CloudPages, landing pages, microsites ou mensagens SMS no MobileConnect, use a função [DeleteData](../data-extension-functions/deletedata.md).
+A função `DeleteDE` remove linhas de uma Data Extension com base em um ou mais critérios de coluna e valor. Ela é usada especificamente em contexto de **e-mail** — se você precisa deletar registros em CloudPages, landing pages, microsites ou mensagens SMS no MobileConnect, use a função [DeleteData](../data-extension-functions/deletedata.md). A função não retorna nenhum valor de saída.
 
 ## Sintaxe
 
 ```ampscript
-DeleteDE("NomeDaDataExtension", "coluna1", "valor1" [, "coluna2", "valor2", ...])
+DeleteDE(@dataExt, @columnName1, @valueToDelete1)
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|-----------|------|-------------|-----------|
-| dataExt | String | Sim | Nome da Data Extension que contém os dados que você quer deletar. |
-| columnName1 | String | Sim | Nome da coluna usada como critério de busca para encontrar a(s) linha(s) a deletar. |
-| valueToDelete1 | String | Sim | Valor que a função usa para determinar qual(is) linha(s) deletar na coluna especificada. |
-| columnNameN | String | Não | Colunas adicionais para refinar o critério de deleção. Sempre em pares com o valor correspondente. |
-| valueToDeleteN | String | Não | Valores adicionais correspondentes às colunas extras. |
+|---|---|---|---|
+| `dataExt` | String | Sim | Nome da Data Extension que contém os dados que você quer deletar. |
+| `columnName1` | String | Sim | Nome da coluna usada como critério de busca para identificar as linhas a serem deletadas. |
+| `valueToDelete1` | String | Sim | Valor que a função usa para determinar qual(is) linha(s) deletar. |
+
+Você pode deletar múltiplas linhas na mesma operação adicionando pares extras de nome de coluna e valor ao final da chamada da função.
 
 ## Exemplo básico
 
-Imagine que você tem uma Data Extension chamada **"Carrinho_Abandonado"** com os seguintes dados:
+Imagine que você tem uma Data Extension chamada "Ofertas" com dados de promoções enviadas a clientes. Você quer remover a oferta destinada a uma cidade específica ao disparar um e-mail de atualização.
 
-| EmailCliente | Produto | Valor |
-|---|---|---|
-| joao.silva@email.com | Tênis Esportivo | 349.90 |
-| maria.santos@email.com | Bolsa Couro | 189.90 |
-| carlos.oliveira@email.com | Relógio Digital | 279.90 |
+**Data Extension "Ofertas" antes:**
 
-Quando o João Silva finalizar a compra, você pode remover o registro dele do carrinho abandonado:
+| Cidade | Produto | Preco | Frete |
+|---|---|---|---|
+| São Paulo | Notebook | R$ 3.499,00 | R$ 0,00 |
+| Curitiba | Smart TV | R$ 2.199,00 | R$ 89,90 |
+| Belo Horizonte | Smartphone | R$ 1.299,90 | R$ 49,90 |
 
 ```ampscript
 %%[
-DeleteDE("Carrinho_Abandonado", "EmailCliente", "joao.silva@email.com")
+DeleteDE("Ofertas", "Cidade", "Curitiba")
 ]%%
 ```
 
-**Saída:**
+**Data Extension "Ofertas" depois:**
 
-A função não gera nenhuma saída visível. Após a execução, a Data Extension fica assim:
-
-| EmailCliente | Produto | Valor |
-|---|---|---|
-| maria.santos@email.com | Bolsa Couro | 189.90 |
-| carlos.oliveira@email.com | Relógio Digital | 279.90 |
+| Cidade | Produto | Preco | Frete |
+|---|---|---|---|
+| São Paulo | Notebook | R$ 3.499,00 | R$ 0,00 |
+| Belo Horizonte | Smartphone | R$ 1.299,90 | R$ 49,90 |
 
 ## Exemplo avançado
 
-Vamos a um cenário mais completo: a **MegaStore** tem uma Data Extension chamada **"Ofertas_Black_Friday"** com promoções segmentadas por região e categoria. Quando uma promoção expirar, ela precisa ser removida.
+Em uma régua de relacionamento da MegaStore, você mantém uma Data Extension "FilaAtendimento" com solicitações de suporte. Ao enviar um e-mail de encerramento de chamado, você precisa remover todas as linhas em que a origem **ou** o destino do atendimento seja "Rio de Janeiro" — por exemplo, porque aquela regional foi migrada para outro sistema.
 
-| Regiao | Categoria | Produto | PrecoOriginal | PrecoPromo |
-|---|---|---|---|---|
-| Sudeste | Eletrônicos | Smart TV 55" | 3499.00 | 2199.00 |
-| Sudeste | Moda | Jaqueta Inverno | 399.00 | 199.00 |
-| Nordeste | Eletrônicos | Notebook Gamer | 5999.00 | 4299.00 |
-| Nordeste | Casa | Jogo de Panelas | 289.00 | 149.00 |
-| Sul | Eletrônicos | Fone Bluetooth | 249.00 | 129.00 |
-| Sul | Moda | Tênis Running | 599.00 | 349.00 |
+**Data Extension "FilaAtendimento" antes:**
 
-Para remover todas as ofertas de **Eletrônicos** da região **Nordeste** (por exemplo, quando o estoque acabou):
-
-```ampscript
-%%[
-DeleteDE("Ofertas_Black_Friday", "Regiao", "Nordeste", "Categoria", "Eletrônicos")
-]%%
-```
-
-**Saída:**
-
-Nenhuma saída visível. A Data Extension fica assim:
-
-| Regiao | Categoria | Produto | PrecoOriginal | PrecoPromo |
-|---|---|---|---|---|
-| Sudeste | Eletrônicos | Smart TV 55" | 3499.00 | 2199.00 |
-| Sudeste | Moda | Jaqueta Inverno | 399.00 | 199.00 |
-| Nordeste | Casa | Jogo de Panelas | 289.00 | 149.00 |
-| Sul | Eletrônicos | Fone Bluetooth | 249.00 | 129.00 |
-| Sul | Moda | Tênis Running | 599.00 | 349.00 |
-
-Agora, um exemplo combinando com outras funções — removendo um assinante de uma lista de espera após ele receber o e-mail de confirmação de compra:
+| Origem | Destino | Valor | TaxaExtra |
+|---|---|---|---|
+| São Paulo | Curitiba | R$ 100,00 | |
+| São Paulo | Rio de Janeiro | R$ 200,00 | |
+| São Paulo | Belo Horizonte | R$ 500,00 | R$ 25,00 |
+| Curitiba | Belo Horizonte | R$ 525,00 | R$ 10,00 |
+| Curitiba | Rio de Janeiro | R$ 400,00 | |
+| Belo Horizonte | Recife | R$ 300,00 | |
+| Belo Horizonte | Rio de Janeiro | R$ 10,00 | |
+| Rio de Janeiro | Salvador | R$ 350,00 | R$ 10,00 |
+| Porto Alegre | Brasília | R$ 5,00 | |
+| Porto Alegre | Rio de Janeiro | R$ 200,00 | |
 
 ```ampscript
 %%[
-VAR @emailAssinante, @cpf
-SET @emailAssinante = AttributeValue("EmailAddress")
-SET @cpf = Lookup("Clientes", "CPF", "Email", @emailAssinante)
-
-IF NOT Empty(@cpf) THEN
-  DeleteDE("Lista_Espera_Natal", "CPF", @cpf)
-ENDIF
+DeleteDE("FilaAtendimento", "Origem", "Rio de Janeiro", "Destino", "Rio de Janeiro")
 ]%%
 ```
 
-Nesse caso, buscamos o CPF do cliente na Data Extension **"Clientes"** e usamos ele para remover o registro da **"Lista_Espera_Natal"**. O `Empty` garante que só tentamos deletar se o CPF foi encontrado.
+**Data Extension "FilaAtendimento" depois:**
+
+| Origem | Destino | Valor | TaxaExtra |
+|---|---|---|---|
+| São Paulo | Curitiba | R$ 100,00 | |
+| São Paulo | Rio de Janeiro | R$ 200,00 | |
+| São Paulo | Belo Horizonte | R$ 500,00 | R$ 25,00 |
+| Curitiba | Belo Horizonte | R$ 525,00 | R$ 10,00 |
+| Curitiba | Rio de Janeiro | R$ 400,00 | |
+| Belo Horizonte | Recife | R$ 300,00 | |
+| Porto Alegre | Brasília | R$ 5,00 | |
+
+> **💡 Dica:** Quando você passa múltiplos pares de coluna/valor, a função remove as linhas que atendem a **qualquer um** dos critérios informados — no exemplo acima, foram removidas as linhas onde `Origem` era "Rio de Janeiro" **ou** `Destino` era "Rio de Janeiro".
 
 ## Observações
 
-- **Contexto de uso:** A função `DeleteDE` funciona **apenas em emails**. Para CloudPages, landing pages, microsites e mensagens SMS (MobileConnect), use [DeleteData](../data-extension-functions/deletedata.md).
-- **Sem retorno:** A função não retorna nenhum valor. Não tente atribuir o resultado a uma variável.
-- **Múltiplos critérios:** Você pode adicionar quantos pares de coluna/valor quiser ao final da função para refinar a deleção. Todos os critérios funcionam com lógica **AND** — ou seja, a linha precisa atender a **todos** os critérios para ser deletada.
-- **Múltiplas linhas:** Se mais de uma linha corresponder aos critérios informados, **todas** serão deletadas. Tenha cuidado para não remover mais dados do que o esperado.
-- **Cuidado com deleções acidentais:** Sempre valide seus critérios antes de rodar em produção. Uma vez deletados, os dados não podem ser recuperados facilmente.
-- **Nome da Data Extension:** Use o nome exato da Data Extension, incluindo espaços e caracteres especiais, se houver. O nome não é case-sensitive, mas é boa prática manter o padrão.
-- **Performance:** Evite usar essa função em emails com envios massivos (centenas de milhares), pois operações de escrita em Data Extensions durante o envio podem impactar a performance.
+> **⚠️ Atenção:** A função `DeleteDE` é exclusiva para uso em **e-mails**. Se você precisa deletar registros em CloudPages, landing pages, microsites ou mensagens SMS do MobileConnect, utilize a função [DeleteData](../data-extension-functions/deletedata.md).
+
+- A função **não retorna nenhum valor de saída**. Ela executa a deleção silenciosamente.
+- Você pode expandir a operação para múltiplos critérios adicionando pares de nome de coluna e valor ao final da chamada. Cada par adicional funciona como um critério **OR** — qualquer linha que corresponda a pelo menos um dos critérios será removida.
 
 ## Funções relacionadas
 
-- [DeleteData](../data-extension-functions/deletedata.md) — Mesma funcionalidade do `DeleteDE`, mas para uso em CloudPages, landing pages, microsites e SMS.
-- [InsertDE](../data-extension-functions/insertde.md) — Insere uma nova linha em uma Data Extension (uso em emails).
-- [UpdateDE](../data-extension-functions/updatede.md) — Atualiza linhas existentes em uma Data Extension (uso em emails).
-- [UpsertDE](../data-extension-functions/upsertde.md) — Insere ou atualiza uma linha em uma Data Extension (uso em emails).
-- [Lookup](../data-extension-functions/lookup.md) — Busca um valor em uma Data Extension com base em critérios de coluna.
-- [LookupRows](../data-extension-functions/lookuprows.md) — Retorna múltiplas linhas de uma Data Extension com base em critérios.
-- [DataExtensionRowCount](../data-extension-functions/dataextensionrowcount.md) — Retorna a quantidade de linhas em uma Data Extension.
-- [Empty](../utility-functions/empty.md) — Verifica se um valor está vazio, útil para validar antes de deletar.
-- [AttributeValue](../utility-functions/attributevalue.md) — Recupera o valor de um atributo do assinante ou coluna da sendable DE.
+- [DeleteData](../data-extension-functions/deletedata.md) — equivalente para uso em CloudPages, landing pages, microsites e SMS
+- [InsertDE](../data-extension-functions/insertde.md) — insere linhas em uma Data Extension (contexto de e-mail)
+- [UpdateDE](../data-extension-functions/updatede.md) — atualiza linhas em uma Data Extension (contexto de e-mail)
+- [UpsertDE](../data-extension-functions/upsertde.md) — insere ou atualiza linhas em uma Data Extension (contexto de e-mail)
+- [LookupRows](../data-extension-functions/lookuprows.md) — consulta linhas de uma Data Extension antes de decidir o que deletar

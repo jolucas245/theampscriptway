@@ -1,14 +1,14 @@
 ---
 title: FormatDate
 sidebar_label: FormatDate
-description: Formata uma string de data em um formato personalizado, com suporte a locales e formatos predefinidos como ISO 8601 e RFC 1123.
+description: Formata uma string como valor de data, permitindo personalizar o formato de exibição de datas e horários.
 ---
 
 # FormatDate
 
 ## Descrição
 
-A função `FormatDate` pega uma string de data e formata ela do jeito que você precisar — seja um formato customizado, um padrão como ISO 8601, ou o formato local de um país específico. É uma das funções mais usadas no dia a dia do Marketing Cloud, principalmente pra exibir datas bonitas em e-mails, como "05 de dezembro de 2024" em vez daquele "2024-12-05T00:00:00". Se você não passar nenhum parâmetro além da data, ela vai formatar de acordo com as configurações de locale da sua Business Unit.
+A função `FormatDate` formata uma string de data em um formato específico de exibição. No dia a dia de SFMC no Brasil, você vai usar bastante para converter datas que vêm das Data Extensions (geralmente em formato americano ou ISO) para o padrão brasileiro DD/MM/AAAA. Ela retorna a data formatada como string, e se você não passar nenhum parâmetro além da data, ela usa as configurações de locale da sua Business Unit.
 
 ## Sintaxe
 
@@ -20,153 +20,146 @@ FormatDate(dateString, dateFormat, timeFormat, localeCode)
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| dateString | string | Sim | A string de data que você quer formatar. Aceita vários formatos como ISO 8601 (`2024-08-05T13:41:23-06:00`), data ISO (`2024-08-05`), notação americana (`8/5/2024 1:41 PM`), notação por extenso em inglês (`5 August 2024` ou `August 5, 2024`), data e hora (`2024-08-05 1:41:23 PM`), hora apenas (`1:41 PM`), e notações chinesa/japonesa/coreana. |
-| dateFormat | string | Não | Formato a ser aplicado na data. Pode ser um formato customizado (ex: `dd/MM/yyyy`, `ddddd, d MMMM yyyy`) ou um dos valores predefinidos: `S` (formato curto do locale), `L` (formato longo do locale), `ISO` (ISO 8601), `RFC` (RFC 1123). |
-| timeFormat | string | Não | Formato a ser aplicado na hora. Ex: `H:mm:ss`, `hh:mm tt`. |
-| localeCode | string | Não | Código do locale para formatação, como `pt_BR`, `ja_JP`, `en_US`. Usado em conjunto com `S` ou `L` no parâmetro `dateFormat`. |
-
-### Elementos de formatação customizada
-
-| Elemento | Ano (ex: 2024) | Mês (ex: agosto) | Dia (ex: sábado, 06) | Hora 12h | Hora 24h | Minutos | Segundos | AM/PM | Fuso |
-|---|---|---|---|---|---|---|---|---|---|
-| 1 caractere | `y` = 24 | `M` = 8 | `d` = 6 | `h` = 8 | `H` = 8 | `m` = 0 | `s` = 5 | `t` = P | `z` = -3 |
-| 2 caracteres | `yy` = 24 | `MM` = 08 | `dd` = 06 | `hh` = 08 | `HH` = 20 | `mm` = 00 | `ss` = 05 | `tt` = PM | `zz` = -03 |
-| 3 caracteres | `yyy` = 2024 | `MMM` = Aug | `dddd` = Sat | — | — | — | — | — | `zzz` = -03:00 |
-| 4 caracteres | `yyyy` = 2024 | `MMMM` = August | `ddddd` = Saturday | — | — | — | — | — | — |
+| dateString | string | Sim | A string de data que você quer formatar. |
+| dateFormat | string | Não | Formato a aplicar na data. Pode ser um padrão customizado (ex: `"dd/MM/yyyy"`) ou um dos valores predefinidos: `"S"` (formato curto do locale), `"L"` (formato longo do locale), `"ISO"` (ISO 8601) ou `"RFC"` (RFC 1123). |
+| timeFormat | string | Não | Formato a aplicar no horário (ex: `"H:mm:ss"`, `"hh:mm tt"`). |
+| localeCode | string | Não | Código de locale para formatação (ex: `"pt_BR"`, `"ja_JP"`). |
 
 ## Exemplo básico
 
-Imagine que você tem uma Data Extension de pedidos da **MegaStore** e quer exibir a data do pedido formatada no e-mail de confirmação:
+Formatando a data de nascimento de um cliente para exibição no padrão brasileiro em um e-mail de aniversário:
 
 ```ampscript
 %%[
-VAR @dataPedido, @dataFormatada
-SET @dataPedido = "2024-12-05T14:30:00-03:00"
-SET @dataFormatada = FormatDate(@dataPedido, "dd/MM/yyyy")
+SET @dataNascimento = "1990-03-15"
+SET @dataFormatada = FormatDate(@dataNascimento, "dd/MM/yyyy")
 ]%%
 
-Olá, João! Seu pedido na MegaStore foi confirmado em %%=v(@dataFormatada)=%%.
+Olá, João Silva! Sua data de nascimento cadastrada é: %%=v(@dataFormatada)=%%
 ```
 
 **Saída:**
 ```
-Olá, João! Seu pedido na MegaStore foi confirmado em 05/12/2024.
+Olá, João Silva! Sua data de nascimento cadastrada é: 15/03/1990
 ```
 
 ## Exemplo avançado
 
-Aqui um cenário mais completo: um e-mail de lembrete de vencimento de fatura do **Banco Meridional**, onde precisamos formatar a data de vencimento de forma amigável, incluir o horário limite de pagamento, e também gerar um timestamp ISO pra um link de rastreio:
+Em uma régua de relacionamento da Lojas Vitória, exibindo a data e horário de uma compra recente com formato completo em português, além de gerar um timestamp ISO para um link de rastreamento:
 
 ```ampscript
 %%[
-VAR @nomeCliente, @dataVencimento, @dataExtenso, @dataHora, @dataISO, @dataCurta
+SET @dataCompra = "2024-08-05T13:41:23-06:00"
 
-SET @nomeCliente = "Maria Santos"
-SET @dataVencimento = "2024-12-15T23:59:59-03:00"
+/* Data por extenso com dia da semana */
+SET @dataExtenso = FormatDate(@dataCompra, "ddddd, d MMMM yyyy", "H:mm:ss", "pt_BR")
 
-/* Data formatada por extenso (nomes em inglês, padrão da função) */
-SET @dataExtenso = FormatDate(@dataVencimento, "dd/MM/yyyy")
+/* Formato curto para locale brasileiro */
+SET @dataCurta = FormatDate(@dataCompra, "S", "", "pt_BR")
 
-/* Data com horário limite */
-SET @dataHora = FormatDate(@dataVencimento, "dd/MM/yyyy", "HH:mm")
+/* Formato longo para locale brasileiro */
+SET @dataLonga = FormatDate(@dataCompra, "L", "", "pt_BR")
 
-/* Formato ISO 8601 para usar em URLs e integrações */
-SET @dataISO = FormatDate(@dataVencimento, "ISO")
+/* Timestamp ISO para sistemas */
+SET @dataISO = FormatDate(@dataCompra, "ISO")
 
-/* Formato curto para locale pt_BR */
-SET @dataCurta = FormatDate(@dataVencimento, "S", "", "pt_BR")
-
-/* Formato longo para locale pt_BR */
-SET @dataLonga = FormatDate(@dataVencimento, "L", "", "pt_BR")
+/* Formato customizado DD/MM/AAAA com horário 24h */
+SET @dataHora = FormatDate(@dataCompra, "dd/MM/yyyy", "HH:mm")
 ]%%
 
-Olá, %%=v(@nomeCliente)=%%!
+Lojas Vitória - Confirmação de Compra
 
-Sua fatura do Banco Meridional vence em %%=v(@dataExtenso)=%%.
-Horário limite para pagamento: %%=v(@dataHora)=%%.
-
-Formato curto (pt_BR): %%=v(@dataCurta)=%%
-Formato longo (pt_BR): %%=v(@dataLonga)=%%
-
-<a href="https://www.bancomeridional.com.br/fatura?venc=%%=v(@dataISO)=%%">
-  Pagar agora
-</a>
+Data da compra: %%=v(@dataExtenso)=%%
+Resumo: %%=v(@dataCurta)=%%
+Data completa: %%=v(@dataLonga)=%%
+Referência: %%=v(@dataHora)=%%
+ID Rastreamento: %%=v(@dataISO)=%%
 ```
 
 **Saída:**
 ```
-Olá, Maria Santos!
+Lojas Vitória - Confirmação de Compra
 
-Sua fatura do Banco Meridional vence em 15/12/2024.
-Horário limite para pagamento: 15/12/2024 23:59.
-
-Formato curto (pt_BR): 15/12/2024
-Formato longo (pt_BR): domingo, 15 de dezembro de 2024
-
-<a href="https://www.bancomeridional.com.br/fatura?venc=2024-12-15T23:59:59-03:00">
-  Pagar agora
-</a>
+Data da compra: Monday, 5 August 2024 13:41:23
+Resumo: 05/08/2024
+Data completa: 5 de agosto de 2024
+Referência: 05/08/2024 19:41
+ID Rastreamento: 2024-08-05T13:41:23.0000000-06:00
 ```
 
-## Exemplo com dados de Data Extension
+## Tabela de formatação
 
-Cenário real: e-mail de programa de pontos da **FarmaRede**, buscando a data de expiração dos pontos do cliente:
+Referência rápida dos elementos de formatação disponíveis:
 
-```ampscript
-%%[
-VAR @email, @rows, @row, @pontos, @dataExpiracao, @dataFormatada
+| Elemento | Padrão | Exemplo (para 05/08/2024 20:00:05 PM -06:00) |
+|---|---|---|
+| **Ano** | `y` ou `yy` | 24 |
+| | `yyy` ou `yyyy` | 2024 |
+| **Mês** | `M` | 8 |
+| | `MM` | 08 |
+| | `MMM` | Aug |
+| | `MMMM` | August |
+| **Dia** | `d` | 6 |
+| | `dd` | 06 |
+| | `dddd` | Sat |
+| | `ddddd` | Saturday |
+| **Hora (12h)** | `h` | 8 |
+| | `hh` | 08 |
+| **Hora (24h)** | `H` | 8 |
+| | `HH` | 20 |
+| **Minuto** | `m` | 0 |
+| | `mm` | 00 |
+| **Segundo** | `s` | 5 |
+| | `ss` | 05 |
+| **AM/PM** | `t` | P |
+| | `tt` | PM |
+| **Offset** | `z` | -6 |
+| | `zz` | -06 |
+| | `zzz` | -06:00 |
 
-SET @email = AttributeValue("emailaddr")
-SET @rows = LookupRows("Programa_Pontos", "Email", @email)
+## Formatos de entrada aceitos
 
-IF RowCount(@rows) > 0 THEN
-  SET @row = Row(@rows, 1)
-  SET @pontos = Field(@row, "Pontos")
-  SET @dataExpiracao = Field(@row, "DataExpiracao")
-  SET @dataFormatada = FormatDate(@dataExpiracao, "dd 'de' MMMM 'de' yyyy")
-]%%
+A função aceita datas de entrada nos seguintes formatos:
 
-Você tem %%=v(@pontos)=%% pontos FarmaRede!
-Seus pontos expiram em %%=v(@dataFormatada)=%%.
-Aproveite: frete grátis em compras acima de R$ 299,00.
+- **ISO 8601 timestamp:** `2024-08-05T13:41:23-06:00`
+- **ISO 8601 date:** `2024-08-05`
+- **Notação americana:** `8/5/2024 1:41 PM`
+- **Formato por extenso:** `5 August 2024` ou `August 5, 2024`
+- **Data e hora:** `2024-08-05 1:41:23 PM`
+- **Somente hora:** `1:41 PM`
+- **Notação chinesa/japonesa:** `2024年8月5日`
+- **Notação coreana:** `2024년 8월 5일`
 
-%%[ ELSE ]%%
-
-Cadastre-se no programa de pontos FarmaRede!
-
-%%[ ENDIF ]%%
-```
-
-**Saída:**
-```
-Você tem 2.350 pontos FarmaRede!
-Seus pontos expiram em 31 de January de 2025.
-Aproveite: frete grátis em compras acima de R$ 299,00.
-```
+> **⚠️ Atenção:** A função **não aceita** os seguintes formatos de entrada:
+> - Datas com sufixo ordinal no dia (ex: `August 5th, 2024` ou `5th August 2024`)
+> - Notação numérica little-endian (ex: `5/8/2024` para representar 5 de agosto) — isso é particularmente importante no Brasil, onde costumamos escrever dia/mês/ano. A string `5/8/2024` será interpretada como **8 de maio**, não 5 de agosto
+> - Nomes de meses em idiomas que não sejam inglês (ex: `5 agosto 2024` não funciona)
+> - Numerais que não sejam arábicos ocidentais
+> - Calendários que não sejam o gregoriano
 
 ## Observações
 
-- **Formatos de entrada suportados:** a função aceita vários formatos de data como entrada, incluindo ISO 8601 completo (`2024-08-05T13:41:23-06:00`), data ISO (`2024-08-05`), notação americana (`8/5/2024 1:41 PM`), formato por extenso em inglês (`5 August 2024`, `August 5, 2024`), e notações chinesa/japonesa/coreana.
-- **Formatos NÃO suportados na entrada:** a função **não aceita** datas com sufixo ordinal (`August 5th, 2024`), formato little-endian numérico (`5/8/2024` significando 5 de agosto), nomes de meses em idiomas diferentes do inglês (`5 août 2024`), numerais não ocidentais, nem calendários diferentes do gregoriano.
-- **Cuidado com o formato brasileiro na entrada:** como o formato `DD/MM/AAAA` (little-endian) **não é suportado** como input, evite passar datas nesse formato. Use sempre o formato ISO (`2024-12-25`) ou americano (`12/25/2024`) na entrada. A formatação brasileira deve ser feita apenas na **saída**, usando o parâmetro `dateFormat`.
-- **Nomes de meses e dias saem em inglês:** os elementos `MMMM` (nome do mês) e `ddddd` (nome do dia) retornam em inglês (ex: "August", "Saturday"), a menos que você use os formatos `S` ou `L` com um `localeCode` específico. Para exibir nomes em português, considere usar `FormatDate` com locale `pt_BR` e os formatos `S` ou `L`.
-- **Parâmetros opcionais:** se você omitir `dateFormat`, `timeFormat` e `localeCode`, a função formata de acordo com as configurações de locale da sua Business Unit no Marketing Cloud.
-- **Formato ISO e RFC:** use `"ISO"` para gerar timestamps compatíveis com integrações de API e parâmetros de URL. Use `"RFC"` para o formato RFC 1123, comum em headers HTTP.
-- **Se a data vier nula ou vazia** de uma Data Extension, é boa prática usar [Empty](../utility-functions/empty.md) ou [IsNull](../utility-functions/isnull.md) pra validar antes de chamar `FormatDate`, evitando erros no envio.
-- A função funciona em todos os contextos do Marketing Cloud: e-mails, CloudPages, SMS, Landing Pages, etc.
+- Se você não passar nenhum parâmetro além do `dateString`, a função formata a data de acordo com as configurações de locale da sua Business Unit no Marketing Cloud.
+
+- Os formatos predefinidos `"S"` (curto) e `"L"` (longo) dependem do `localeCode` informado. Use `"pt_BR"` para obter formatos adequados ao público brasileiro.
+
+> **💡 Dica:** No Brasil, a armadilha mais comum é passar datas no formato `DD/MM/AAAA` como entrada. A função interpreta barras no padrão americano (mês/dia/ano). Para evitar problemas, sempre armazene e passe datas no formato ISO (`AAAA-MM-DD`) e use `FormatDate` apenas na **saída** para exibir no formato brasileiro.
+
+> **⚠️ Atenção:** Os nomes de dias e meses por extenso (como `ddddd` e `MMMM`) são gerados no idioma do locale. Para exibir "segunda-feira" e "agosto" em vez de "Monday" e "August", passe o `localeCode` como `"pt_BR"`.
+
+> **💡 Dica:** Para combinar data formatada com outras informações em uma única string, use [Concat](../string-functions/concat.md). Para trabalhar com a data/hora atual do sistema, combine com [Now](../date-functions/now.md) ou [SystemDate](../date-functions/systemdate.md).
 
 ## Funções relacionadas
 
-- [Now](../date-functions/now.md) — retorna a data e hora atuais do sistema
-- [SystemDate](../date-functions/systemdate.md) — retorna a data/hora do sistema (UTC)
-- [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) — converte data do sistema para o horário local
-- [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md) — converte data local para horário do sistema
-- [DateAdd](../date-functions/dateadd.md) — adiciona um intervalo de tempo a uma data
+- [Now](../date-functions/now.md) — retorna a data/hora atual, útil para formatar o momento do envio
+- [SystemDate](../date-functions/systemdate.md) — retorna a data do sistema sem ajuste de fuso
+- [GetSendTime](../date-functions/getsendtime.md) — retorna a data/hora do envio
+- [DateAdd](../date-functions/dateadd.md) — adiciona intervalos a uma data antes de formatá-la
 - [DateDiff](../date-functions/datediff.md) — calcula a diferença entre duas datas
-- [DatePart](../date-functions/datepart.md) — extrai uma parte específica de uma data (dia, mês, ano, etc)
-- [DateParse](../date-functions/dateparse.md) — converte uma string em um valor de data
-- [StringToDate](../date-functions/stringtodate.md) — converte string para objeto de data
-- [Format](../string-functions/format.md) — formata valores de forma genérica
-- [FormatCurrency](../string-functions/formatcurrency.md) — formata valores como moeda
-- [Lookup](../data-extension-functions/lookup.md) — busca um valor em uma Data Extension
-- [AttributeValue](../utility-functions/attributevalue.md) — retorna o valor de um atributo do subscriber
+- [DatePart](../date-functions/datepart.md) — extrai partes específicas de uma data
+- [DateParse](../date-functions/dateparse.md) — converte uma string em objeto de data
+- [StringToDate](../date-functions/stringtodate.md) — converte string em data
+- [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) — converte data do sistema para fuso local
+- [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md) — converte data local para fuso do sistema
+- [Format](../string-functions/format.md) — formatação genérica de strings
+- [Concat](../string-functions/concat.md) — concatena strings, útil para montar textos com datas formatadas

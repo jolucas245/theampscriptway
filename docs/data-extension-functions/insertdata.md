@@ -8,148 +8,101 @@ description: Insere uma nova linha em uma Data Extension e retorna o número de 
 
 ## Descrição
 
-A função `InsertData` insere uma nova linha em uma Data Extension e retorna o número de linhas inseridas (normalmente `1`). Você passa o nome da Data Extension, seguido de pares de nome de coluna e valor que deseja inserir. É a função ideal para gravar novos registros a partir de CloudPages, landing pages, microsites e mensagens SMS no Mobile Connect. Se você precisa inserir dados a partir de um **e-mail**, use a função [InsertDE](../data-extension-functions/insertde.md).
+A função `InsertData` insere uma nova linha em uma Data Extension e retorna o número de linhas inseridas. É a função ideal para gravar dados a partir de **CloudPages, landing pages, microsites e mensagens SMS** (Mobile Connect). Se você precisa inserir dados a partir de um **e-mail**, use a função [InsertDE](../data-extension-functions/insertde.md).
 
 ## Sintaxe
 
 ```ampscript
-InsertData("NomeDaDataExtension", "coluna1", "valor1" [, "coluna2", "valor2", ...])
+InsertData("dataExt", "columnName1", "valueToInsert1" [, "columnName2", "valueToInsert2" ...])
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| dataExt | string | Sim | Nome da Data Extension onde a linha será inserida. |
-| columnName1 | string | Sim | Nome da coluna onde o valor será inserido. |
-| valueToInsert1 | string | Sim | Valor a ser inserido na coluna especificada. |
-| columnNameN | string | Não | Colunas adicionais para inserir na mesma linha. Sempre em pares com o respectivo valor. |
-| valueToInsertN | string | Não | Valor correspondente à coluna adicional. |
+| dataExt | String | Sim | Nome da Data Extension onde a linha será inserida. |
+| columnName1 | String | Sim | Nome da coluna onde o valor será inserido. |
+| valueToInsert1 | String | Sim | Valor a ser inserido na coluna especificada. |
+
+> **💡 Dica:** Você pode inserir valores em múltiplas colunas na mesma linha adicionando pares de nome de coluna e valor ao final da chamada da função.
 
 ## Exemplo básico
 
-Imagine que você tem uma Data Extension chamada **Cadastros_Newsletter** com as colunas: `Email`, `Nome`, `Cidade`. Uma CloudPage com formulário de cadastro pode usar `InsertData` assim:
+Cadastro de um novo lead capturado via CloudPage de uma campanha da Lojas Vitória.
 
 ```ampscript
 %%[
 
-VAR @email, @nome, @cidade, @resultado
-
-SET @email = RequestParameter("email")
-SET @nome = RequestParameter("nome")
-SET @cidade = RequestParameter("cidade")
-
 SET @resultado = InsertData(
-  "Cadastros_Newsletter",
-  "Email", @email,
-  "Nome", @nome,
-  "Cidade", @cidade
+  "Leads_Campanha",
+  "Nome", "João Silva",
+  "Email", "joao.silva@gmail.com",
+  "Telefone", "(11) 99999-9999",
+  "Cidade", "São Paulo"
 )
 
 ]%%
 ```
 
 **Saída:**
-
 ```
 1
 ```
 
-A variável `@resultado` retorna `1`, indicando que uma linha foi inserida com sucesso na Data Extension.
+A variável `@resultado` recebe o valor `1`, indicando que uma linha foi inserida com sucesso.
 
 ## Exemplo avançado
 
-Cenário real: a **MegaStore** tem uma CloudPage de cadastro para a promoção de **Dia das Mães**. O cliente preenche um formulário com seus dados e, ao submeter, o registro é inserido na Data Extension **Promo_DiaDasMaes** com um código de cupom gerado automaticamente.
+CloudPage de formulário onde o cliente da Conecta Telecom registra interesse em um plano. Os dados vêm de parâmetros da URL e são tratados antes da inserção.
 
 ```ampscript
 %%[
 
-VAR @nome, @email, @cpf, @telefone, @cupom, @dataRegistro, @resultado
-
-/* Captura dados do formulário */
-SET @nome = ProperCase(RequestParameter("nome"))
-SET @email = Lowercase(RequestParameter("email"))
+SET @nome = RequestParameter("nome")
+SET @email = RequestParameter("email")
 SET @cpf = RequestParameter("cpf")
-SET @telefone = RequestParameter("telefone")
+SET @plano = RequestParameter("plano")
+SET @cidade = RequestParameter("cidade")
+SET @dataRegistro = Format(Now(), "dd/MM/yyyy")
 
-/* Gera um código de cupom único */
-SET @cupom = Concat("MAES-", Uppercase(Substring(MD5(@email), 1, 8)))
+SET @nome = ProperCase(Trim(@nome))
+SET @email = Lowercase(Trim(@email))
 
-/* Data e hora do registro */
-SET @dataRegistro = Format(Now(), "dd/MM/yyyy HH:mm")
+SET @resultado = InsertData(
+  "Interesse_Planos",
+  "Nome", @nome,
+  "Email", @email,
+  "CPF", @cpf,
+  "Plano", @plano,
+  "Cidade", @cidade,
+  "DataRegistro", @dataRegistro,
+  "Origem", "CloudPage Campanha Junho"
+)
 
-/* Verifica se o e-mail já está cadastrado */
-VAR @jaExiste
-SET @jaExiste = LookupRows("Promo_DiaDasMaes", "Email", @email)
-
-IF RowCount(@jaExiste) == 0 THEN
-
-  SET @resultado = InsertData(
-    "Promo_DiaDasMaes",
-    "Nome", @nome,
-    "Email", @email,
-    "CPF", @cpf,
-    "Telefone", @telefone,
-    "Cupom", @cupom,
-    "DataRegistro", @dataRegistro,
-    "Origem", "CloudPage"
-  )
-
-  IF @resultado == 1 THEN
-]%%
-
-<h2>Tudo certo, %%=v(@nome)=%%! 🎉</h2>
-<p>Você está participando da promoção Dia das Mães da MegaStore.</p>
-<p>Seu cupom de desconto: <strong>%%=v(@cupom)=%%</strong></p>
-<p>Use no site www.megastore.com.br até 11/05/2025 e ganhe frete grátis em compras acima de R$299,00!</p>
-
-%%[
-  ELSE
-]%%
-
-<p>Ops! Ocorreu um erro ao processar seu cadastro. Tente novamente.</p>
-
-%%[
-  ENDIF
-
-ELSE
-]%%
-
-<p>Oi, %%=v(@nome)=%%! Você já está cadastrado(a) na promoção. 😉</p>
-
-%%[
+IF @resultado == 1 THEN
+  Output(Concat("Obrigado, ", @nome, "! Seu interesse no plano ", @plano, " foi registrado com sucesso."))
 ENDIF
 
 ]%%
 ```
 
-**Saída (para um novo cadastro):**
-
+**Saída:**
 ```
-Tudo certo, Maria Santos! 🎉
-Você está participando da promoção Dia das Mães da MegaStore.
-Seu cupom de desconto: MAES-3A7F2B1C
-Use no site www.megastore.com.br até 11/05/2025 e ganhe frete grátis em compras acima de R$299,00!
+Obrigado, Maria Santos! Seu interesse no plano Conecta Ultra 300MB foi registrado com sucesso.
 ```
 
 ## Observações
 
-- **Contexto de uso:** `InsertData` funciona em **CloudPages, landing pages, microsites e mensagens SMS (Mobile Connect)**. Ela **não funciona em e-mails**. Para inserir dados a partir de e-mails, use [InsertDE](../data-extension-functions/insertde.md).
-- **Retorno:** A função retorna o número de linhas inseridas. Em caso de sucesso, o retorno é `1`.
-- **Pares coluna/valor:** Os parâmetros após o nome da Data Extension devem sempre vir em pares (nome da coluna + valor). Se você passar um número ímpar de parâmetros após o nome da DE, ocorrerá um erro.
-- **Campos obrigatórios:** Se a Data Extension possui colunas obrigatórias (not nullable e sem valor default), você precisa incluí-las na chamada da função, caso contrário a inserção falhará.
-- **Chave primária:** Se a Data Extension tem uma chave primária e você tentar inserir um valor duplicado, a inserção falhará. Nesse caso, considere usar [UpsertData](../data-extension-functions/upsertdata.md) para inserir ou atualizar.
-- **Tipos de dados:** Todos os valores são passados como strings, mas o Marketing Cloud faz a conversão automática para o tipo definido na coluna da Data Extension (número, data, booleano, etc.).
-- **Sem limite explícito de colunas:** Você pode passar quantos pares de coluna/valor forem necessários para preencher a linha, basta adicioná-los ao final da chamada da função.
+> **⚠️ Atenção:** A função `InsertData` pode ser usada em **CloudPages, landing pages, microsites e mensagens SMS (Mobile Connect)**. Para inserir dados a partir de **e-mails**, use a função [InsertDE](../data-extension-functions/insertde.md).
+
+- A função retorna o número de linhas inseridas. Use esse retorno para validar se a operação foi bem-sucedida.
+- A função sempre **insere** uma nova linha — ela não verifica se já existe um registro com a mesma chave primária. Se você precisa inserir ou atualizar dependendo da existência do registro, considere usar [UpsertData](../data-extension-functions/upsertdata.md).
+- Você pode inserir valores em quantas colunas precisar, basta continuar adicionando pares de nome de coluna e valor ao final da chamada.
 
 ## Funções relacionadas
 
-- [InsertDE](../data-extension-functions/insertde.md) — Insere linhas em uma Data Extension a partir de **e-mails** (equivalente ao InsertData para contexto de envio).
-- [UpdateData](../data-extension-functions/updatedata.md) — Atualiza linhas existentes em uma Data Extension (contexto de páginas/SMS).
-- [UpsertData](../data-extension-functions/upsertdata.md) — Insere ou atualiza linhas em uma Data Extension (contexto de páginas/SMS).
-- [DeleteData](../data-extension-functions/deletedata.md) — Exclui linhas de uma Data Extension (contexto de páginas/SMS).
-- [Lookup](../data-extension-functions/lookup.md) — Busca um valor em uma Data Extension com base em uma condição.
-- [LookupRows](../data-extension-functions/lookuprows.md) — Retorna múltiplas linhas de uma Data Extension com base em uma condição.
-- [RowCount](../data-extension-functions/rowcount.md) — Retorna o número de linhas em um conjunto de resultados.
-- [RequestParameter](../sites-functions/requestparameter.md) — Captura parâmetros de formulários e query strings em CloudPages.
-- [Now](../date-functions/now.md) — Retorna a data e hora atuais do sistema.
+- [InsertDE](../data-extension-functions/insertde.md) — versão equivalente para uso em e-mails
+- [UpdateData](../data-extension-functions/updatedata.md) — atualiza linhas existentes em uma Data Extension
+- [UpsertData](../data-extension-functions/upsertdata.md) — insere ou atualiza dependendo da existência do registro
+- [DeleteData](../data-extension-functions/deletedata.md) — remove linhas de uma Data Extension
+- [Lookup](../data-extension-functions/lookup.md) — consulta valores em uma Data Extension

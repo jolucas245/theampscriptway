@@ -8,7 +8,7 @@ description: Retorna o conteúdo de um arquivo armazenado no Portfolio do Market
 
 ## Descrição
 
-A função `GetPortfolioItem` retorna o conteúdo de um arquivo que está no seu **Portfolio** (também chamado de "Enhanced File Manager" ou seção de arquivos do Content Builder). Você passa a **external key** (chave externa) do item e a função traz o conteúdo daquele arquivo direto para o seu e-mail, CloudPage ou qualquer outro contexto AMPscript. É super útil quando você quer centralizar trechos de texto, snippets HTML ou termos legais em um arquivo externo e reutilizar esse conteúdo em vários envios sem precisar copiar e colar.
+A função `GetPortfolioItem` retorna o conteúdo de um arquivo armazenado no seu Portfolio (a biblioteca de arquivos do Marketing Cloud). Ela é especialmente útil quando você quer manter trechos de texto em arquivos externos e puxá-los dinamicamente para dentro dos seus e-mails, CloudPages ou qualquer conteúdo. Pense nela como uma forma de centralizar textos reutilizáveis — termos legais, disclaimers, rodapés padrão — em um único lugar, sem precisar replicar em cada peça.
 
 ## Sintaxe
 
@@ -20,103 +20,65 @@ GetPortfolioItem(itemExternalKey)
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| itemExternalKey | String | Sim | A chave externa (external key) do item armazenado no Portfolio. Você encontra esse valor nas propriedades do arquivo dentro do Marketing Cloud. |
+| itemExternalKey | String | Sim | A external key (chave externa) do item armazenado no Portfolio. |
 
 ## Exemplo básico
 
-Imagine que você tem um arquivo de texto chamado `termos-promocao.txt` no Portfolio, com a external key `"TermosBlackFriday2024"`. O conteúdo do arquivo é:
-
-```
-Promoção válida de 25/11/2024 a 01/12/2024. Desconto de até 40% em produtos selecionados.
-Frete grátis para compras acima de R$299,00. Não cumulativo com outras promoções.
-```
-
-Para trazer esse conteúdo no e-mail, basta usar:
+Recuperando o conteúdo de um arquivo de texto no Portfolio que contém um aviso legal padrão para e-mails da Lojas Vitória.
 
 ```ampscript
-%%=GetPortfolioItem("TermosBlackFriday2024")=%%
+%%=GetPortfolioItem("AvisoLegal_LojasVitoria")=%%
 ```
 
 **Saída:**
 ```
-Promoção válida de 25/11/2024 a 01/12/2024. Desconto de até 40% em produtos selecionados.
-Frete grátis para compras acima de R$299,00. Não cumulativo com outras promoções.
+Este e-mail foi enviado por Lojas Vitória LTDA, CNPJ 12.345.678/0001-90, Rua Augusta, 1200 - São Paulo/SP - CEP 01304-001. Caso não deseje mais receber nossas comunicações, utilize o link de descadastro abaixo.
 ```
 
 ## Exemplo avançado
 
-Aqui vai um cenário real: a **MegaStore** quer enviar e-mails de Dia das Mães com um rodapé legal padronizado que é compartilhado entre vários templates. O texto jurídico fica em um arquivo no Portfolio com a external key `"RodapeLegalMegaStore"`. Além disso, o e-mail personaliza o nome do cliente usando dados de uma Data Extension.
+Cenário de régua de relacionamento: um e-mail transacional do Banco Meridional que monta o corpo da mensagem combinando saudação personalizada com um bloco de texto jurídico centralizado no Portfolio, usando [Concat](../string-functions/concat.md) para compor a saída final.
 
 ```ampscript
-%%[
-  VAR @primeiroNome, @rodapeLegal
+SET @nome = "Maria Santos"
+SET @textoRegulatorio = GetPortfolioItem("DisclaimerFinanceiro_2024")
 
-  SET @primeiroNome = AttributeValue("PrimeiroNome")
-  SET @primeiroNome = IIF(Empty(@primeiroNome), "Cliente", ProperCase(@primeiroNome))
-
-  SET @rodapeLegal = GetPortfolioItem("RodapeLegalMegaStore")
+SET @mensagemFinal = Concat(
+  "Olá, ", @nome, "!", Char(13), Char(10),
+  Char(13), Char(10),
+  "Segue abaixo o extrato da sua conta referente a 01/12/2024.", Char(13), Char(10),
+  Char(13), Char(10),
+  @textoRegulatorio
+)
 ]%%
 
-<h1>Olá, %%=v(@primeiroNome)=%%! 💐</h1>
-
-<p>Neste Dia das Mães, preparamos ofertas especiais pra você presentear
-quem mais importa. Confira nossos kits a partir de <strong>R$89,90</strong>
-com <strong>frete grátis</strong> para todo o Brasil!</p>
-
-<p><a href="https://www.megastore.com.br/dia-das-maes">Ver ofertas</a></p>
-
-<hr>
-
-<div style="font-size: 10px; color: #999;">
-  %%=v(@rodapeLegal)=%%
-</div>
+%%=v(@mensagemFinal)=%%
 ```
 
-Supondo que o arquivo `RodapeLegalMegaStore` contenha:
-
+**Saída:**
 ```
-MegaStore Comércio Digital Ltda. CNPJ: 12.345.678/0001-90.
-Rua das Palmeiras, 500 - São Paulo/SP - CEP 01234-567.
-Para dúvidas, entre em contato: sac@megastore.com.br ou (11) 3456-7890.
-Você recebeu este e-mail porque se cadastrou em www.megastore.com.br.
-```
+Olá, Maria Santos!
 
-**Saída para a assinante Maria Santos:**
-```html
-<h1>Olá, Maria! 💐</h1>
+Segue abaixo o extrato da sua conta referente a 01/12/2024.
 
-<p>Neste Dia das Mães, preparamos ofertas especiais pra você presentear
-quem mais importa. Confira nossos kits a partir de <strong>R$89,90</strong>
-com <strong>frete grátis</strong> para todo o Brasil!</p>
-
-<p><a href="https://www.megastore.com.br/dia-das-maes">Ver ofertas</a></p>
-
-<hr>
-
-<div style="font-size: 10px; color: #999;">
-  MegaStore Comércio Digital Ltda. CNPJ: 12.345.678/0001-90.
-  Rua das Palmeiras, 500 - São Paulo/SP - CEP 01234-567.
-  Para dúvidas, entre em contato: sac@megastore.com.br ou (11) 3456-7890.
-  Você recebeu este e-mail porque se cadastrou em www.megastore.com.br.
-</div>
+Banco Meridional S.A. - Instituição financeira autorizada pelo Banco Central do Brasil. As informações contidas neste e-mail são confidenciais e destinadas exclusivamente ao titular da conta. Ouvidoria: 0800 123 4567.
 ```
 
 ## Observações
 
-- **Portfolio é uma funcionalidade legada.** O Portfolio faz parte do Classic Email e pode não estar disponível ou visível em todas as contas do Marketing Cloud. Em contas mais novas, os arquivos ficam no Content Builder. Se você não encontra o Portfolio na sua conta, considere usar [ContentBlockByKey](../content-functions/contentblockbykey.md) como alternativa mais moderna.
-- A função retorna o **conteúdo em texto** do arquivo. Ela funciona bem com arquivos `.txt` ou similares. Não é indicada para trazer imagens — para isso, use [Image](../content-functions/image.md) ou [ImageByKey](../content-functions/imagebykey.md).
-- Se a **external key** informada não existir ou estiver incorreta, a função pode retornar vazio ou gerar erro no envio. Sempre valide a chave antes de usar em produção.
-- Se o conteúdo do arquivo no Portfolio contiver AMPscript, ele **não será processado automaticamente**. Para que trechos AMPscript dentro do conteúdo retornado sejam interpretados, você precisa usar a função [TreatAsContent](../utility-functions/treatascontent.md) no resultado.
-- A external key é **case-sensitive** em muitos contextos do SFMC. Tome cuidado para digitar exatamente como está configurada no Portfolio.
-- Essa função é muito útil para centralizar conteúdo reutilizável como disclaimers legais, termos de promoção, rodapés e textos padrão que aparecem em múltiplos e-mails.
+- A função busca o arquivo pela **external key** (chave externa), não pelo nome do arquivo. Certifique-se de que a external key está corretamente definida no Portfolio antes de referenciá-la no código.
+
+- É uma ótima estratégia para centralizar textos que mudam com frequência (como disclaimers legais, políticas de privacidade ou avisos sazonais). Você atualiza o arquivo no Portfolio uma vez e todos os e-mails que usam `GetPortfolioItem` já refletem a alteração.
+
+> **💡 Dica:** Essa função é ideal para trechos de **texto puro**. Se você precisa incluir blocos de conteúdo mais ricos (com HTML, AMPscript embutido etc.), considere usar [ContentBlockByKey](../content-functions/contentblockbykey.md) em vez do Portfolio.
+
+> **⚠️ Atenção:** Se a external key informada não corresponder a nenhum item existente no Portfolio, a função pode gerar erro no momento do envio. Sempre valide que o item existe e que a chave está correta antes de publicar a comunicação.
 
 ## Funções relacionadas
 
-- [ContentBlockByKey](../content-functions/contentblockbykey.md) — alternativa moderna para buscar blocos de conteúdo pela chave externa no Content Builder
-- [ContentBlockById](../content-functions/contentblockbyid.md) — busca blocos de conteúdo pelo ID numérico no Content Builder
-- [ContentBlockByName](../content-functions/contentblockbyname.md) — busca blocos de conteúdo pelo nome/caminho no Content Builder
-- [TreatAsContent](../utility-functions/treatascontent.md) — processa AMPscript contido em uma string retornada, útil para interpretar conteúdo dinâmico vindo do Portfolio
-- [Image](../content-functions/image.md) — insere uma imagem do Portfolio usando o ALT text e external key
-- [ImageByKey](../content-functions/imagebykey.md) — insere uma imagem do Portfolio pela chave externa
-- [AttachFile](../content-functions/attachfile.md) — anexa um arquivo do Portfolio ao e-mail
-- [V](../utility-functions/v.md) — exibe o valor de uma variável no conteúdo renderizado
+- [ContentBlockByKey](../content-functions/contentblockbykey.md) — carrega blocos de conteúdo pela chave externa (alternativa mais moderna para conteúdo reutilizável)
+- [ContentBlockByName](../content-functions/contentblockbyname.md) — carrega blocos de conteúdo pelo caminho/nome
+- [ContentBlockById](../content-functions/contentblockbyid.md) — carrega blocos de conteúdo pelo ID
+- [TreatAsContent](../utility-functions/treatascontent.md) — processa AMPscript dentro de uma string retornada
+- [Concat](../string-functions/concat.md) — concatena strings para compor mensagens dinâmicas
+- [AttachFile](../content-functions/attachfile.md) — anexa arquivos do Portfolio a e-mails

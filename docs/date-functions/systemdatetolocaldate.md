@@ -1,126 +1,110 @@
 ---
 title: SystemDateToLocalDate
 sidebar_label: SystemDateToLocalDate
-description: Converte uma data/hora do sistema (Central Standard Time) para o horário local configurado na conta do usuário no Marketing Cloud.
+description: Converte uma data/hora do sistema (Central Standard Time) para o horário local configurado na conta do Marketing Cloud.
 ---
 
 # SystemDateToLocalDate
 
 ## Descrição
 
-A função `SystemDateToLocalDate` converte uma string de data/hora do sistema do Marketing Cloud para o horário local configurado na conta do usuário. O horário do sistema no SFMC é o North American Central Standard Time (UTC-6), **sem ajuste para horário de verão**. O horário local é aquele definido nas configurações (Setup) da sua conta no Marketing Cloud. Essa função é essencial quando você precisa exibir datas e horários corretamente para o fuso horário do seu público — por exemplo, para mostrar o horário de Brasília (UTC-3) em vez do horário do servidor.
+Converte uma string de data/hora do sistema para o horário local do usuário atual do Marketing Cloud. O horário do sistema é o North American Central Standard Time (UTC-6), **sem** ajuste de horário de verão. O horário local é o configurado na conta do usuário no Marketing Cloud, que pode ser definido em Setup.
+
+No contexto brasileiro, essa função é essencial para garantir que datas e horários exibidos nos e-mails e CloudPages reflitam o fuso horário correto do Brasil (normalmente UTC-3 para Brasília), já que o sistema sempre trabalha internamente em CST (UTC-6).
 
 ## Sintaxe
 
 ```ampscript
-SystemDateToLocalDate(systemTime)
+SystemDateToLocalDate(@systemTime)
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|-----------|--------|-------------|-----------|
-| systemTime | string | Sim | A string de data/hora no horário do sistema (CST/UTC-6) que você deseja converter para o horário local da conta do Marketing Cloud. |
+|-----------|------|-------------|-----------|
+| systemTime | string | Sim | O valor de data/hora do sistema que você deseja converter para o horário local. |
 
 ## Exemplo básico
 
+Convertendo o horário atual do sistema para o horário local configurado na conta (ex: horário de Brasília) para exibir em um e-mail da Lojas Vitória.
+
 ```ampscript
 %%[
-SET @currentSystemTime = Now()
-SET @horaLocal = SystemDateToLocalDate(@currentSystemTime)
+SET @currentSystemTime = NOW()
+SET @horarioLocal = SystemDateToLocalDate(@currentSystemTime)
 ]%%
 
-Horário do sistema (CST): %%=v(@currentSystemTime)=%%
-Horário local (Brasília): %%=v(@horaLocal)=%%
+Olá, João Silva!
+
+Horário do sistema (CST): %%=V(@currentSystemTime)=%%
+Horário de Brasília: %%=V(@horarioLocal)=%%
 ```
 
 **Saída:**
 ```
-Horário do sistema (CST): 7/15/2025 10:00:00 AM
-Horário local (Brasília): 7/15/2025 1:00:00 PM
+Olá, João Silva!
+
+Horário do sistema (CST): 1/15/2025 7:00:00 AM
+Horário de Brasília: 1/15/2025 10:00:00 AM
 ```
 
 ## Exemplo avançado
 
-Imagine que a **MegaStore** está rodando uma promoção relâmpago de Black Friday e precisa mostrar no e-mail o horário exato em que a oferta expira, no fuso horário correto do Brasil:
+E-mail transacional do Banco Meridional que registra o horário de envio de um alerta de segurança, convertendo o horário do sistema para o fuso local e formatando no padrão brasileiro.
 
 ```ampscript
 %%[
-/* Busca dados da promoção na Data Extension */
-SET @emailAssinante = AttributeValue("EmailAddress")
-SET @nomeAssinante = AttributeValue("PrimeiroNome")
+SET @currentSystemTime = NOW()
+SET @horarioLocal = SystemDateToLocalDate(@currentSystemTime)
 
-SET @promoRows = LookupRows("PromocoesAtivas", "EmailAssinante", @emailAssinante)
+SET @dataFormatada = FormatDate(@horarioLocal, "dd/MM/yyyy")
+SET @horaFormatada = FormatDate(@horarioLocal, "HH:mm:ss")
 
-IF RowCount(@promoRows) > 0 THEN
-  SET @promoRow = Row(@promoRows, 1)
-  SET @nomePromo = Field(@promoRow, "NomePromocao")
-  SET @descontoValor = Field(@promoRow, "DescontoReais")
-  SET @expiraSystemTime = Field(@promoRow, "DataExpiracao")
-
-  /* Converte a data de expiração do sistema para horário de Brasília */
-  SET @expiraLocal = SystemDateToLocalDate(@expiraSystemTime)
-
-  /* Formata a data no padrão brasileiro */
-  SET @dataFormatada = FormatDate(@expiraLocal, "dd/MM/yyyy")
-  SET @horaFormatada = FormatDate(@expiraLocal, "HH:mm")
-
-  /* Pega o horário atual local para verificar se a promo ainda é válida */
-  SET @agoraSystem = Now()
-  SET @agoraLocal = SystemDateToLocalDate(@agoraSystem)
-  SET @horasRestantes = DateDiff(@agoraLocal, @expiraLocal, "H")
+SET @nomeCliente = "Maria Santos"
+SET @tipoAlerta = "Tentativa de login"
 ]%%
 
-Oi, %%=v(@nomeAssinante)=%%, tudo bem? 🎉
+Olá, %%=V(@nomeCliente)=%%!
 
-A promoção <b>%%=v(@nomePromo)=%%</b> te dá <b>R$ %%=v(@descontoValor)=%% de desconto</b>!
+Detectamos uma atividade na sua conta:
 
-⏰ Corre que essa oferta expira em <b>%%=v(@dataFormatada)=%% às %%=v(@horaFormatada)=%% (horário de Brasília)</b>.
+Tipo: %%=V(@tipoAlerta)=%%
+Data: %%=V(@dataFormatada)=%%
+Horário: %%=V(@horaFormatada)=%% (horário de Brasília)
 
-%%[ IF @horasRestantes <= 6 AND @horasRestantes > 0 THEN ]%%
-🔥 Faltam apenas <b>%%=v(@horasRestantes)=%% horas</b>! Não perca!
-%%[ ENDIF ]%%
-
-Aproveite com frete grátis acima de R$ 299!
-👉 www.megastore.com.br/blackfriday
-
-%%[ ELSE ]%%
-
-Oi, %%=v(@nomeAssinante)=%%, fique de olho! Em breve teremos ofertas exclusivas para você.
-
-%%[ ENDIF ]%%
+Se não foi você, entre em contato com a central:
+(11) 3000-9999 ou acesse www.bancomeridional.com.br
 ```
 
 **Saída:**
 ```
-Oi, Maria, tudo bem? 🎉
+Olá, Maria Santos!
 
-A promoção Black Friday Eletrônicos te dá R$ 150,00 de desconto!
+Detectamos uma atividade na sua conta:
 
-⏰ Corre que essa oferta expira em 29/11/2025 às 23:59 (horário de Brasília).
+Tipo: Tentativa de login
+Data: 15/01/2025
+Horário: 10:00:00 (horário de Brasília)
 
-🔥 Faltam apenas 4 horas! Não perca!
-
-Aproveite com frete grátis acima de R$ 299!
-👉 www.megastore.com.br/blackfriday
+Se não foi você, entre em contato com a central:
+(11) 3000-9999 ou acesse www.bancomeridional.com.br
 ```
 
 ## Observações
 
-- O horário do sistema do Marketing Cloud é **Central Standard Time (CST / UTC-6)** e **não** se ajusta automaticamente para o horário de verão (daylight saving time). Isso significa que durante o horário de verão americano, a diferença para UTC muda na prática. Fique atento a esse detalhe ao calcular diferenças de horário.
-- O horário local retornado depende inteiramente da configuração de fuso horário da sua conta no Marketing Cloud (**Setup > Company Settings > Account Settings**). Se sua conta estiver configurada para o fuso de Brasília (UTC-3), a função vai adicionar 3 horas ao horário do sistema.
-- Se você passar um valor nulo ou uma string inválida como parâmetro, a função pode retornar resultados inesperados ou causar erro. É uma boa prática validar o valor antes usando [Empty](../utility-functions/empty.md) ou [IsNull](../utility-functions/isnull.md).
-- Para fazer a conversão inversa (horário local → horário do sistema), use a função [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md).
-- Essa função é útil tanto em e-mails quanto em CloudPages e Landing Pages — em qualquer contexto onde você precise exibir horários no fuso correto para o usuário final.
-- Se você armazena datas em Data Extensions no horário do sistema, **sempre converta** antes de exibir ao assinante para evitar confusão com horários.
+> **⚠️ Atenção:** O horário do sistema do Marketing Cloud é **Central Standard Time (UTC-6)** e **não** se ajusta automaticamente para o horário de verão (daylight saving time). Isso significa que a diferença entre o horário do sistema e UTC é sempre fixa em -6 horas, independentemente da época do ano.
+
+> **⚠️ Atenção:** O horário local retornado pela função depende da configuração de fuso horário da sua conta de usuário no Marketing Cloud, definida em **Setup**. Se o fuso horário da conta não estiver configurado corretamente para o Brasil (ex: UTC-3 Brasília), a conversão retornará um horário incorreto. Verifique essa configuração antes de usar a função.
+
+> **💡 Dica:** Use essa função sempre que precisar exibir horários para o assinante final. Mostrar horários em CST em um e-mail para clientes brasileiros gera confusão. Combine com [FormatDate](../date-functions/formatdate.md) para formatar no padrão DD/MM/AAAA que o público brasileiro espera.
+
+> **💡 Dica:** Para fazer a operação inversa — converter um horário local para o horário do sistema — use [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md).
 
 ## Funções relacionadas
 
-- [Now](../date-functions/now.md) — retorna a data/hora atual do sistema (CST), ideal para passar como parâmetro para `SystemDateToLocalDate`
-- [SystemDate](../date-functions/systemdate.md) — retorna a data do sistema sem o componente de hora
-- [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md) — faz a conversão inversa: do horário local para o horário do sistema
-- [FormatDate](../date-functions/formatdate.md) — formata datas para exibição (ex: formato brasileiro DD/MM/AAAA)
-- [DateAdd](../date-functions/dateadd.md) — adiciona intervalos de tempo a uma data
-- [DateDiff](../date-functions/datediff.md) — calcula a diferença entre duas datas
-- [DatePart](../date-functions/datepart.md) — extrai partes específicas de uma data (hora, minuto, dia, etc.)
-- [GetSendTime](../date-functions/getsendtime.md) — retorna a data/hora de envio do e-mail
+- [Now](../date-functions/now.md) — retorna a data/hora atual do sistema
+- [SystemDate](../date-functions/systemdate.md) — retorna a data do sistema
+- [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md) — operação inversa: converte horário local para horário do sistema
+- [FormatDate](../date-functions/formatdate.md) — formata datas para exibição (ex: padrão brasileiro DD/MM/AAAA)
+- [DateAdd](../date-functions/dateadd.md) — adiciona intervalos a uma data
+- [DatePart](../date-functions/datepart.md) — extrai partes específicas de uma data

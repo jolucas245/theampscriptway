@@ -1,156 +1,106 @@
 ---
 title: FormatNumber
 sidebar_label: FormatNumber
-description: Formata um número como moeda, decimal, porcentagem, notação científica e outros tipos numéricos, com suporte a localização por cultura (locale).
+description: Formata números como moeda, porcentagem, notação científica e outros tipos, com suporte a localização por cultura (locale).
 ---
 
 # FormatNumber
 
 ## Descrição
 
-A função `FormatNumber` formata um número de acordo com um tipo numérico especificado, como moeda, decimal, porcentagem ou notação científica. Ela também é útil para converter números armazenados como string para o tipo numérico e para arredondar valores a uma quantidade específica de casas decimais. Você pode passar um código de cultura (locale) opcional para que o resultado siga as convenções de formatação de um país ou idioma específico — perfeito para campanhas com público internacional ou para exibir valores em Reais no formato brasileiro.
+A função `FormatNumber` formata um número em diversos tipos numéricos — moeda, decimal, porcentagem, notação científica, entre outros. Ela também converte números armazenados como string para o tipo numérico e permite arredondar valores para uma quantidade específica de casas decimais. No dia a dia de SFMC no Brasil, é essencial para exibir preços em e-mails promocionais, mostrar porcentagens de desconto e formatar valores financeiros respeitando o padrão brasileiro (vírgula decimal, separador de milhar com ponto) usando o código de cultura `pt_BR`.
 
 ## Sintaxe
 
 ```ampscript
-FormatNumber(numero, tipoFormato)
-FormatNumber(numero, tipoFormato, codigoCultura)
+FormatNumber(number, formatType [, cultureCode])
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|---|---|---|---|
-| numero | String ou Número | Sim | O número que você quer formatar. A função assume que o ponto (`.`) é o separador decimal da entrada. |
-| tipoFormato | String | Sim | O tipo de formatação a ser aplicado. Valores aceitos: `C` (moeda), `D` (decimal), `E` (notação científica), `F` (casas decimais fixas, 2 por padrão), `G` (sem separador de milhar), `N` (com separador de milhar), `P` (porcentagem), `R` (round-trip), `X` (hexadecimal). Você pode adicionar um número após a letra para indicar a precisão — ex: `C2`, `N3`, `F4`. |
-| codigoCultura | String | Não | Código de locale POSIX (ex: `pt_BR`, `en_US`, `de_DE`). Quando informado, o resultado segue as convenções de formatação da cultura especificada. |
-
-## Tipos de formato disponíveis
-
-| Código | Descrição | Exemplo (entrada: `1234.5`) |
-|---|---|---|
-| `C` | Moeda | Depende do locale |
-| `D` | Número decimal | Inteiro |
-| `E` | Notação científica | `1.234500E+003` |
-| `F` | Casas decimais fixas (padrão: 2) | `1234.50` |
-| `G` | Geral (sem separador de milhar) | `1234.5` |
-| `N` | Número com separador de milhar | `1,234.50` |
-| `P` | Porcentagem | `123,450.00%` |
-| `R` | Round-trip | Preserva a fidelidade numérica |
-| `X` | Hexadecimal | Valor hexadecimal |
+|-----------|------|-------------|-----------|
+| number | string ou number | Sim | O número que você quer formatar. A função assume que o número de entrada usa ponto (`.`) como separador decimal. |
+| formatType | string | Sim | O tipo de formatação a aplicar. Valores aceitos: `C` (moeda), `D` (decimal), `E` (notação científica), `F` (casas decimais fixas, 2 por padrão), `G` (sem separador de milhar), `N` (com separador de milhar), `P` (porcentagem), `R` (round-trip), `X` (hexadecimal). Você pode adicionar um número após o código para indicar a precisão — por exemplo, `C2` para moeda com 2 casas decimais. |
+| cultureCode | string | Não | Código de localização POSIX (ex: `pt_BR`, `en_US`, `de_DE`). Quando informado, o número é formatado seguindo as convenções daquela cultura. |
 
 ## Exemplo básico
 
-Imagine que você precisa exibir o saldo de pontos de um cliente no programa de fidelidade da **MegaStore**. O valor vem da Data Extension sem formatação:
+Formatando o preço de um produto com separador de milhar e duas casas decimais para um e-mail da MegaStore:
 
 ```ampscript
 %%[
-  VAR @pontos
-  SET @pontos = 15487.6
-
-  /* Formata com separador de milhar e 2 casas decimais */
-  SET @pontosFormatado = FormatNumber(@pontos, "N2")
+VAR @preco, @precoFormatado
+SET @preco = 1299.90
+SET @precoFormatado = FormatNumber(@preco, "N2", "pt_BR")
 ]%%
 
-Olá! Você tem %%=v(@pontosFormatado)=%% pontos no programa MegaStore Fidelidade.
+Preço do produto: R$ %%=v(@precoFormatado)=%%
 ```
 
 **Saída:**
 ```
-Olá! Você tem 15,487.60 pontos no programa MegaStore Fidelidade.
+Preço do produto: R$ 1.299,90
 ```
 
 ## Exemplo avançado
 
-Cenário: a **Lojas Vitória** está enviando um e-mail de Black Friday com o valor do cashback acumulado pelo cliente. Você quer exibir o valor formatado como moeda brasileira (R$), usando o locale `pt_BR`:
+E-mail de régua de relacionamento do Banco Meridional informando o saldo do cliente, a variação percentual do investimento e o valor formatado como moeda — tudo localizado para o Brasil:
 
 ```ampscript
 %%[
-  VAR @nome, @cashback, @totalGasto, @percentualEconomia
+VAR @saldo, @rendimento, @totalInvestido, @percRendimento
+VAR @saldoFmt, @percFmt, @moedaFmt
 
-  SET @nome = "Maria Santos"
-  SET @cashback = 347.5
-  SET @totalGasto = 2698.00
+SET @saldo = "45750.836"
+SET @rendimento = Divide(578, 45750.836)
+SET @totalInvestido = 45750.836
 
-  /* Formata o cashback como moeda brasileira */
-  SET @cashbackFormatado = FormatNumber(@cashback, "C2", "pt_BR")
+/* Converter string para número formatado com separador de milhar */
+SET @saldoFmt = FormatNumber(@saldo, "N2", "pt_BR")
 
-  /* Calcula o percentual de economia */
-  SET @percentual = Divide(@cashback, @totalGasto)
-  SET @percentualFormatado = FormatNumber(@percentual, "P2", "pt_BR")
+/* Formatar como porcentagem */
+SET @percFmt = FormatNumber(@rendimento, "P3", "pt_BR")
 
-  /* Remove separador de milhar de um valor vindo como string */
-  SET @valorString = "1234.56"
-  SET @valorLimpo = FormatNumber(@valorString, "G")
-
-  /* Formata total gasto com locale brasileiro */
-  SET @totalFormatado = FormatNumber(@totalGasto, "C2", "pt_BR")
+/* Formatar como moeda com cultura brasileira */
+SET @moedaFmt = FormatNumber(@totalInvestido, "C2", "pt_BR")
 ]%%
 
-Oi, %%=v(@nome)=%%! 🎉
+Olá João,
 
-Na Black Friday da Lojas Vitória, você já acumulou %%=v(@cashbackFormatado)=%% de cashback!
-
-Seu total em compras: %%=v(@totalFormatado)=%%
-Isso representa uma economia de %%=v(@percentualFormatado)=%% — nada mal, hein?
-
-Valor processado internamente (sem milhar): %%=v(@valorLimpo)=%%
+Seu saldo atual: R$ %%=v(@saldoFmt)=%%
+Valor do investimento: %%=v(@moedaFmt)=%%
+Rendimento no período: %%=v(@percFmt)=%%
 ```
 
 **Saída:**
 ```
-Oi, Maria Santos! 🎉
+Olá João,
 
-Na Black Friday da Lojas Vitória, você já acumulou R$ 347,50 de cashback!
-
-Seu total em compras: R$ 2.698,00
-Isso representa uma economia de 12,88% — nada mal, hein?
-
-Valor processado internamente (sem milhar): 1234.56
-```
-
-## Exemplo com notação científica e hexadecimal
-
-```ampscript
-%%[
-  /* Notação científica com 3 casas de precisão */
-  SET @cientifico = FormatNumber(98765.4321, "E3")
-
-  /* Hexadecimal */
-  SET @hexa = FormatNumber(255, "X")
-
-  /* Casas decimais fixas — útil para exibir notas/avaliações */
-  SET @nota = FormatNumber(4.7, "F1")
-]%%
-
-Científico: %%=v(@cientifico)=%%
-Hexadecimal: %%=v(@hexa)=%%
-Nota do produto: %%=v(@nota)=%% / 5.0
-```
-
-**Saída:**
-```
-Científico: 9.877E+004
-Hexadecimal: FF
-Nota do produto: 4.7 / 5.0
+Seu saldo atual: R$ 45.750,84
+Valor do investimento: R$ 45.750,84
+Rendimento no período: 1,263%
 ```
 
 ## Observações
 
-- **Separador decimal na entrada:** A função sempre espera que a entrada use ponto (`.`) como separador decimal. Se o valor vier com vírgula da sua Data Extension, você vai precisar usar [Replace](../string-functions/replace.md) para trocar a vírgula por ponto antes de passar para o `FormatNumber`.
-- **Precisão após o código de formato:** Você pode adicionar um número após a letra do tipo para controlar as casas decimais. Por exemplo, `C2` = moeda com 2 casas, `N0` = número com separador de milhar sem casas decimais, `F4` = 4 casas decimais fixas.
-- **Locale `pt_BR`:** Quando você usa o código de cultura `pt_BR`, o resultado segue as convenções brasileiras — ponto como separador de milhar, vírgula como separador decimal e o símbolo `R$` para moeda.
-- **Conversão de string para número:** Além de formatar, a função é útil para garantir que um valor armazenado como string seja tratado como número. Use o tipo `G` para uma conversão simples sem separadores de milhar.
-- **Porcentagem (P):** O tipo `P` multiplica automaticamente o valor por 100 antes de exibir. Ou seja, se você passar `0.1288`, o resultado será `12.88%`. Não passe o valor já multiplicado por 100, senão o resultado será `12880.00%`.
-- **Valores nulos ou vazios:** Tenha cuidado com valores nulos vindos de Data Extensions. Use [IsNull](../utility-functions/isnull.md) ou [Empty](../utility-functions/empty.md) para verificar antes de formatar, evitando erros no processamento.
-- **Round-trip (R):** O tipo `R` garante que o valor formatado como string possa ser convertido de volta para número sem perda de precisão. É mais útil em cenários de processamento interno do que para exibição ao usuário.
+- A função **assume que o número de entrada usa ponto (`.`) como separador decimal**. Se o valor vier de uma Data Extension com vírgula como decimal (comum em integrações com sistemas brasileiros), você precisará usar [Replace](../string-functions/replace.md) para trocar a vírgula por ponto antes de passar para `FormatNumber`.
+
+- O código de precisão é adicionado logo após a letra do tipo de formatação, sem espaço. Por exemplo: `C2` para moeda com 2 casas, `N0` para número inteiro com separador de milhar, `P3` para porcentagem com 3 casas.
+
+- O tipo `G` (general) é útil para **remover separadores de milhar** de números que chegam como string — por exemplo, quando você precisa fazer cálculos com um valor que veio formatado.
+
+- O tipo `F` formata o número com um número fixo de casas decimais (duas por padrão quando não se especifica a precisão).
+
+> **💡 Dica:** Para exibir valores monetários em e-mails no Brasil, use `FormatNumber(@valor, "C2", "pt_BR")` para obter a formatação completa com o símbolo da moeda e as convenções brasileiras. Se preferir controlar manualmente o prefixo `R$`, use `"N2"` com `"pt_BR"` e concatene o símbolo com [Concat](../string-functions/concat.md).
+
+> **⚠️ Atenção:** O parâmetro `cultureCode` usa o padrão POSIX com underscore (ex: `pt_BR`), não o formato com hífen (`pt-BR`). Fique atento a isso para garantir que a localização funcione corretamente.
 
 ## Funções relacionadas
 
-- [FormatCurrency](../string-functions/formatcurrency.md) — Formata um número especificamente como moeda, sem necessidade de código de tipo
-- [Format](../string-functions/format.md) — Formata valores usando padrões customizados de formatação
-- [Round](../math-functions/round.md) — Arredonda um número para um número específico de casas decimais
-- [Divide](../math-functions/divide.md) — Divide dois números (útil para calcular percentuais antes de formatar)
-- [Multiply](../math-functions/multiply.md) — Multiplica dois números
-- [Replace](../string-functions/replace.md) — Substitui caracteres em uma string (útil para trocar vírgula por ponto antes de formatar)
-- [Concat](../string-functions/concat.md) — Concatena strings (para montar textos com valores formatados)
+- [FormatCurrency](../string-functions/formatcurrency.md) — alternativa específica para formatação de moeda
+- [Format](../string-functions/format.md) — formatação genérica de valores
+- [Divide](../math-functions/divide.md) — para cálculos de divisão antes de formatar como porcentagem
+- [Replace](../string-functions/replace.md) — útil para trocar vírgula por ponto antes de formatar
+- [Concat](../string-functions/concat.md) — para montar strings combinando prefixos com valores formatados
+- [Round](../math-functions/round.md) — arredondamento numérico como alternativa

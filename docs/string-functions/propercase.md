@@ -1,14 +1,14 @@
 ---
 title: ProperCase
 sidebar_label: ProperCase
-description: Retorna a string informada com a primeira letra de cada palavra em maiúscula (capitalizada).
+description: Converte a primeira letra de cada palavra de uma string para maiúscula, formatando o texto em "Título".
 ---
 
 # ProperCase
 
 ## Descrição
 
-A função `ProperCase()` recebe uma string e retorna ela com a primeira letra de cada palavra convertida para maiúscula. É super útil para padronizar nomes de clientes, endereços e outras informações que vêm de Data Extensions ou formulários onde o texto pode estar todo em maiúsculas ou minúsculas. A conversão acontece para **todas** as palavras, independentemente do tamanho delas — até palavras com uma única letra terão essa letra convertida para maiúscula.
+A função `ProperCase` recebe uma string e retorna ela com a primeira letra de cada palavra em maiúscula. É extremamente útil no dia a dia de SFMC no Brasil para padronizar nomes de clientes, endereços e cidades que muitas vezes chegam da base de dados em CAIXA ALTA ou tudo minúsculo. O retorno é a string formatada em proper case (estilo título).
 
 ## Sintaxe
 
@@ -19,104 +19,62 @@ ProperCase(sourceString)
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|--------------|--------|-------------|-----------|
-| sourceString | String | Sim | A string que você quer converter para proper case (primeira letra de cada palavra em maiúscula). |
+|---|---|---|---|
+| sourceString | String | Sim | A string que será convertida para proper case (primeira letra de cada palavra em maiúscula). |
 
 ## Exemplo básico
 
-Imagine que você tem uma Data Extension de clientes e o nome foi cadastrado todo em maiúsculas. Você quer exibir no e-mail de forma mais elegante:
+Formatando o nome de um cliente que veio da Data Extension em caixa alta para exibição no e-mail:
 
 ```ampscript
 %%[
-SET @nomeCliente = "MARIA SANTOS"
-SET @nomeFormatado = ProperCase(@nomeCliente)
+SET @nome = "JOÃO CARLOS DA SILVA"
+SET @nomeFormatado = ProperCase(@nome)
 ]%%
 
-Olá, %%=v(@nomeFormatado)=%%! Aproveite nossas ofertas de Dia das Mães.
+Olá, %%=v(@nomeFormatado)=%%! Bem-vindo à Lojas Vitória.
 ```
 
 **Saída:**
 ```
-Olá, Maria Santos! Aproveite nossas ofertas de Dia das Mães.
+Olá, João Carlos Da Silva! Bem-vindo à Lojas Vitória.
 ```
 
 ## Exemplo avançado
 
-Aqui um cenário bem comum: você tem dados de endereço do cliente armazenados em caixa alta na Data Extension e precisa montar o endereço completo formatado em proper case para um e-mail de confirmação de pedido da **MegaStore**:
+Montando o endereço completo de um cliente para um e-mail transacional de confirmação de pedido, combinando `ProperCase` com [Concat](../string-functions/concat.md) para formatar dados que vieram todos em maiúsculas:
 
 ```ampscript
 %%[
-SET @rua = "RUA DAS FLORES"
-SET @numero = "1245"
-SET @bairro = "JARDIM PRIMAVERA"
-SET @cidade = "SAO PAULO"
-SET @estado = "SP"
-SET @cep = "01234-567"
+SET @rua = ProperCase("RUA QUINZE DE NOVEMBRO")
+SET @bairro = ProperCase("CENTRO")
+SET @cidade = ProperCase("BELO HORIZONTE")
+SET @estado = "MG"
+SET @cep = "30130-000"
 
-SET @ruaFormatada = ProperCase(@rua)
-SET @bairroFormatado = ProperCase(@bairro)
-SET @cidadeFormatada = ProperCase(@cidade)
-
-SET @enderecoCompleto = Concat(
-  @ruaFormatada, ", ", @numero, " - ",
-  @bairroFormatado, ", ",
-  @cidadeFormatada, " - ", @estado, " | CEP: ", @cep
-)
+SET @enderecoCompleto = Concat(@rua, ", ", @bairro, " - ", @cidade, "/", @estado, " - CEP: ", @cep)
 ]%%
 
-Seu pedido será entregue no endereço:
+Seu pedido será entregue em:
 %%=v(@enderecoCompleto)=%%
-
-Frete grátis para compras acima de R$299! 🎉
 ```
 
 **Saída:**
 ```
-Seu pedido será entregue no endereço:
-Rua Das Flores, 1245 - Jardim Primavera, Sao Paulo - SP | CEP: 01234-567
-
-Frete grátis para compras acima de R$299! 🎉
-```
-
-Outro exemplo prático — personalização de saudação combinando com [Lookup](../data-extension-functions/lookup.md) para buscar dados do cliente:
-
-```ampscript
-%%[
-SET @email = AttributeValue("emailaddr")
-SET @nomeCompleto = Lookup("Clientes_FarmaRede", "NomeCompleto", "Email", @email)
-SET @cidade = Lookup("Clientes_FarmaRede", "Cidade", "Email", @email)
-
-SET @nomeFormatado = ProperCase(@nomeCompleto)
-SET @cidadeFormatada = ProperCase(@cidade)
-]%%
-
-Oi, %%=v(@nomeFormatado)=%%!
-
-Temos novidades na FarmaRede mais perto de você em %%=v(@cidadeFormatada)=%%.
-Acumule pontos no programa FarmaVantagens e troque por cashback em reais! 💊
-```
-
-**Saída:**
-```
-Oi, Carlos Oliveira!
-
-Temos novidades na FarmaRede mais perto de você em Belo Horizonte.
-Acumule pontos no programa FarmaVantagens e troque por cashback em reais! 💊
+Seu pedido será entregue em:
+Rua Quinze De Novembro, Centro - Belo Horizonte/MG - CEP: 30130-000
 ```
 
 ## Observações
 
-- A função capitaliza a primeira letra de **cada** palavra da string, sem exceção. Isso significa que preposições e artigos como "da", "de", "do", "das" também terão a primeira letra em maiúscula (ex: "RUA DAS FLORES" vira "Rua Das Flores", e não "Rua das Flores"). Se você precisa manter preposições em minúscula, vai precisar tratar esses casos manualmente com [Replace](../string-functions/replace.md).
-- Se a string de entrada já estiver parcialmente formatada (ex: "jOÃO silva"), a função converte apenas a primeira letra de cada palavra para maiúscula. As demais letras da palavra são convertidas para minúscula, resultando em "João Silva".
-- Considere usar [Trim](../string-functions/trim.md) antes de `ProperCase()` para remover espaços extras no início e fim da string, garantindo um resultado mais limpo.
-- Se o valor da string for vazio ou nulo, avalie usar [Empty](../utility-functions/empty.md) ou [IsNullDefault](../utility-functions/isnulldefault.md) para tratar esses cenários antes de aplicar a função.
-- A função funciona normalmente em emails, SMS, CloudPages e qualquer outro contexto do Marketing Cloud que suporte AMPscript.
+> **⚠️ Atenção:** A função converte a primeira letra de **cada palavra** para maiúscula, independentemente do tamanho da palavra. Isso significa que preposições e artigos como "da", "de", "do", "das" também terão a primeira letra capitalizada (ex: "Da Silva" em vez de "da Silva"). Se você precisa de um tratamento mais refinado para nomes brasileiros, será necessário combinar `ProperCase` com funções como [Replace](../string-functions/replace.md) para corrigir essas partículas depois da conversão.
+
+> **💡 Dica:** Essa função é uma mão na roda para quem trabalha com bases de dados legadas ou integrações com ERPs que armazenam tudo em CAIXA ALTA. Usar `ProperCase` no momento do envio garante uma comunicação muito mais humanizada sem precisar corrigir a base inteira.
 
 ## Funções relacionadas
 
-- [Uppercase](../string-functions/uppercase.md) — converte toda a string para letras maiúsculas
-- [Lowercase](../string-functions/lowercase.md) — converte toda a string para letras minúsculas
-- [Concat](../string-functions/concat.md) — concatena múltiplas strings em uma só, ótima para montar textos combinados com ProperCase
-- [Trim](../string-functions/trim.md) — remove espaços em branco do início e fim da string antes de formatar
-- [Replace](../string-functions/replace.md) — substitui trechos da string, útil para corrigir preposições após o ProperCase
-- [AttributeValue](../utility-functions/attributevalue.md) — recupera o valor de um atributo do subscriber, frequentemente usado como entrada para ProperCase
+- [Uppercase](../string-functions/uppercase.md) — converte toda a string para maiúsculas
+- [Lowercase](../string-functions/lowercase.md) — converte toda a string para minúsculas
+- [Concat](../string-functions/concat.md) — concatena múltiplas strings (ótimo para montar endereços e nomes completos após o ProperCase)
+- [Trim](../string-functions/trim.md) — remove espaços extras antes e depois da string (bom usar antes do ProperCase)
+- [Replace](../string-functions/replace.md) — substitui trechos da string (útil para corrigir preposições após o ProperCase)

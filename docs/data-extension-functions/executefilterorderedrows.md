@@ -8,7 +8,7 @@ description: Executa um filtro de dados e retorna um rowset ordenado com os resu
 
 ## Descrição
 
-A função `ExecuteFilterOrderedRows` executa um filtro de dados (Data Filter) previamente criado no Marketing Cloud e retorna um rowset (conjunto de linhas) **ordenado** com os resultados. Ela funciona apenas com filtros baseados em Data Extensions — não funciona com filtros baseados em atributos de perfil. Pense nela como uma versão da [ExecuteFilter](../data-extension-functions/executefilter.md), mas com a vantagem de você poder definir a coluna e a direção da ordenação dos resultados. É super útil quando você precisa exibir dados filtrados em uma ordem específica, como um ranking de pontos ou uma lista de compras recentes.
+Executa um filtro de dados (Data Filter) previamente criado no Marketing Cloud e retorna um rowset ordenado com os resultados. É a versão "com ordenação" da [ExecuteFilter](../data-extension-functions/executefilter.md) — você define por qual coluna quer ordenar e em qual direção (crescente ou decrescente). Funciona exclusivamente com filtros baseados em Data Extensions, não com profile attributes.
 
 ## Sintaxe
 
@@ -19,146 +19,111 @@ ExecuteFilterOrderedRows(dataFilterExternalId, numRows, sortColumn)
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|---|---|---|---|
-| dataFilterExternalId | string | Sim | O External ID (chave externa) do filtro de dados a ser executado. Esse filtro precisa estar baseado em uma Data Extension. Você encontra esse ID nas propriedades do filtro no Marketing Cloud. |
-| numRows | número | Sim | Quantidade de linhas a retornar no rowset. Use `0` para retornar todos os resultados. Não existe limite máximo de linhas. |
-| sortColumn | string | Sim | Nome da coluna para ordenação, seguido de um espaço e `ASC` (ordem crescente) ou `DESC` (ordem decrescente). Exemplo: `"Pontos DESC"`. |
-
-## Retorno
-
-Retorna um **rowset** (conjunto de linhas) com os registros que atendem ao filtro, ordenados conforme especificado. Você pode iterar sobre os resultados usando [Row](../data-extension-functions/row.md), [RowCount](../data-extension-functions/rowcount.md) e [Field](../data-extension-functions/field.md).
+|-----------|------|-------------|-----------|
+| dataFilterExternalId | String | Sim | External ID (chave externa) do filtro de dados a ser executado. O filtro precisa ser baseado em uma Data Extension. |
+| numRows | Número | Sim | Número de linhas a retornar no rowset. Use `0` para retornar todos os resultados. Não há limite máximo de linhas. |
+| sortColumn | String | Sim | Nome da coluna para ordenação, seguido de um espaço e `ASC` (crescente) ou `DESC` (decrescente). |
 
 ## Exemplo básico
 
-Imagine que você tem uma Data Extension chamada **"ProgramaFidelidade"** com os dados abaixo:
-
-| ClienteId | Nome | Sobrenome | Pontos | Nivel | Cidade |
-|---|---|---|---|---|---|
-| 1 | João | Silva | 92374 | Ouro | São Paulo |
-| 2 | Maria | Santos | 201042 | Diamante | Rio de Janeiro |
-| 3 | Carlos | Oliveira | 69311 | Prata | Belo Horizonte |
-| 4 | Ana | Pereira | 23999 | Bronze | Curitiba |
-| 5 | Lucas | Costa | 15123 | Bronze | São Paulo |
-
-Você também tem um filtro de dados chamado **"ProgramaFidelidade_50k_ou_mais"** com external key `a3b8c1d2-55f0-4a12-9e77-1234abcd5678`. Esse filtro retorna todos os registros onde `Pontos` é maior ou igual a 50.000.
+Imagine um programa de fidelidade da **MegaStore** onde você precisa listar os clientes com mais de 50.000 pontos, ordenados do maior para o menor saldo, em uma CloudPage.
 
 ```ampscript
 %%[
 
-VAR @rows, @rowCount, @filterExtId
+/* Executa o filtro "Clientes_50k_pontos" ordenando por PontosAcumulados decrescente */
+SET @resultados = ExecuteFilterOrderedRows("c5a7e0d9-41e0-4068-bdcc-8766d7c1af94", 0, "PontosAcumulados DESC")
 
-SET @filterExtId = "a3b8c1d2-55f0-4a12-9e77-1234abcd5678"
-SET @rows = ExecuteFilterOrderedRows(@filterExtId, 0, "Pontos DESC")
-SET @rowCount = RowCount(@rows)
+SET @totalLinhas = RowCount(@resultados)
 
-IF @rowCount > 0 THEN
-  FOR @counter = 1 TO @rowCount DO
+IF @totalLinhas > 0 THEN
 
-    VAR @row, @clienteId, @nome, @sobrenome, @pontos, @cidade
-    SET @row = Row(@rows, @counter)
-    SET @clienteId = Field(@row, "ClienteId")
-    SET @nome = Field(@row, "Nome")
-    SET @sobrenome = Field(@row, "Sobrenome")
-    SET @pontos = Field(@row, "Pontos")
-    SET @cidade = Field(@row, "Cidade")
+  FOR @i = 1 TO @totalLinhas DO
+
+    SET @linha = Row(@resultados, @i)
+    SET @nome = Field(@linha, "PrimeiroNome")
+    SET @sobrenome = Field(@linha, "Sobrenome")
+    SET @pontos = Field(@linha, "PontosAcumulados")
 
 ]%%
 
-<tr>
-  <td>%%=v(@counter)=%%</td>
-  <td>%%=v(@clienteId)=%%</td>
-  <td>%%=v(@nome)=%%</td>
-  <td>%%=v(@sobrenome)=%%</td>
-  <td>%%=FormatNumber(@pontos, "N0")=%%</td>
-  <td>%%=v(@cidade)=%%</td>
-</tr>
+<p>%%=v(@i)=%%. %%=v(@nome)=%% %%=v(@sobrenome)=%% - %%=FormatNumber(@pontos, "N0")=%% pontos</p>
 
 %%[
-  NEXT @counter
+
+  NEXT @i
+
 ENDIF
+
 ]%%
 ```
 
 **Saída:**
-
-| Ranking | ClienteId | Nome | Sobrenome | Pontos | Cidade |
-|---|---|---|---|---|---|
-| 1 | 2 | Maria | Santos | 201.042 | Rio de Janeiro |
-| 2 | 1 | João | Silva | 92.374 | São Paulo |
-| 3 | 3 | Carlos | Oliveira | 69.311 | Belo Horizonte |
+```
+1. Maria Santos - 201.042 pontos
+2. João Silva - 92.374 pontos
+3. Carlos Mendes - 69.311 pontos
+```
 
 ## Exemplo avançado
 
-Cenário real: você está montando uma CloudPage para o programa de fidelidade da **Lojas Vitória**. A página exibe o **Top 3** de clientes com mais pontos (acima de 50k) e mostra uma mensagem personalizada com o nível de recompensa que cada um pode resgatar.
+Uma CloudPage da **Lojas Vitória** exibe o ranking dos top 5 clientes do programa de recompensas, com formatação de tabela HTML e destaque para o tier de cada membro.
 
 ```ampscript
 %%[
 
-VAR @rows, @rowCount, @filterExtId
+SET @filtroId = "c5a7e0d9-41e0-4068-bdcc-8766d7c1af94"
+SET @clientes = ExecuteFilterOrderedRows(@filtroId, 5, "PontosAcumulados DESC")
+SET @total = RowCount(@clientes)
 
-SET @filterExtId = "a3b8c1d2-55f0-4a12-9e77-1234abcd5678"
-
-/* Retorna apenas os 3 primeiros, ordenados por pontos decrescente */
-SET @rows = ExecuteFilterOrderedRows(@filterExtId, 3, "Pontos DESC")
-SET @rowCount = RowCount(@rows)
-
-IF @rowCount > 0 THEN
+IF @total > 0 THEN
 
 ]%%
 
-<h2>🏆 Ranking Programa Fidelidade - Lojas Vitória</h2>
-<p>Confira os clientes com mais pontos acumulados!</p>
+<h2>🏆 Ranking Lojas Vitória - Programa Fidelidade</h2>
 <table border="1" cellpadding="8" cellspacing="0">
   <tr>
     <th>Posição</th>
     <th>Cliente</th>
     <th>Pontos</th>
+    <th>Tier</th>
     <th>Cidade</th>
-    <th>Recompensa Disponível</th>
   </tr>
 
 %%[
 
-  FOR @counter = 1 TO @rowCount DO
+  FOR @i = 1 TO @total DO
 
-    VAR @row, @nome, @sobrenome, @pontos, @cidade, @recompensa
-    SET @row = Row(@rows, @counter)
-    SET @nome = Field(@row, "Nome")
-    SET @sobrenome = Field(@row, "Sobrenome")
-    SET @pontos = Field(@row, "Pontos")
-    SET @cidade = Field(@row, "Cidade")
+    SET @linha = Row(@clientes, @i)
+    SET @nome = Field(@linha, "PrimeiroNome")
+    SET @sobrenome = Field(@linha, "Sobrenome")
+    SET @pontos = Field(@linha, "PontosAcumulados")
+    SET @tier = Field(@linha, "NivelRecompensa")
+    SET @cidade = Field(@linha, "Cidade")
 
-    /* Define a recompensa com base nos pontos */
-    IF @pontos >= 200000 THEN
-      SET @recompensa = "Vale-compras de R$ 500,00 + frete grátis por 1 ano"
-    ELSEIF @pontos >= 80000 THEN
-      SET @recompensa = "Vale-compras de R$ 200,00 + cashback de 10%"
-    ELSEIF @pontos >= 50000 THEN
-      SET @recompensa = "Cupom de R$ 100,00 na próxima compra"
-    ENDIF
+    /* Define o nome do tier com base no nível */
+    SET @nomeTier = IIF(@tier == 1, "Diamante", IIF(@tier == 2, "Ouro", IIF(@tier == 3, "Prata", "Bronze")))
+
+    /* Monta o nome completo */
+    SET @nomeCompleto = Concat(@nome, " ", @sobrenome)
 
 ]%%
 
   <tr>
-    <td style="text-align:center; font-size:18px; font-weight:bold;">%%=v(@counter)=%%º</td>
-    <td>%%=ProperCase(Concat(@nome, " ", @sobrenome))=%%</td>
-    <td style="text-align:right;">%%=FormatNumber(@pontos, "N0")=%% pts</td>
+    <td>%%=v(@i)=%%</td>
+    <td>%%=v(@nomeCompleto)=%%</td>
+    <td>%%=FormatNumber(@pontos, "N0")=%% pts</td>
+    <td>%%=v(@nomeTier)=%%</td>
     <td>%%=v(@cidade)=%%</td>
-    <td>%%=v(@recompensa)=%%</td>
   </tr>
 
 %%[
 
-  NEXT @counter
+  NEXT @i
 
 ]%%
 
 </table>
-
-<p style="font-size:12px; color:#666;">
-  Atualizado em %%=FormatDate(Now(), "dd/MM/yyyy", "HH:mm")=%% | 
-  Acesse <a href="https://www.lojasvitoria.com.br/fidelidade">www.lojasvitoria.com.br/fidelidade</a> para conferir seus pontos.
-</p>
 
 %%[
 
@@ -166,7 +131,7 @@ ELSE
 
 ]%%
 
-<p>Nenhum cliente atingiu a pontuação mínima de 50.000 pontos ainda. Continue acumulando!</p>
+<p>Nenhum cliente encontrado com pontuação suficiente.</p>
 
 %%[
 
@@ -176,33 +141,29 @@ ENDIF
 ```
 
 **Saída:**
+```
+🏆 Ranking Lojas Vitória - Programa Fidelidade
 
-| Posição | Cliente | Pontos | Cidade | Recompensa Disponível |
-|---|---|---|---|---|
-| 1º | Maria Santos | 201.042 pts | Rio de Janeiro | Vale-compras de R$ 500,00 + frete grátis por 1 ano |
-| 2º | João Silva | 92.374 pts | São Paulo | Vale-compras de R$ 200,00 + cashback de 10% |
-| 3º | Carlos Oliveira | 69.311 pts | Belo Horizonte | Cupom de R$ 100,00 na próxima compra |
+Posição | Cliente           | Pontos      | Tier      | Cidade
+1       | Maria Santos      | 201.042 pts | Diamante  | São Paulo
+2       | João Silva        | 92.374 pts  | Ouro      | Curitiba
+3       | Carlos Mendes     | 69.311 pts  | Prata     | Belo Horizonte
+```
 
 ## Observações
 
-- **Restrição de contexto:** essa função funciona **apenas** em CloudPages, landing pages, microsites e mensagens SMS criadas no MobileConnect. **Não funciona em emails.** Se precisar de dados ordenados em emails, use a [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md).
-- **Apenas Data Extensions:** o filtro de dados precisa estar baseado em uma Data Extension. Filtros baseados em atributos de perfil (Profile Attributes) **não são suportados**.
-- **External ID do filtro:** você encontra o External ID nas propriedades do Data Filter dentro do Marketing Cloud. É aquele valor no formato UUID (ex: `c5a7e0d9-41e0-4068-bdcc-8766d7c1af94`). Não confunda com o nome do filtro.
-- **Retornando todas as linhas:** passe `0` no parâmetro `numRows` para retornar todos os resultados do filtro. Não existe limite máximo documentado.
-- **Formato da ordenação:** o parâmetro `sortColumn` deve conter o nome exato da coluna seguido de um espaço e `ASC` ou `DESC`. Exemplo: `"Pontos DESC"` ou `"Nome ASC"`.
-- **Rowset vazio:** sempre verifique com [RowCount](../data-extension-functions/rowcount.md) se o resultado tem linhas antes de iterar. Se o filtro não retornar nenhum registro, o `RowCount` será `0`.
-- **Filtro precisa existir previamente:** diferente das funções `Lookup`, onde você passa os critérios direto no código, aqui o filtro já precisa estar criado na interface do Marketing Cloud. Qualquer mudança nos critérios precisa ser feita lá.
-- **Performance:** como o filtro é executado em tempo real, tenha cuidado com filtros que retornam volumes muito grandes de dados em páginas com alto tráfego.
+> **⚠️ Atenção:** Esta função funciona **apenas** em CloudPages, landing pages, microsites e mensagens SMS criadas no MobileConnect. Não use em e-mails — ela simplesmente não vai funcionar nesse contexto.
+
+> **⚠️ Atenção:** O filtro de dados referenciado precisa ser baseado em uma Data Extension. Filtros baseados em profile attributes não são suportados por esta função.
+
+> **💡 Dica:** O parâmetro `numRows` com valor `0` retorna todos os resultados do filtro. Se você precisa de um ranking (top 10, top 5), passe o número exato — isso deixa o código mais eficiente e evita processar linhas desnecessárias.
+
+> **💡 Dica:** Se você precisa dos resultados filtrados mas **não** precisa de ordenação, use a [ExecuteFilter](../data-extension-functions/executefilter.md). Se precisa de ordenação mas quer filtrar diretamente por valores (sem um Data Filter pré-criado), considere [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md).
 
 ## Funções relacionadas
 
-- [ExecuteFilter](../data-extension-functions/executefilter.md) — executa um filtro de dados e retorna o rowset sem ordenação
-- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) — busca linhas ordenadas diretamente em uma Data Extension usando critérios inline (funciona em emails também)
-- [LookupRows](../data-extension-functions/lookuprows.md) — busca linhas em uma Data Extension com base em critérios, sem ordenação
-- [Row](../data-extension-functions/row.md) — extrai uma linha específica de um rowset pelo índice
-- [RowCount](../data-extension-functions/rowcount.md) — retorna a quantidade de linhas em um rowset
-- [Field](../data-extension-functions/field.md) — extrai o valor de uma coluna específica de uma linha do rowset
-- [FormatNumber](../string-functions/formatnumber.md) — formata números com separadores de milhar e casas decimais
-- [FormatDate](../date-functions/formatdate.md) — formata datas em diferentes padrões
-- [ProperCase](../string-functions/propercase.md) — converte texto para formato de nome próprio (primeira letra maiúscula)
-- [Concat](../string-functions/concat.md) — concatena strings
+- [ExecuteFilter](../data-extension-functions/executefilter.md) — mesma ideia, mas sem ordenação dos resultados
+- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) — busca ordenada direta na DE, sem depender de um Data Filter
+- [Row](../data-extension-functions/row.md) — extrai uma linha específica do rowset retornado
+- [RowCount](../data-extension-functions/rowcount.md) — conta quantas linhas o rowset contém
+- [Field](../data-extension-functions/field.md) — extrai o valor de uma coluna de uma linha do rowset

@@ -1,115 +1,88 @@
 ---
 title: ImageByKey
 sidebar_label: ImageByKey
-description: Retorna uma tag HTML img referenciando uma imagem do Content Builder a partir da sua chave externa (external key), com suporte a uma imagem de fallback.
+description: Retorna uma tag img com o caminho de uma imagem do Content Builder, localizada pela external key, com suporte a imagem fallback.
 ---
 
 # ImageByKey
 
 ## Descrição
 
-A função `ImageByKey` retorna uma tag `<img>` completa cujo atributo `src` aponta para uma imagem armazenada no Content Builder, localizada pela sua **chave externa** (external key). A tag gerada já inclui os atributos `title`, `alt`, `border="0"` e um `thid` com o ID interno da imagem. Caso a imagem principal não seja encontrada, a função usa automaticamente uma imagem de fallback que você define no segundo parâmetro. Essa função funciona **somente** com conteúdos do tipo **Image** no Content Builder — ela **não** funciona com blocos do tipo Image Block.
+A função `ContentImageByKey` retorna uma tag `<img>` completa apontando para uma imagem armazenada no Content Builder, localizada pela sua external key. A tag gerada já inclui os atributos `title`, `alt`, `border="0"` e um `thid` com o ID interno da imagem. É muito útil quando você precisa inserir imagens dinâmicas em e-mails — por exemplo, banners personalizados por segmento ou logos de parceiros — e quer garantir que, caso a imagem principal não seja encontrada, um fallback seja exibido automaticamente.
+
+> **⚠️ Atenção:** Essa função funciona **apenas** com conteúdo do tipo Image no Content Builder. Ela **não** funciona com conteúdo do tipo Image Block.
 
 ## Sintaxe
 
 ```ampscript
-ImageByKey(imageExternalKey, defaultImageExternalKey)
+ContentImageByKey(imageExternalKey, defaultImageExternalKey)
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| imageExternalKey | String | Sim | A chave externa (external key) da imagem desejada no Content Builder. |
-| defaultImageExternalKey | String | Sim | A chave externa de uma imagem de fallback no Content Builder. Será usada caso a imagem do primeiro parâmetro não seja encontrada. |
+| imageExternalKey | String | Sim | A external key da imagem no Content Builder que você deseja exibir. |
+| defaultImageExternalKey | String | Sim | A external key de uma imagem fallback no Content Builder. Será usada caso a imagem do primeiro parâmetro não seja encontrada. |
 
 ## Exemplo básico
 
-Imagine que você tem um e-mail de campanha de Dia das Mães para a loja fictícia "Lojas Vitória" e quer exibir o banner principal da promoção. A imagem foi salva no Content Builder com a chave externa `banner-dia-das-maes-2024`, e existe uma imagem genérica de fallback com a chave `banner-padrao-lojas-vitoria`.
+Exibindo o banner principal de uma campanha de Black Friday da MegaStore, com um banner genérico como fallback:
 
 ```ampscript
-%%=ImageByKey("banner-dia-das-maes-2024", "banner-padrao-lojas-vitoria")=%%
+%%=ContentImageByKey("banner-blackfriday-2024", "banner-generico-megastore")=%%
 ```
 
-**Saída (se a imagem principal for encontrada):**
+**Saída:**
 ```html
-<img src="https://image.s11.sfmc-content.com/lib/fe3c/m/1/banner-dia-das-maes-2024.jpg" alt="Promoção Dia das Mães 2024" title="Promoção Dia das Mães 2024" border="0" thid="12345678" />
-```
-
-**Saída (se a imagem principal NÃO for encontrada):**
-```html
-<img src="https://image.s11.sfmc-content.com/lib/fe3c/m/1/banner-padrao-lojas-vitoria.jpg" alt="Lojas Vitória" title="Lojas Vitória" border="0" thid="87654321" />
+<img src="https://image.s11.sfmc-content.com/lib/fe3a.../banner-blackfriday-2024.jpg" alt="Black Friday MegaStore" title="Black Friday MegaStore" border="0" thid="12345678" />
 ```
 
 ## Exemplo avançado
 
-Aqui temos um cenário mais completo: um e-mail promocional de Black Friday da "MegaStore" que exibe um banner diferente de acordo com a categoria preferida do cliente, armazenada em uma Data Extension chamada `Preferencias_Cliente`.
+Imagine uma régua de relacionamento da Lojas Vitória onde cada categoria de produto tem um banner específico. Você monta a external key dinamicamente com base na categoria do cliente e garante que, se o banner da categoria não existir, um banner institucional será exibido:
 
 ```ampscript
 %%[
-  SET @emailAssinante = AttributeValue("emailaddr")
-  SET @categoria = Lookup("Preferencias_Cliente", "CategoriaPrincipal", "Email", @emailAssinante)
+  SET @categoria = AttributeValue("CategoriaPreferida")
 
-  IF @categoria == "Eletrônicos" THEN
-    SET @chaveImagem = "bf-2024-eletronicos"
-  ELSEIF @categoria == "Moda" THEN
-    SET @chaveImagem = "bf-2024-moda"
-  ELSEIF @categoria == "Casa e Decoração" THEN
-    SET @chaveImagem = "bf-2024-casa-decoracao"
-  ELSE
-    SET @chaveImagem = "bf-2024-generico"
+  IF Empty(@categoria) THEN
+    SET @categoria = "geral"
   ENDIF
 
-  SET @chaveFallback = "bf-2024-generico"
+  SET @chaveImagem = Concat("banner-vitoria-", Lowercase(@categoria))
+  SET @chaveFallback = "banner-vitoria-institucional"
 ]%%
 
-<table width="600" cellpadding="0" cellspacing="0" border="0">
-  <tr>
-    <td align="center">
-      %%=ImageByKey(@chaveImagem, @chaveFallback)=%%
-    </td>
-  </tr>
-  <tr>
-    <td align="center" style="padding: 20px; font-family: Arial, sans-serif; font-size: 16px;">
-      Olá! A Black Friday da MegaStore está bombando 🔥<br/>
-      Frete grátis acima de R$299 + até 12x sem juros!
-    </td>
-  </tr>
-</table>
+%%=ContentImageByKey(@chaveImagem, @chaveFallback)=%%
 ```
 
-**Saída (para um cliente com categoria "Moda" e imagem encontrada):**
+**Saída (quando a categoria é "Eletrônicos"):**
 ```html
-<table width="600" cellpadding="0" cellspacing="0" border="0">
-  <tr>
-    <td align="center">
-      <img src="https://image.s11.sfmc-content.com/lib/fe3c/m/1/bf-2024-moda.jpg" alt="Black Friday Moda MegaStore" title="Black Friday Moda MegaStore" border="0" thid="11223344" />
-    </td>
-  </tr>
-  <tr>
-    <td align="center" style="padding: 20px; font-family: Arial, sans-serif; font-size: 16px;">
-      Olá! A Black Friday da MegaStore está bombando 🔥<br/>
-      Frete grátis acima de R$299 + até 12x sem juros!
-    </td>
-  </tr>
-</table>
+<img src="https://image.s11.sfmc-content.com/lib/fe3a.../banner-vitoria-eletronicos.jpg" alt="Eletrônicos Lojas Vitória" title="Eletrônicos Lojas Vitória" border="0" thid="98765432" />
+```
+
+**Saída (quando a categoria não tem banner cadastrado):**
+```html
+<img src="https://image.s11.sfmc-content.com/lib/fe3a.../banner-vitoria-institucional.jpg" alt="Lojas Vitória" title="Lojas Vitória" border="0" thid="11223344" />
 ```
 
 ## Observações
 
-- A função **só funciona com conteúdos do tipo Image** no Content Builder. Se você tiver um **Image Block** (bloco de imagem), ela não vai funcionar — use [ContentBlockByKey](../content-functions/contentblockbykey.md) para esse caso.
-- O segundo parâmetro (`defaultImageExternalKey`) é **obrigatório**. Mesmo que você tenha certeza de que a imagem principal existe, precisa informar uma chave de fallback.
-- A tag `<img>` retornada já vem com `border="0"`, `alt`, `title` e `thid`. Você **não** tem controle direto sobre esses atributos via parâmetros da função. Se precisar de mais controle sobre o HTML, considere montar a tag `<img>` manualmente usando a URL da imagem.
-- Certifique-se de que a chave externa da imagem está correta e é única. Você pode verificar a external key de qualquer asset no Content Builder clicando na imagem e indo em **Properties > Content Builder Key**.
-- Se **nenhuma** das duas imagens (principal e fallback) for encontrada, o comportamento pode gerar uma tag `<img>` vazia ou um erro de renderização. Por isso, garanta que a imagem de fallback sempre exista no Content Builder.
-- A função funciona tanto em **e-mails** quanto em **CloudPages**.
+- A função retorna uma tag `<img>` completa e pronta para uso no HTML do e-mail. Você não precisa montar a tag manualmente.
+- Os atributos `alt`, `title`, `border` e `thid` são incluídos automaticamente na tag gerada. O `alt` e `title` vêm das propriedades definidas na imagem dentro do Content Builder — então garanta que esses campos estejam preenchidos para manter a acessibilidade dos seus e-mails.
+- O segundo parâmetro (fallback) é obrigatório, o que é ótimo para evitar imagens quebradas em produção. Mantenha sempre uma imagem genérica válida como fallback.
+
+> **⚠️ Atenção:** Essa função só funciona com conteúdo do tipo **Image** no Content Builder. Se você tentar usar a external key de um **Image Block**, a função não vai retornar o resultado esperado.
+
+> **💡 Dica:** Ao montar a external key dinamicamente (como no exemplo avançado), use [Lowercase](../string-functions/lowercase.md) para padronizar e evitar erros de case sensitivity na busca da imagem.
 
 ## Funções relacionadas
 
-- [Image](../content-functions/image.md) — retorna uma tag `<img>` a partir de uma URL do portfólio clássico (Classic Content)
-- [ImageById](../content-functions/imagebyid.md) — semelhante à `ImageByKey`, mas localiza a imagem pelo ID numérico em vez da chave externa
-- [ContentBlockByKey](../content-functions/contentblockbykey.md) — retorna o conteúdo de um bloco do Content Builder pela chave externa (útil para Image Blocks e outros tipos de bloco)
-- [ContentBlockById](../content-functions/contentblockbyid.md) — retorna o conteúdo de um bloco do Content Builder pelo ID numérico
-- [ContentBlockByName](../content-functions/contentblockbyname.md) — retorna o conteúdo de um bloco do Content Builder pelo nome/caminho de pasta
-- [Lookup](../data-extension-functions/lookup.md) — busca valores em uma Data Extension (útil para obter chaves de imagem dinamicamente)
-- [AttributeValue](../utility-functions/attributevalue.md) — retorna o valor de um atributo do assinante de forma segura, sem erro caso o campo não exista
+- [ContentImageById](../content-functions/contentimagebyid.md) — mesma lógica, mas localiza a imagem pelo ID numérico em vez da external key.
+- [ContentBlockByKey](../content-functions/contentblockbykey.md) — para inserir blocos de conteúdo completos (não apenas imagens) via external key.
+- [Image](../content-functions/image.md) — função para trabalhar com imagens do Portfolio (Classic).
+- [ImageById](../content-functions/imagebyid.md) — função para imagens do Portfolio usando ID.
+- [Concat](../string-functions/concat.md) — útil para montar external keys dinâmicas combinando strings.
+- [Empty](../utility-functions/empty.md) — para validar se um valor está vazio antes de montar a key.
+- [AttributeValue](../utility-functions/attributevalue.md) — para capturar atributos do assinante de forma segura.

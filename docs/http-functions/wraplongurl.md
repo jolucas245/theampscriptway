@@ -1,131 +1,103 @@
 ---
 title: WrapLongURL
 sidebar_label: WrapLongURL
-description: Encurta URLs com mais de 975 caracteres para contornar uma limitação conhecida do Microsoft Outlook 2007–2013.
+description: Encurta URLs com mais de 975 caracteres para contornar limitações do Microsoft Outlook 2007–2013.
 ---
 
 # WrapLongURL
 
 ## Descrição
 
-A função `WrapLongURL` recebe uma URL e, se ela tiver mais de 975 caracteres, retorna uma versão encurtada que redireciona pelos servidores do Marketing Cloud. Se a URL tiver 975 caracteres ou menos, ela é retornada sem alteração. Essa função existe para contornar uma limitação conhecida do Microsoft Outlook 2007–2013, que truncava URLs muito longas. É especialmente útil quando você monta URLs dinâmicas com muitos parâmetros de personalização (tracking, dados do assinante, etc.) e precisa garantir que elas funcionem corretamente nesses clientes de email.
+A função `WrapLongURL` resolve um problema bem específico: URLs muito longas (acima de 975 caracteres) que quebram no Microsoft Outlook 2007–2013. Quando a URL ultrapassa esse limite, a função retorna uma versão encurtada que redireciona pelos servidores do Marketing Cloud. Se a URL tiver menos de 975 caracteres, ela é devolvida sem nenhuma alteração.
 
 ## Sintaxe
 
 ```ampscript
-WrapLongURL(urlParaEncurtar)
+WrapLongURL(urlToShorten)
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| urlParaEncurtar | string | Sim | A URL que você deseja encurtar. Se tiver mais de 975 caracteres, será retornada uma URL encurtada que redireciona pelos servidores do Marketing Cloud. Caso contrário, a URL original é retornada sem alteração. |
+| urlToShorten | String | Sim | A URL que você deseja encurtar. |
 
 ## Exemplo básico
 
-Imagine que você tem um email da **MegaStore** com uma imagem de banner personalizada. A URL da imagem é gerada dinamicamente e pode ficar muito longa dependendo dos parâmetros de personalização:
+Usando `WrapLongURL` para garantir que uma URL longa de imagem dinâmica renderize corretamente no Outlook:
 
 ```ampscript
 %%[
-VAR @urlImagem
-SET @urlImagem = "https://imagens.megastore.com.br/banners/blackfriday2024?nome=JoaoSilva&cpf=12345678900&email=joao.silva%40email.com.br&segmento=premium&cidade=SaoPaulo&estado=SP&cep=01310100&telefone=11999998888&pontos=4500&cashback=150&ultimacompra=25112024&produto1=notebook-gamer-16gb&produto2=mouse-sem-fio&produto3=teclado-mecanico&produto4=monitor-27pol&produto5=headset-bluetooth&cupom=BFSILVAPREMIUM2024&frete=gratis&parcelas=12&bandeira=visa&loja=megastore-paulista&campanha=bf2024-premium-eletronicos-sp&versao=A&tracking=abc123def456ghi789jkl012mno345pqr678stu901vwx234yza567bcd890efg123hij456klm789nop012qrs345tuv678wxy901zab234cde567fgh890ijk123lmn456opq789rst012uvw345xyz678abc901def234ghi567jkl890mno123pqr456stu789vwx012yza345bcd678efg901hij234klm567nop890qrs123tuv456wxy789zab012cde345fgh678ijk901lmn234opq567rst890uvw123xyz456abc789def012ghi345jkl678mno901pqr234"
+VAR @urlImagem, @urlFinal
+SET @urlImagem = "https://img.megastore.com.br/produtos/render?sku=PROD-98712&cliente=joao-silva&segmento=eletronicos&campanha=black-friday-2024&utm_source=sfmc&utm_medium=email&utm_campaign=bf2024_eletronicos_sp&utm_content=hero_banner&utm_term=smartphone&personalizado=true&regiao=sudeste&cidade=sao-paulo&estado=sp&cep=01310-100&formato=jpg&largura=600&altura=300&qualidade=85&cache=20241125&token=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3h4i5j6k7l8m9n0o1p2q3r4s5t6u7v8w9x0y1z2a3b4c5d6e7f8g9h0i1j2k3l4m5n6o7p8q9r0s1t2u3v4w5x6y7z8a9b0c1d2e3f4g5h6i7j8k9l0m1n2o3p4q5r6s7t8u9v0w1x2y3z4a5b6c7d8e9f0g1h2i3j4k5l6m7n8o9p0q1r2s3t4u5v6w7x8y9z0a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3h4i5j6k7l8m9n0o1p2q3r4s5t6u7v8w9x0y1z2a3b4c5d6e7f8g9h0i1j2k3l4m5n6o7p8q9r0s1t2u3v4w5x6y7z8a9b0c1d2e3f4g5h6i7j8k9l0m1n2o3"
+SET @urlFinal = WrapLongURL(@urlImagem)
 ]%%
 
-<img src="%%=WrapLongURL(@urlImagem)=%%" alt="Ofertas Black Friday MegaStore" width="600" />
+<img src="%%=v(@urlFinal)=%%" alt="Oferta Black Friday - MegaStore" width="600" />
 ```
 
 **Saída:**
-
-Como a URL tem mais de 975 caracteres, a função retorna uma URL encurtada que redireciona pelos servidores do Marketing Cloud:
-
 ```html
-<img src="https://click.s1.sfmc-content.com/r/?id=abc123..." alt="Ofertas Black Friday MegaStore" width="600" />
+<img src="https://click.sfmc.megastore.com.br/shortened/abc123xyz" alt="Oferta Black Friday - MegaStore" width="600" />
 ```
-
-Se a URL tivesse 975 caracteres ou menos, seria retornada exatamente como foi passada.
 
 ## Exemplo avançado
 
-Nesse cenário, a **Lojas Vitória** está enviando um email de Dia das Mães com um pixel de tracking personalizado. A URL é montada dinamicamente com dados do assinante vindos de uma Data Extension, e pode estourar o limite de 975 caracteres dependendo da quantidade de parâmetros:
+Em uma régua de relacionamento da Lojas Vitória, o e-mail de carrinho abandonado monta uma URL de imagem dinâmica com diversos parâmetros de personalização. Usamos `WrapLongURL` combinado com [Concat](../string-functions/concat.md) para construir e proteger a URL:
 
 ```ampscript
 %%[
-VAR @nome, @email, @cpf, @segmento, @cidade, @estado, @pontos
-VAR @urlBase, @parametros, @urlCompleta, @urlFinal, @tamanhoUrl
+VAR @nome, @sku, @urlBase, @parametros, @urlCompleta, @urlSegura
 
-SET @nome = AttributeValue("NomeCompleto")
-SET @email = AttributeValue("EmailAddress")
-SET @cpf = AttributeValue("CPF")
-SET @segmento = AttributeValue("Segmento")
-SET @cidade = AttributeValue("Cidade")
-SET @estado = AttributeValue("Estado")
-SET @pontos = AttributeValue("PontosAcumulados")
+SET @nome = "Maria Santos"
+SET @sku = "VEST-44210"
 
-SET @urlBase = "https://tracking.lojasvitoria.com.br/pixel.gif"
+SET @urlBase = "https://img.lojasvitoria.com.br/api/render"
 
 SET @parametros = Concat(
-  "?nome=", URLEncode(@nome, 1, 1),
-  "&email=", URLEncode(@email, 1, 1),
-  "&cpf=", URLEncode(@cpf, 1, 1),
-  "&segmento=", URLEncode(@segmento, 1, 1),
-  "&cidade=", URLEncode(@cidade, 1, 1),
-  "&estado=", URLEncode(@estado, 1, 1),
-  "&pontos=", @pontos,
-  "&campanha=diadasmaes2024-premium-joias-cosmeticos-moda-acessorios",
-  "&promo=fretegratis299&cashback=50reais",
-  "&versao=B&loja=vitoria-centro-sp",
-  "&tracking_id=", GUID(),
-  "&extra_data=lv2024maes-seg-premium-regiao-sudeste-sp-capital-zona-sul-loja-fisica-e-online-multicanal-retargeting-email-personalizado-v2-teste-ab-grupo-controle-false-engagement-score-alto-propensao-compra-elevada-ticket-medio-acima-500-reais-frequencia-mensal-categoria-preferida-cosmeticos-marca-preferida-importada-ultimo-canal-app-dispositivo-mobile-sistema-ios-navegador-safari-resolucao-1170x2532-horario-preferido-noite-dia-semana-preferido-sabado"
+  "?sku=", @sku,
+  "&cliente=", Replace(@nome, " ", "-"),
+  "&campanha=carrinho-abandonado-2024",
+  "&utm_source=sfmc&utm_medium=email&utm_campaign=cart_abandon_reengajamento",
+  "&utm_content=produto_principal&utm_term=vestido",
+  "&regiao=sudeste&cidade=belo-horizonte&estado=mg",
+  "&formato=jpg&largura=600&altura=400&qualidade=90",
+  "&sessao=s9f8e7d6c5b4a3z2y1x0w9v8u7t6s5r4q3p2o1n0m9l8k7j6i5h4g3f2e1d0",
+  "&preco=R%24+299%2C90&parcelas=3x+R%24+99%2C97",
+  "&token=abc123def456ghi789jkl012mno345pqr678stu901vwx234yza567bcd890efg123hij456klm789nop012qrs345tuv678wxy901zab234cde567fgh890ijk123lmn456opq789rst012uvw345xyz678abc901def234ghi567jkl890mno123pqr456stu789vwx012yza345bcd678efg901hij234klm567nop890qrs123tuv456wxy789zab012cde345fgh678ijk901lmn234opq567rst890uvw123xyz456abc789def012ghi345jkl678mno901pqr234stu567vwx890yza"
 )
 
 SET @urlCompleta = Concat(@urlBase, @parametros)
-SET @tamanhoUrl = Length(@urlCompleta)
-SET @urlFinal = WrapLongURL(@urlCompleta)
+SET @urlSegura = WrapLongURL(@urlCompleta)
 ]%%
 
-<!-- Debug: URL original tem %%=v(@tamanhoUrl)=%% caracteres -->
-
-<!-- Pixel de tracking -->
-<img src="%%=v(@urlFinal)=%%" width="1" height="1" alt="" style="display:none;" />
-
-%%[ IF @tamanhoUrl > 975 THEN ]%%
-  <!-- URL foi encurtada pelo WrapLongURL -->
-%%[ ELSE ]%%
-  <!-- URL original mantida (975 caracteres ou menos) -->
-%%[ ENDIF ]%%
+<a href="https://www.lojasvitoria.com.br/carrinho">
+  <img src="%%=v(@urlSegura)=%%" alt="Seu vestido está esperando, %%=v(@nome)=%%!" width="600" />
+</a>
 ```
 
 **Saída:**
-
-Se a URL montada tiver mais de 975 caracteres (o que é bem provável nesse caso):
-
 ```html
-<!-- Debug: URL original tem 1087 caracteres -->
-
-<!-- Pixel de tracking -->
-<img src="https://click.s1.sfmc-content.com/r/?id=xyz789..." width="1" height="1" alt="" style="display:none;" />
-
-<!-- URL foi encurtada pelo WrapLongURL -->
+<a href="https://www.lojasvitoria.com.br/carrinho">
+  <img src="https://click.sfmc.lojasvitoria.com.br/shortened/def456uvw" alt="Seu vestido está esperando, Maria Santos!" width="600" />
+</a>
 ```
 
 ## Observações
 
-- **Limitação do Outlook:** Essa função foi criada especificamente para contornar um problema do Microsoft Outlook 2007–2013, que truncava URLs com mais de 975 caracteres. Se o seu público não usa essas versões do Outlook, talvez você não precise dela — mas não custa usar como precaução.
-- **Limite de 975 caracteres:** Se a URL tiver 975 caracteres ou menos, a função retorna a URL original sem nenhuma modificação. O encurtamento só acontece quando a URL ultrapassa esse limite.
-- **Incompatível com Always On Clicks:** URLs encurtadas por essa função **não funcionam** com o recurso Always On Clicks. Fique atento a isso se você usa essa feature na sua conta.
-- **Dependência do Member DB:** Se o banco de dados do membro (Member DB) estiver indisponível no momento do envio, a função retorna um erro. Isso é raro, mas vale saber.
-- **Redirecionamento:** As URLs encurtadas passam pelos servidores do Marketing Cloud antes de chegar ao destino final. Isso pode adicionar uma pequena latência no carregamento.
-- **Uso principal em emails:** O cenário mais comum é em tags `<img>` dentro de emails, onde URLs com muitos parâmetros de tracking podem facilmente ultrapassar 975 caracteres. Também pode ser útil em `<a href="">` quando os links são muito longos.
-- **Monte a URL antes:** Lembre-se de montar a URL completa (com todos os parâmetros) antes de passá-la para `WrapLongURL`. A função espera receber a URL final já pronta.
+> **⚠️ Atenção:** URLs encurtadas com `WrapLongURL` **não são compatíveis com Always On Clicks**. Se você usa esse recurso de rastreamento na sua conta, considere esse conflito antes de aplicar a função.
+
+> **⚠️ Atenção:** Se o Member DB (banco de dados da sua BU) estiver indisponível no momento do envio, a função retorna um erro. Em réguas críticas, leve isso em consideração.
+
+- A função só altera URLs com **mais de 975 caracteres**. Abaixo desse limite, a URL original é retornada sem modificação — então é seguro aplicar `WrapLongURL` em qualquer URL sem se preocupar se ela vai ser encurtada desnecessariamente.
+- O caso de uso principal é para tags `<img>` onde a URL da imagem é montada dinamicamente com muitos parâmetros (personalização, tracking, tokens). Links `<a>` normalmente são tratados pelo próprio link tracking do SFMC, mas imagens com URLs longas podem quebrar silenciosamente no Outlook.
+- A URL encurtada redireciona pelos servidores do Marketing Cloud Engagement antes de chegar ao destino final.
+
+> **💡 Dica:** No dia a dia, URLs com mais de 975 caracteres são raras em links comuns. Elas aparecem mais em cenários de imagens dinâmicas com muitos parâmetros de personalização ou tokens de segurança longos. Se você monta URLs dinamicamente com [Concat](../string-functions/concat.md) e muitas variáveis, fique atento.
 
 ## Funções relacionadas
 
-- [Concat](../string-functions/concat.md) — para montar URLs longas concatenando diversos parâmetros dinâmicos
-- [URLEncode](../string-functions/urlencode.md) — para codificar valores que serão usados como parâmetros na URL
-- [Length](../string-functions/length.md) — para verificar o tamanho da URL antes de decidir se precisa encurtar
-- [RedirectTo](../http-functions/redirectto.md) — para redirecionar o assinante para uma URL construída dinamicamente
-- [HTTPGet](../http-functions/httpget.md) — para fazer requisições GET a URLs externas
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — para gerar URLs de CloudPages com parâmetros criptografados
-- [AttributeValue](../utility-functions/attributevalue.md) — para recuperar valores de atributos do assinante de forma segura
-- [GUID](../utility-functions/guid.md) — para gerar identificadores únicos usados em parâmetros de tracking
+- [Concat](../string-functions/concat.md) — para construir URLs dinâmicas concatenando parâmetros
+- [URLEncode](../string-functions/urlencode.md) — para codificar valores antes de incluí-los como query parameters
+- [RedirectTo](../http-functions/redirectto.md) — para redirecionamentos rastreados em links clicáveis
+- [Replace](../string-functions/replace.md) — útil para sanitizar valores antes de incluí-los em URLs

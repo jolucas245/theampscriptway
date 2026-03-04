@@ -1,14 +1,14 @@
 ---
 title: HTTPGet
 sidebar_label: HTTPGet
-description: Recupera o conteúdo de uma URL usando o método HTTP GET, permitindo buscar dados externos para personalizar emails, CloudPages e outros contextos no Marketing Cloud.
+description: Faz uma requisição HTTP GET para uma URL e retorna o conteúdo da resposta.
 ---
 
 # HTTPGet
 
 ## Descrição
 
-A função `HTTPGet` faz uma requisição HTTP GET para uma URL e retorna o conteúdo da resposta como uma string. É muito útil quando você precisa buscar dados de APIs externas, serviços web ou páginas para personalizar seus envios ou CloudPages. Se a URL for a mesma para vários subscribers em um envio, o Marketing Cloud faz apenas uma chamada e usa o resultado em cache para todos eles — o que é ótimo para performance. A função funciona apenas com HTTP na porta 80 e HTTPS na porta 443; portas diferentes dessas vão causar erro.
+A função `HTTPGet` faz uma requisição GET para uma URL e retorna o conteúdo da resposta. É muito usada no dia a dia de SFMC para buscar dados dinâmicos de APIs externas — como informações de produto, status de pedido, cotações ou qualquer conteúdo que precise ser injetado em tempo real num e-mail ou CloudPage. Se a URL for a mesma para múltiplos subscribers num envio, o Marketing Cloud faz apenas uma chamada e usa o cache da resposta para os demais.
 
 ## Sintaxe
 
@@ -20,95 +20,88 @@ HTTPGet(httpGetUrl [, boolContinueOnError] [, enumAllowEmptyContent] [, function
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| httpGetUrl | String | Sim | A URL para a qual a requisição GET será feita. |
-| boolContinueOnError | Booleano | Não | Se `true`, a função ignora erros encontrados durante a requisição. Se `false` (padrão), a função para a execução ao encontrar um erro. |
-| enumAllowEmptyContent | Inteiro | Não | Define como a função lida com conteúdo vazio. Valores aceitos: `0` (permite conteúdo vazio — padrão), `1` (retorna erro ao encontrar conteúdo vazio), `2` (pula o envio do email para o subscriber quando usada em email). |
-| functionStatusOutput | Inteiro (variável) | Não | Variável que armazena o status da execução. Valores possíveis: `0` (sucesso), `-1` (URL não encontrada), `-2` (erro na requisição HTTP), `-3` (sucesso, mas sem conteúdo retornado). |
+| httpGetUrl | String | Sim | A URL onde a requisição GET será executada. |
+| boolContinueOnError | Boolean | Não | Se `true`, a função ignora erros encontrados durante a execução. Se `false`, a função para ao encontrar um erro. O valor padrão é `false`. |
+| enumAllowEmptyContent | Integer | Não | Define como a função lida com conteúdo vazio. `0`: permite conteúdo vazio (padrão). `1`: retorna erro ao encontrar conteúdo vazio. `2`: pula o envio do e-mail para o subscriber quando usado em e-mail. |
+| functionStatusOutput | Integer | Não | Variável que recebe o status da execução. `0`: função completou com sucesso. `-1`: falhou porque a URL não foi encontrada. `-2`: falhou por erro na requisição HTTP. `-3`: completou com sucesso mas não retornou conteúdo. |
 
 ## Exemplo básico
 
-Imagine que a **Lojas Vitória** tem uma API que retorna a oferta do dia em texto simples. Você quer exibir essa oferta no email:
+Buscando o conteúdo de uma página da Lojas Vitória para exibir informações dinâmicas num e-mail:
 
 ```ampscript
 %%[
-SET @ofertaDoDia = HTTPGet("https://api.lojasvitoria.com.br/oferta-do-dia")
+SET @conteudo = HTTPGet("https://api.lojasvitoria.com.br/promocao-do-dia")
 ]%%
 
-🎉 Oferta do dia: %%=v(@ofertaDoDia)=%%
+%%=v(@conteudo)=%%
 ```
 
 **Saída:**
 ```
-🎉 Oferta do dia: Frete grátis em compras acima de R$299 — só hoje!
+{"produto":"Cafeteira Elétrica","preco":"R$ 189,90","validade":"31/12/2024"}
 ```
 
 ## Exemplo avançado
 
-Agora um cenário mais robusto: a **FarmaRede** quer buscar dados de um endpoint externo que retorna informações de cashback personalizadas por CPF. A URL é montada dinamicamente e o código trata erros para não quebrar o email caso a API esteja fora do ar:
+Consultando uma API de status de pedido para personalizar um e-mail de acompanhamento na régua de relacionamento, com tratamento de erro para garantir que o subscriber não receba um e-mail quebrado:
 
 ```ampscript
 %%[
 SET @cpf = AttributeValue("CPF")
-SET @url = Concat("https://api.farmarede.com.br/cashback?cpf=", URLEncode(@cpf))
+SET @numeroPedido = AttributeValue("NumeroPedido")
+
+SET @url = Concat("https://api.megastore.com.br/pedidos/", @numeroPedido, "?cpf=", URLEncode(@cpf))
 
 SET @resposta = HTTPGet(@url, true, 0, @callStatus)
 
 IF @callStatus == 0 THEN
+  SET @mensagem = Concat("Olá! Aqui está a atualização do seu pedido #", @numeroPedido, ":")
+ELSEIF @callStatus == -1 THEN
+  SET @mensagem = "Não conseguimos localizar seu pedido no momento. Entre em contato pelo (11) 3000-1234."
+ELSEIF @callStatus == -2 THEN
+  SET @mensagem = "Estamos com uma instabilidade temporária. Tente consultar seu pedido em megastore.com.br."
+ELSEIF @callStatus == -3 THEN
+  SET @mensagem = "Seu pedido está sendo processado. Em breve você terá novidades!"
+ENDIF
 ]%%
 
-<h2>Olá, %%=v(AttributeValue("PrimeiroNome"))=%%! 🎉</h2>
-<p>Você tem cashback disponível na FarmaRede:</p>
-<p><strong>%%=v(@resposta)=%%</strong></p>
-<p>Use seu saldo na próxima compra em qualquer loja FarmaRede!</p>
+%%=v(@mensagem)=%%
 
-%%[ ELSEIF @callStatus == -1 THEN ]%%
-
-<p>Não conseguimos localizar suas informações de cashback no momento. Acesse <a href="https://www.farmarede.com.br/minha-conta">sua conta</a> para consultar.</p>
-
-%%[ ELSEIF @callStatus == -2 THEN ]%%
-
-<p>Nosso sistema de cashback está temporariamente indisponível. Tente novamente mais tarde.</p>
-
-%%[ ELSEIF @callStatus == -3 THEN ]%%
-
-<p>Você ainda não possui cashback acumulado. Que tal aproveitar nossas ofertas de Dia das Mães?</p>
-
+%%[ IF @callStatus == 0 THEN ]%%
+  %%=v(@resposta)=%%
 %%[ ENDIF ]%%
 ```
 
-**Saída (cenário de sucesso):**
-```html
-<h2>Olá, Maria! 🎉</h2>
-<p>Você tem cashback disponível na FarmaRede:</p>
-<p><strong>R$ 47,50 de cashback para usar até 31/12/2024</strong></p>
-<p>Use seu saldo na próxima compra em qualquer loja FarmaRede!</p>
+**Saída (sucesso):**
+```
+Olá! Aqui está a atualização do seu pedido #98234:
+{"status":"Em transporte","previsao":"28/07/2025","transportadora":"Correios"}
 ```
 
-**Saída (cenário de erro na requisição):**
-```html
-<p>Nosso sistema de cashback está temporariamente indisponível. Tente novamente mais tarde.</p>
+**Saída (URL não encontrada):**
+```
+Não conseguimos localizar seu pedido no momento. Entre em contato pelo (11) 3000-1234.
 ```
 
 ## Observações
 
-- **Portas:** A função funciona **apenas** com HTTP na porta 80 e HTTPS na porta 443. Se a URL usar uma porta diferente (ex: `https://api.exemplo.com.br:8443/dados`), a função vai falhar.
-- **Cache por URL:** Se a URL for idêntica para vários subscribers no mesmo envio, o Marketing Cloud faz a chamada uma única vez e reutiliza o resultado. Se você precisa de dados diferentes por subscriber, inclua um parâmetro único na URL (como CPF, ID do cliente, etc.).
-- **Encoding de caracteres:** Em contas mais antigas, o Marketing Cloud assume que o conteúdo retornado usa o charset WindowsCodePage 1252. Contas mais recentes usam UTF-8. Se você está tendo problemas com acentos (muito comum com nomes brasileiros como "João", "André", "Conceição"), entre em contato com o suporte da Salesforce para ajustar o encoding padrão.
-- **Tratamento de erros:** Sem o parâmetro `boolContinueOnError` definido como `true`, qualquer erro na requisição vai interromper a renderização do conteúdo. Em emails, é uma boa prática sempre usar `true` e tratar os cenários de erro via `@callStatus`.
-- **Conteúdo vazio:** Use o parâmetro `enumAllowEmptyContent` com valor `2` se quiser pular o envio do email para um subscriber quando a API não retornar conteúdo — útil para evitar enviar emails com informações faltando.
-- **Uso com JSON/XML:** O `HTTPGet` retorna o conteúdo como string. Para parsear respostas JSON ou XML, combine com [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) ou [BuildRowsetFromXml](../content-functions/buildrowsetfromxml.md).
-- **Timeout:** A documentação oficial não especifica um valor de timeout exato. Tenha em mente que chamadas HTTP lentas podem impactar o tempo de renderização do email e a performance do envio.
-- **Segurança:** Evite expor dados sensíveis (como CPF completo) diretamente na URL sem HTTPS. Sempre use endpoints `https://` quando estiver trafegando informações pessoais.
+> **⚠️ Atenção:** A função funciona **apenas** com HTTP na porta 80 e HTTPS na porta 443. Portas não padrão fazem a função falhar. Se sua API interna roda em porta customizada (tipo 8080), você vai precisar de um proxy ou ajuste na infraestrutura.
+
+> **⚠️ Atenção:** Em contas mais antigas, o Marketing Cloud assume que os dados retornados usam o charset **Windows CodePage 1252**. Contas criadas recentemente usam **UTF-8**. Se você está numa conta antiga e recebe caracteres estranhos (acentos quebrados — muito comum com dados em português), entre em contato com o suporte Salesforce para alterar o padrão.
+
+> **💡 Dica:** Quando a URL é idêntica para vários subscribers num mesmo envio, o Marketing Cloud faz apenas **uma chamada** e reutiliza o cache. Isso é ótimo para conteúdo genérico (promoção do dia, banner), mas se você precisa de dados individualizados por subscriber, inclua um identificador na URL (como CPF ou ID do cliente) para que cada chamada seja única.
+
+> **💡 Dica:** Use o parâmetro `enumAllowEmptyContent` com valor `2` quando for crítico que o subscriber não receba um e-mail vazio ou quebrado — com essa opção, o envio é simplesmente pulado para aquele subscriber se a API não retornar conteúdo.
 
 ## Funções relacionadas
 
-- [HTTPPost](../http-functions/httppost.md) — Envia dados para uma URL usando o método POST
-- [HTTPPost2](../http-functions/httppost2.md) — Versão estendida do HTTPPost com suporte a headers customizados
-- [URLEncode](../string-functions/urlencode.md) — Codifica strings para uso seguro em URLs (ideal para montar query strings)
-- [TreatAsContent](../utility-functions/treatascontent.md) — Processa o conteúdo retornado como AMPscript/HTML renderizável
-- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) — Converte uma string JSON em um rowset para extrair dados
-- [BuildRowsetFromXml](../content-functions/buildrowsetfromxml.md) — Converte uma string XML em um rowset para extrair dados
-- [Concat](../string-functions/concat.md) — Concatena strings, útil para montar URLs dinâmicas
-- [RaiseError](../utility-functions/raiseerror.md) — Gera um erro customizado, útil para tratamento de falhas em chamadas HTTP
-- [RedirectTo](../http-functions/redirectto.md) — Redireciona o usuário para uma URL, útil em CloudPages
-- [V](../utility-functions/v.md) — Exibe o valor de uma variável inline no conteúdo
+- [HTTPPost](../http-functions/httppost.md) — para enviar dados via POST em vez de apenas consultar.
+- [HTTPPost2](../http-functions/httppost2.md) — variação do POST com parâmetros adicionais.
+- [HTTPRequestHeader](../http-functions/httprequestheader.md) — para definir headers customizados nas requisições HTTP.
+- [URLEncode](../string-functions/urlencode.md) — para codificar parâmetros na URL corretamente.
+- [Concat](../string-functions/concat.md) — para montar URLs dinâmicas concatenando strings.
+- [TreatAsContent](../utility-functions/treatascontent.md) — para processar o conteúdo retornado que contenha AMPscript.
+- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) — para parsear respostas JSON retornadas pela API.
+- [BuildRowsetFromXml](../content-functions/buildrowsetfromxml.md) — para parsear respostas XML retornadas pela API.
+- [RedirectTo](../http-functions/redirectto.md) — para redirecionar o subscriber para uma URL.

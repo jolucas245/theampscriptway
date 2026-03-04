@@ -1,156 +1,94 @@
 ---
 title: CloudPagesURL
 sidebar_label: CloudPagesURL
-description: Retorna uma URL de CloudPages com query string criptografada em AES-GCM, usada para criar links seguros de emails para landing pages.
+description: Gera uma URL de CloudPage com query string criptografada em AES-GCM para uso em e-mails.
 ---
 
 # CloudPagesURL
 
 ## Descrição
 
-A função `CloudPagesURL` gera uma URL apontando para uma landing page do CloudPages, com todos os parâmetros de query string criptografados usando AES-GCM. Isso significa que você pode passar dados de clientes (como CPF, ID de pedido, etc.) de forma segura, sem expor informações sensíveis em texto puro na URL. A query string gerada também inclui uma referência ao e-mail de origem, permitindo que você use personalization strings na landing page para acessar valores associados ao envio. Basicamente, é a forma recomendada de criar links de e-mails para CloudPages no Marketing Cloud.
+Retorna uma URL de CloudPage com a query string criptografada em AES-GCM. Use essa função para criar links em e-mails que direcionam para landing pages, passando dados do cliente de forma segura (criptografada) em vez de texto puro. A query string inclui uma referência ao e-mail, permitindo que você use personalization strings na landing page para acessar valores associados ao envio.
 
 ## Sintaxe
 
 ```ampscript
-CloudPagesURL(pageId, parameterName1, parameterValue1 [, parameterName2, parameterValue2, ...])
+CloudPagesURL(pageId, parameterName1, parameterValue1, [parameterName2, parameterValue2, ...])
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| pageId | Número | Sim | O ID da landing page do CloudPages para a qual você quer direcionar o link. Você encontra esse ID na página de detalhes do conteúdo da landing page. |
-| parameterName1 | String | Sim | O nome do parâmetro que você quer incluir na query string criptografada. |
-| parameterValue1 | String | Sim | O valor do parâmetro correspondente ao nome informado. |
-| parameterNameN | String | Não | Nomes adicionais de parâmetros. Você pode passar quantos pares nome-valor precisar. |
-| parameterValueN | String | Não | Valores adicionais correspondentes aos nomes extras informados. |
+| pageId | Número | Sim | ID da landing page no CloudPages. Você encontra esse ID na página de detalhes do conteúdo da landing page. |
+| parameterName1 | String | Sim | Nome do parâmetro que será incluído na query string criptografada. |
+| parameterValue1 | String | Sim | Valor do parâmetro que será incluído na query string criptografada. |
+
+Você pode passar quantos pares de nome/valor quiser, basta adicionar ao final da função.
+
+> **⚠️ Atenção:** Os seguintes nomes são reservados e **não podem** ser usados como nomes de parâmetros: `PAGEID`, `MID`, `JID`, `LID`, `SID`, `JSB`, `URLID`.
 
 ## Exemplo básico
 
-Imagine que a **MegaStore** quer enviar um e-mail de confirmação de compra com um link para uma página de detalhes do pedido no CloudPages. Você precisa passar o ID do pedido e o e-mail do cliente de forma segura:
+Gerando um link para uma CloudPage de atualização cadastral, passando o e-mail e o nome do assinante de forma criptografada:
 
 ```ampscript
 %%[
-VAR @linkConfirmacao, @pedidoId, @emailCliente
+SET @nome = "Maria Santos"
+SET @email = "maria.santos@email.com.br"
+SET @cpf = "123.456.789-00"
 
-SET @pedidoId = "PED-2024-78543"
-SET @emailCliente = "joao.silva@email.com.br"
-
-SET @linkConfirmacao = CloudPagesURL(845, 'pedidoId', @pedidoId, 'emailCliente', @emailCliente)
+SET @urlCadastro = CloudPagesURL(845, 'Nome', @nome, 'Email', @email, 'CPF', @cpf)
 ]%%
 
-<a href="%%=RedirectTo(@linkConfirmacao)=%%">Ver detalhes do seu pedido</a>
+<a href="%%=v(@urlCadastro)=%%">Atualize seus dados cadastrais</a>
 ```
 
 **Saída:**
 ```html
-<a href="https://pub.s10.exacttarget.com/xxxxxxxxxxxx?encrypted_query_string">Ver detalhes do seu pedido</a>
+<a href="https://pub.s10.exacttarget.com/xxxxxxxx?p=eyJhbGciOiJkaXIiLCJlbm...">Atualize seus dados cadastrais</a>
 ```
-
-A URL gerada conterá os parâmetros `pedidoId` e `emailCliente` criptografados na query string — nada aparece em texto puro.
 
 ## Exemplo avançado
 
-Agora um cenário mais completo: a **Lojas Vitória** está rodando uma campanha de Dia das Mães e quer enviar um e-mail com um link para uma landing page personalizada. O link precisa passar dados do cliente e, ao mesmo tempo, funcionar com os parâmetros do Google Analytics (UTM) sem quebrar a URL.
-
-**No e-mail (remetente):**
+Em uma régua de relacionamento da MegaStore, o e-mail envia o cliente para uma landing page de pesquisa de satisfação. Como a conta usa integração com Google Analytics, combinamos `CloudPagesURL` com [RedirectTo](../http-functions/redirectto.md) e [Concat](../string-functions/concat.md) para evitar que os parâmetros de analytics quebrem o link:
 
 ```ampscript
 %%[
-VAR @nomeCliente, @cpf, @valorCupom, @linkPromo, @urlFinal
+SET @nome = "João Silva"
+SET @pedido = "PED-2024-00587"
+SET @valor = "R$ 1.299,90"
+SET @cidade = "São Paulo"
 
-SET @nomeCliente = AttributeValue("PrimeiroNome")
-SET @cpf = AttributeValue("CPF")
-SET @valorCupom = "50"
-
-SET @linkPromo = CloudPagesURL(
-  1234,
-  'nome', @nomeCliente,
-  'cpf', @cpf,
-  'valorCupom', @valorCupom,
-  'campanha', 'dia-das-maes-2024'
-)
-
-/* Combinando com Concat e RedirectTo para adicionar parâmetros UTM do Google Analytics */
-SET @urlFinal = Concat(
-  @linkPromo,
-  '&utm_source=sfmc',
-  '&utm_medium=email',
-  '&utm_campaign=dia_das_maes_2024',
-  '&utm_content=botao_principal'
-)
+SET @urlBase = CloudPagesURL(1023, 'NomeCliente', @nome, 'Pedido', @pedido, 'ValorCompra', @valor, 'Cidade', @cidade)
+SET @urlFinal = Concat(@urlBase, '&utm_source=sfmc&utm_medium=email&utm_campaign=pesquisa_satisfacao')
 ]%%
 
-<p>Olá, %%=v(@nomeCliente)=%%, preparamos algo especial pra você! 💐</p>
-
-<a href="%%=RedirectTo(@urlFinal)=%%" style="background-color:#E91E63;color:#fff;padding:12px 24px;text-decoration:none;border-radius:4px;">
-  Resgatar meu cupom de R$ %%=v(@valorCupom)=%%
-</a>
+<a href="%%=RedirectTo(@urlFinal)=%%">Conte como foi sua experiência</a>
 ```
 
-**Na landing page do CloudPages (destino):**
-
-```ampscript
-%%[
-VAR @nome, @cpf, @valorCupom, @campanha
-
-SET @nome = RequestParameter("nome")
-SET @cpf = RequestParameter("cpf")
-SET @valorCupom = RequestParameter("valorCupom")
-SET @campanha = RequestParameter("campanha")
-]%%
-
-<h1>Parabéns, %%=v(@nome)=%%! 🎉</h1>
-<p>Seu cupom de <strong>R$ %%=v(@valorCupom)=%%</strong> para o Dia das Mães está ativo!</p>
-
-%%[
-/* Registra o resgate na Data Extension */
-InsertDE(
-  "ResgatesCupom",
-  "CPF", @cpf,
-  "Nome", @nome,
-  "ValorCupom", @valorCupom,
-  "Campanha", @campanha,
-  "DataResgate", Now()
-)
-]%%
-
-<p>Cupom aplicado automaticamente. Aproveite em <strong>www.lojasvitoria.com.br</strong>!</p>
-```
-
-**Saída no e-mail:**
+**Saída:**
 ```html
-<a href="https://pub.s10.exacttarget.com/xxxxxxxxxxxx?encrypted_params&utm_source=sfmc&utm_medium=email&utm_campaign=dia_das_maes_2024&utm_content=botao_principal">
-  Resgatar meu cupom de R$ 50
-</a>
+<a href="https://pub.s10.exacttarget.com/xxxxxxxx?p=eyJhbGciOiJkaXIiLCJlbm...&utm_source=sfmc&utm_medium=email&utm_campaign=pesquisa_satisfacao">Conte como foi sua experiência</a>
 ```
 
-**Saída na landing page:**
-```html
-<h1>Parabéns, João! 🎉</h1>
-<p>Seu cupom de <strong>R$ 50</strong> para o Dia das Mães está ativo!</p>
-<p>Cupom aplicado automaticamente. Aproveite em www.lojasvitoria.com.br!</p>
-```
+> **💡 Dica:** Na landing page, use [RequestParameter](../sites-functions/requestparameter.md) ou [QueryParameter](../sites-functions/queryparameter.md) para recuperar os valores dos parâmetros que você passou. Por exemplo: `SET @nome = RequestParameter('NomeCliente')`.
 
 ## Observações
 
-- **Use principalmente em e-mails.** A função `CloudPagesURL` foi projetada para criar links de e-mails para landing pages do CloudPages. Se você usá-la em mensagens SMS ou push, a landing page vai retornar erro caso o subscriber não seja membro da lista All Subscribers.
-- **Criptografia automática.** Todos os parâmetros passados na função são criptografados com AES-GCM. Você não precisa se preocupar em criptografar manualmente — a função cuida disso.
-- **Nomes reservados.** Os seguintes nomes **não podem** ser usados como nomes de parâmetros: `PAGEID`, `MID`, `JID`, `LID`, `SID`, `JSB`, `URLID`. Se você tentar usar algum deles, vai ter problema.
-- **Onde achar o Page ID.** O ID da landing page fica na página de detalhes do conteúdo dentro do CloudPages, no Marketing Cloud.
-- **Integração com Google Analytics.** Se você usa a integração do Google Analytics para anexar tags UTM automaticamente nos links, combine `CloudPagesURL` com [RedirectTo](../http-functions/redirectto.md) e [Concat](../string-functions/concat.md). Isso evita que os parâmetros adicionais de analytics quebrem a URL gerada (como mostrado no exemplo avançado).
-- **Recuperando parâmetros na landing page.** Na página de destino, use [RequestParameter](../sites-functions/requestparameter.md) ou [QueryParameter](../sites-functions/queryparameter.md) para recuperar os valores dos parâmetros passados. Os dados já chegam descriptografados automaticamente.
-- **Quantidade de parâmetros.** Você pode passar quantos pares nome-valor quiser — não há limite documentado. Basta ir adicionando ao final da função.
-- **Contexto de personalização.** Como a query string inclui referência ao e-mail de origem, você consegue usar personalization strings na landing page para acessar dados do subscriber e do envio.
+- Essa função foi projetada para uso em **e-mails**. Se você usá-la em SMS ou push messages, a landing page retornará erro caso o assinante não seja membro da lista All Subscribers.
+
+- O ID da landing page fica disponível na página de detalhes do conteúdo dentro do CloudPages.
+
+- Você pode incluir quantos pares de parâmetro nome/valor forem necessários — não há limite documentado.
+
+> **⚠️ Atenção:** Se a sua conta utiliza a integração com Google Analytics para adicionar tags automaticamente aos links, use a combinação com [RedirectTo](../http-functions/redirectto.md) e [Concat](../string-functions/concat.md) conforme o exemplo avançado. Isso é necessário para evitar que os parâmetros adicionais de analytics gerem links quebrados.
+
+> **⚠️ Atenção:** Não use os nomes reservados (`PAGEID`, `MID`, `JID`, `LID`, `SID`, `JSB`, `URLID`) como nomes de parâmetros na query string. Eles são usados internamente pelo sistema.
 
 ## Funções relacionadas
 
-- [RedirectTo](../http-functions/redirectto.md) — redireciona para uma URL; essencial quando combinada com `CloudPagesURL` e parâmetros UTM do Google Analytics.
-- [Concat](../string-functions/concat.md) — concatena strings; usada para adicionar parâmetros UTM à URL gerada pelo `CloudPagesURL`.
-- [RequestParameter](../sites-functions/requestparameter.md) — recupera o valor de um parâmetro da query string na landing page de destino.
-- [QueryParameter](../sites-functions/queryparameter.md) — alternativa para recuperar parâmetros de query string na landing page.
-- [MicrositeURL](../sites-functions/micrositeurl.md) — função similar usada para gerar URLs de microsites (contexto mais antigo).
-- [Redirect](../sites-functions/redirect.md) — redireciona o navegador para uma URL especificada.
-- [AttributeValue](../utility-functions/attributevalue.md) — recupera valores de atributos do subscriber, útil para passar dados dinâmicos ao `CloudPagesURL`.
-- [InsertDE](../data-extension-functions/insertde.md) — insere registros em Data Extensions; comum em landing pages que processam dados recebidos via `CloudPagesURL`.
+- [RedirectTo](../http-functions/redirectto.md) — necessária ao combinar `CloudPagesURL` com parâmetros extras como UTMs do Google Analytics
+- [Concat](../string-functions/concat.md) — usada para concatenar a URL gerada com parâmetros adicionais
+- [RequestParameter](../sites-functions/requestparameter.md) — recupera valores dos parâmetros na landing page
+- [QueryParameter](../sites-functions/queryparameter.md) — alternativa para recuperar valores dos parâmetros na landing page

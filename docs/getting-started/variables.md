@@ -1,125 +1,91 @@
 ---
 title: Variáveis
 sidebar_label: Variáveis
-description: Aprenda a declarar, atribuir e usar variáveis em AMPScript para personalizar seus e-mails e automações no Salesforce Marketing Cloud.
+description: Como declarar e atribuir valores a variáveis em AMPscript usando VAR e SET.
 sidebar_position: 3
 ---
 
 # Variáveis
 
-Variáveis são o coração do AMPScript. É nelas que você guarda informações — nome do assinante, valor de um desconto, resultado de uma busca em Data Extension — para usar ao longo do seu código. Se você já entendeu a [sintaxe básica](/docs/getting-started/syntax), aqui é o próximo passo natural.
+Variáveis são o ponto de partida para qualquer lógica em AMPscript. É nelas que você armazena dados — o nome do cliente, uma data formatada, o valor de um produto — para usar ao longo do seu e-mail, CloudPage ou SMS. Entender como declarar e atribuir valores a variáveis é o fundamento de tudo que vem depois.
 
-## Declaração com VAR e atribuição com SET
+## Nomeando variáveis
 
-Para criar uma variável em AMPScript, você usa duas funções:
+Em AMPscript, toda variável começa com o caractere `@` (arroba). Sempre. Sem exceção.
 
-- **`VAR`** — declara a variável (diz pro AMPScript que ela existe).
-- **`SET`** — atribui um valor a ela.
+Você escolhe o nome que quiser depois do `@`, mas a boa prática é usar nomes descritivos que deixem claro o que aquela variável guarda. Quando você está mantendo um template de régua de relacionamento com dezenas de variáveis, um nome como `@cidadeContato` vale ouro comparado a `@c`.
+
+## Declarando variáveis com VAR
+
+Para declarar uma variável, você usa a palavra-chave `VAR`. Quando declara uma variável, ela é adicionada a um dicionário interno de variáveis. O valor inicial de qualquer variável recém-declarada é **nulo** (null) — ela existe, mas ainda não carrega nenhum dado.
+
+Este exemplo declara uma variável chamada `@primeiroNome`:
 
 ```ampscript
 %%[
-  VAR @nomeCliente
+  VAR @primeiroNome
+]%%
+```
+
+Você também pode declarar **múltiplas variáveis em uma única linha**, separando-as por vírgula. Isso é muito útil quando você está montando um e-mail de boas-vindas, por exemplo, e precisa de várias informações do assinante de uma vez:
+
+```ampscript
+%%[
+  VAR @primeiroNome, @sobrenome, @cidadeContato
+]%%
+```
+
+> **⚠️ Atenção:** Você só pode declarar variáveis dentro de blocos AMPscript (entre `%%[` e `]%%`). Não é possível declarar variáveis em strings inline de AMPscript. Lembre-se disso ao estruturar seu código.
+
+## Atribuindo valores com SET
+
+Declarar a variável é só o primeiro passo — ela nasce nula. Para colocar um valor dentro dela, você usa a palavra-chave `SET`.
+
+Neste exemplo, declaramos a variável `@cidadeContato` e atribuímos o valor `"São Paulo"`:
+
+```ampscript
+%%[
+  VAR @cidadeContato
+  SET @cidadeContato = "São Paulo"
+]%%
+```
+
+Agora `@cidadeContato` deixou de ser nula e carrega o texto "São Paulo". Você pode usar essa variável em qualquer lugar do seu conteúdo para personalizar a mensagem — imagine um e-mail da Lojas Vitória dizendo "Confira as ofertas na nossa loja em São Paulo!".
+
+> **💡 Dica:** No dia a dia, você vai declarar e atribuir valor quase sempre em sequência. É um padrão tão comum que se torna automático: `VAR` para criar, `SET` para preencher.
+
+## Atribuindo o resultado de uma função
+
+O `SET` não serve apenas para textos fixos. Você pode atribuir a uma variável o **resultado de uma função**, o que é onde AMPscript começa a ficar realmente poderoso.
+
+Neste exemplo, usamos as funções `FormatDate()` e `Now()` para capturar a data atual formatada e armazená-la na variável `@dataAtual`:
+
+```ampscript
+%%[
+  VAR @dataAtual
+  SET @dataAtual = FormatDate(Now(), "DD/MM/YYYY")
+]%%
+```
+
+Se hoje fosse 05 de agosto de 2023, a variável `@dataAtual` teria o valor `"05/08/2023"`. Isso é muito usado em e-mails transacionais — confirmações de pedido, comprovantes, notificações — onde a data precisa aparecer no corpo da mensagem.
+
+Imagine um e-mail do Banco Meridional confirmando uma transação:
+
+```ampscript
+%%[
+  VAR @nomeCliente, @dataAtual, @cidadeAgencia
   SET @nomeCliente = "Maria Santos"
-]%%
-```
-
-Depois de atribuir, você exibe o valor no HTML usando `%%=v(@nomeCliente)=%%`:
-
-```html
-<p>Olá, %%=v(@nomeCliente)=%%! Confira nossas ofertas de Dia das Mães.</p>
-```
-
-> **💡 Dica:** Na prática, muita gente pula o `VAR` e vai direto pro `SET`. O AMPScript aceita, mas declarar com `VAR` é uma boa prática — deixa o código mais legível e evita confusão em blocos maiores.
-
-## Declarando múltiplas variáveis de uma vez
-
-Você não precisa escrever um `VAR` pra cada variável. Dá pra declarar várias na mesma linha, separando por vírgula:
-
-```ampscript
-%%[
-  VAR @nome, @email, @valorCashback
-  SET @nome = "João Silva"
-  SET @email = "joao.silva@email.com.br"
-  SET @valorCashback = 25.50
-]%%
-```
-
-Isso mantém o código limpo, especialmente quando você trabalha com muitas variáveis no mesmo e-mail.
-
-## Tipos de dados
-
-AMPScript não exige que você declare o tipo da variável — ele resolve isso sozinho com base no valor atribuído. Mesmo assim, é importante conhecer os tipos que existem:
-
-| Tipo | Exemplo de SET | Resultado |
-|---|---|---|
-| **String** | `SET @cidade = "São Paulo"` | Texto entre aspas duplas |
-| **Number** | `SET @preco = 149.90` | Número decimal ou inteiro |
-| **Boolean** | `SET @ativo = 1` | `1` (verdadeiro) ou `0` (falso) |
-| **Date** | `SET @data = NOW()` | Data/hora retornada por funções de data |
-| **Null** | (variável declarada sem SET) | Sem valor atribuído |
-
-> **⚠️ Atenção:** AMPScript não tem literais `true`/`false`. Use `1` e `0` para representar valores booleanos. Se você escrever `SET @ativo = true`, o valor será a **string** "true", não um booleano.
-
-## Escopo de variáveis
-
-Variáveis declaradas em AMPScript têm escopo **local ao e-mail ou à página** onde foram criadas. Isso significa que uma variável definida num bloco de código no topo do e-mail pode ser usada em qualquer outro bloco `%%[ ]%%` dentro daquele mesmo e-mail — não importa se está no header, body ou footer. Porém, essa variável **não existe** em outro e-mail ou em outra página do CloudPages.
-
-```ampscript
-%%[
-  SET @frete = "Frete Grátis"
+  SET @dataAtual = FormatDate(Now(), "DD/MM/YYYY")
+  SET @cidadeAgencia = "Curitiba"
 ]%%
 
-<!-- Mais abaixo no HTML, outro bloco AMPScript -->
-<div class="banner">
-  %%=v(@frete)=%% para todo o Brasil!
-</div>
+Olá, %%=v(@nomeCliente)=%%.
+
+Sua solicitação foi registrada em %%=v(@dataAtual)=%% na agência de %%=v(@cidadeAgencia)=%%.
 ```
 
-A variável `@frete` foi definida no primeiro bloco e acessada normalmente no segundo. Funciona porque é o mesmo contexto de renderização.
-
-## Convenção de nomenclatura com @
-
-- Toda variável AMPScript **começa com `@`**. Sem o arroba, não funciona.
-- Use **camelCase** para facilitar a leitura: `@nomeCliente`, `@dataNascimento`, `@valorDesconto`.
-- Evite nomes genéricos como `@x` ou `@temp`. Prefira nomes descritivos: `@cpfAssinante`, `@cepEntrega`.
-- Variáveis **não diferenciam** maiúsculas de minúsculas: `@Nome` e `@nome` são a mesma variável.
-- Não use espaços ou caracteres especiais (acentos, ç) no nome da variável.
-
-## Exemplo realista: personalizando com AttributeValue e Lookup
-
-Vamos juntar tudo num cenário real. Imagine que a **MegaStore** quer enviar um e-mail de cashback personalizado. O nome do cliente vem do atributo do envio (a coluna da Data Extension de envio) e o saldo de cashback vem de outra Data Extension chamada `Cashback_Clientes`.
-
-```ampscript
-%%[
-  VAR @nome, @cpf, @saldo, @mensagem
-
-  SET @nome = AttributeValue("PrimeiroNome")
-  SET @cpf = AttributeValue("CPF")
-
-  SET @saldo = Lookup("Cashback_Clientes", "Saldo", "CPF", @cpf)
-
-  IF @saldo > 0 THEN
-    SET @mensagem = CONCAT("Você tem R$ ", FormatNumber(@saldo, "N2"), " de cashback disponível!")
-  ELSE
-    SET @mensagem = "Compre hoje e ganhe cashback na sua próxima compra."
-  ENDIF
-]%%
-```
-
-```html
-<h1>Oi, %%=v(@nome)=%%! 👋</h1>
-<p>%%=v(@mensagem)=%%</p>
-<a href="https://www.megastore.com.br/cashback">Usar meu cashback</a>
-```
-
-Nesse exemplo:
-
-1. **`AttributeValue`** busca dados da Data Extension de envio (a que está vinculada ao Job).
-2. **`Lookup`** vai em outra DE (`Cashback_Clientes`) e traz o saldo usando o CPF como chave.
-3. O [condicional](/docs/getting-started/conditionals) `IF/ELSE` define a mensagem com base no valor encontrado.
-
-> **💡 Dica:** Se o `Lookup` não encontrar nenhum registro, ele retorna vazio (null). Sempre trate esse cenário pra evitar exibir conteúdo quebrado pro assinante.
+> **💡 Dica:** Combinar `SET` com funções é o padrão que você mais vai usar no Marketing Cloud. Buscar dados de uma Data Extension, formatar valores, manipular datas — tudo passa por atribuir resultados de funções a variáveis.
 
 ---
 
-Agora que você domina variáveis, o próximo passo é aprender a controlar o fluxo do seu código com [condicionais](/docs/getting-started/conditionals).
+Variáveis são a base de tudo. Com `VAR` e `SET` dominados, você está pronto para avançar para [condicionais](/docs/getting-started/conditionals) e [loops](/docs/getting-started/loops), onde essas variáveis ganham vida dentro de lógica de verdade.
