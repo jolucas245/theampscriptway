@@ -8,7 +8,6 @@ interface Props {
 }
 
 export function SubscriberPanel({ attributes, onChange }: Props) {
-  const [open, setOpen] = useState(false);
   const [newKey, setNewKey] = useState('');
   const [newVal, setNewVal] = useState('');
 
@@ -37,59 +36,37 @@ export function SubscriberPanel({ attributes, onChange }: Props) {
   }
 
   return (
-    <div className={styles.panel}>
-      <button
-        className={styles.panelHeader}
-        onClick={() => setOpen(o => !o)}
-      >
-        Subscriber Attributes ({keys.length}) {open ? '▲' : '▼'}
-      </button>
-
-      {open && (
-        <div className={styles.panelBody}>
-          {keys.map(key => (
-            <div key={key} className={styles.attrRow}>
-              <span className={styles.attrKey} title={key}>{key}</span>
-              <input
-                className={styles.attrInput}
-                value={String(attributes[key] ?? '')}
-                onChange={e => update(key, e.target.value)}
-              />
-              <button
-                className={styles.removeBtn}
-                onClick={() => remove(key)}
-                title="Remove"
-              >
-                ×
-              </button>
-            </div>
-          ))}
-
-          <div className={styles.attrRow}>
-            <input
-              className={styles.attrInput}
-              placeholder="Attribute name"
-              value={newKey}
-              onChange={e => setNewKey(e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
-            <input
-              className={styles.attrInput}
-              placeholder="Value"
-              value={newVal}
-              onChange={e => setNewVal(e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
-            <button
-              className={styles.addBtn}
-              onClick={add}
-              title="Add attribute"
-            >
-              +
-            </button>
-          </div>
+    <div>
+      {keys.map(key => (
+        <div key={key} className={styles.attrRow}>
+          <span className={styles.attrKey} title={key}>{key}</span>
+          <input
+            className={styles.attrInput}
+            value={String(attributes[key] ?? '')}
+            onChange={e => update(key, e.target.value)}
+          />
+          <button className={styles.removeBtn} onClick={() => remove(key)} title="Remover">×</button>
         </div>
-      )}
+      ))}
+
+      <div className={styles.attrRow}>
+        <input
+          className={styles.attrInput}
+          placeholder="Attribute name"
+          value={newKey}
+          onChange={e => setNewKey(e.target.value)}
+          onKeyDown={handleKeyDown}
+          style={{ width: '45%', flex: 'none' }}
+        />
+        <input
+          className={styles.attrInput}
+          placeholder="Value"
+          value={newVal}
+          onChange={e => setNewVal(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <button className={styles.addBtn} onClick={add} title="Adicionar attribute">+</button>
+      </div>
     </div>
   );
 }
