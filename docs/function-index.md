@@ -24,35 +24,23 @@ Lista completa das funções AMPscript disponíveis no Salesforce Marketing Clou
 | [Lowercase](./string-functions/lowercase.md) | Converte uma string para letras minúsculas |
 | [ProperCase](./string-functions/propercase.md) | Converte a primeira letra de cada palavra para maiúscula |
 | [RegExMatch](./string-functions/regexmatch.md) | Verifica se uma string corresponde a uma expressão regular |
-| [RegExReplace](./string-functions/regexreplace.md) | Substitui correspondências de uma regex por outra string |
 | [Replace](./string-functions/replace.md) | Substitui ocorrências de uma substring por outra |
-| [ReplaceList](./string-functions/replacelist.md) | Substitui múltiplos valores em uma string |
+| [ReplaceList](./string-functions/replacelist.md) | Substitui múltiplos valores em uma string usando listas delimitadas |
 | [StringToHex](./string-functions/stringtohex.md) | Converte uma string para representação hexadecimal |
 | [Substring](./string-functions/substring.md) | Extrai uma parte de uma string por posição e tamanho |
 | [Trim](./string-functions/trim.md) | Remove espaços no início e no fim de uma string |
-| [TrimLeft](./string-functions/trimleft.md) | Remove espaços no início de uma string |
-| [TrimRight](./string-functions/trimright.md) | Remove espaços no fim de uma string |
 | [URLEncode](./string-functions/urlencode.md) | Codifica uma string para uso em URLs |
 | [Uppercase](./string-functions/uppercase.md) | Converte uma string para letras maiúsculas |
-| [WrapText](./string-functions/wraptext.md) | Quebra um texto em linhas com tamanho máximo definido |
 
 ## Funções Matemáticas
 
 | Função | Descrição |
 |--------|-----------|
-| [Abs](./math-functions/abs.md) | Retorna o valor absoluto de um número |
 | [Add](./math-functions/add.md) | Soma dois números |
-| [Ceiling](./math-functions/ceiling.md) | Arredonda um número para cima |
 | [Divide](./math-functions/divide.md) | Divide dois números |
-| [Floor](./math-functions/floor.md) | Arredonda um número para baixo |
-| [Max](./math-functions/max.md) | Retorna o maior valor entre dois números |
-| [Min](./math-functions/min.md) | Retorna o menor valor entre dois números |
 | [Mod](./math-functions/mod.md) | Retorna o resto da divisão entre dois números |
 | [Multiply](./math-functions/multiply.md) | Multiplica dois números |
-| [Power](./math-functions/power.md) | Eleva um número a uma potência |
 | [Random](./math-functions/random.md) | Gera um número aleatório dentro de um intervalo |
-| [Round](./math-functions/round.md) | Arredonda um número para um número de casas decimais |
-| [Sqrt](./math-functions/sqrt.md) | Retorna a raiz quadrada de um número |
 | [Subtract](./math-functions/subtract.md) | Subtrai dois números |
 
 ## Funções de Data
@@ -68,7 +56,6 @@ Lista completa das funções AMPscript disponíveis no Salesforce Marketing Clou
 | [LocalDateToSystemDate](./date-functions/localdatetosystemdate.md) | Converte data local para data do sistema |
 | [Now](./date-functions/now.md) | Retorna a data e hora atual em UTC |
 | [StringToDate](./date-functions/stringtodate.md) | Converte uma string para um objeto de data |
-| [SystemDate](./date-functions/systemdate.md) | Retorna a data atual do servidor |
 | [SystemDateToLocalDate](./date-functions/systemdatetolocaldate.md) | Converte data do sistema para data local |
 
 ## Funções Utilitárias
@@ -86,7 +73,6 @@ Lista completa das funções AMPscript disponíveis no Salesforce Marketing Clou
 | [Output](./utility-functions/output.md) | Exibe o resultado de uma função AMPscript |
 | [OutputLine](./utility-functions/outputline.md) | Exibe o resultado de uma função com quebra de linha |
 | [RaiseError](./utility-functions/raiseerror.md) | Gera um erro personalizado |
-| [ToString](./utility-functions/tostring.md) | Converte um valor para string |
 | [TreatAsContent](./utility-functions/treatascontent.md) | Processa uma string como conteúdo AMPscript |
 | [V](./utility-functions/v.md) | Exibe o valor de uma variável inline |
 
@@ -128,7 +114,7 @@ Lista completa das funções AMPscript disponíveis no Salesforce Marketing Clou
 | [RowCount](./data-extension-functions/rowcount.md) | Retorna o número de linhas de um rowset |
 | [UpdateData](./data-extension-functions/updatedata.md) | Atualiza registros em uma DE usando critérios |
 | [UpdateDE](./data-extension-functions/updatede.md) | Atualiza um registro em uma DE |
-| [UpsertData](./data-extension-functions/upsertdata.md) | Insere ou atualiza registros em uma DE |
+| [UpsertData](./data-extension-functions/upsertdata.md) | Insere ou atualiza registros em uma DE usando critérios |
 | [UpsertDE](./data-extension-functions/upsertde.md) | Insere ou atualiza um registro em uma DE |
 
 ## Funções de Conteúdo
@@ -147,11 +133,15 @@ Lista completa das funções AMPscript disponíveis no Salesforce Marketing Clou
 | [ContentBlockById](./content-functions/contentblockbyid.md) | Insere um Content Block por ID |
 | [ContentBlockByKey](./content-functions/contentblockbykey.md) | Insere um Content Block pela chave |
 | [ContentBlockByName](./content-functions/contentblockbyname.md) | Insere um Content Block pelo nome |
+| [ContentImageById](./content-functions/contentimagebyid.md) | Retorna uma tag img a partir do ID de uma imagem do Content Builder |
+| [ContentImageByKey](./content-functions/contentimagebykey.md) | Retorna uma tag img a partir da chave de uma imagem do Content Builder |
 | [EndImpressionRegion](./content-functions/endimpressionregion.md) | Marca o fim de uma região de impressão |
 | [GetPortfolioItem](./content-functions/getportfolioitem.md) | Retorna a URL de um item do Portfolio |
 | [Image](./content-functions/image.md) | Insere uma imagem do Portfolio |
 | [ImageById](./content-functions/imagebyid.md) | Insere uma imagem do Portfolio por ID |
 | [ImageByKey](./content-functions/imagebykey.md) | Insere uma imagem do Portfolio pela chave |
+| [RatingStars](./content-functions/ratingstars.md) | Gera uma imagem de estrelas de avaliação para Einstein Email Recommendations |
+| [TransformXML](./content-functions/transformxml.md) | Aplica uma transformação XSL a dados XML |
 | [TreatAsContentArea](./content-functions/treatascontentarea.md) | Processa uma string como Content Area |
 | [WAT](./content-functions/wat.md) | Web Analytics Tracking — adiciona rastreamento a uma URL |
 
@@ -159,12 +149,16 @@ Lista completa das funções AMPscript disponíveis no Salesforce Marketing Clou
 
 | Função | Descrição |
 |--------|-----------|
+| [AfterHTTPGet](./http-functions/afterhttpget.md) | Envia uma requisição GET após a conclusão do job de envio |
+| [BeforeHTTPGet](./http-functions/beforehttpget.md) | Executa uma requisição GET uma única vez antes do envio começar |
 | [HTTPGet](./http-functions/httpget.md) | Realiza uma requisição HTTP GET |
+| [HTTPGetWrap](./http-functions/httpgetwrap.md) | Habilita rastreamento de cliques em links de conteúdo externo |
 | [HTTPPost](./http-functions/httppost.md) | Realiza uma requisição HTTP POST |
 | [HTTPPost2](./http-functions/httppost2.md) | Realiza um HTTP POST com suporte a cabeçalhos personalizados |
+| [HTTPPostWithRetry](./http-functions/httppostwithretry.md) | Envia um HTTP POST com retry automático em caso de falha |
+| [HTTPRequestHeader](./http-functions/httprequestheader.md) | Recupera o valor de um header HTTP da requisição |
 | [IsChtmlBrowser](./http-functions/ischtmlbrowser.md) | Verifica se o cliente é um browser CHTML |
 | [RedirectTo](./http-functions/redirectto.md) | Redireciona para uma URL |
-| [RequestHeader](./http-functions/requestheader.md) | Retorna o valor de um cabeçalho HTTP da requisição |
 | [WrapLongURL](./http-functions/wraplongurl.md) | Encurta uma URL longa para uso em e-mails |
 
 ## Funções de Sites
@@ -183,6 +177,7 @@ Lista completa das funções AMPscript disponíveis no Salesforce Marketing Clou
 | [QueryParameter](./sites-functions/queryparameter.md) | Retorna o valor de um parâmetro da query string |
 | [Redirect](./sites-functions/redirect.md) | Redireciona para uma URL em CloudPages |
 | [RequestParameter](./sites-functions/requestparameter.md) | Retorna o valor de um parâmetro da requisição |
+| [WATP](./sites-functions/watp.md) | Placeholder ordinal para parâmetros em strings WAT |
 
 ## Funções Sociais
 

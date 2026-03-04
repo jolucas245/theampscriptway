@@ -23,14 +23,6 @@ export const stringFunctions: Record<string, (...args: ScalarValue[]) => ScalarV
     return toString(str).trim();
   },
 
-  TRIMLEFT(str) {
-    return toString(str).trimStart();
-  },
-
-  TRIMRIGHT(str) {
-    return toString(str).trimEnd();
-  },
-
   LENGTH(str) {
     return toString(str).length;
   },
@@ -58,19 +50,24 @@ export const stringFunctions: Record<string, (...args: ScalarValue[]) => ScalarV
     return s.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), r);
   },
 
+  REPLACELIST(str, search, replacement, delimiter) {
+    let s = toString(str);
+    const delim = toString(delimiter ?? ',');
+    const searches     = toString(search).split(delim);
+    const replacements = toString(replacement).split(delim);
+    for (let i = 0; i < searches.length; i++) {
+      const from = searches[i] ?? '';
+      const to   = replacements[i] ?? replacements[replacements.length - 1] ?? '';
+      s = s.replace(new RegExp(from.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), to);
+    }
+    return s;
+  },
+
   REGEXMATCH(str, pattern) {
     try {
       return new RegExp(toString(pattern)).test(toString(str));
     } catch {
       return false;
-    }
-  },
-
-  REGEXREPLACE(str, pattern, replacement) {
-    try {
-      return toString(str).replace(new RegExp(toString(pattern), 'g'), toString(replacement ?? ''));
-    } catch {
-      return toString(str);
     }
   },
 
@@ -117,36 +114,9 @@ export const stringFunctions: Record<string, (...args: ScalarValue[]) => ScalarV
     return encodeURIComponent(toString(str));
   },
 
-  URLDECODE(str) {
-    try {
-      return decodeURIComponent(toString(str));
-    } catch {
-      return toString(str);
-    }
-  },
-
   STRINGTOHEX(str) {
     return Array.from(toString(str))
       .map(c => c.charCodeAt(0).toString(16).padStart(2, '0'))
       .join('');
-  },
-
-  WRAPTEXT(str, maxLen) {
-    const s = toString(str);
-    const max = toNumber(maxLen);
-    if (!max || s.length <= max) return s;
-    const words = s.split(' ');
-    const lines: string[] = [];
-    let current = '';
-    for (const word of words) {
-      if ((current + ' ' + word).trim().length > max) {
-        if (current) lines.push(current);
-        current = word;
-      } else {
-        current = (current + ' ' + word).trim();
-      }
-    }
-    if (current) lines.push(current);
-    return lines.join('\n');
   },
 };
