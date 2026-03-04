@@ -1,8 +1,6 @@
 import type { AmpValue } from '../types';
 import { toString } from '../evaluator';
 
-// ── MD5 (pure JS) ─────────────────────────────────────────────────────────────
-
 function md5(str: string): string {
   function safeAdd(x: number, y: number) {
     const lsw = (x & 0xffff) + (y & 0xffff);
@@ -90,13 +88,6 @@ function md5(str: string): string {
   ).join('');
 }
 
-// ── SHA usando Web Crypto API (async → síncrono via cache) ────────────────────
-//
-// No playground, chamamos digest() e retornamos uma Promise resolvida
-// imediatamente quando possível. Para uso síncrono, fazemos uma chamada
-// prévia e armazenamos o resultado. Se ainda não estiver disponível,
-// retornamos null (improvável na prática pois o microtask roda antes do render).
-
 const shaCache = new Map<string, string>();
 
 function hexFromBuffer(buf: ArrayBuffer): string {
@@ -112,11 +103,8 @@ function computeSha(algorithm: string, input: string): string | null {
     shaCache.set(key, hexFromBuffer(buf));
   });
 
-  // Segunda chamada já encontra no cache
   return shaCache.get(key) ?? null;
 }
-
-// ── exports ───────────────────────────────────────────────────────────────────
 
 export const encryptionFunctions: Record<string, (args: AmpValue[]) => AmpValue> = {
 
@@ -136,8 +124,6 @@ export const encryptionFunctions: Record<string, (args: AmpValue[]) => AmpValue>
   SHA256(args) { return computeSha('SHA-256', toString(args[0])); },
   SHA512(args) { return computeSha('SHA-512', toString(args[0])); },
 
-  // EncryptSymmetric e DecryptSymmetric dependem de AES assíncrono.
-  // No playground, retornam null — use o SFMC para testar criptografia simétrica.
   ENCRYPTSYMMETRIC(_args) { return null; },
   DECRYPTSYMMETRIC(_args) { return null; },
 };
