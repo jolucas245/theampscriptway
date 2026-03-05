@@ -80,7 +80,7 @@ SET @urlFinal = Concat(@urlBase, '&utm_source=sfmc&utm_medium=email&utm_campaign
 
 - O ID da landing page fica disponível na página de detalhes do conteúdo dentro do CloudPages.
 
-- Você pode incluir quantos pares de parâmetro nome/valor forem necessários — não há limite documentado.
+- Você pode incluir quantos pares de parâmetro nome/valor forem necessários - não há limite documentado.
 
 > **⚠️ Atenção:** Se a sua conta utiliza a integração com Google Analytics para adicionar tags automaticamente aos links, use a combinação com [RedirectTo](../http-functions/redirectto.md) e [Concat](../string-functions/concat.md) conforme o exemplo avançado. Isso é necessário para evitar que os parâmetros adicionais de analytics gerem links quebrados.
 
@@ -88,7 +88,7 @@ SET @urlFinal = Concat(@urlBase, '&utm_source=sfmc&utm_medium=email&utm_campaign
 
 ## Funções relacionadas
 
-- [RedirectTo](../http-functions/redirectto.md) — necessária ao combinar `CloudPagesURL` com parâmetros extras como UTMs do Google Analytics
-- [Concat](../string-functions/concat.md) — usada para concatenar a URL gerada com parâmetros adicionais
-- [RequestParameter](../sites-functions/requestparameter.md) — recupera valores dos parâmetros na landing page
-- [QueryParameter](../sites-functions/queryparameter.md) — alternativa para recuperar valores dos parâmetros na landing page
+- [RedirectTo](../http-functions/redirectto.md) - necessária ao combinar `CloudPagesURL` com parâmetros extras como UTMs do Google Analytics
+- [Concat](../string-functions/concat.md) - usada para concatenar a URL gerada com parâmetros adicionais
+- [RequestParameter](../sites-functions/requestparameter.md) - recupera valores dos parâmetros na landing page
+- [QueryParameter](../sites-functions/queryparameter.md) - alternativa para recuperar valores dos parâmetros na landing page

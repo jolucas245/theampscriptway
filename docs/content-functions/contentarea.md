@@ -1,7 +1,7 @@
 ---
 title: ContentArea
 sidebar_label: ContentArea
-description: Retorna conteúdo de uma classic content area (função descontinuada — use ContentBlockById no lugar).
+description: Retorna conteúdo de uma classic content area (função descontinuada - use ContentBlockById no lugar).
 ---
 
 # ContentArea
@@ -32,23 +32,23 @@ Recuperando uma content area pelo ID para exibir um banner promocional da MegaSt
 
 ```ampscript
 %%[
-/* ATENÇÃO: função descontinuada — use ContentBlockById() */
+/* ATENÇÃO: função descontinuada - use ContentBlockById() */
 ]%%
 %%=ContentArea("12345")=%%
 ```
 
 **Saída:**
 ```
-(sem conteúdo — classic content areas não são mais suportadas)
+(sem conteúdo - classic content areas não são mais suportadas)
 ```
 
 ## Exemplo avançado
 
-Tentativa de recuperação com tratamento de erro e variável de status — cenário de régua de relacionamento da Lojas Vitória com conteúdo de fallback:
+Tentativa de recuperação com tratamento de erro e variável de status - cenário de régua de relacionamento da Lojas Vitória com conteúdo de fallback:
 
 ```ampscript
 %%[
-/* ATENÇÃO: função descontinuada — use ContentBlockById() */
+/* ATENÇÃO: função descontinuada - use ContentBlockById() */
 VAR @statusCode
 SET @conteudo = ContentArea(
   "67890",
@@ -59,7 +59,7 @@ SET @conteudo = ContentArea(
 )
 
 IF @statusCode == -1 THEN
-  /* Content area não encontrada — exibe mensagem alternativa */
+  /* Content area não encontrada - exibe mensagem alternativa */
   SET @conteudo = "<p>Visite lojasvitoria.com.br para ver nossas promoções!</p>"
 ENDIF
 ]%%
@@ -75,7 +75,7 @@ ENDIF
 
 > **⚠️ Atenção:** As classic content areas **não são mais suportadas** no Marketing Cloud Engagement. Isso significa que a função `ContentArea` **não recupera nenhum conteúdo** atualmente. Não use essa função em implementações novas.
 
-- O parâmetro `statusCode` é uma **variável de saída** — você passa uma variável que será preenchida pela função com o código de retorno (`0` para sucesso, `-1` para erro ou conteúdo inexistente).
+- O parâmetro `statusCode` é uma **variável de saída** - você passa uma variável que será preenchida pela função com o código de retorno (`0` para sucesso, `-1` para erro ou conteúdo inexistente).
 - Quando `boolErrorOnMissingContentArea` é `true` (padrão), a função retorna erro se a content area não for encontrada. Se for `false`, retorna o valor de `errorMessage` em vez de gerar erro.
 - Para qualquer necessidade de conteúdo reutilizável, migre para blocos do **Content Builder** e utilize [ContentBlockById](../content-functions/contentblockbyid.md), [ContentBlockByName](../content-functions/contentblockbyname.md) ou [ContentBlockByKey](../content-functions/contentblockbykey.md).
 
@@ -83,10 +83,10 @@ ENDIF
 
 ## Funções relacionadas
 
-- [ContentBlockById](../content-functions/contentblockbyid.md) — **substituta recomendada**, recupera blocos de conteúdo do Content Builder pelo ID
-- [ContentBlockByName](../content-functions/contentblockbyname.md) — recupera blocos do Content Builder pelo nome
-- [ContentBlockByKey](../content-functions/contentblockbykey.md) — recupera blocos do Content Builder pela customer key
-- [ContentAreaByName](../content-functions/contentareabyname.md) — versão por nome (descontinuada)
-- [TreatAsContentArea](../content-functions/treatascontentarea.md) — trata string como content area
-- [BeginImpressionRegion](../content-functions/beginimpressionregion.md) — inicia uma impression region
-- [EndImpressionRegion](../content-functions/endimpressionregion.md) — encerra uma impression region
+- [ContentBlockById](../content-functions/contentblockbyid.md) - **substituta recomendada**, recupera blocos de conteúdo do Content Builder pelo ID
+- [ContentBlockByName](../content-functions/contentblockbyname.md) - recupera blocos do Content Builder pelo nome
+- [ContentBlockByKey](../content-functions/contentblockbykey.md) - recupera blocos do Content Builder pela customer key
+- [ContentAreaByName](../content-functions/contentareabyname.md) - versão por nome (descontinuada)
+- [TreatAsContentArea](../content-functions/treatascontentarea.md) - trata string como content area
+- [BeginImpressionRegion](../content-functions/beginimpressionregion.md) - inicia uma impression region
+- [EndImpressionRegion](../content-functions/endimpressionregion.md) - encerra uma impression region

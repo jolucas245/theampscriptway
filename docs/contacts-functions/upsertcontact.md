@@ -8,7 +8,7 @@ description: Insere ou atualiza atributos de um contato no MobileConnect, criand
 
 ## Descrição
 
-A função `UpsertContact` insere ou atualiza atributos em um registro de contato. Se o contato já existir, os atributos são atualizados com as chaves e valores fornecidos. Se o contato não existir, a função cria um novo registro usando essas mesmas chaves e valores. É especialmente útil em fluxos de SMS e MobileConnect, onde você precisa manter dados de contato atualizados — como nome, cidade ou CEP — a partir de interações via mensagem. A função retorna `0` quando a operação é concluída sem erros.
+A função `UpsertContact` insere ou atualiza atributos em um registro de contato. Se o contato já existir, os atributos são atualizados com as chaves e valores fornecidos. Se o contato não existir, a função cria um novo registro usando essas mesmas chaves e valores. É especialmente útil em fluxos de SMS e MobileConnect, onde você precisa manter dados de contato atualizados - como nome, cidade ou CEP - a partir de interações via mensagem. A função retorna `0` quando a operação é concluída sem erros.
 
 ## Sintaxe
 
@@ -90,8 +90,8 @@ Resultado do upsert: 0
 
 ## Funções relacionadas
 
-- [CreateSmsConversation](../sms-functions/createsmsconversation.md) — cria uma conversa SMS
-- [EndSmsConversation](../sms-functions/endsmsconversation.md) — encerra uma conversa SMS
-- [SetSmsConversationNextKeyword](../sms-functions/setsmsconversationnextkeyword.md) — define a próxima keyword esperada numa conversa SMS
-- [UpsertDE](../data-extension-functions/upsertde.md) — upsert em Data Extensions (por nome)
-- [UpsertData](../data-extension-functions/upsertdata.md) — upsert em Data Extensions (por nome externo)
+- [CreateSmsConversation](../sms-functions/createsmsconversation.md) - cria uma conversa SMS
+- [EndSmsConversation](../sms-functions/endsmsconversation.md) - encerra uma conversa SMS
+- [SetSmsConversationNextKeyword](../sms-functions/setsmsconversationnextkeyword.md) - define a próxima keyword esperada numa conversa SMS
+- [UpsertDE](../data-extension-functions/upsertde.md) - upsert em Data Extensions (por nome)
+- [UpsertData](../data-extension-functions/upsertdata.md) - upsert em Data Extensions (por nome externo)

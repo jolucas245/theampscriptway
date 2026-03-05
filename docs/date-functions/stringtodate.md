@@ -8,7 +8,7 @@ description: Converte uma string de data em um objeto datetime .NET para uso em 
 
 ## Descrição
 
-Converte uma string de data em um objeto datetime do .NET. Essa função é essencial quando você recebe datas como texto (de Data Extensions, APIs ou parâmetros de URL) e precisa transformá-las em objetos de data reais para fazer cálculos, comparações ou formatações. Aceita diversos formatos de entrada, mas exige atenção especial porque **não suporta o formato brasileiro DD/MM/AAAA** — ela interpreta datas numéricas com barra no padrão americano (MM/DD/AAAA).
+Converte uma string de data em um objeto datetime do .NET. Essa função é essencial quando você recebe datas como texto (de Data Extensions, APIs ou parâmetros de URL) e precisa transformá-las em objetos de data reais para fazer cálculos, comparações ou formatações. Aceita diversos formatos de entrada, mas exige atenção especial porque **não suporta o formato brasileiro DD/MM/AAAA** - ela interpreta datas numéricas com barra no padrão americano (MM/DD/AAAA).
 
 ## Sintaxe
 
@@ -113,7 +113,7 @@ Faltam apenas 10 dias. Aproveite antes que expire!
 
 ## Observações
 
-> **⚠️ Atenção:** A função **não suporta o formato brasileiro DD/MM/AAAA com barras**. Se você passar `05/08/2023`, ela vai interpretar como **5 de agosto** (formato americano MM/DD/AAAA), não como 8 de maio. E se passar `25/12/2024`, pode gerar erro, já que não existe mês 25. **Sempre use o formato ISO 8601 (`AAAA-MM-DD`) para evitar ambiguidade** — esse é o formato mais seguro para o cenário brasileiro.
+> **⚠️ Atenção:** A função **não suporta o formato brasileiro DD/MM/AAAA com barras**. Se você passar `05/08/2023`, ela vai interpretar como **5 de agosto** (formato americano MM/DD/AAAA), não como 8 de maio. E se passar `25/12/2024`, pode gerar erro, já que não existe mês 25. **Sempre use o formato ISO 8601 (`AAAA-MM-DD`) para evitar ambiguidade** - esse é o formato mais seguro para o cenário brasileiro.
 
 > **💡 Dica:** Se seus dados vêm de sistemas brasileiros no formato `DD/MM/AAAA`, use [Replace](../string-functions/replace.md) e [Substring](../string-functions/substring.md) para reorganizar a string para o formato ISO antes de passar para `StringToDate`. Por exemplo, converta `15/03/2024` para `2024-03-15`.
 
@@ -123,11 +123,11 @@ Faltam apenas 10 dias. Aproveite antes que expire!
 
 ## Funções relacionadas
 
-- [FormatDate](../date-functions/formatdate.md) — formata o objeto datetime retornado para exibição (ex: `dd/MM/yyyy`)
-- [DateParse](../date-functions/dateparse.md) — outra função para conversão de strings em datas
-- [DateAdd](../date-functions/dateadd.md) — adiciona intervalos de tempo a uma data
-- [DateDiff](../date-functions/datediff.md) — calcula a diferença entre duas datas
-- [DatePart](../date-functions/datepart.md) — extrai partes específicas de uma data (dia, mês, ano)
-- [Now](../date-functions/now.md) — retorna a data/hora atual
-- [Replace](../string-functions/replace.md) — útil para reformatar strings de data antes da conversão
-- [Substring](../string-functions/substring.md) — útil para extrair partes de strings de data
+- [FormatDate](../date-functions/formatdate.md) - formata o objeto datetime retornado para exibição (ex: `dd/MM/yyyy`)
+- [DateParse](../date-functions/dateparse.md) - outra função para conversão de strings em datas
+- [DateAdd](../date-functions/dateadd.md) - adiciona intervalos de tempo a uma data
+- [DateDiff](../date-functions/datediff.md) - calcula a diferença entre duas datas
+- [DatePart](../date-functions/datepart.md) - extrai partes específicas de uma data (dia, mês, ano)
+- [Now](../date-functions/now.md) - retorna a data/hora atual
+- [Replace](../string-functions/replace.md) - útil para reformatar strings de data antes da conversão
+- [Substring](../string-functions/substring.md) - útil para extrair partes de strings de data

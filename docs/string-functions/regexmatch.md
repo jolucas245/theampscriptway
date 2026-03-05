@@ -8,7 +8,7 @@ description: Busca um padrão em uma string usando expressões regulares e retor
 
 ## Descrição
 
-A função `RegExMatch` busca um padrão dentro de uma string usando expressões regulares (regex). É extremamente útil no dia a dia de SFMC quando você precisa validar formatos de dados como CPF, CEP, telefone ou extrair partes específicas de um texto — situações comuns ao lidar com dados de clientes brasileiros que nem sempre vêm padronizados. Você passa a string, o padrão regex, o grupo de correspondência que quer retornar e, opcionalmente, parâmetros de repetição como `IgnoreCase` ou `Multiline`.
+A função `RegExMatch` busca um padrão dentro de uma string usando expressões regulares (regex). É extremamente útil no dia a dia de SFMC quando você precisa validar formatos de dados como CPF, CEP, telefone ou extrair partes específicas de um texto - situações comuns ao lidar com dados de clientes brasileiros que nem sempre vêm padronizados. Você passa a string, o padrão regex, o grupo de correspondência que quer retornar e, opcionalmente, parâmetros de repetição como `IgnoreCase` ou `Multiline`.
 
 ## Sintaxe
 
@@ -97,14 +97,14 @@ Olá, Pedro Rocha! Confira as ofertas da Lojas Vitória.
 
 - O parâmetro `repeatParameter` aceita valores da enumeração .NET `RegexOptions`. Os mais úteis no dia a dia são `IgnoreCase` (ignora maiúsculas/minúsculas) e `Multiline` (trata cada linha como início/fim separado).
 
-> **💡 Dica:** Ao combinar `RegExMatch` com [Replace](../string-functions/replace.md), você consegue substituir trechos de texto baseados em padrões regex — algo que a [ReplaceList](../string-functions/replacelist.md) não faz, já que ela só trabalha com strings estáticas. Use regex quando os dados de origem tiverem variações e inconsistências (espaços extras, pontuação opcional, etc.).
+> **💡 Dica:** Ao combinar `RegExMatch` com [Replace](../string-functions/replace.md), você consegue substituir trechos de texto baseados em padrões regex - algo que a [ReplaceList](../string-functions/replacelist.md) não faz, já que ela só trabalha com strings estáticas. Use regex quando os dados de origem tiverem variações e inconsistências (espaços extras, pontuação opcional, etc.).
 
 > **⚠️ Atenção:** Se a expressão regular não encontrar correspondência na string, o retorno será vazio. Sempre valide o resultado com [Empty](../utility-functions/empty.md) antes de usar o valor, especialmente em réguas automatizadas onde dados inconsistentes são comuns.
 
 ## Funções relacionadas
 
-- [Replace](../string-functions/replace.md) — substituição simples de strings, ideal para combinar com `RegExMatch`
-- [ReplaceList](../string-functions/replacelist.md) — substitui múltiplas strings estáticas de uma vez (sem suporte a regex)
-- [IndexOf](../string-functions/indexof.md) — localiza a posição de uma substring (alternativa mais simples quando não precisa de regex)
-- [Substring](../string-functions/substring.md) — extrai parte de uma string por posição
-- [Trim](../string-functions/trim.md) — remove espaços em branco das extremidades
+- [Replace](../string-functions/replace.md) - substituição simples de strings, ideal para combinar com `RegExMatch`
+- [ReplaceList](../string-functions/replacelist.md) - substitui múltiplas strings estáticas de uma vez (sem suporte a regex)
+- [IndexOf](../string-functions/indexof.md) - localiza a posição de uma substring (alternativa mais simples quando não precisa de regex)
+- [Substring](../string-functions/substring.md) - extrai parte de uma string por posição
+- [Trim](../string-functions/trim.md) - remove espaços em branco das extremidades

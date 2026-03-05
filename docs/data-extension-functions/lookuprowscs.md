@@ -8,7 +8,7 @@ description: Retorna um conjunto de linhas de uma Data Extension com busca case-
 
 ## Descrição
 
-A função `LookupRowsCS` busca linhas em uma Data Extension e retorna um rowset (conjunto de linhas) não ordenado, com limite de até 2.000 linhas. A diferença crucial em relação à [LookupRows](../data-extension-functions/lookuprows.md) é que essa função é **case-sensitive** — ou seja, ela diferencia maiúsculas de minúsculas tanto no nome da coluna de busca quanto no valor procurado. Isso é essencial quando você precisa de precisão exata na comparação, como em códigos de cupom, SKUs de produtos ou identificadores que variam por caixa.
+A função `LookupRowsCS` busca linhas em uma Data Extension e retorna um rowset (conjunto de linhas) não ordenado, com limite de até 2.000 linhas. A diferença crucial em relação à [LookupRows](../data-extension-functions/lookuprows.md) é que essa função é **case-sensitive** - ou seja, ela diferencia maiúsculas de minúsculas tanto no nome da coluna de busca quanto no valor procurado. Isso é essencial quando você precisa de precisão exata na comparação, como em códigos de cupom, SKUs de produtos ou identificadores que variam por caixa.
 
 ## Sintaxe
 
@@ -28,7 +28,7 @@ LookupRowsCS("dataExt", "searchColumn1", "searchValue1" [, "searchColumn2", "sea
 
 ## Exemplo básico
 
-Imagine que a Lojas Vitória tem uma Data Extension chamada "ProgramaFidelidade" com dados dos clientes e suas filiais. Você precisa listar todos os membros da filial "Centro" — respeitando exatamente a grafia.
+Imagine que a Lojas Vitória tem uma Data Extension chamada "ProgramaFidelidade" com dados dos clientes e suas filiais. Você precisa listar todos os membros da filial "Centro" - respeitando exatamente a grafia.
 
 **Data Extension: ProgramaFidelidade**
 
@@ -53,7 +53,7 @@ IF RowCount(@membros) > 0 THEN
     SET @pontos = Field(@linha, "Pontos")
 ]%%
 
-<p>%%=v(@nome)=%% %%=v(@sobrenome)=%% — %%=v(@pontos)=%% pontos</p>
+<p>%%=v(@nome)=%% %%=v(@sobrenome)=%% - %%=v(@pontos)=%% pontos</p>
 
 %%[
   NEXT @i
@@ -70,8 +70,8 @@ ENDIF
 
 **Saída:**
 ```
-João Silva — 92374 pontos
-Pedro Rocha — 15123 pontos
+João Silva - 92374 pontos
+Pedro Rocha - 15123 pontos
 ```
 
 > **⚠️ Atenção:** Note que Ana Lima (filial "centro" com "c" minúsculo) **não aparece** no resultado. Se você usasse [LookupRows](../data-extension-functions/lookuprows.md) (case-insensitive), ela seria incluída. Esse é exatamente o comportamento diferencial da `LookupRowsCS`.
@@ -164,14 +164,14 @@ Carlos Mendes    Vitamina C 500mg     R$ 29,90
 
 > **⚠️ Atenção:** Antes de iterar sobre o resultado, sempre use [RowCount](../data-extension-functions/rowcount.md) para verificar se há linhas retornadas. Tentar acessar um rowset vazio sem essa verificação pode causar erros na renderização do e-mail ou da CloudPage.
 
-> **💡 Dica:** Situações comuns onde a `LookupRowsCS` faz diferença no dia a dia: códigos de cupom promocional (ex: "NATAL2024" vs "natal2024"), SKUs de produto, tokens de autenticação e qualquer campo onde a caixa do texto carrega significado. Se a distinção de caixa não importa para o seu caso, prefira a [LookupRows](../data-extension-functions/lookuprows.md) — ela é mais tolerante e evita que dados deixem de ser encontrados por diferença de maiúsculas/minúsculas.
+> **💡 Dica:** Situações comuns onde a `LookupRowsCS` faz diferença no dia a dia: códigos de cupom promocional (ex: "NATAL2024" vs "natal2024"), SKUs de produto, tokens de autenticação e qualquer campo onde a caixa do texto carrega significado. Se a distinção de caixa não importa para o seu caso, prefira a [LookupRows](../data-extension-functions/lookuprows.md) - ela é mais tolerante e evita que dados deixem de ser encontrados por diferença de maiúsculas/minúsculas.
 
 ## Funções relacionadas
 
-- [LookupRows](../data-extension-functions/lookuprows.md) — versão case-insensitive desta função
-- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) — permite ordenar o resultado por uma coluna e direção
-- [LookupOrderedRowsCS](../data-extension-functions/lookuporderedrowscs.md) — versão case-sensitive com ordenação
-- [Lookup](../data-extension-functions/lookup.md) — retorna o valor de uma única coluna em vez de linhas inteiras
-- [Row](../data-extension-functions/row.md) — extrai uma linha específica do rowset retornado
-- [RowCount](../data-extension-functions/rowcount.md) — conta o número de linhas no rowset
-- [Field](../data-extension-functions/field.md) — extrai o valor de uma coluna de uma linha do rowset
+- [LookupRows](../data-extension-functions/lookuprows.md) - versão case-insensitive desta função
+- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) - permite ordenar o resultado por uma coluna e direção
+- [LookupOrderedRowsCS](../data-extension-functions/lookuporderedrowscs.md) - versão case-sensitive com ordenação
+- [Lookup](../data-extension-functions/lookup.md) - retorna o valor de uma única coluna em vez de linhas inteiras
+- [Row](../data-extension-functions/row.md) - extrai uma linha específica do rowset retornado
+- [RowCount](../data-extension-functions/rowcount.md) - conta o número de linhas no rowset
+- [Field](../data-extension-functions/field.md) - extrai o valor de uma coluna de uma linha do rowset

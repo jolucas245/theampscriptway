@@ -46,7 +46,7 @@ Lead criado com ID: 00Q5g00000A1B2cDEF
 
 ## Exemplo avançado
 
-Em uma régua de relacionamento de captação de leads, uma CloudPage coleta os dados do visitante e cria automaticamente um Lead no Sales Cloud com nome, sobrenome e e-mail — ideal para times comerciais que trabalham com follow-up rápido:
+Em uma régua de relacionamento de captação de leads, uma CloudPage coleta os dados do visitante e cria automaticamente um Lead no Sales Cloud com nome, sobrenome e e-mail - ideal para times comerciais que trabalham com follow-up rápido:
 
 ```ampscript
 %%[
@@ -93,15 +93,15 @@ Protocolo: 00Q5g00000X7Y8zABC
 
 > **⚠️ Atenção:** A Salesforce recomenda **minimizar o uso desta função em envios de e-mail**. Cada execução dispara uma requisição SOAP para o org Salesforce, e em envios grandes isso pode causar falha na conclusão do envio. Prefira usá-la em CloudPages, Landing Pages ou em envios com audiências menores e controladas.
 
-> **💡 Dica:** As requisições SOAP geradas por esta função **não contam** nos limites de uso de API do seu org Salesforce — mas isso não significa que você deva abusar. O impacto está no tempo de processamento do envio, não na cota de API.
+> **💡 Dica:** As requisições SOAP geradas por esta função **não contam** nos limites de uso de API do seu org Salesforce - mas isso não significa que você deva abusar. O impacto está no tempo de processamento do envio, não na cota de API.
 
 > **💡 Dica:** A função retorna o ID do registro criado. Guarde esse valor em uma variável para exibir como protocolo ao cliente, registrar em uma Data Extension com [InsertDE](../data-extension-functions/insertde.md), ou usar em operações subsequentes com [UpdateSingleSalesforceObject](../salesforce-functions/updatesinglesalesforceobject.md).
 
 ## Funções relacionadas
 
-- [UpdateSingleSalesforceObject](../salesforce-functions/updatesinglesalesforceobject.md) — Atualiza um registro existente em um objeto do Salesforce.
-- [RetrieveSalesforceObjects](../salesforce-functions/retrievesalesforceobjects.md) — Consulta registros de um objeto do Salesforce.
-- [LongSfid](../salesforce-functions/longsfid.md) — Converte um Salesforce ID de 15 para 18 caracteres.
-- [Empty](../utility-functions/empty.md) — Verifica se um valor está vazio (útil para validar antes de criar o registro).
-- [RequestParameter](../sites-functions/requestparameter.md) — Captura parâmetros de formulário em CloudPages para alimentar a criação do registro.
-- [InsertDE](../data-extension-functions/insertde.md) — Insere registros em Data Extensions (alternativa quando não precisa ir para o Sales/Service Cloud).
+- [UpdateSingleSalesforceObject](../salesforce-functions/updatesinglesalesforceobject.md) - Atualiza um registro existente em um objeto do Salesforce.
+- [RetrieveSalesforceObjects](../salesforce-functions/retrievesalesforceobjects.md) - Consulta registros de um objeto do Salesforce.
+- [LongSfid](../salesforce-functions/longsfid.md) - Converte um Salesforce ID de 15 para 18 caracteres.
+- [Empty](../utility-functions/empty.md) - Verifica se um valor está vazio (útil para validar antes de criar o registro).
+- [RequestParameter](../sites-functions/requestparameter.md) - Captura parâmetros de formulário em CloudPages para alimentar a criação do registro.
+- [InsertDE](../data-extension-functions/insertde.md) - Insere registros em Data Extensions (alternativa quando não precisa ir para o Sales/Service Cloud).

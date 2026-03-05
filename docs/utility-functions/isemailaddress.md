@@ -8,7 +8,7 @@ description: Verifica se um endereço de e-mail possui formato estruturalmente v
 
 ## Descrição
 
-Verifica se um endereço de e-mail está bem formado do ponto de vista estrutural. **Não valida se o e-mail ou domínio realmente existem** — apenas checa se a formatação é válida (presença do `@`, parte local, domínio etc.). Retorna `true` se o formato for válido e `false` caso contrário. É uma função essencial para higienizar dados de contato antes de disparos ou no momento de captura em CloudPages.
+Verifica se um endereço de e-mail está bem formado do ponto de vista estrutural. **Não valida se o e-mail ou domínio realmente existem** - apenas checa se a formatação é válida (presença do `@`, parte local, domínio etc.). Retorna `true` se o formato for válido e `false` caso contrário. É uma função essencial para higienizar dados de contato antes de disparos ou no momento de captura em CloudPages.
 
 ## Sintaxe
 
@@ -112,10 +112,10 @@ O e-mail 'maria.santosgmail.com' não possui um formato válido. Verifique e ten
 
 ## Funções relacionadas
 
-- [Empty](../utility-functions/empty.md) — verifica se um valor está vazio (útil para checar antes de validar o formato)
-- [IsNull](../utility-functions/isnull.md) — verifica se o valor é nulo
-- [IsPhoneNumber](../utility-functions/isphonenumber.md) — validação estrutural equivalente para números de telefone
-- [Trim](../string-functions/trim.md) — remove espaços nas extremidades da string
-- [Lowercase](../string-functions/lowercase.md) — converte para minúsculas, ideal para padronizar e-mails
-- [Domain](../string-functions/domain.md) — extrai o domínio de um endereço de e-mail
-- [RaiseError](../utility-functions/raiseerror.md) — interrompe o envio em caso de dados inválidos
+- [Empty](../utility-functions/empty.md) - verifica se um valor está vazio (útil para checar antes de validar o formato)
+- [IsNull](../utility-functions/isnull.md) - verifica se o valor é nulo
+- [IsPhoneNumber](../utility-functions/isphonenumber.md) - validação estrutural equivalente para números de telefone
+- [Trim](../string-functions/trim.md) - remove espaços nas extremidades da string
+- [Lowercase](../string-functions/lowercase.md) - converte para minúsculas, ideal para padronizar e-mails
+- [Domain](../string-functions/domain.md) - extrai o domínio de um endereço de e-mail
+- [RaiseError](../utility-functions/raiseerror.md) - interrompe o envio em caso de dados inválidos

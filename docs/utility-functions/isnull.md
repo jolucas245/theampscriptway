@@ -8,7 +8,7 @@ description: Testa se o valor de uma variável ou função é nulo, retornando t
 
 ## Descrição
 
-A função `IsNull` verifica se o valor de uma variável ou função é **nulo** (null). Se for nulo, retorna `true`; caso contrário, retorna `false`. É essencial para validar dados antes de usá-los em e-mails e CloudPages — especialmente quando você trabalha com Data Extensions onde campos podem vir sem nenhum valor preenchido.
+A função `IsNull` verifica se o valor de uma variável ou função é **nulo** (null). Se for nulo, retorna `true`; caso contrário, retorna `false`. É essencial para validar dados antes de usá-los em e-mails e CloudPages - especialmente quando você trabalha com Data Extensions onde campos podem vir sem nenhum valor preenchido.
 
 ## Sintaxe
 
@@ -24,7 +24,7 @@ IsNull(valorParaTestar)
 
 ## Exemplo básico
 
-Verificando se uma variável declarada sem valor atribuído é nula — situação comum quando você declara variáveis mas a lógica de atribuição ainda não executou.
+Verificando se uma variável declarada sem valor atribuído é nula - situação comum quando você declara variáveis mas a lógica de atribuição ainda não executou.
 
 ```ampscript
 %%[
@@ -74,12 +74,12 @@ Olá, Maria Santos! Vamos enviar novidades também para o número (11) 99999-999
 
 > **⚠️ Atenção:** `IsNull` e [Empty](../utility-functions/empty.md) **não são a mesma coisa**. A função `Empty` retorna `true` quando o valor é uma **string vazia** (`""`), enquanto `IsNull` retorna `true` apenas quando o valor é **null**. Uma variável declarada sem `SET` é null, mas um campo de Data Extension que existe porém está em branco pode ser uma string vazia. Na prática, muitos desenvolvedores combinam as duas verificações para cobrir ambos os cenários.
 
-> **💡 Dica:** Quando você precisa testar se um valor é nulo **e já definir um valor padrão** em uma única linha, considere usar [IsNullDefault](../utility-functions/isnulldefault.md) — ela faz as duas coisas de uma vez e deixa o código mais limpo.
+> **💡 Dica:** Quando você precisa testar se um valor é nulo **e já definir um valor padrão** em uma única linha, considere usar [IsNullDefault](../utility-functions/isnulldefault.md) - ela faz as duas coisas de uma vez e deixa o código mais limpo.
 
 ## Funções relacionadas
 
-- [Empty](../utility-functions/empty.md) — testa se o valor é uma string vazia (diferente de null)
-- [IsNullDefault](../utility-functions/isnulldefault.md) — testa se é nulo e já retorna um valor padrão
-- [IIF](../utility-functions/iif.md) — avaliação condicional inline, útil para combinar com `IsNull`
-- [AttributeValue](../utility-functions/attributevalue.md) — recupera valor de atributo retornando string vazia (em vez de null) quando não encontrado
-- [Lookup](../data-extension-functions/lookup.md) — busca dados em Data Extensions, onde campos podem retornar null
+- [Empty](../utility-functions/empty.md) - testa se o valor é uma string vazia (diferente de null)
+- [IsNullDefault](../utility-functions/isnulldefault.md) - testa se é nulo e já retorna um valor padrão
+- [IIF](../utility-functions/iif.md) - avaliação condicional inline, útil para combinar com `IsNull`
+- [AttributeValue](../utility-functions/attributevalue.md) - recupera valor de atributo retornando string vazia (em vez de null) quando não encontrado
+- [Lookup](../data-extension-functions/lookup.md) - busca dados em Data Extensions, onde campos podem retornar null

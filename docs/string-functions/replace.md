@@ -8,7 +8,7 @@ description: Substitui todas as ocorrências de uma substring por outra dentro d
 
 ## Descrição
 
-A função `Replace` localiza **todas as ocorrências** de uma substring dentro de uma string e substitui cada uma por outra substring que você definir. É muito útil no dia a dia de SFMC para limpar e formatar dados de clientes — como corrigir formatação de telefones, ajustar URLs, trocar placeholders em templates dinâmicos ou padronizar textos em campanhas de e-mail e SMS. Retorna a string original com todas as substituições aplicadas.
+A função `Replace` localiza **todas as ocorrências** de uma substring dentro de uma string e substitui cada uma por outra substring que você definir. É muito útil no dia a dia de SFMC para limpar e formatar dados de clientes - como corrigir formatação de telefones, ajustar URLs, trocar placeholders em templates dinâmicos ou padronizar textos em campanhas de e-mail e SMS. Retorna a string original com todas as substituições aplicadas.
 
 ## Sintaxe
 
@@ -85,13 +85,13 @@ Número limpo para integração: 11998765432
 
 > **💡 Dica:** `Replace` é ótima para montar templates reutilizáveis com placeholders customizados (ex: `{{NOME_CLIENTE}}`, `{{VALOR_PEDIDO}}`), substituindo cada um pelo valor real no momento do envio.
 
-> **⚠️ Atenção:** Se `searchSubstring` não for encontrada em `sourceString`, a função simplesmente retorna a string original sem alterações — não gera erro.
+> **⚠️ Atenção:** Se `searchSubstring` não for encontrada em `sourceString`, a função simplesmente retorna a string original sem alterações - não gera erro.
 
 ## Funções relacionadas
 
-- [Concat](../string-functions/concat.md) — para juntar strings após substituições
-- [Substring](../string-functions/substring.md) — para extrair parte de uma string
-- [IndexOf](../string-functions/indexof.md) — para localizar a posição de uma substring antes de decidir substituir
-- [RegExMatch](../string-functions/regexmatch.md) — para identificar trechos por padrão regex
-- [ReplaceList](../string-functions/replacelist.md) — para substituir um valor por outro a partir de uma lista de opções
-- [Trim](../string-functions/trim.md) — para remover espaços em branco das extremidades após substituições
+- [Concat](../string-functions/concat.md) - para juntar strings após substituições
+- [Substring](../string-functions/substring.md) - para extrair parte de uma string
+- [IndexOf](../string-functions/indexof.md) - para localizar a posição de uma substring antes de decidir substituir
+- [RegExMatch](../string-functions/regexmatch.md) - para identificar trechos por padrão regex
+- [ReplaceList](../string-functions/replacelist.md) - para substituir um valor por outro a partir de uma lista de opções
+- [Trim](../string-functions/trim.md) - para remover espaços em branco das extremidades após substituições

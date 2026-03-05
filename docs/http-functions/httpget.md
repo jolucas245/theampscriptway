@@ -8,7 +8,7 @@ description: Faz uma requisição HTTP GET para uma URL e retorna o conteúdo da
 
 ## Descrição
 
-A função `HTTPGet` faz uma requisição GET para uma URL e retorna o conteúdo da resposta. É muito usada no dia a dia de SFMC para buscar dados dinâmicos de APIs externas — como informações de produto, status de pedido, cotações ou qualquer conteúdo que precise ser injetado em tempo real num e-mail ou CloudPage. Se a URL for a mesma para múltiplos subscribers num envio, o Marketing Cloud faz apenas uma chamada e usa o cache da resposta para os demais.
+A função `HTTPGet` faz uma requisição GET para uma URL e retorna o conteúdo da resposta. É muito usada no dia a dia de SFMC para buscar dados dinâmicos de APIs externas - como informações de produto, status de pedido, cotações ou qualquer conteúdo que precise ser injetado em tempo real num e-mail ou CloudPage. Se a URL for a mesma para múltiplos subscribers num envio, o Marketing Cloud faz apenas uma chamada e usa o cache da resposta para os demais.
 
 ## Sintaxe
 
@@ -88,20 +88,20 @@ Não conseguimos localizar seu pedido no momento. Entre em contato pelo (11) 300
 
 > **⚠️ Atenção:** A função funciona **apenas** com HTTP na porta 80 e HTTPS na porta 443. Portas não padrão fazem a função falhar. Se sua API interna roda em porta customizada (tipo 8080), você vai precisar de um proxy ou ajuste na infraestrutura.
 
-> **⚠️ Atenção:** Em contas mais antigas, o Marketing Cloud assume que os dados retornados usam o charset **Windows CodePage 1252**. Contas criadas recentemente usam **UTF-8**. Se você está numa conta antiga e recebe caracteres estranhos (acentos quebrados — muito comum com dados em português), entre em contato com o suporte Salesforce para alterar o padrão.
+> **⚠️ Atenção:** Em contas mais antigas, o Marketing Cloud assume que os dados retornados usam o charset **Windows CodePage 1252**. Contas criadas recentemente usam **UTF-8**. Se você está numa conta antiga e recebe caracteres estranhos (acentos quebrados - muito comum com dados em português), entre em contato com o suporte Salesforce para alterar o padrão.
 
 > **💡 Dica:** Quando a URL é idêntica para vários subscribers num mesmo envio, o Marketing Cloud faz apenas **uma chamada** e reutiliza o cache. Isso é ótimo para conteúdo genérico (promoção do dia, banner), mas se você precisa de dados individualizados por subscriber, inclua um identificador na URL (como CPF ou ID do cliente) para que cada chamada seja única.
 
-> **💡 Dica:** Use o parâmetro `enumAllowEmptyContent` com valor `2` quando for crítico que o subscriber não receba um e-mail vazio ou quebrado — com essa opção, o envio é simplesmente pulado para aquele subscriber se a API não retornar conteúdo.
+> **💡 Dica:** Use o parâmetro `enumAllowEmptyContent` com valor `2` quando for crítico que o subscriber não receba um e-mail vazio ou quebrado - com essa opção, o envio é simplesmente pulado para aquele subscriber se a API não retornar conteúdo.
 
 ## Funções relacionadas
 
-- [HTTPPost](../http-functions/httppost.md) — para enviar dados via POST em vez de apenas consultar.
-- [HTTPPost2](../http-functions/httppost2.md) — variação do POST com parâmetros adicionais.
-- [HTTPRequestHeader](../http-functions/httprequestheader.md) — para definir headers customizados nas requisições HTTP.
-- [URLEncode](../string-functions/urlencode.md) — para codificar parâmetros na URL corretamente.
-- [Concat](../string-functions/concat.md) — para montar URLs dinâmicas concatenando strings.
-- [TreatAsContent](../utility-functions/treatascontent.md) — para processar o conteúdo retornado que contenha AMPscript.
-- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) — para parsear respostas JSON retornadas pela API.
-- [BuildRowsetFromXml](../content-functions/buildrowsetfromxml.md) — para parsear respostas XML retornadas pela API.
-- [RedirectTo](../http-functions/redirectto.md) — para redirecionar o subscriber para uma URL.
+- [HTTPPost](../http-functions/httppost.md) - para enviar dados via POST em vez de apenas consultar.
+- [HTTPPost2](../http-functions/httppost2.md) - variação do POST com parâmetros adicionais.
+- [HTTPRequestHeader](../http-functions/httprequestheader.md) - para definir headers customizados nas requisições HTTP.
+- [URLEncode](../string-functions/urlencode.md) - para codificar parâmetros na URL corretamente.
+- [Concat](../string-functions/concat.md) - para montar URLs dinâmicas concatenando strings.
+- [TreatAsContent](../utility-functions/treatascontent.md) - para processar o conteúdo retornado que contenha AMPscript.
+- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) - para parsear respostas JSON retornadas pela API.
+- [BuildRowsetFromXml](../content-functions/buildrowsetfromxml.md) - para parsear respostas XML retornadas pela API.
+- [RedirectTo](../http-functions/redirectto.md) - para redirecionar o subscriber para uma URL.

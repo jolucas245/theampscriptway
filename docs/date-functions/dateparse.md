@@ -8,7 +8,7 @@ description: Converte uma string de data em um objeto DateTime, aceitando divers
 
 ## Descrição
 
-A função `DateParse` converte uma string que contém uma data ou timestamp em um objeto `DateTime` que o AMPscript consegue manipular. É essencial quando você recebe datas como texto de Data Extensions, APIs ou parâmetros de URL e precisa tratá-las como datas reais — para fazer cálculos com [DateAdd](../date-functions/dateadd.md), comparações com [DateDiff](../date-functions/datediff.md) ou formatação com [FormatDate](../date-functions/formatdate.md). Aceita diversos formatos de entrada, incluindo ISO 8601, notação americana e formatos por extenso em inglês.
+A função `DateParse` converte uma string que contém uma data ou timestamp em um objeto `DateTime` que o AMPscript consegue manipular. É essencial quando você recebe datas como texto de Data Extensions, APIs ou parâmetros de URL e precisa tratá-las como datas reais - para fazer cálculos com [DateAdd](../date-functions/dateadd.md), comparações com [DateDiff](../date-functions/datediff.md) ou formatação com [FormatDate](../date-functions/formatdate.md). Aceita diversos formatos de entrada, incluindo ISO 8601, notação americana e formatos por extenso em inglês.
 
 ## Sintaxe
 
@@ -41,7 +41,7 @@ A função aceita os seguintes formatos de data na string de entrada:
 
 > **⚠️ Atenção:** A função **não suporta** os seguintes formatos:
 > - Dias com sufixo ordinal: `August 5th, 2023` ou `5th August 2023`
-> - Notação numérica little-endian (DD/MM/AAAA): `5/8/2023` para representar 5 de agosto — a função interpreta como 8 de maio!
+> - Notação numérica little-endian (DD/MM/AAAA): `5/8/2023` para representar 5 de agosto - a função interpreta como 8 de maio!
 > - Nomes de meses em outros idiomas que não inglês: `5 août 2023`, `5 agosto 2023`
 > - Numerais que não sejam arábicos ocidentais: `٢٠٢٣/٨/٥`
 > - Calendários não-gregorianos: `18 Av, 5783` ou `18 Muharram, 1445`
@@ -109,18 +109,18 @@ Você ainda tem 12 dias para efetuar o pagamento.
 
 > **💡 Dica:** Se seus dados vêm de uma DE com datas no formato brasileiro (`DD/MM/AAAA`), use [Substring](../string-functions/substring.md) para extrair dia, mês e ano e remontar a string no formato ISO 8601 antes de passar para `DateParse`. Por exemplo: transforme `05/08/2024` em `2024-08-05`.
 
-> **💡 Dica:** O parâmetro `boolUseUtc` é especialmente útil quando você precisa de consistência em operações que envolvem múltiplos fusos horários. Com `true`, a função ignora o fuso da Business Unit e retorna sempre em UTC — ideal para registrar timestamps de ações em Cloud Pages com [InsertDE](../data-extension-functions/insertde.md).
+> **💡 Dica:** O parâmetro `boolUseUtc` é especialmente útil quando você precisa de consistência em operações que envolvem múltiplos fusos horários. Com `true`, a função ignora o fuso da Business Unit e retorna sempre em UTC - ideal para registrar timestamps de ações em Cloud Pages com [InsertDE](../data-extension-functions/insertde.md).
 
 - Quando o parâmetro `boolUseUtc` não é informado, o padrão é `false`, ou seja, a função usa o horário local configurado na sua Business Unit.
 - Nomes de meses por extenso funcionam apenas em inglês. `"5 August 2023"` funciona, mas `"5 agosto 2023"` não.
 
 ## Funções relacionadas
 
-- [FormatDate](../date-functions/formatdate.md) — formata um objeto DateTime para exibição (use após o `DateParse` para mostrar a data em formato brasileiro)
-- [DateAdd](../date-functions/dateadd.md) — adiciona ou subtrai intervalos de tempo a uma data
-- [DateDiff](../date-functions/datediff.md) — calcula a diferença entre duas datas
-- [DatePart](../date-functions/datepart.md) — extrai partes específicas de uma data (dia, mês, ano, hora)
-- [Now](../date-functions/now.md) — retorna a data/hora atual da Business Unit
-- [StringToDate](../date-functions/stringtodate.md) — outra função para converter strings em datas
-- [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md) — converte horário local para horário do sistema
-- [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) — converte horário do sistema para horário local
+- [FormatDate](../date-functions/formatdate.md) - formata um objeto DateTime para exibição (use após o `DateParse` para mostrar a data em formato brasileiro)
+- [DateAdd](../date-functions/dateadd.md) - adiciona ou subtrai intervalos de tempo a uma data
+- [DateDiff](../date-functions/datediff.md) - calcula a diferença entre duas datas
+- [DatePart](../date-functions/datepart.md) - extrai partes específicas de uma data (dia, mês, ano, hora)
+- [Now](../date-functions/now.md) - retorna a data/hora atual da Business Unit
+- [StringToDate](../date-functions/stringtodate.md) - outra função para converter strings em datas
+- [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md) - converte horário local para horário do sistema
+- [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) - converte horário do sistema para horário local

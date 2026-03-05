@@ -8,7 +8,7 @@ description: Descriptografa dados que foram criptografados com algoritmo simétr
 
 ## Descrição
 
-A função `DecryptSymmetric` descriptografa dados que foram previamente criptografados com a função [EncryptSymmetric](../encryption-functions/encryptsymmetric.md), usando o algoritmo e os valores de criptografia fornecidos. Você pode passar os valores de senha, salt e IV diretamente ou referenciar chaves externas criadas na seção Key Management do Marketing Cloud. É essencial para cenários onde você precisa recuperar dados sensíveis de clientes — como CPF, número de cartão ou informações pessoais — que foram armazenados de forma criptografada em Data Extensions.
+A função `DecryptSymmetric` descriptografa dados que foram previamente criptografados com a função [EncryptSymmetric](../encryption-functions/encryptsymmetric.md), usando o algoritmo e os valores de criptografia fornecidos. Você pode passar os valores de senha, salt e IV diretamente ou referenciar chaves externas criadas na seção Key Management do Marketing Cloud. É essencial para cenários onde você precisa recuperar dados sensíveis de clientes - como CPF, número de cartão ou informações pessoais - que foram armazenados de forma criptografada em Data Extensions.
 
 ## Sintaxe
 
@@ -122,9 +122,9 @@ Bem-vindo ao programa de fidelidade MegaStore.
 
 ## Funções relacionadas
 
-- [EncryptSymmetric](../encryption-functions/encryptsymmetric.md) — a função complementar que criptografa os dados
-- [Base64Encode](../encryption-functions/base64encode.md) — útil para codificar o resultado criptografado em Base64
-- [Base64Decode](../encryption-functions/base64decode.md) — útil para decodificar dados em Base64 antes de descriptografar
-- [MD5](../encryption-functions/md5.md) — hash unidirecional (quando você não precisa recuperar o valor original)
-- [SHA256](../encryption-functions/sha256.md) — hash unidirecional mais seguro
-- [Lookup](../data-extension-functions/lookup.md) — para buscar dados criptografados em Data Extensions
+- [EncryptSymmetric](../encryption-functions/encryptsymmetric.md) - a função complementar que criptografa os dados
+- [Base64Encode](../encryption-functions/base64encode.md) - útil para codificar o resultado criptografado em Base64
+- [Base64Decode](../encryption-functions/base64decode.md) - útil para decodificar dados em Base64 antes de descriptografar
+- [MD5](../encryption-functions/md5.md) - hash unidirecional (quando você não precisa recuperar o valor original)
+- [SHA256](../encryption-functions/sha256.md) - hash unidirecional mais seguro
+- [Lookup](../data-extension-functions/lookup.md) - para buscar dados criptografados em Data Extensions

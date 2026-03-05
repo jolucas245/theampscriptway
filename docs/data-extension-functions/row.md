@@ -99,15 +99,15 @@ Capa Protetora Premium   | R$ 89,90     | 28/05/2025
 
 > **⚠️ Atenção:** A primeira linha de um rowset é a posição **1**, não 0. Se você passar uma posição que não existe no rowset (por exemplo, pedir a linha 5 de um rowset com 3 registros), vai gerar erro. Sempre valide o número de linhas com [RowCount](../data-extension-functions/rowcount.md) antes de chamar `Row`.
 
-> **💡 Dica:** `Row` sozinha não retorna um valor exibível — ela retorna um objeto de linha. Para acessar o dado de uma coluna específica, você sempre vai precisar combinar com [Field](../data-extension-functions/field.md). Pense nelas como uma dupla inseparável: `Row` seleciona a linha, `Field` seleciona a coluna.
+> **💡 Dica:** `Row` sozinha não retorna um valor exibível - ela retorna um objeto de linha. Para acessar o dado de uma coluna específica, você sempre vai precisar combinar com [Field](../data-extension-functions/field.md). Pense nelas como uma dupla inseparável: `Row` seleciona a linha, `Field` seleciona a coluna.
 
 > **💡 Dica:** Você pode usar `Row` com rowsets vindos de diversas origens: [LookupRows](../data-extension-functions/lookuprows.md), [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md), [BuildRowsetFromString](../content-functions/buildrowsetfromstring.md), [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) e [BuildRowsetFromXml](../content-functions/buildrowsetfromxml.md). O comportamento é o mesmo independentemente da origem.
 
 ## Funções relacionadas
 
-- [Field](../data-extension-functions/field.md) — extrai o valor de um campo específico da linha retornada por `Row`
-- [RowCount](../data-extension-functions/rowcount.md) — conta o número de linhas em um rowset (use antes de `Row` para evitar erros)
-- [LookupRows](../data-extension-functions/lookuprows.md) — retorna um rowset a partir de uma Data Extension
-- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) — retorna um rowset ordenado a partir de uma Data Extension
-- [BuildRowsetFromString](../content-functions/buildrowsetfromstring.md) — cria um rowset a partir de uma string delimitada
-- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) — cria um rowset a partir de dados JSON
+- [Field](../data-extension-functions/field.md) - extrai o valor de um campo específico da linha retornada por `Row`
+- [RowCount](../data-extension-functions/rowcount.md) - conta o número de linhas em um rowset (use antes de `Row` para evitar erros)
+- [LookupRows](../data-extension-functions/lookuprows.md) - retorna um rowset a partir de uma Data Extension
+- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) - retorna um rowset ordenado a partir de uma Data Extension
+- [BuildRowsetFromString](../content-functions/buildrowsetfromstring.md) - cria um rowset a partir de uma string delimitada
+- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) - cria um rowset a partir de dados JSON

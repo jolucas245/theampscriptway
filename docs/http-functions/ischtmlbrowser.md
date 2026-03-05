@@ -8,7 +8,7 @@ description: Verifica se o user-agent de um dispositivo corresponde a um navegad
 
 ## Descrição
 
-A função `IsChtmlBrowser` verifica se o user-agent informado corresponde a um navegador CHTML (Compact HTML) — um padrão antigo de HTML compacto, criado para celulares simples (feature phones), smartphones iniciais e PDAs. Era usada em landing pages para decidir se o conteúdo deveria ser exibido em HTML padrão ou em CHTML. O padrão CHTML foi superado no início dos anos 2000 e raramente é utilizado hoje — essa função é mantida por motivos históricos.
+A função `IsChtmlBrowser` verifica se o user-agent informado corresponde a um navegador CHTML (Compact HTML) - um padrão antigo de HTML compacto, criado para celulares simples (feature phones), smartphones iniciais e PDAs. Era usada em landing pages para decidir se o conteúdo deveria ser exibido em HTML padrão ou em CHTML. O padrão CHTML foi superado no início dos anos 2000 e raramente é utilizado hoje - essa função é mantida por motivos históricos.
 
 ## Sintaxe
 
@@ -24,7 +24,7 @@ IsChtmlBrowser(userAgentHeader)
 
 ## Exemplo básico
 
-Verificando se uma string de user-agent pré-definida corresponde a um navegador CHTML — neste caso, um navegador desktop moderno.
+Verificando se uma string de user-agent pré-definida corresponde a um navegador CHTML - neste caso, um navegador desktop moderno.
 
 ```ampscript
 %%[
@@ -73,6 +73,6 @@ Bem-vindo à Conecta Telecom! Confira nossos planos a partir de R$ 59,90/mês.
 
 ## Funções relacionadas
 
-- [HTTPRequestHeader](../http-functions/httprequestheader.md) — captura cabeçalhos HTTP da requisição atual, como o `User-Agent`.
-- [RedirectTo](../http-functions/redirectto.md) — redireciona o visitante para outra URL, útil se quiser encaminhar navegadores CHTML para uma página alternativa.
-- [IIF](../utility-functions/iif.md) — alternativa inline para decisões simples baseadas no retorno da função.
+- [HTTPRequestHeader](../http-functions/httprequestheader.md) - captura cabeçalhos HTTP da requisição atual, como o `User-Agent`.
+- [RedirectTo](../http-functions/redirectto.md) - redireciona o visitante para outra URL, útil se quiser encaminhar navegadores CHTML para uma página alternativa.
+- [IIF](../utility-functions/iif.md) - alternativa inline para decisões simples baseadas no retorno da função.

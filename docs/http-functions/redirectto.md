@@ -8,7 +8,7 @@ description: Cria um link rastreável em e-mails HTML a partir de URLs armazenad
 
 ## Descrição
 
-A função `RedirectTo` cria um link clicável usando uma URL que vem de um atributo, campo de data extension ou variável. É essencial quando você precisa montar links dinâmicos em e-mails — por exemplo, direcionar cada cliente para uma oferta personalizada na sua régua de relacionamento. A função deve ser usada exclusivamente dentro do atributo `href` de uma tag `<a>` em e-mails HTML.
+A função `RedirectTo` cria um link clicável usando uma URL que vem de um atributo, campo de data extension ou variável. É essencial quando você precisa montar links dinâmicos em e-mails - por exemplo, direcionar cada cliente para uma oferta personalizada na sua régua de relacionamento. A função deve ser usada exclusivamente dentro do atributo `href` de uma tag `<a>` em e-mails HTML.
 
 ## Sintaxe
 
@@ -109,10 +109,10 @@ SET @urlCompleta = Concat(@urlBase, "?cliente=", @clienteId)
 
 ## Funções relacionadas
 
-- [Concat](../string-functions/concat.md) — para construir URLs dinâmicas concatenando strings antes de redirecionar
-- [Lookup](../data-extension-functions/lookup.md) — para buscar uma URL específica de uma data extension
-- [LookupRows](../data-extension-functions/lookuprows.md) — para recuperar múltiplos links de uma data extension
-- [Field](../data-extension-functions/field.md) — para extrair o valor da URL de uma linha retornada por `LookupRows`
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — para gerar URLs de CloudPages com parâmetros criptografados
-- [WrapLongURL](../http-functions/wraplongurl.md) — para evitar quebra de URLs longas em clientes de e-mail
-- [URLEncode](../string-functions/urlencode.md) — para codificar valores que serão incluídos como parâmetros na URL
+- [Concat](../string-functions/concat.md) - para construir URLs dinâmicas concatenando strings antes de redirecionar
+- [Lookup](../data-extension-functions/lookup.md) - para buscar uma URL específica de uma data extension
+- [LookupRows](../data-extension-functions/lookuprows.md) - para recuperar múltiplos links de uma data extension
+- [Field](../data-extension-functions/field.md) - para extrair o valor da URL de uma linha retornada por `LookupRows`
+- [CloudPagesURL](../sites-functions/cloudpagesurl.md) - para gerar URLs de CloudPages com parâmetros criptografados
+- [WrapLongURL](../http-functions/wraplongurl.md) - para evitar quebra de URLs longas em clientes de e-mail
+- [URLEncode](../string-functions/urlencode.md) - para codificar valores que serão incluídos como parâmetros na URL

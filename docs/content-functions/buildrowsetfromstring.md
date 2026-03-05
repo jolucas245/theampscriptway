@@ -8,7 +8,7 @@ description: Cria um rowset a partir de uma string, dividindo-a pelo delimitador
 
 ## Descrição
 
-Cria um rowset a partir de uma string de texto, quebrando-a em linhas com base em um delimitador que você define. É extremamente útil quando você tem dados armazenados como texto separado por vírgula (ou outro caractere) em uma Data Extension — situação muito comum quando se trabalha com listas de produtos, categorias de interesse ou múltiplos valores em um único campo. Como a coluna resultante não possui nome atribuído, você a referencia usando número ordinal (posição `1`).
+Cria um rowset a partir de uma string de texto, quebrando-a em linhas com base em um delimitador que você define. É extremamente útil quando você tem dados armazenados como texto separado por vírgula (ou outro caractere) em uma Data Extension - situação muito comum quando se trabalha com listas de produtos, categorias de interesse ou múltiplos valores em um único campo. Como a coluna resultante não possui nome atribuído, você a referencia usando número ordinal (posição `1`).
 
 ## Sintaxe
 
@@ -94,7 +94,7 @@ Total de itens: 4
 
 ## Observações
 
-> **⚠️ Atenção:** A coluna do rowset gerado por `BuildRowsetFromString` não possui nome atribuído. Por isso, ao usar a função [Field](../data-extension-functions/field.md), você deve referenciar a coluna pelo número ordinal `1` — e não por um nome de campo.
+> **⚠️ Atenção:** A coluna do rowset gerado por `BuildRowsetFromString` não possui nome atribuído. Por isso, ao usar a função [Field](../data-extension-functions/field.md), você deve referenciar a coluna pelo número ordinal `1` - e não por um nome de campo.
 
 > **💡 Dica:** Essa função é a sua melhor amiga quando um campo de Data Extension armazena múltiplos valores concatenados. Em vez de fazer manipulações complexas com [Substring](../string-functions/substring.md) e [IndexOf](../string-functions/indexof.md), basta usar `BuildRowsetFromString` e iterar com um `FOR` simples.
 
@@ -102,8 +102,8 @@ Total de itens: 4
 
 ## Funções relacionadas
 
-- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) — cria rowset a partir de JSON
-- [BuildRowsetFromXml](../content-functions/buildrowsetfromxml.md) — cria rowset a partir de XML
-- [Row](../data-extension-functions/row.md) — acessa uma linha específica do rowset
-- [RowCount](../data-extension-functions/rowcount.md) — conta o total de linhas do rowset
-- [Field](../data-extension-functions/field.md) — extrai o valor de uma coluna da linha
+- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) - cria rowset a partir de JSON
+- [BuildRowsetFromXml](../content-functions/buildrowsetfromxml.md) - cria rowset a partir de XML
+- [Row](../data-extension-functions/row.md) - acessa uma linha específica do rowset
+- [RowCount](../data-extension-functions/rowcount.md) - conta o total de linhas do rowset
+- [Field](../data-extension-functions/field.md) - extrai o valor de uma coluna da linha

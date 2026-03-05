@@ -8,7 +8,7 @@ description: Gera um JSON Web Token (JWT) assinado a partir de um payload JSON, 
 
 ## Descrição
 
-A função `GetJwt` cria um JSON Web Token (JWT) a partir de um payload JSON, assinando-o digitalmente com um segredo e um algoritmo de hash que você define. JWTs são usados para transmitir informações de forma segura entre sistemas — como quando você precisa autenticar uma chamada a uma API externa a partir de uma CloudPage ou gerar um token para validar a identidade de um subscriber. Como o JWT é assinado, quem recebe o token tem a garantia de que os dados não foram alterados no caminho.
+A função `GetJwt` cria um JSON Web Token (JWT) a partir de um payload JSON, assinando-o digitalmente com um segredo e um algoritmo de hash que você define. JWTs são usados para transmitir informações de forma segura entre sistemas - como quando você precisa autenticar uma chamada a uma API externa a partir de uma CloudPage ou gerar um token para validar a identidade de um subscriber. Como o JWT é assinado, quem recebe o token tem a garantia de que os dados não foram alterados no caminho.
 
 ## Sintaxe
 
@@ -74,20 +74,20 @@ SET @linkSeguro = Concat("https://cloud.megastore.com.br/minha-conta?token=", @t
 
 ## Observações
 
-> **⚠️ Atenção:** O payload do JWT **não é criptografado** — ele é apenas codificado em Base64. Qualquer pessoa que tenha o token consegue ler o conteúdo do payload. Nunca inclua dados sensíveis como senhas, números completos de cartão de crédito ou tokens de acesso no payload.
+> **⚠️ Atenção:** O payload do JWT **não é criptografado** - ele é apenas codificado em Base64. Qualquer pessoa que tenha o token consegue ler o conteúdo do payload. Nunca inclua dados sensíveis como senhas, números completos de cartão de crédito ou tokens de acesso no payload.
 
 > **⚠️ Atenção:** Na função `GetJwt`, o segredo é passado em **texto plano** diretamente no código. A Salesforce recomenda usar a função [`GetJwtByKeyName`](../encryption-functions/getjwtbykeyname.md) no lugar, que referencia uma chave armazenada no Key Management do Marketing Cloud. Isso é mais seguro porque o segredo não fica exposto no código e você controla quem tem acesso às chaves.
 
-> **💡 Dica:** Se a sintaxe da função estiver inválida, ela retorna um erro do tipo `InvalidFunctionException`. Se a chamada em si for inválida — por exemplo, se você passar um algoritmo que não existe — o erro será `FunctionExecutionException`. Valide seus parâmetros antes de publicar.
+> **💡 Dica:** Se a sintaxe da função estiver inválida, ela retorna um erro do tipo `InvalidFunctionException`. Se a chamada em si for inválida - por exemplo, se você passar um algoritmo que não existe - o erro será `FunctionExecutionException`. Valide seus parâmetros antes de publicar.
 
 > **💡 Dica:** Os algoritmos disponíveis são apenas da família HMAC: `HS256`, `HS384` e `HS512`. Se o sistema externo que vai consumir o JWT exigir RSA ou outro tipo de assinatura, essa função não vai atender.
 
 ## Funções relacionadas
 
-- [`GetJwtByKeyName`](../encryption-functions/getjwtbykeyname.md) — versão mais segura que referencia o segredo pelo Key Management em vez de texto plano
-- [`Base64Encode`](../encryption-functions/base64encode.md) — codificação Base64 de strings
-- [`Base64Decode`](../encryption-functions/base64decode.md) — decodificação Base64
-- [`SHA256`](../encryption-functions/sha256.md) — hash SHA-256 para outros cenários de assinatura
-- [`SHA512`](../encryption-functions/sha512.md) — hash SHA-512
-- [`Concat`](../string-functions/concat.md) — concatenação de strings, útil para montar payloads dinâmicos
-- [`HTTPPost`](../http-functions/httppost.md) — para enviar o JWT em chamadas a APIs externas
+- [`GetJwtByKeyName`](../encryption-functions/getjwtbykeyname.md) - versão mais segura que referencia o segredo pelo Key Management em vez de texto plano
+- [`Base64Encode`](../encryption-functions/base64encode.md) - codificação Base64 de strings
+- [`Base64Decode`](../encryption-functions/base64decode.md) - decodificação Base64
+- [`SHA256`](../encryption-functions/sha256.md) - hash SHA-256 para outros cenários de assinatura
+- [`SHA512`](../encryption-functions/sha512.md) - hash SHA-512
+- [`Concat`](../string-functions/concat.md) - concatenação de strings, útil para montar payloads dinâmicos
+- [`HTTPPost`](../http-functions/httppost.md) - para enviar o JWT em chamadas a APIs externas

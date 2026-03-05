@@ -8,7 +8,7 @@ description: Extrai uma parte de uma string a partir de uma posição específic
 
 ## Descrição
 
-A função `Substring` retorna uma parte de uma string, começando a partir de uma posição de caractere que você define. Opcionalmente, você pode especificar quantos caracteres quer extrair — se não informar, a função retorna tudo do ponto inicial até o final da string. É extremamente útil no dia a dia de SFMC para recortar trechos de dados como CPF, CEP, códigos de pedido e qualquer informação que venha concatenada ou em formato fixo.
+A função `Substring` retorna uma parte de uma string, começando a partir de uma posição de caractere que você define. Opcionalmente, você pode especificar quantos caracteres quer extrair - se não informar, a função retorna tudo do ponto inicial até o final da string. É extremamente útil no dia a dia de SFMC para recortar trechos de dados como CPF, CEP, códigos de pedido e qualquer informação que venha concatenada ou em formato fixo.
 
 ## Sintaxe
 
@@ -87,16 +87,16 @@ CPF: 123.456.789-01
 
 ## Observações
 
-> **⚠️ Atenção:** Se o valor de `startPosition` exceder o tamanho da string original, a função retorna uma string vazia. Isso é importante quando você trabalha com campos de Data Extension que podem ter tamanhos variáveis — sempre valide antes de usar.
+> **⚠️ Atenção:** Se o valor de `startPosition` exceder o tamanho da string original, a função retorna uma string vazia. Isso é importante quando você trabalha com campos de Data Extension que podem ter tamanhos variáveis - sempre valide antes de usar.
 
 > **💡 Dica:** Quando você não informa o terceiro parâmetro (`substringLength`), a função retorna tudo da posição inicial até o fim da string. Isso é muito prático para pegar "o restante" de um texto sem precisar calcular o comprimento exato.
 
-> **💡 Dica:** Combine `Substring` com [IndexOf](../string-functions/indexof.md) para extrair trechos dinâmicos — como o primeiro nome de um campo de nome completo — sem depender de posições fixas. Combine com [Length](../string-functions/length.md) quando precisar calcular posições a partir do final da string.
+> **💡 Dica:** Combine `Substring` com [IndexOf](../string-functions/indexof.md) para extrair trechos dinâmicos - como o primeiro nome de um campo de nome completo - sem depender de posições fixas. Combine com [Length](../string-functions/length.md) quando precisar calcular posições a partir do final da string.
 
 ## Funções relacionadas
 
-- [Concat](../string-functions/concat.md) — para remontar strings após extrair partes
-- [IndexOf](../string-functions/indexof.md) — para encontrar a posição de um caractere antes de usar `Substring`
-- [Length](../string-functions/length.md) — para calcular o tamanho da string e definir posições dinamicamente
-- [Replace](../string-functions/replace.md) — quando você quer substituir trechos em vez de extraí-los
-- [Trim](../string-functions/trim.md) — para remover espaços antes de aplicar `Substring`
+- [Concat](../string-functions/concat.md) - para remontar strings após extrair partes
+- [IndexOf](../string-functions/indexof.md) - para encontrar a posição de um caractere antes de usar `Substring`
+- [Length](../string-functions/length.md) - para calcular o tamanho da string e definir posições dinamicamente
+- [Replace](../string-functions/replace.md) - quando você quer substituir trechos em vez de extraí-los
+- [Trim](../string-functions/trim.md) - para remover espaços antes de aplicar `Substring`

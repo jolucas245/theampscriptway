@@ -89,9 +89,9 @@ Valor: R$ 1.299,90
 
 ## Funções relacionadas
 
-- [`LookupRows`](../data-extension-functions/lookuprows.md) — busca linhas em uma Data Extension (retorna o rowset que você passa para `RowCount`)
-- [`LookupOrderedRows`](../data-extension-functions/lookuporderedrows.md) — busca linhas ordenadas em uma Data Extension
-- [`Row`](../data-extension-functions/row.md) — acessa uma linha específica dentro do rowset
-- [`Field`](../data-extension-functions/field.md) — extrai o valor de uma coluna de uma linha
-- [`DataExtensionRowCount`](../data-extension-functions/dataextensionrowcount.md) — retorna o total de linhas de uma Data Extension inteira (sem filtro)
-- [`BuildRowsetFromString`](../content-functions/buildrowsetfromstring.md) — cria um rowset a partir de uma string delimitada
+- [`LookupRows`](../data-extension-functions/lookuprows.md) - busca linhas em uma Data Extension (retorna o rowset que você passa para `RowCount`)
+- [`LookupOrderedRows`](../data-extension-functions/lookuporderedrows.md) - busca linhas ordenadas em uma Data Extension
+- [`Row`](../data-extension-functions/row.md) - acessa uma linha específica dentro do rowset
+- [`Field`](../data-extension-functions/field.md) - extrai o valor de uma coluna de uma linha
+- [`DataExtensionRowCount`](../data-extension-functions/dataextensionrowcount.md) - retorna o total de linhas de uma Data Extension inteira (sem filtro)
+- [`BuildRowsetFromString`](../content-functions/buildrowsetfromstring.md) - cria um rowset a partir de uma string delimitada

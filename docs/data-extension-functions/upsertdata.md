@@ -8,7 +8,7 @@ description: Atualiza ou insere dados em uma Data Extension, retornando o númer
 
 ## Descrição
 
-A função `UpsertData` faz o clássico "upsert" em uma Data Extension: se encontrar uma linha que corresponda aos critérios de busca, atualiza os valores; se não encontrar, insere uma nova linha. Ela retorna o número de linhas atualizadas ou inseridas. É a função ideal para landing pages, microsites e mensagens SMS (MobileConnect) onde você precisa garantir que um registro exista e esteja atualizado — por exemplo, um formulário de cadastro ou atualização de preferências em uma CloudPage. Para fazer upsert dentro de um **e-mail**, use a função [UpsertDE](../data-extension-functions/upsertde.md).
+A função `UpsertData` faz o clássico "upsert" em uma Data Extension: se encontrar uma linha que corresponda aos critérios de busca, atualiza os valores; se não encontrar, insere uma nova linha. Ela retorna o número de linhas atualizadas ou inseridas. É a função ideal para landing pages, microsites e mensagens SMS (MobileConnect) onde você precisa garantir que um registro exista e esteja atualizado - por exemplo, um formulário de cadastro ou atualização de preferências em uma CloudPage. Para fazer upsert dentro de um **e-mail**, use a função [UpsertDE](../data-extension-functions/upsertde.md).
 
 ## Sintaxe
 
@@ -98,7 +98,7 @@ Cadastro salvo com sucesso! Registros afetados: 1
 
 > **⚠️ Atenção:** Se o nome da coluna informado em `searchColumnName` não existir na Data Extension, a função produz uma exceção.
 
-> **⚠️ Atenção:** Se o valor informado em `upsertedValue` for de um tipo diferente do tipo da coluna (`columnToUpsert`), a função **não** atualiza nem insere dados e retorna `0`. Por exemplo, se você passar um valor numérico para uma coluna do tipo texto, nada acontece — sem erro visível, apenas retorno `0`.
+> **⚠️ Atenção:** Se o valor informado em `upsertedValue` for de um tipo diferente do tipo da coluna (`columnToUpsert`), a função **não** atualiza nem insere dados e retorna `0`. Por exemplo, se você passar um valor numérico para uma coluna do tipo texto, nada acontece - sem erro visível, apenas retorno `0`.
 
 > **⚠️ Atenção:** Se a quantidade de parâmetros de busca (`searchColumnName` e `searchValue`) for diferente da quantidade de parâmetros de upsert (`columnToUpsert` e `upsertedValue`), a função só processa os pares de upsert para os quais existam pares de busca correspondentes. Os pares excedentes são ignorados. Você pode repetir os mesmos parâmetros de busca várias vezes se necessário.
 
@@ -106,9 +106,9 @@ Cadastro salvo com sucesso! Registros afetados: 1
 
 ## Funções relacionadas
 
-- [UpsertDE](../data-extension-functions/upsertde.md) — versão equivalente para uso em e-mails
-- [InsertData](../data-extension-functions/insertdata.md) — apenas insere, sem verificar duplicidade
-- [UpdateData](../data-extension-functions/updatedata.md) — apenas atualiza registros existentes
-- [DeleteData](../data-extension-functions/deletedata.md) — remove registros de uma Data Extension
-- [Lookup](../data-extension-functions/lookup.md) — consulta valores em uma Data Extension
-- [LookupRows](../data-extension-functions/lookuprows.md) — retorna múltiplas linhas de uma Data Extension
+- [UpsertDE](../data-extension-functions/upsertde.md) - versão equivalente para uso em e-mails
+- [InsertData](../data-extension-functions/insertdata.md) - apenas insere, sem verificar duplicidade
+- [UpdateData](../data-extension-functions/updatedata.md) - apenas atualiza registros existentes
+- [DeleteData](../data-extension-functions/deletedata.md) - remove registros de uma Data Extension
+- [Lookup](../data-extension-functions/lookup.md) - consulta valores em uma Data Extension
+- [LookupRows](../data-extension-functions/lookuprows.md) - retorna múltiplas linhas de uma Data Extension

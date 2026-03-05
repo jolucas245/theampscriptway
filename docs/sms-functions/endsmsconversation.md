@@ -8,7 +8,7 @@ description: Encerra uma conversa SMS ativa com um contato no MobileConnect.
 
 ## Descrição
 
-Encerra uma conversa SMS ativa com um contato no MobileConnect. Você usa essa função quando precisa finalizar programaticamente uma interação por SMS que está em andamento — por exemplo, quando o contato já forneceu todas as informações necessárias ou quando você quer interromper o fluxo conversacional por alguma regra de negócio. A função retorna `true` em caso de sucesso e lança uma exceção em caso de falha.
+Encerra uma conversa SMS ativa com um contato no MobileConnect. Você usa essa função quando precisa finalizar programaticamente uma interação por SMS que está em andamento - por exemplo, quando o contato já forneceu todas as informações necessárias ou quando você quer interromper o fluxo conversacional por alguma regra de negócio. A função retorna `true` em caso de sucesso e lança uma exceção em caso de falha.
 
 ## Sintaxe
 
@@ -85,9 +85,9 @@ true
 
 > **⚠️ Atenção:** A função sempre retorna `true` quando bem-sucedida e lança uma **exceção** quando falha. Por esse motivo, a Salesforce recomenda **não usar o retorno dessa função para tomada de decisão** em lógicas condicionais. Se você precisa tratar falhas, considere estratégias de controle de erro ao redor da chamada.
 
-> **💡 Dica:** Use essa função em conjunto com [CreateSmsConversation](../sms-functions/createsmsconversation.md) e [SetSmsConversationNextKeyword](../sms-functions/setsmsconversationnextkeyword.md) para construir fluxos conversacionais completos — iniciando, direcionando e encerrando a conversa de forma programática.
+> **💡 Dica:** Use essa função em conjunto com [CreateSmsConversation](../sms-functions/createsmsconversation.md) e [SetSmsConversationNextKeyword](../sms-functions/setsmsconversationnextkeyword.md) para construir fluxos conversacionais completos - iniciando, direcionando e encerrando a conversa de forma programática.
 
 ## Funções relacionadas
 
-- [CreateSmsConversation](../sms-functions/createsmsconversation.md) — Cria uma nova conversa SMS com um contato.
-- [SetSmsConversationNextKeyword](../sms-functions/setsmsconversationnextkeyword.md) — Define a próxima keyword esperada dentro de uma conversa SMS ativa.
+- [CreateSmsConversation](../sms-functions/createsmsconversation.md) - Cria uma nova conversa SMS com um contato.
+- [SetSmsConversationNextKeyword](../sms-functions/setsmsconversationnextkeyword.md) - Define a próxima keyword esperada dentro de uma conversa SMS ativa.

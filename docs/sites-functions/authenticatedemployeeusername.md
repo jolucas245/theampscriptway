@@ -8,7 +8,7 @@ description: Retorna o nome de usuário (username) do usuário do Marketing Clou
 
 ## Descrição
 
-Retorna o username do usuário autenticado do Marketing Cloud Engagement que está acessando a página. Essa função é usada exclusivamente em **Microsites** com **Sender Authenticated Redirection** — ou seja, quando um usuário da plataforma acessa uma página autenticada e você precisa identificar quem é esse usuário. Útil para cenários onde times de marketing ou vendas acessam páginas personalizadas e você quer registrar ou exibir qual operador está logado.
+Retorna o username do usuário autenticado do Marketing Cloud Engagement que está acessando a página. Essa função é usada exclusivamente em **Microsites** com **Sender Authenticated Redirection** - ou seja, quando um usuário da plataforma acessa uma página autenticada e você precisa identificar quem é esse usuário. Útil para cenários onde times de marketing ou vendas acessam páginas personalizadas e você quer registrar ou exibir qual operador está logado.
 
 ## Sintaxe
 
@@ -74,14 +74,14 @@ Acesso registrado em 15/07/2025 14:32
 
 > **⚠️ Atenção:** Esta função funciona **apenas em Microsites** com **Sender Authenticated Redirection**. **Não** funciona em CloudPages. Se você está construindo páginas em CloudPages, essa função não vai retornar o resultado esperado.
 
-- A função não aceita parâmetros — qualquer tentativa de passar argumentos resultará em erro.
+- A função não aceita parâmetros - qualquer tentativa de passar argumentos resultará em erro.
 - O valor retornado é o username configurado no Marketing Cloud Engagement para o usuário autenticado que está acessando a página.
 
 ## Funções relacionadas
 
-- [AuthenticatedEmployeeId](../sites-functions/authenticatedemployeeid.md) — retorna o ID do usuário autenticado
-- [AuthenticatedEmployeeNotificationAddress](../sites-functions/authenticatedemployeenotificationaddress.md) — retorna o endereço de notificação do usuário autenticado
-- [AuthenticatedEnterpriseID](../sites-functions/authenticatedenterpriseid.md) — retorna o ID da enterprise (conta pai)
-- [AuthenticatedMemberID](../sites-functions/authenticatedmemberid.md) — retorna o MID da business unit
-- [AuthenticatedMemberName](../sites-functions/authenticatedmembername.md) — retorna o nome da business unit
-- [MicrositeURL](../sites-functions/micrositeurl.md) — gera URLs para Microsites
+- [AuthenticatedEmployeeId](../sites-functions/authenticatedemployeeid.md) - retorna o ID do usuário autenticado
+- [AuthenticatedEmployeeNotificationAddress](../sites-functions/authenticatedemployeenotificationaddress.md) - retorna o endereço de notificação do usuário autenticado
+- [AuthenticatedEnterpriseID](../sites-functions/authenticatedenterpriseid.md) - retorna o ID da enterprise (conta pai)
+- [AuthenticatedMemberID](../sites-functions/authenticatedmemberid.md) - retorna o MID da business unit
+- [AuthenticatedMemberName](../sites-functions/authenticatedmembername.md) - retorna o nome da business unit
+- [MicrositeURL](../sites-functions/micrositeurl.md) - gera URLs para Microsites

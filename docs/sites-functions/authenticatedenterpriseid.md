@@ -8,7 +8,7 @@ description: Retorna o Enterprise ID do usuário autenticado em uma landing page
 
 ## Descrição
 
-Retorna o Enterprise ID (identificador da conta enterprise) do usuário autenticado que está acessando uma landing page. Essa função é usada exclusivamente em **Microsites** configurados com **Sender Authenticated Redirection** — ou seja, cenários onde o usuário do Marketing Cloud acessa a página de forma autenticada. **Não funciona com CloudPages.**
+Retorna o Enterprise ID (identificador da conta enterprise) do usuário autenticado que está acessando uma landing page. Essa função é usada exclusivamente em **Microsites** configurados com **Sender Authenticated Redirection** - ou seja, cenários onde o usuário do Marketing Cloud acessa a página de forma autenticada. **Não funciona com CloudPages.**
 
 ## Sintaxe
 
@@ -20,7 +20,7 @@ AuthenticatedEnterpriseID()
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |-----------|------|-------------|-----------|
-| — | — | — | Essa função não aceita nenhum parâmetro. |
+| - | - | - | Essa função não aceita nenhum parâmetro. |
 
 ## Exemplo básico
 
@@ -75,16 +75,16 @@ Data de acesso:   15/07/2025 - 14:32
 
 ## Observações
 
-> **⚠️ Atenção:** Essa função funciona **apenas em Microsites** com **Sender Authenticated Redirection** habilitado. **Não use em CloudPages** — ela não retornará o valor esperado nesse contexto.
+> **⚠️ Atenção:** Essa função funciona **apenas em Microsites** com **Sender Authenticated Redirection** habilitado. **Não use em CloudPages** - ela não retornará o valor esperado nesse contexto.
 
 - A função não aceita nenhum parâmetro. Qualquer argumento passado será ignorado ou causará erro.
 - O Enterprise ID é o identificador da conta principal (parent account) na estrutura do Marketing Cloud. Em contas com múltiplas Business Units, esse valor representa a conta enterprise de nível superior.
 
 ## Funções relacionadas
 
-- [AuthenticatedMemberID](../sites-functions/authenticatedmemberid.md) — retorna o Member ID do usuário autenticado
-- [AuthenticatedMemberName](../sites-functions/authenticatedmembername.md) — retorna o nome do Member autenticado
-- [AuthenticatedEmployeeId](../sites-functions/authenticatedemployeeid.md) — retorna o ID do funcionário autenticado
-- [AuthenticatedEmployeeUserName](../sites-functions/authenticatedemployeeusername.md) — retorna o username do funcionário autenticado
-- [AuthenticatedEmployeeNotificationAddress](../sites-functions/authenticatedemployeenotificationaddress.md) — retorna o e-mail de notificação do funcionário autenticado
-- [MicrositeURL](../sites-functions/micrositeurl.md) — gera URLs para Microsites
+- [AuthenticatedMemberID](../sites-functions/authenticatedmemberid.md) - retorna o Member ID do usuário autenticado
+- [AuthenticatedMemberName](../sites-functions/authenticatedmembername.md) - retorna o nome do Member autenticado
+- [AuthenticatedEmployeeId](../sites-functions/authenticatedemployeeid.md) - retorna o ID do funcionário autenticado
+- [AuthenticatedEmployeeUserName](../sites-functions/authenticatedemployeeusername.md) - retorna o username do funcionário autenticado
+- [AuthenticatedEmployeeNotificationAddress](../sites-functions/authenticatedemployeenotificationaddress.md) - retorna o e-mail de notificação do funcionário autenticado
+- [MicrositeURL](../sites-functions/micrositeurl.md) - gera URLs para Microsites

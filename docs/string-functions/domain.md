@@ -8,7 +8,7 @@ description: Extrai o domínio de um endereço de e-mail, retornando tudo que ve
 
 ## Descrição
 
-A função `Domain` recebe um endereço de e-mail e retorna a parte do domínio — ou seja, tudo que vem depois do `@`. É muito útil no dia a dia de SFMC quando você precisa segmentar ou personalizar conteúdo com base no provedor de e-mail do assinante (Gmail, Outlook, domínios corporativos etc.). A função retorna `null` quando o valor passado não contém `@` ou quando não é uma string.
+A função `Domain` recebe um endereço de e-mail e retorna a parte do domínio - ou seja, tudo que vem depois do `@`. É muito útil no dia a dia de SFMC quando você precisa segmentar ou personalizar conteúdo com base no provedor de e-mail do assinante (Gmail, Outlook, domínios corporativos etc.). A função retorna `null` quando o valor passado não contém `@` ou quando não é uma string.
 
 ## Sintaxe
 
@@ -70,14 +70,14 @@ ENDIF
 
 > **⚠️ Atenção:** Se o valor passado não contiver o caractere `@`, a função retorna `null`. Isso acontece, por exemplo, com strings sem arroba como `"salesforceexamplecom"`. Da mesma forma, valores não-string (como números) também retornam `null`. Exemplo: `Domain(123)` retorna `null`.
 
-> **⚠️ Atenção:** Se o endereço de e-mail contiver mais de um `@`, a função retorna tudo que vem **depois do primeiro** `@`. Por exemplo, `Domain("vendas@loja@example")` retorna `loja@example`. Fique atento a dados sujos na sua Data Extension — vale a pena validar antes com [IsEmailAddress](../utility-functions/isemailaddress.md).
+> **⚠️ Atenção:** Se o endereço de e-mail contiver mais de um `@`, a função retorna tudo que vem **depois do primeiro** `@`. Por exemplo, `Domain("vendas@loja@example")` retorna `loja@example`. Fique atento a dados sujos na sua Data Extension - vale a pena validar antes com [IsEmailAddress](../utility-functions/isemailaddress.md).
 
 > **💡 Dica:** Combinar `Domain` com [Lowercase](../string-functions/lowercase.md) é uma boa prática para garantir comparações consistentes, já que um assinante pode ter cadastrado o e-mail como `João@GMAIL.COM`. Assim: `Lowercase(Domain(emailaddr))` sempre retorna o domínio em minúsculas.
 
 ## Funções relacionadas
 
-- [Substring](../string-functions/substring.md) — para extrair partes específicas de uma string manualmente
-- [IndexOf](../string-functions/indexof.md) — para localizar a posição de um caractere dentro de uma string
-- [Lowercase](../string-functions/lowercase.md) — para normalizar o domínio em minúsculas antes de comparações
-- [IsEmailAddress](../utility-functions/isemailaddress.md) — para validar se o valor é de fato um endereço de e-mail antes de extrair o domínio
-- [Concat](../string-functions/concat.md) — para montar strings dinâmicas combinando o domínio com outros textos
+- [Substring](../string-functions/substring.md) - para extrair partes específicas de uma string manualmente
+- [IndexOf](../string-functions/indexof.md) - para localizar a posição de um caractere dentro de uma string
+- [Lowercase](../string-functions/lowercase.md) - para normalizar o domínio em minúsculas antes de comparações
+- [IsEmailAddress](../utility-functions/isemailaddress.md) - para validar se o valor é de fato um endereço de e-mail antes de extrair o domínio
+- [Concat](../string-functions/concat.md) - para montar strings dinâmicas combinando o domínio com outros textos

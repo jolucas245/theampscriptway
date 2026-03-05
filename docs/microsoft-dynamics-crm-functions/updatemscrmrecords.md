@@ -96,11 +96,11 @@ Sucesso! 2 contato(s) atualizado(s) no Dynamics CRM.
 
 ## Funções relacionadas
 
-- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) — cria um novo registro no Dynamics CRM
-- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) — insere ou atualiza um registro no Dynamics CRM
-- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) — consulta registros no Dynamics CRM
-- [RetrieveMscrmRecordsFetchXml](../microsoft-dynamics-crm-functions/retrievemscrmrecordsfetchxml.md) — consulta registros usando FetchXML
-- [SetStateMscrmRecord](../microsoft-dynamics-crm-functions/setstatemscrmrecord.md) — altera o estado de um registro no Dynamics CRM
-- [DescribeMscrmEntities](../microsoft-dynamics-crm-functions/describemscrmentities.md) — lista as entidades disponíveis no Dynamics CRM
-- [DescribeMscrmEntityAttributes](../microsoft-dynamics-crm-functions/describemscrmentityattributes.md) — lista os atributos de uma entidade
-- [Concat](../string-functions/concat.md) — útil para montar a lista de GUIDs dinamicamente
+- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) - cria um novo registro no Dynamics CRM
+- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) - insere ou atualiza um registro no Dynamics CRM
+- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) - consulta registros no Dynamics CRM
+- [RetrieveMscrmRecordsFetchXml](../microsoft-dynamics-crm-functions/retrievemscrmrecordsfetchxml.md) - consulta registros usando FetchXML
+- [SetStateMscrmRecord](../microsoft-dynamics-crm-functions/setstatemscrmrecord.md) - altera o estado de um registro no Dynamics CRM
+- [DescribeMscrmEntities](../microsoft-dynamics-crm-functions/describemscrmentities.md) - lista as entidades disponíveis no Dynamics CRM
+- [DescribeMscrmEntityAttributes](../microsoft-dynamics-crm-functions/describemscrmentityattributes.md) - lista os atributos de uma entidade
+- [Concat](../string-functions/concat.md) - útil para montar a lista de GUIDs dinamicamente

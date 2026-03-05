@@ -26,7 +26,7 @@ IIF(condition, valueIfTrue, valueIfFalse)
 
 ## Exemplo básico
 
-Montando uma saudação personalizada para um e-mail da Lojas Vitória — se o campo `PrimeiroNome` estiver preenchido, cumprimenta pelo nome; caso contrário, usa um texto genérico.
+Montando uma saudação personalizada para um e-mail da Lojas Vitória - se o campo `PrimeiroNome` estiver preenchido, cumprimenta pelo nome; caso contrário, usa um texto genérico.
 
 ```ampscript
 %%[
@@ -89,16 +89,16 @@ Olá, Cliente! Você faz parte do segmento Essencial do Banco Brasilão.
 
 ## Observações
 
-> **💡 Dica:** A `IIF` é ideal para decisões binárias simples — um teste, dois caminhos. Quando você precisar avaliar múltiplas condições encadeadas, um bloco `IF / ELSEIF / ELSE / ENDIF` costuma ficar bem mais legível do que aninhar vários `IIF` uns dentro dos outros.
+> **💡 Dica:** A `IIF` é ideal para decisões binárias simples - um teste, dois caminhos. Quando você precisar avaliar múltiplas condições encadeadas, um bloco `IF / ELSEIF / ELSE / ENDIF` costuma ficar bem mais legível do que aninhar vários `IIF` uns dentro dos outros.
 
 > **💡 Dica:** A condição passada no primeiro parâmetro pode ser qualquer função ou expressão que retorne verdadeiro ou falso. Combinar `IIF` com [Empty](../utility-functions/empty.md) é um padrão clássico para tratar campos que podem vir sem valor da Data Extension.
 
-> **⚠️ Atenção:** Use [AttributeValue](../utility-functions/attributevalue.md) em vez de referenciar o campo diretamente ao montar a condição. Assim você evita erros caso o campo não exista no contexto de envio — `AttributeValue` retorna vazio em vez de estourar um erro.
+> **⚠️ Atenção:** Use [AttributeValue](../utility-functions/attributevalue.md) em vez de referenciar o campo diretamente ao montar a condição. Assim você evita erros caso o campo não exista no contexto de envio - `AttributeValue` retorna vazio em vez de estourar um erro.
 
 ## Funções relacionadas
 
-- [Empty](../utility-functions/empty.md) — verifica se um valor está vazio, par natural do `IIF` para tratar campos ausentes.
-- [IsNull](../utility-functions/isnull.md) — testa se um valor é nulo.
-- [IsNullDefault](../utility-functions/isnulldefault.md) — retorna um valor padrão quando o campo é nulo.
-- [Concat](../string-functions/concat.md) — concatena strings, muito usada junto com `IIF` para montar frases dinâmicas.
-- [AttributeValue](../utility-functions/attributevalue.md) — recupera o valor de um atributo de forma segura.
+- [Empty](../utility-functions/empty.md) - verifica se um valor está vazio, par natural do `IIF` para tratar campos ausentes.
+- [IsNull](../utility-functions/isnull.md) - testa se um valor é nulo.
+- [IsNullDefault](../utility-functions/isnulldefault.md) - retorna um valor padrão quando o campo é nulo.
+- [Concat](../string-functions/concat.md) - concatena strings, muito usada junto com `IIF` para montar frases dinâmicas.
+- [AttributeValue](../utility-functions/attributevalue.md) - recupera o valor de um atributo de forma segura.

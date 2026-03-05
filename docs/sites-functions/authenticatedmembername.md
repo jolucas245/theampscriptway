@@ -8,7 +8,7 @@ description: Retorna o nome do membro (Member Name) do usuário autenticado em u
 
 ## Descrição
 
-Retorna o nome do membro (Member Name) do usuário autenticado em uma landing page. Essa função é usada exclusivamente em **Microsites** com **Sender Authenticated Redirection** — ou seja, quando o usuário que acessa a página está autenticado no contexto da conta SFMC. **Não funciona com CloudPages.**
+Retorna o nome do membro (Member Name) do usuário autenticado em uma landing page. Essa função é usada exclusivamente em **Microsites** com **Sender Authenticated Redirection** - ou seja, quando o usuário que acessa a página está autenticado no contexto da conta SFMC. **Não funciona com CloudPages.**
 
 ## Sintaxe
 
@@ -65,7 +65,7 @@ Bem-vindo ao painel da conta: Lojas Vitória
 
 ## Observações
 
-> **⚠️ Atenção:** Esta função funciona **apenas em Microsites** com Sender Authenticated Redirection. **Não use em CloudPages** — ela não retornará o valor esperado nesse contexto.
+> **⚠️ Atenção:** Esta função funciona **apenas em Microsites** com Sender Authenticated Redirection. **Não use em CloudPages** - ela não retornará o valor esperado nesse contexto.
 
 - A função não aceita parâmetros. Qualquer tentativa de passar argumentos resultará em erro.
 - O "Member Name" retornado corresponde ao nome da business unit (conta/membro) do usuário autenticado, não ao nome de um subscriber ou contato.

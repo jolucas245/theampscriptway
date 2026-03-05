@@ -8,7 +8,7 @@ description: Define o estado (ativo/inativo) e o status de um registro no Micros
 
 ## Descrição
 
-Define o estado e o status de um registro no Microsoft Dynamics CRM. Essa função é útil quando você precisa ativar ou inativar registros do Dynamics CRM diretamente a partir de uma comunicação ou automação no Marketing Cloud — por exemplo, desativar uma conta de cliente que solicitou cancelamento via uma CloudPage. A função não retorna valor.
+Define o estado e o status de um registro no Microsoft Dynamics CRM. Essa função é útil quando você precisa ativar ou inativar registros do Dynamics CRM diretamente a partir de uma comunicação ou automação no Marketing Cloud - por exemplo, desativar uma conta de cliente que solicitou cancelamento via uma CloudPage. A função não retorna valor.
 
 > **⚠️ Atenção:** Algumas entidades do Dynamics CRM, como **Opportunity**, exigem requisições especiais do CRM para alterar seu estado. A função `SetStateMscrmRecord` **não funciona** para essas entidades.
 
@@ -29,7 +29,7 @@ SetStateMscrmRecord(recordGuid, entityName, stateToSet, statusToSet)
 
 ## Exemplo básico
 
-Inativando a conta de um cliente no Dynamics CRM — cenário típico de cancelamento de cadastro.
+Inativando a conta de um cliente no Dynamics CRM - cenário típico de cancelamento de cadastro.
 
 ```ampscript
 %%[
@@ -42,7 +42,7 @@ SetStateMscrmRecord(@guidConta, "account", "inactive", "-1")
 
 **Saída:**
 ```
-(nenhuma saída — a função não retorna valor, mas o registro da conta é definido como inativo no Dynamics CRM com o status padrão)
+(nenhuma saída - a função não retorna valor, mas o registro da conta é definido como inativo no Dynamics CRM com o status padrão)
 ```
 
 ## Exemplo avançado
@@ -97,13 +97,13 @@ Olá, seu pedido de cancelamento foi processado com sucesso.
 
 > **⚠️ Atenção:** Entidades como **Opportunity** possuem fluxos de mudança de estado específicos no Dynamics CRM e **não são compatíveis** com essa função. Se você tentar usá-la com essas entidades, a operação falhará.
 
-> **💡 Dica:** Antes de chamar `SetStateMscrmRecord`, é boa prática usar [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) para confirmar que o registro existe e verificar seu estado atual — isso evita chamadas desnecessárias e facilita o tratamento de erros.
+> **💡 Dica:** Antes de chamar `SetStateMscrmRecord`, é boa prática usar [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) para confirmar que o registro existe e verificar seu estado atual - isso evita chamadas desnecessárias e facilita o tratamento de erros.
 
 ## Funções relacionadas
 
-- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) — cria um novo registro no Dynamics CRM
-- [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) — atualiza campos de registros existentes
-- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) — insere ou atualiza um registro no Dynamics CRM
-- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) — consulta registros no Dynamics CRM
-- [RetrieveMscrmRecordsFetchXml](../microsoft-dynamics-crm-functions/retrievemscrmrecordsfetchxml.md) — consulta registros usando FetchXML
-- [AddMscrmListMember](../microsoft-dynamics-crm-functions/addmscrmlistmember.md) — adiciona um membro a uma lista de marketing no Dynamics CRM
+- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) - cria um novo registro no Dynamics CRM
+- [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) - atualiza campos de registros existentes
+- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) - insere ou atualiza um registro no Dynamics CRM
+- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) - consulta registros no Dynamics CRM
+- [RetrieveMscrmRecordsFetchXml](../microsoft-dynamics-crm-functions/retrievemscrmrecordsfetchxml.md) - consulta registros usando FetchXML
+- [AddMscrmListMember](../microsoft-dynamics-crm-functions/addmscrmlistmember.md) - adiciona um membro a uma lista de marketing no Dynamics CRM

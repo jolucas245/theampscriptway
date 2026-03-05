@@ -8,7 +8,7 @@ description: Atualiza um registro em um objeto do Salesforce CRM diretamente via
 
 ## Descrição
 
-Atualiza um registro específico em um objeto do Salesforce (Sales Cloud ou Service Cloud) diretamente pelo AMPscript. Para funcionar, é necessário ter o **Marketing Cloud Connect** configurado entre as duas plataformas. A função retorna **1** se a atualização for bem-sucedida e **0** caso contrário — o que permite tratar o resultado e dar feedback ao subscriber ou registrar o status da operação.
+Atualiza um registro específico em um objeto do Salesforce (Sales Cloud ou Service Cloud) diretamente pelo AMPscript. Para funcionar, é necessário ter o **Marketing Cloud Connect** configurado entre as duas plataformas. A função retorna **1** se a atualização for bem-sucedida e **0** caso contrário - o que permite tratar o resultado e dar feedback ao subscriber ou registrar o status da operação.
 
 ## Sintaxe
 
@@ -101,9 +101,9 @@ Obrigado, Maria Santos! Seu telefone foi atualizado para (11) 99999-9999.
 
 ## Funções relacionadas
 
-- [CreateSalesforceObject](../salesforce-functions/createsalesforceobject.md) — cria um novo registro em um objeto do Salesforce
-- [RetrieveSalesforceObjects](../salesforce-functions/retrievesalesforceobjects.md) — consulta registros de um objeto do Salesforce
-- [LongSfid](../salesforce-functions/longsfid.md) — converte um ID de 15 caracteres para o formato de 18 caracteres
-- [Empty](../utility-functions/empty.md) — valida se um valor está vazio antes de tentar a atualização
-- [Concat](../string-functions/concat.md) — monta strings dinâmicas para mensagens de feedback
-- [RequestParameter](../sites-functions/requestparameter.md) — captura parâmetros em CloudPages para cenários de atualização via formulário
+- [CreateSalesforceObject](../salesforce-functions/createsalesforceobject.md) - cria um novo registro em um objeto do Salesforce
+- [RetrieveSalesforceObjects](../salesforce-functions/retrievesalesforceobjects.md) - consulta registros de um objeto do Salesforce
+- [LongSfid](../salesforce-functions/longsfid.md) - converte um ID de 15 caracteres para o formato de 18 caracteres
+- [Empty](../utility-functions/empty.md) - valida se um valor está vazio antes de tentar a atualização
+- [Concat](../string-functions/concat.md) - monta strings dinâmicas para mensagens de feedback
+- [RequestParameter](../sites-functions/requestparameter.md) - captura parâmetros em CloudPages para cenários de atualização via formulário

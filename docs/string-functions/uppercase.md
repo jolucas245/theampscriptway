@@ -8,7 +8,7 @@ description: Converte todos os caracteres de uma string para letras maiúsculas.
 
 ## Descrição
 
-A função `Uppercase` converte todas as letras de uma string para maiúsculas. É muito útil no dia a dia de SFMC quando você precisa padronizar dados exibidos em e-mails — como códigos de cupom, siglas de estados, números de protocolo ou qualquer texto que precise aparecer em caixa alta. Retorna a string fornecida inteiramente em letras maiúsculas.
+A função `Uppercase` converte todas as letras de uma string para maiúsculas. É muito útil no dia a dia de SFMC quando você precisa padronizar dados exibidos em e-mails - como códigos de cupom, siglas de estados, números de protocolo ou qualquer texto que precise aparecer em caixa alta. Retorna a string fornecida inteiramente em letras maiúsculas.
 
 ## Sintaxe
 
@@ -77,7 +77,7 @@ Protocolo: LV-2024-08745
 
 ## Funções relacionadas
 
-- [Lowercase](../string-functions/lowercase.md) — converte a string para letras minúsculas
-- [ProperCase](../string-functions/propercase.md) — capitaliza a primeira letra de cada palavra
-- [Concat](../string-functions/concat.md) — concatena strings, útil para montar textos antes de converter
-- [Trim](../string-functions/trim.md) — remove espaços extras antes e depois da string
+- [Lowercase](../string-functions/lowercase.md) - converte a string para letras minúsculas
+- [ProperCase](../string-functions/propercase.md) - capitaliza a primeira letra de cada palavra
+- [Concat](../string-functions/concat.md) - concatena strings, útil para montar textos antes de converter
+- [Trim](../string-functions/trim.md) - remove espaços extras antes e depois da string

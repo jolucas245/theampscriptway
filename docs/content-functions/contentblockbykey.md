@@ -8,7 +8,7 @@ description: Retorna o conteúdo de um bloco do Content Builder referenciando su
 
 ## Descrição
 
-Retorna o conteúdo de um bloco armazenado no Content Builder, usando a **chave (key)** do bloco como referência. É a forma mais robusta de reutilizar blocos de conteúdo em e-mails, CloudPages e templates, já que a key não muda mesmo que o bloco seja renomeado ou movido de pasta. Essa função funciona **exclusivamente** com blocos do Content Builder — para conteúdos do Classic Content, use a função [ContentArea](../content-functions/contentarea.md).
+Retorna o conteúdo de um bloco armazenado no Content Builder, usando a **chave (key)** do bloco como referência. É a forma mais robusta de reutilizar blocos de conteúdo em e-mails, CloudPages e templates, já que a key não muda mesmo que o bloco seja renomeado ou movido de pasta. Essa função funciona **exclusivamente** com blocos do Content Builder - para conteúdos do Classic Content, use a função [ContentArea](../content-functions/contentarea.md).
 
 ## Sintaxe
 
@@ -77,7 +77,7 @@ IF @statusCode == 0 THEN
 <table width="100%" cellpadding="0" cellspacing="0">
   <tr>
     <td style="background-color:#003366; color:#ffffff; text-align:center; padding:20px;">
-      <h2>MegaStore — Ofertas imperdíveis com até 40% de desconto!</h2>
+      <h2>MegaStore - Ofertas imperdíveis com até 40% de desconto!</h2>
       <p>Parcele em até 10x sem juros. Frete grátis para São Paulo e Rio de Janeiro.</p>
     </td>
   </tr>
@@ -95,13 +95,13 @@ IF @statusCode == 0 THEN
 
 **Saída (bloco não encontrado):**
 ```
-MegaStore — Ofertas imperdíveis com até 40% de desconto!
+MegaStore - Ofertas imperdíveis com até 40% de desconto!
 Parcele em até 10x sem juros. Frete grátis para São Paulo e Rio de Janeiro.
 ```
 
 ## Observações
 
-> **💡 Dica:** Prefira `ContentBlockByKey` em vez de [ContentBlockByName](../content-functions/contentblockbyname.md) ou [ContentBlockById](../content-functions/contentblockbyid.md). A key é definida na criação do bloco e permanece estável — já o nome pode ser alterado por qualquer usuário e o ID pode variar entre ambientes. Isso torna a key a referência mais confiável para templates de produção.
+> **💡 Dica:** Prefira `ContentBlockByKey` em vez de [ContentBlockByName](../content-functions/contentblockbyname.md) ou [ContentBlockById](../content-functions/contentblockbyid.md). A key é definida na criação do bloco e permanece estável - já o nome pode ser alterado por qualquer usuário e o ID pode variar entre ambientes. Isso torna a key a referência mais confiável para templates de produção.
 
 > **⚠️ Atenção:** Por padrão, o parâmetro `boolErrorOnMissingContentBlock` é `true`. Isso significa que se o bloco não existir, o envio do e-mail pode falhar. Em réguas de relacionamento críticas, considere setar esse parâmetro como `false` e usar o `statusCode` para controlar o fallback, como no exemplo avançado.
 
@@ -111,8 +111,8 @@ Parcele em até 10x sem juros. Frete grátis para São Paulo e Rio de Janeiro.
 
 ## Funções relacionadas
 
-- [ContentBlockById](../content-functions/contentblockbyid.md) — busca o bloco pelo ID numérico
-- [ContentBlockByName](../content-functions/contentblockbyname.md) — busca o bloco pelo nome (caminho)
-- [ContentArea](../content-functions/contentarea.md) — recupera conteúdo do Classic Content
-- [EndImpressionRegion](../content-functions/endimpressionregion.md) — encerra uma impression region aberta
-- [TreatAsContent](../utility-functions/treatascontent.md) — processa uma string como conteúdo AMPscript
+- [ContentBlockById](../content-functions/contentblockbyid.md) - busca o bloco pelo ID numérico
+- [ContentBlockByName](../content-functions/contentblockbyname.md) - busca o bloco pelo nome (caminho)
+- [ContentArea](../content-functions/contentarea.md) - recupera conteúdo do Classic Content
+- [EndImpressionRegion](../content-functions/endimpressionregion.md) - encerra uma impression region aberta
+- [TreatAsContent](../utility-functions/treatascontent.md) - processa uma string como conteúdo AMPscript

@@ -10,7 +10,7 @@ description: Recupera informações sobre os atributos de uma entidade do Micros
 
 Recupera informações detalhadas sobre os atributos de uma entidade do Microsoft Dynamics CRM. Para cada atributo, a função retorna o nome lógico, o nome de exibição e o tipo. Se o atributo contiver um valor do tipo Boolean, status, picklist ou state, a função retorna também uma lista separada por vírgulas com as opções e seus valores de exibição.
 
-É especialmente útil quando você precisa entender a estrutura de uma entidade do Dynamics CRM antes de montar integrações — por exemplo, para saber quais campos existem na entidade Lead ou Contact antes de usar funções como [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) ou [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md).
+É especialmente útil quando você precisa entender a estrutura de uma entidade do Dynamics CRM antes de montar integrações - por exemplo, para saber quais campos existem na entidade Lead ou Contact antes de usar funções como [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) ou [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md).
 
 ## Sintaxe
 
@@ -26,7 +26,7 @@ DescribeMscrmEntityAttributes(entityName)
 
 ## Exemplo básico
 
-Neste exemplo, recuperamos os atributos da entidade **Lead** do Dynamics CRM e exibimos uma tabela com as informações de cada campo — cenário comum quando o Banco Brasilão precisa mapear os campos de leads vindos do CRM para disparos de e-mail.
+Neste exemplo, recuperamos os atributos da entidade **Lead** do Dynamics CRM e exibimos uma tabela com as informações de cada campo - cenário comum quando o Banco Brasilão precisa mapear os campos de leads vindos do CRM para disparos de e-mail.
 
 ```ampscript
 %%[
@@ -121,7 +121,7 @@ FOR @i = 1 TO @total DO
     <td>%%=V(@nome)=%%</td>
     <td>%%=V(@exibicao)=%%</td>
     <td>%%=V(@tipo)=%%</td>
-    <td>%%=V(IIF(Empty(@opcoes), "—", @opcoes))=%%</td>
+    <td>%%=V(IIF(Empty(@opcoes), "-", @opcoes))=%%</td>
   </tr>
 %%[
   ENDIF
@@ -140,7 +140,7 @@ Campos obrigatórios da entidade Contact - Conecta Telecom
 +---+---------------+-------------------+---------+------------------------------+
 | # | Campo         | Exibição          | Tipo    | Opções Disponíveis           |
 +---+---------------+-------------------+---------+------------------------------+
-| 1 | lastname      | Sobrenome         | String  | —                            |
+| 1 | lastname      | Sobrenome         | String  | -                            |
 | 2 | statecode     | Status            | State   | 0,Ativo; 1,Inativo           |
 | 3 | statuscode    | Razão do Status   | Status  | 1,Ativo; 2,Inativo           |
 +---+---------------+-------------------+---------+------------------------------+
@@ -159,12 +159,12 @@ Total geral de atributos: 47
 
 ## Funções relacionadas
 
-- [DescribeMscrmEntities](../microsoft-dynamics-crm-functions/describemscrmentities.md) — lista todas as entidades disponíveis no Dynamics CRM (útil para descobrir o nome exato da entidade antes de consultar seus atributos)
-- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) — recupera registros de uma entidade do CRM
-- [RetrieveMscrmRecordsFetchXml](../microsoft-dynamics-crm-functions/retrievemscrmrecordsfetchxml.md) — recupera registros usando FetchXML para consultas mais complexas
-- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) — cria registros no Dynamics CRM
-- [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) — atualiza registros existentes no CRM
-- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) — insere ou atualiza registros no CRM
-- [Row](../data-extension-functions/row.md) — acessa uma linha específica do rowset retornado
-- [RowCount](../data-extension-functions/rowcount.md) — conta o número de linhas no rowset
-- [Field](../data-extension-functions/field.md) — extrai o valor de um campo específico de uma linha
+- [DescribeMscrmEntities](../microsoft-dynamics-crm-functions/describemscrmentities.md) - lista todas as entidades disponíveis no Dynamics CRM (útil para descobrir o nome exato da entidade antes de consultar seus atributos)
+- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) - recupera registros de uma entidade do CRM
+- [RetrieveMscrmRecordsFetchXml](../microsoft-dynamics-crm-functions/retrievemscrmrecordsfetchxml.md) - recupera registros usando FetchXML para consultas mais complexas
+- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) - cria registros no Dynamics CRM
+- [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) - atualiza registros existentes no CRM
+- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) - insere ou atualiza registros no CRM
+- [Row](../data-extension-functions/row.md) - acessa uma linha específica do rowset retornado
+- [RowCount](../data-extension-functions/rowcount.md) - conta o número de linhas no rowset
+- [Field](../data-extension-functions/field.md) - extrai o valor de um campo específico de uma linha

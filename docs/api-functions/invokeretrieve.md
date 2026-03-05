@@ -118,21 +118,21 @@ DE: Conecta_Historico_Faturas | Key: conecta_historico_faturas
 
 > **⚠️ Atenção:** A função `InvokeRetrieve` depende de um API Object do tipo `RetrieveRequest` corretamente montado. Antes de chamá-la, você precisa criar o objeto com [`CreateObject`](../api-functions/createobject.md), definir propriedades com [`SetObjectProperty`](../api-functions/setobjectproperty.md) e adicionar itens ao array com [`AddObjectArrayItem`](../api-functions/addobjectarrayitem.md). Sem essa preparação, a chamada não vai funcionar.
 
-> **💡 Dica:** A mensagem de status e o request ID são muito úteis para debug. Armazene-os em variáveis e exiba durante o desenvolvimento — principalmente em CloudPages — para identificar rapidamente se a consulta foi bem-sucedida ou se houve algum erro na chamada à API.
+> **💡 Dica:** A mensagem de status e o request ID são muito úteis para debug. Armazene-os em variáveis e exiba durante o desenvolvimento - principalmente em CloudPages - para identificar rapidamente se a consulta foi bem-sucedida ou se houve algum erro na chamada à API.
 
 - A função retorna a mensagem de status da API e o ID da requisição através das variáveis passadas como parâmetro.
 - Use filtros (`SimpleFilterPart`) para restringir os resultados e evitar consultas muito amplas que possam impactar a performance.
 
 ## Funções relacionadas
 
-- [`CreateObject`](../api-functions/createobject.md) — cria o API Object necessário para o RetrieveRequest
-- [`SetObjectProperty`](../api-functions/setobjectproperty.md) — define propriedades no objeto criado
-- [`AddObjectArrayItem`](../api-functions/addobjectarrayitem.md) — adiciona itens a arrays do objeto (Properties, Values, etc.)
-- [`InvokeCreate`](../api-functions/invokecreate.md) — invoca o método Create em um API Object
-- [`InvokeUpdate`](../api-functions/invokeupdate.md) — invoca o método Update em um API Object
-- [`InvokeDelete`](../api-functions/invokedelete.md) — invoca o método Delete em um API Object
-- [`InvokeExecute`](../api-functions/invokeexecute.md) — invoca o método Execute em um API Object
-- [`InvokePerform`](../api-functions/invokeperform.md) — invoca o método Perform em um API Object
-- [`Row`](../data-extension-functions/row.md) — recupera uma linha específica de um rowset
-- [`RowCount`](../data-extension-functions/rowcount.md) — conta o número de linhas em um rowset
-- [`Field`](../data-extension-functions/field.md) — recupera o valor de um campo em uma linha
+- [`CreateObject`](../api-functions/createobject.md) - cria o API Object necessário para o RetrieveRequest
+- [`SetObjectProperty`](../api-functions/setobjectproperty.md) - define propriedades no objeto criado
+- [`AddObjectArrayItem`](../api-functions/addobjectarrayitem.md) - adiciona itens a arrays do objeto (Properties, Values, etc.)
+- [`InvokeCreate`](../api-functions/invokecreate.md) - invoca o método Create em um API Object
+- [`InvokeUpdate`](../api-functions/invokeupdate.md) - invoca o método Update em um API Object
+- [`InvokeDelete`](../api-functions/invokedelete.md) - invoca o método Delete em um API Object
+- [`InvokeExecute`](../api-functions/invokeexecute.md) - invoca o método Execute em um API Object
+- [`InvokePerform`](../api-functions/invokeperform.md) - invoca o método Perform em um API Object
+- [`Row`](../data-extension-functions/row.md) - recupera uma linha específica de um rowset
+- [`RowCount`](../data-extension-functions/rowcount.md) - conta o número de linhas em um rowset
+- [`Field`](../data-extension-functions/field.md) - recupera o valor de um campo em uma linha

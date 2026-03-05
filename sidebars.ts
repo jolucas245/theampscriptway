@@ -28,7 +28,7 @@ const sidebars: SidebarsConfig = {
         'getting-started/dynamic-link-aliases',
         'getting-started/mobile-functions',
         'getting-started/ampscript-vs-ssjs',
-        'getting-started/best-practices',
+        'getting-started/boas-praticas',
       ],
     },
     {

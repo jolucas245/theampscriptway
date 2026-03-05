@@ -67,7 +67,7 @@ Neste exemplo, usamos as funções `FormatDate()` e `Now()` para capturar a data
 ]%%
 ```
 
-Se hoje fosse 05 de agosto de 2023, a variável `@dataAtual` teria o valor `"05/08/2023"`. Isso é muito usado em e-mails transacionais — confirmações de pedido, comprovantes, notificações — onde a data precisa aparecer no corpo da mensagem.
+Se hoje fosse 05 de agosto de 2023, a variável `@dataAtual` teria o valor `"05/08/2023"`. Isso é muito usado em e-mails transacionais para confirmações de pedido, comprovantes, notificações, onde a data precisa aparecer no corpo da mensagem.
 
 Imagine um e-mail do Banco Brasilão confirmando uma transação:
 
@@ -84,7 +84,7 @@ Olá, %%=v(@nomeCliente)=%%.
 Sua solicitação foi registrada em %%=v(@dataAtual)=%% na agência de %%=v(@cidadeAgencia)=%%.
 ```
 
-> **💡 Dica:** Combinar `SET` com funções é o padrão que você mais vai usar no Marketing Cloud. Buscar dados de uma Data Extension, formatar valores, manipular datas — tudo passa por atribuir resultados de funções a variáveis.
+> **💡 Dica:** Combinar `SET` com funções é o padrão que você mais vai usar no Marketing Cloud. Buscar dados de uma Data Extension, formatar valores, manipular datas, tudo passa por atribuir resultados de funções a variáveis.
 
 ---
 

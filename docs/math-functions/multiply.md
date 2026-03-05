@@ -100,15 +100,15 @@ Resumo do seu pedido:
 
 - A função aceita números inteiros e decimais, tanto positivos quanto negativos. Isso é útil quando você precisa, por exemplo, multiplicar por um valor negativo para representar estornos ou créditos.
 
-> **💡 Dica:** Para exibir valores monetários em e-mails, combine `Multiply` com [FormatNumber](../string-functions/formatnumber.md) para garantir que o resultado sempre apareça com duas casas decimais — evitando que um total como `R$ 149.5` apareça sem o zero final.
+> **💡 Dica:** Para exibir valores monetários em e-mails, combine `Multiply` com [FormatNumber](../string-functions/formatnumber.md) para garantir que o resultado sempre apareça com duas casas decimais - evitando que um total como `R$ 149.5` apareça sem o zero final.
 
 > **⚠️ Atenção:** A função trabalha apenas com dois parâmetros por vez. Se você precisa multiplicar três ou mais valores (por exemplo, preço × quantidade × taxa), encadeie as chamadas: `Multiply(Multiply(@preco, @quantidade), @taxa)`.
 
 ## Funções relacionadas
 
-- [Add](../math-functions/add.md) — soma dois números
-- [Subtract](../math-functions/subtract.md) — subtrai dois números
-- [Divide](../math-functions/divide.md) — divide dois números
-- [Mod](../math-functions/mod.md) — retorna o resto da divisão entre dois números
-- [FormatNumber](../string-functions/formatnumber.md) — formata números para exibição
-- [FormatCurrency](../string-functions/formatcurrency.md) — formata valores como moeda
+- [Add](../math-functions/add.md) - soma dois números
+- [Subtract](../math-functions/subtract.md) - subtrai dois números
+- [Divide](../math-functions/divide.md) - divide dois números
+- [Mod](../math-functions/mod.md) - retorna o resto da divisão entre dois números
+- [FormatNumber](../string-functions/formatnumber.md) - formata números para exibição
+- [FormatCurrency](../string-functions/formatcurrency.md) - formata valores como moeda

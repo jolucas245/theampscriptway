@@ -8,7 +8,7 @@ description: Envia uma requisição HTTP POST para uma URL especificada, permiti
 
 ## Descrição
 
-Envia conteúdo via requisição HTTP POST para uma URL especificada. É uma das funções mais usadas para integrar o Marketing Cloud com sistemas externos — APIs de CRM, plataformas de e-commerce, serviços de enriquecimento de dados, webhooks e qualquer endpoint que aceite POST. A função armazena o código de status HTTP da resposta em uma variável de saída, permitindo que você verifique se a chamada foi bem-sucedida.
+Envia conteúdo via requisição HTTP POST para uma URL especificada. É uma das funções mais usadas para integrar o Marketing Cloud com sistemas externos - APIs de CRM, plataformas de e-commerce, serviços de enriquecimento de dados, webhooks e qualquer endpoint que aceite POST. A função armazena o código de status HTTP da resposta em uma variável de saída, permitindo que você verifique se a chamada foi bem-sucedida.
 
 ## Sintaxe
 
@@ -87,17 +87,17 @@ Notificação enviada com sucesso
 
 > **⚠️ Atenção:** Você **não pode** definir os headers `host` e `content-length` nas requisições enviadas por essa função. O valor de `host` é sempre definido automaticamente como o domínio da URL de destino, e o `content-length` é calculado com base no tamanho do conteúdo enviado.
 
-> **💡 Dica:** A função respeita o charset retornado no header `content-type` da resposta. Se você trabalha com APIs que retornam caracteres especiais (acentos, cedilha — comuns no português), certifique-se de que o endpoint retorne `Content-Type: application/json; charset=utf-8` no header. Caso o header não especifique encoding, o SFMC assume WindowsCodePage 1252 como padrão. Para alterar esse comportamento padrão, entre em contato com o suporte Salesforce.
+> **💡 Dica:** A função respeita o charset retornado no header `content-type` da resposta. Se você trabalha com APIs que retornam caracteres especiais (acentos, cedilha - comuns no português), certifique-se de que o endpoint retorne `Content-Type: application/json; charset=utf-8` no header. Caso o header não especifique encoding, o SFMC assume WindowsCodePage 1252 como padrão. Para alterar esse comportamento padrão, entre em contato com o suporte Salesforce.
 
 > **💡 Dica:** Você pode incluir quantos pares nome-valor de headers adicionais forem necessários, bastando adicioná-los ao final da chamada. Isso é útil para enviar tokens de autenticação, headers customizados de rastreamento ou identificadores de origem.
 
-> **💡 Dica:** A função armazena o código de status HTTP na variável de saída. Use essa informação para criar lógicas condicionais — por exemplo, registrar falhas em uma Data Extension de log usando [InsertDE](../data-extension-functions/insertde.md) quando o status for diferente de 200.
+> **💡 Dica:** A função armazena o código de status HTTP na variável de saída. Use essa informação para criar lógicas condicionais - por exemplo, registrar falhas em uma Data Extension de log usando [InsertDE](../data-extension-functions/insertde.md) quando o status for diferente de 200.
 
 ## Funções relacionadas
 
-- [HTTPPost2](../http-functions/httppost2.md) — variação do HTTPPost com parâmetros adicionais de saída
-- [HTTPPostWithRetry](../http-functions/httppostwithretry.md) — versão com mecanismo de retentativa automática
-- [HTTPGet](../http-functions/httpget.md) — para requisições GET a URLs externas
-- [HTTPRequestHeader](../http-functions/httprequestheader.md) — para ler headers da requisição recebida
-- [Concat](../string-functions/concat.md) — essencial para montar payloads dinâmicos
-- [RedirectTo](../http-functions/redirectto.md) — para redirecionamentos em CloudPages
+- [HTTPPost2](../http-functions/httppost2.md) - variação do HTTPPost com parâmetros adicionais de saída
+- [HTTPPostWithRetry](../http-functions/httppostwithretry.md) - versão com mecanismo de retentativa automática
+- [HTTPGet](../http-functions/httpget.md) - para requisições GET a URLs externas
+- [HTTPRequestHeader](../http-functions/httprequestheader.md) - para ler headers da requisição recebida
+- [Concat](../string-functions/concat.md) - essencial para montar payloads dinâmicos
+- [RedirectTo](../http-functions/redirectto.md) - para redirecionamentos em CloudPages

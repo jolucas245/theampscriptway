@@ -8,7 +8,7 @@ description: Retorna a posição em que uma substring aparece dentro de uma stri
 
 ## Descrição
 
-A função `IndexOf` busca uma substring dentro de uma string e retorna a posição numérica onde ela começa. A indexação é baseada em 1 — ou seja, o primeiro caractere da string está na posição 1. Se a substring não for encontrada, o retorno é `0`. É muito útil no dia a dia de SFMC para localizar caracteres ou trechos específicos dentro de dados de clientes, como encontrar o "@" num e-mail ou identificar padrões em campos de texto.
+A função `IndexOf` busca uma substring dentro de uma string e retorna a posição numérica onde ela começa. A indexação é baseada em 1 - ou seja, o primeiro caractere da string está na posição 1. Se a substring não for encontrada, o retorno é `0`. É muito útil no dia a dia de SFMC para localizar caracteres ou trechos específicos dentro de dados de clientes, como encontrar o "@" num e-mail ou identificar padrões em campos de texto.
 
 ## Sintaxe
 
@@ -48,7 +48,7 @@ O '@' está na posição: 11
 
 ## Exemplo avançado
 
-Extraindo o domínio do e-mail de um cliente para personalizar a comunicação — por exemplo, identificando se o assinante usa um e-mail corporativo ou pessoal. Aqui combinamos `IndexOf` com `Substring` e `Length` para isolar a parte após o "@":
+Extraindo o domínio do e-mail de um cliente para personalizar a comunicação - por exemplo, identificando se o assinante usa um e-mail corporativo ou pessoal. Aqui combinamos `IndexOf` com `Substring` e `Length` para isolar a parte após o "@":
 
 ```ampscript
 %%[
@@ -81,7 +81,7 @@ Olá, Maria! Vimos que você faz parte da Conecta Telecom. Confira ofertas exclu
 
 ## Observações
 
-> **💡 Dica:** Como `IndexOf` retorna `0` quando a substring não é encontrada, você pode usar essa verificação como uma espécie de "contém" — basta checar `IF IndexOf(@texto, "trecho") > 0 THEN` para saber se o trecho existe na string.
+> **💡 Dica:** Como `IndexOf` retorna `0` quando a substring não é encontrada, você pode usar essa verificação como uma espécie de "contém" - basta checar `IF IndexOf(@texto, "trecho") > 0 THEN` para saber se o trecho existe na string.
 
 > **⚠️ Atenção:** A indexação começa em 1, não em 0. Se você combinar o resultado de `IndexOf` com funções como [Substring](../string-functions/substring.md), lembre-se de ajustar a posição corretamente para não cortar caracteres a mais ou a menos.
 
@@ -89,7 +89,7 @@ Olá, Maria! Vimos que você faz parte da Conecta Telecom. Confira ofertas exclu
 
 ## Funções relacionadas
 
-- [Substring](../string-functions/substring.md) — para extrair parte da string a partir da posição encontrada por `IndexOf`.
-- [Length](../string-functions/length.md) — para calcular o tamanho total da string, útil em combinação com `IndexOf`.
-- [Replace](../string-functions/replace.md) — para substituir a substring encontrada por outro valor.
-- [Concat](../string-functions/concat.md) — para montar strings dinâmicas com os resultados.
+- [Substring](../string-functions/substring.md) - para extrair parte da string a partir da posição encontrada por `IndexOf`.
+- [Length](../string-functions/length.md) - para calcular o tamanho total da string, útil em combinação com `IndexOf`.
+- [Replace](../string-functions/replace.md) - para substituir a substring encontrada por outro valor.
+- [Concat](../string-functions/concat.md) - para montar strings dinâmicas com os resultados.

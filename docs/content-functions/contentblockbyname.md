@@ -8,7 +8,7 @@ description: Retorna o conteúdo de um bloco do Content Builder referenciando-o 
 
 ## Descrição
 
-Retorna o conteúdo de um bloco armazenado no Content Builder a partir do seu caminho completo (nome com pasta). É a função ideal quando você organiza seus blocos reutilizáveis em pastas no Content Builder e quer referenciá-los pelo nome — como headers, footers, disclaimers jurídicos ou snippets de produto que são compartilhados entre vários e-mails de uma régua de relacionamento. A função retorna apenas conteúdo que esteja no Content Builder; para conteúdo em áreas Classic, use a função [ContentArea](../content-functions/contentarea.md).
+Retorna o conteúdo de um bloco armazenado no Content Builder a partir do seu caminho completo (nome com pasta). É a função ideal quando você organiza seus blocos reutilizáveis em pastas no Content Builder e quer referenciá-los pelo nome - como headers, footers, disclaimers jurídicos ou snippets de produto que são compartilhados entre vários e-mails de uma régua de relacionamento. A função retorna apenas conteúdo que esteja no Content Builder; para conteúdo em áreas Classic, use a função [ContentArea](../content-functions/contentarea.md).
 
 ## Sintaxe
 
@@ -101,15 +101,15 @@ Em caso de dúvidas, entre em contato: sac@megastore.com.br | (11) 3000-0000
 
 > **💡 Dica:** Use o parâmetro `impressionRegionName` quando precisar rastrear impressões de blocos específicos (como banners promocionais). Lembre-se de encerrar a região de impressão com [EndImpressionRegion](../content-functions/endimpressionregion.md) após o bloco.
 
-> **💡 Dica:** O código de status `0` confirma que o bloco foi encontrado e renderizado com sucesso. O valor `-1` indica que não há conteúdo ou que o bloco é inválido — use essa verificação para montar lógicas de fallback robustas.
+> **💡 Dica:** O código de status `0` confirma que o bloco foi encontrado e renderizado com sucesso. O valor `-1` indica que não há conteúdo ou que o bloco é inválido - use essa verificação para montar lógicas de fallback robustas.
 
 - Esta função retorna **apenas** conteúdo do Content Builder. Para áreas de conteúdo clássicas, use [ContentArea](../content-functions/contentarea.md).
 
 ## Funções relacionadas
 
-- [ContentBlockByKey](../content-functions/contentblockbykey.md) — referencia blocos pela Customer Key (mais resiliente a mudanças de pasta)
-- [ContentBlockById](../content-functions/contentblockbyid.md) — referencia blocos pelo ID numérico
-- [ContentAreaByName](../content-functions/contentareabyname.md) — similar, mas para áreas de conteúdo Classic
-- [ContentArea](../content-functions/contentarea.md) — insere conteúdo de áreas Classic por ID
-- [EndImpressionRegion](../content-functions/endimpressionregion.md) — encerra uma região de impressão iniciada pelo parâmetro `impressionRegionName`
-- [TreatAsContent](../utility-functions/treatascontent.md) — processa uma string como se fosse conteúdo AMPscript/HTML
+- [ContentBlockByKey](../content-functions/contentblockbykey.md) - referencia blocos pela Customer Key (mais resiliente a mudanças de pasta)
+- [ContentBlockById](../content-functions/contentblockbyid.md) - referencia blocos pelo ID numérico
+- [ContentAreaByName](../content-functions/contentareabyname.md) - similar, mas para áreas de conteúdo Classic
+- [ContentArea](../content-functions/contentarea.md) - insere conteúdo de áreas Classic por ID
+- [EndImpressionRegion](../content-functions/endimpressionregion.md) - encerra uma região de impressão iniciada pelo parâmetro `impressionRegionName`
+- [TreatAsContent](../utility-functions/treatascontent.md) - processa uma string como se fosse conteúdo AMPscript/HTML

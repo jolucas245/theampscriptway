@@ -8,7 +8,7 @@ description: Interrompe o processamento de um envio de e-mail e gera uma mensage
 
 ## Descrição
 
-A função `RaiseError` interrompe o processamento de um envio de e-mail e produz uma mensagem de erro. Você pode configurar para pular apenas o subscriber que causou o erro (continuando o job para os demais) ou para parar o job inteiro. É a principal ferramenta de AMPscript para tratar exceções — por exemplo, quando um dado obrigatório está faltando na Data Extension e você não quer que o subscriber receba um e-mail quebrado.
+A função `RaiseError` interrompe o processamento de um envio de e-mail e produz uma mensagem de erro. Você pode configurar para pular apenas o subscriber que causou o erro (continuando o job para os demais) ou para parar o job inteiro. É a principal ferramenta de AMPscript para tratar exceções - por exemplo, quando um dado obrigatório está faltando na Data Extension e você não quer que o subscriber receba um e-mail quebrado.
 
 ## Sintaxe
 
@@ -53,7 +53,7 @@ O subscriber é pulado e o e-mail não é enviado para ele. O job continua para 
 
 ## Exemplo avançado
 
-Em uma régua de relacionamento do Banco Brasilão, o e-mail precisa exibir dados da conta do cliente. Se o registro não for encontrado na Data Extension, o erro é registrado em uma DE de log antes de pular o subscriber — e o parâmetro `boolPreserveDataExt` garante que esse log seja mantido:
+Em uma régua de relacionamento do Banco Brasilão, o e-mail precisa exibir dados da conta do cliente. Se o registro não for encontrado na Data Extension, o erro é registrado em uma DE de log antes de pular o subscriber - e o parâmetro `boolPreserveDataExt` garante que esse log seja mantido:
 
 ```ampscript
 %%[
@@ -114,11 +114,11 @@ O subscriber é pulado, mas o registro na DE "LogErrosEnvio" é preservado graç
 
 ## Observações
 
-> **⚠️ Atenção:** O Marketing Cloud constrói e pré-processa os e-mails antes de tentar enviá-los. Isso significa que seus relatórios de tracking podem incluir e-mails que **não foram efetivamente enviados** por conta do `RaiseError`. Não se assuste se os números parecerem inconsistentes — é comportamento esperado.
+> **⚠️ Atenção:** O Marketing Cloud constrói e pré-processa os e-mails antes de tentar enviá-los. Isso significa que seus relatórios de tracking podem incluir e-mails que **não foram efetivamente enviados** por conta do `RaiseError`. Não se assuste se os números parecerem inconsistentes - é comportamento esperado.
 
 > **⚠️ Atenção:** E-mails que não são enviados por causa do `RaiseError` **não são contabilizados** no consumo de billing da sua conta. Ou seja, você não paga por envios que foram barrados por essa função.
 
-> **⚠️ Atenção:** Em Journeys, o `RaiseError` remove o subscriber apenas do envio atual — ele **não** é removido de outros envios dentro da mesma Journey. Se o subscriber estiver em uma jornada com múltiplos e-mails, os próximos steps continuarão normalmente.
+> **⚠️ Atenção:** Em Journeys, o `RaiseError` remove o subscriber apenas do envio atual - ele **não** é removido de outros envios dentro da mesma Journey. Se o subscriber estiver em uma jornada com múltiplos e-mails, os próximos steps continuarão normalmente.
 
 > **💡 Dica:** Use `RaiseError` exclusivamente para **tratamento de erros**. Se o que você precisa é segmentar subscribers (por exemplo, excluir quem não tem e-mail válido ou quem deu opt-out), utilize Query Activities e listas de exclusão. Usar `RaiseError` como mecanismo de segmentação é uma prática desencorajada pela Salesforce.
 
@@ -128,11 +128,11 @@ O subscriber é pulado, mas o registro na DE "LogErrosEnvio" é preservado graç
 
 ## Funções relacionadas
 
-- [Empty](../utility-functions/empty.md) — verificar se um valor está vazio antes de decidir disparar o erro
-- [IsNull](../utility-functions/isnull.md) — verificar se um valor é nulo
-- [AttributeValue](../utility-functions/attributevalue.md) — recuperar atributos do subscriber de forma segura
-- [Lookup](../data-extension-functions/lookup.md) — buscar valores em Data Extensions
-- [LookupRows](../data-extension-functions/lookuprows.md) — buscar múltiplas linhas para validação
-- [RowCount](../data-extension-functions/rowcount.md) — contar resultados de um lookup antes de tratar o erro
-- [InsertDE](../data-extension-functions/insertde.md) — registrar logs antes de disparar o erro
-- [Concat](../string-functions/concat.md) — montar mensagens de erro dinâmicas
+- [Empty](../utility-functions/empty.md) - verificar se um valor está vazio antes de decidir disparar o erro
+- [IsNull](../utility-functions/isnull.md) - verificar se um valor é nulo
+- [AttributeValue](../utility-functions/attributevalue.md) - recuperar atributos do subscriber de forma segura
+- [Lookup](../data-extension-functions/lookup.md) - buscar valores em Data Extensions
+- [LookupRows](../data-extension-functions/lookuprows.md) - buscar múltiplas linhas para validação
+- [RowCount](../data-extension-functions/rowcount.md) - contar resultados de um lookup antes de tratar o erro
+- [InsertDE](../data-extension-functions/insertde.md) - registrar logs antes de disparar o erro
+- [Concat](../string-functions/concat.md) - montar mensagens de erro dinâmicas

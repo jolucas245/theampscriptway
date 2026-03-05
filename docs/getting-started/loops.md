@@ -7,23 +7,23 @@ sidebar_position: 6
 
 # Loops
 
-Loops permitem repetir um bloco de código várias vezes — seja um número fixo de repetições ou uma vez para cada linha de uma estrutura de dados. Em SFMC, isso é essencial para cenários como listar os últimos pedidos de um cliente, exibir produtos de um carrinho abandonado ou gerar linhas de uma tabela dinâmica.
+Loops permitem repetir um bloco de código várias vezes - seja um número fixo de repetições ou uma vez para cada linha de uma estrutura de dados. Em SFMC, isso é essencial para cenários como listar os últimos pedidos de um cliente, exibir produtos de um carrinho abandonado ou gerar linhas de uma tabela dinâmica.
 
 ## Estrutura do For
 
 O loop `For` é a única estrutura de repetição do AMPscript. No mínimo, um bloco `For` precisa de:
 
-- `FOR` — inicia o loop
+- `FOR` - inicia o loop
 - Uma variável de controle com valor inicial
-- `TO` ou `DOWNTO` — define a direção da contagem
+- `TO` ou `DOWNTO` - define a direção da contagem
 - O valor final (número, variável ou função)
-- `DO` — inicia o bloco de código
+- `DO` - inicia o bloco de código
 - O código a repetir
-- `NEXT` — avança o contador e fecha o bloco
+- `NEXT` - avança o contador e fecha o bloco
 
 Quando você usa `TO`, o contador aumenta 1 a cada iteração. Quando usa `DOWNTO`, diminui 1.
 
-> **💡 Dica:** As palavras-chave `FOR`, `TO`, `DOWNTO`, `DO` e `NEXT` não são case-sensitive — `for`, `For` e `FOR` funcionam exatamente igual. Escolha um padrão e mantenha consistência.
+> **💡 Dica:** As palavras-chave `FOR`, `TO`, `DOWNTO`, `DO` e `NEXT` não são case-sensitive - `for`, `For` e `FOR` funcionam exatamente igual. Escolha um padrão e mantenha consistência.
 
 ## Repetindo um número fixo de vezes
 
@@ -48,7 +48,7 @@ Item 5
 
 ## Iterando sobre um rowset
 
-O uso mais comum em SFMC é percorrer um rowset — uma estrutura de dados retornada por funções como `LookupRows()`, `BuildRowsetFromString()` ou `BuildRowsetFromJson()`. O padrão é sempre o mesmo: buscar o rowset, contar as linhas com `RowCount()` e iterar de 1 até esse total.
+O uso mais comum em SFMC é percorrer um rowset - uma estrutura de dados retornada por funções como `LookupRows()`, `BuildRowsetFromString()` ou `BuildRowsetFromJson()`. O padrão é sempre o mesmo: buscar o rowset, contar as linhas com `RowCount()` e iterar de 1 até esse total.
 
 O exemplo abaixo exibe os últimos pedidos de um cliente da Lojas Vitória:
 
@@ -77,7 +77,7 @@ ENDIF
 ]%%
 ```
 
-Repare no padrão de fechar e reabrir blocos AMPscript (`]%%` e `%%[`) para intercalar com HTML. Isso é totalmente válido — o AMPscript interpreta os blocos em sequência, e o HTML no meio é renderizado normalmente.
+Repare no padrão de fechar e reabrir blocos AMPscript (`]%%` e `%%[`) para intercalar com HTML. Isso é totalmente válido - o AMPscript interpreta os blocos em sequência, e o HTML no meio é renderizado normalmente.
 
 ## Contagem regressiva com DOWNTO
 
@@ -104,7 +104,7 @@ Promoção ativada!
 
 ## Limitando o número de itens exibidos
 
-Em e-mails, é comum limitar quantos itens você exibe — por exemplo, no máximo 3 produtos recomendados. Use `IIF()` ou um `IF` simples para definir o limite antes do loop:
+Em e-mails, é comum limitar quantos itens você exibe - por exemplo, no máximo 3 produtos recomendados. Use `IIF()` ou um `IF` simples para definir o limite antes do loop:
 
 ```ampscript
 %%[
@@ -123,7 +123,7 @@ FOR @i = 1 TO @total DO
 ]%%
 
 <div class="produto">
-    <strong>%%=v(@nome)=%%</strong> — R$ %%=v(@preco)=%%
+    <strong>%%=v(@nome)=%%</strong> - R$ %%=v(@preco)=%%
 </div>
 
 %%[
@@ -131,8 +131,8 @@ NEXT @i
 ]%%
 ```
 
-> **⚠️ Atenção:** Evite usar `LookupRows()` ou `HTTPGet()` dentro de um loop — cada chamada é executada a cada iteração. Em um rowset com 50 linhas, isso significa 50 queries ou 50 requests externos. Busque os dados antes do loop e percorra o rowset já carregado.
+> **⚠️ Atenção:** Evite usar `LookupRows()` ou `HTTPGet()` dentro de um loop - cada chamada é executada a cada iteração. Em um rowset com 50 linhas, isso significa 50 queries ou 50 requests externos. Busque os dados antes do loop e percorra o rowset já carregado.
 
 ---
 
-Com loops dominados, você tem todas as ferramentas fundamentais para construir AMPscript dinâmico. Para boas práticas sobre como organizar código com loops complexos, veja [Boas Práticas](/docs/getting-started/best-practices).
+Com loops dominados, você tem todas as ferramentas fundamentais para construir AMPscript dinâmico. Para boas práticas sobre como organizar código com loops complexos, veja [Boas Práticas](/docs/getting-started/boas-praticas).

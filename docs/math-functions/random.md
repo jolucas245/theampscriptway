@@ -86,7 +86,7 @@ Válido até 31/12/2025. Aproveite!
 
 - Os parâmetros aceitam números inteiros e decimais, positivos e negativos. Então `Random(-10, 10)` e `Random(1.5, 9.5)` são usos válidos.
 
-- O valor retornado é maior ou igual ao menor número e menor ou igual ao maior número do intervalo — ou seja, ambos os limites podem ser retornados.
+- O valor retornado é maior ou igual ao menor número e menor ou igual ao maior número do intervalo - ou seja, ambos os limites podem ser retornados.
 
 > **💡 Dica:** Como o resultado é aleatório, cada subscriber pode receber um valor diferente no mesmo envio. Isso é ótimo para campanhas de "desconto surpresa" ou gamificação em e-mails. Se você precisa de um número inteiro "redondo" a partir de um resultado decimal, combine com [FormatNumber](../string-functions/formatnumber.md).
 
@@ -94,6 +94,6 @@ Válido até 31/12/2025. Aproveite!
 
 ## Funções relacionadas
 
-- [Mod](../math-functions/mod.md) — resto da divisão, útil para distribuir resultados em grupos
-- [Concat](../string-functions/concat.md) — para montar códigos ou cupons concatenando o número aleatório com prefixos
-- [Format](../string-functions/format.md) — para formatar o número gerado
+- [Mod](../math-functions/mod.md) - resto da divisão, útil para distribuir resultados em grupos
+- [Concat](../string-functions/concat.md) - para montar códigos ou cupons concatenando o número aleatório com prefixos
+- [Format](../string-functions/format.md) - para formatar o número gerado

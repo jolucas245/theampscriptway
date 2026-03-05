@@ -8,7 +8,7 @@ description: Retorna uma tag img com o caminho de uma imagem do Content Builder,
 
 ## Descrição
 
-A função `ContentImageByKey` retorna uma tag `<img>` completa apontando para uma imagem armazenada no Content Builder, localizada pela sua external key. A tag gerada já inclui os atributos `title`, `alt`, `border="0"` e um `thid` com o ID interno da imagem. É muito útil quando você precisa inserir imagens dinâmicas em e-mails — por exemplo, banners personalizados por segmento ou logos de parceiros — e quer garantir que, caso a imagem principal não seja encontrada, um fallback seja exibido automaticamente.
+A função `ContentImageByKey` retorna uma tag `<img>` completa apontando para uma imagem armazenada no Content Builder, localizada pela sua external key. A tag gerada já inclui os atributos `title`, `alt`, `border="0"` e um `thid` com o ID interno da imagem. É muito útil quando você precisa inserir imagens dinâmicas em e-mails - por exemplo, banners personalizados por segmento ou logos de parceiros - e quer garantir que, caso a imagem principal não seja encontrada, um fallback seja exibido automaticamente.
 
 > **⚠️ Atenção:** Essa função funciona **apenas** com conteúdo do tipo Image no Content Builder. Ela **não** funciona com conteúdo do tipo Image Block.
 
@@ -70,7 +70,7 @@ Imagine uma régua de relacionamento da Lojas Vitória onde cada categoria de pr
 ## Observações
 
 - A função retorna uma tag `<img>` completa e pronta para uso no HTML do e-mail. Você não precisa montar a tag manualmente.
-- Os atributos `alt`, `title`, `border` e `thid` são incluídos automaticamente na tag gerada. O `alt` e `title` vêm das propriedades definidas na imagem dentro do Content Builder — então garanta que esses campos estejam preenchidos para manter a acessibilidade dos seus e-mails.
+- Os atributos `alt`, `title`, `border` e `thid` são incluídos automaticamente na tag gerada. O `alt` e `title` vêm das propriedades definidas na imagem dentro do Content Builder - então garanta que esses campos estejam preenchidos para manter a acessibilidade dos seus e-mails.
 - O segundo parâmetro (fallback) é obrigatório, o que é ótimo para evitar imagens quebradas em produção. Mantenha sempre uma imagem genérica válida como fallback.
 
 > **⚠️ Atenção:** Essa função só funciona com conteúdo do tipo **Image** no Content Builder. Se você tentar usar a external key de um **Image Block**, a função não vai retornar o resultado esperado.
@@ -79,10 +79,10 @@ Imagine uma régua de relacionamento da Lojas Vitória onde cada categoria de pr
 
 ## Funções relacionadas
 
-- [ContentImageById](../content-functions/contentimagebyid.md) — mesma lógica, mas localiza a imagem pelo ID numérico em vez da external key.
-- [ContentBlockByKey](../content-functions/contentblockbykey.md) — para inserir blocos de conteúdo completos (não apenas imagens) via external key.
-- [Image](../content-functions/image.md) — função para trabalhar com imagens do Portfolio (Classic).
-- [ImageById](../content-functions/imagebyid.md) — função para imagens do Portfolio usando ID.
-- [Concat](../string-functions/concat.md) — útil para montar external keys dinâmicas combinando strings.
-- [Empty](../utility-functions/empty.md) — para validar se um valor está vazio antes de montar a key.
-- [AttributeValue](../utility-functions/attributevalue.md) — para capturar atributos do assinante de forma segura.
+- [ContentImageById](../content-functions/contentimagebyid.md) - mesma lógica, mas localiza a imagem pelo ID numérico em vez da external key.
+- [ContentBlockByKey](../content-functions/contentblockbykey.md) - para inserir blocos de conteúdo completos (não apenas imagens) via external key.
+- [Image](../content-functions/image.md) - função para trabalhar com imagens do Portfolio (Classic).
+- [ImageById](../content-functions/imagebyid.md) - função para imagens do Portfolio usando ID.
+- [Concat](../string-functions/concat.md) - útil para montar external keys dinâmicas combinando strings.
+- [Empty](../utility-functions/empty.md) - para validar se um valor está vazio antes de montar a key.
+- [AttributeValue](../utility-functions/attributevalue.md) - para capturar atributos do assinante de forma segura.

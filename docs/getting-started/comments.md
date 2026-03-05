@@ -7,11 +7,11 @@ sidebar_position: 7
 
 # Comentários
 
-Comentários são trechos de texto dentro do seu código que o AMPscript ignora completamente durante a execução. Eles existem apenas para humanos — para documentar intenções, explicar decisões e facilitar a manutenção por quem vier depois (inclusive você mesmo, seis meses depois).
+Comentários são trechos de texto dentro do seu código que o AMPscript ignora completamente durante a execução. Eles existem apenas para humanos - para documentar intenções, explicar decisões e facilitar a manutenção por quem vier depois (inclusive você mesmo, seis meses depois).
 
 ## Sintaxe
 
-O delimitador de comentário em AMPscript é `/* */` — o mesmo usado em várias outras linguagens. Tudo que estiver entre `/*` e `*/` é tratado como comentário e não é processado.
+O delimitador de comentário em AMPscript é `/* */` - o mesmo usado em várias outras linguagens. Tudo que estiver entre `/*` e `*/` é tratado como comentário e não é processado.
 
 ```ampscript
 %%[
@@ -24,16 +24,16 @@ SET @nomeCliente = Lookup('Clientes_DE', 'Nome', 'Email', emailaddr)
 
 Você pode adicionar comentários em **blocos de código** (`%%[ ]%%`) e em blocos com **sintaxe tag-based** (`<script runat="server">`).
 
-> **⚠️ Atenção:** Não é possível adicionar comentários em AMPscript **inline** — ou seja, dentro de `%%=` e `=%%`. Comentários funcionam apenas dentro de blocos.
+> **⚠️ Atenção:** Não é possível adicionar comentários em AMPscript **inline** - ou seja, dentro de `%%=` e `=%%`. Comentários funcionam apenas dentro de blocos.
 
 ```ampscript
-/* ✅ Funciona — dentro de bloco de código */
+/* ✅ Funciona - dentro de bloco de código */
 %%[
 /* Busca o segmento do cliente */
 SET @segmento = Lookup('Segmentos_DE', 'Tier', 'Email', emailaddr)
 ]%%
 
-/* ❌ Não funciona — inline não aceita comentários */
+/* ❌ Não funciona - inline não aceita comentários */
 %%=/* isso causa erro */ v(@segmento)=%%
 ```
 
@@ -53,7 +53,7 @@ SET @nomeCliente = Lookup('Clientes_DE', 'Nome', 'Email', emailaddr)
 ```ampscript
 %%[
 /*
-  E-mail de confirmação de pedido — Lojas Vitória
+  E-mail de confirmação de pedido - Lojas Vitória
   
   Este bloco busca os dados do pedido mais recente do cliente
   e formata os valores para exibição no corpo do e-mail.
@@ -74,18 +74,18 @@ SET @limite   = 3  /* máximo de produtos exibidos por e-mail */
 
 ## Quando comentar
 
-Comente sempre que o código não for autoexplicativo. Não é necessário comentar o óbvio — o objetivo é documentar o **por quê**, não o **o quê**.
+Comente sempre que o código não for autoexplicativo. Não é necessário comentar o óbvio - o objetivo é documentar o **por quê**, não o **o quê**.
 
 ```ampscript
 %%[
-/* ❌ Comentário desnecessário — o código já é claro */
+/* ❌ Comentário desnecessário - o código já é claro */
 /* Atribui o valor 30 à variável @diasValidade */
 SET @diasValidade = 30
 
-/* ✅ Comentário útil — explica a decisão de negócio */
-/* Cupom válido por 30 dias — definido pelo time de CRM em jan/2025 */
+/* ✅ Comentário útil - explica a decisão de negócio */
+/* Cupom válido por 30 dias - definido pelo time de CRM em jan/2025 */
 SET @diasValidade = 30
 ]%%
 ```
 
-Para guias completos sobre como estruturar comentários em projetos maiores — incluindo cabeçalhos de script e comentários de seção — veja [Boas Práticas](/docs/getting-started/best-practices).
+Para guias completos sobre como estruturar comentários em projetos maiores - incluindo cabeçalhos de script e comentários de seção - veja [Boas Práticas](/docs/getting-started/boas-praticas).

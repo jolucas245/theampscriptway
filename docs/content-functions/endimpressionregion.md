@@ -24,7 +24,7 @@ EndImpressionRegion(boolEndAllRegions)
 
 ## Exemplo básico
 
-Encerrando apenas a região de impressão anterior — útil quando você tem um bloco de banner promocional da MegaStore e quer rastrear separadamente cada seção do e-mail.
+Encerrando apenas a região de impressão anterior - útil quando você tem um bloco de banner promocional da MegaStore e quer rastrear separadamente cada seção do e-mail.
 
 ```ampscript
 %%[
@@ -53,7 +53,7 @@ EndImpressionRegion(false)
 
 ## Exemplo avançado
 
-E-mail com múltiplas seções rastreáveis em uma régua de relacionamento da Lojas Vitória — cada bloco de conteúdo tem sua própria região de impressão, e ao final usamos o parâmetro `true` para garantir que todas as regiões sejam fechadas.
+E-mail com múltiplas seções rastreáveis em uma régua de relacionamento da Lojas Vitória - cada bloco de conteúdo tem sua própria região de impressão, e ao final usamos o parâmetro `true` para garantir que todas as regiões sejam fechadas.
 
 ```ampscript
 %%[
@@ -101,7 +101,7 @@ EndImpressionRegion(true)
 ]%%
 
 <p style="font-size:12px; color:#999;">
-  Lojas Vitória — São Paulo, SP | SAC: (11) 3000-1234
+  Lojas Vitória - São Paulo, SP | SAC: (11) 3000-1234
 </p>
 ```
 
@@ -118,9 +118,9 @@ De R$ 3.499,90 por R$ 2.799,90
 Use o cupom VITORIA15 e ganhe 15% de desconto adicional!
 Válido até 31/12/2024
 
-Lojas Vitória — São Paulo, SP | SAC: (11) 3000-1234
+Lojas Vitória - São Paulo, SP | SAC: (11) 3000-1234
 
-(As três regiões — Header_Personalizado, Vitrine_Produtos e Cupom_Desconto — são rastreadas e encerradas simultaneamente.)
+(As três regiões - Header_Personalizado, Vitrine_Produtos e Cupom_Desconto - são rastreadas e encerradas simultaneamente.)
 ```
 
 ## Observações
@@ -129,10 +129,10 @@ Lojas Vitória — São Paulo, SP | SAC: (11) 3000-1234
 
 > **⚠️ Atenção:** O sistema encerra automaticamente todas as regiões de impressão que não forem explicitamente fechadas até o final do e-mail. Mesmo assim, é boa prática sempre fechar suas regiões com `EndImpressionRegion` para manter o código organizado e o rastreamento previsível.
 
-- O valor padrão do parâmetro é `false`, então chamar `EndImpressionRegion(false)` tem o mesmo efeito que uma chamada sem intenção de fechar tudo — apenas a região imediatamente anterior é encerrada.
+- O valor padrão do parâmetro é `false`, então chamar `EndImpressionRegion(false)` tem o mesmo efeito que uma chamada sem intenção de fechar tudo - apenas a região imediatamente anterior é encerrada.
 
 ## Funções relacionadas
 
-- [BeginImpressionRegion](../content-functions/beginimpressionregion.md) — abre uma região de impressão (par obrigatório desta função)
-- [ContentBlockByName](../content-functions/contentblockbyname.md) — para carregar blocos de conteúdo que podem conter regiões de impressão
-- [ContentBlockByKey](../content-functions/contentblockbykey.md) — alternativa para carregar blocos via chave externa
+- [BeginImpressionRegion](../content-functions/beginimpressionregion.md) - abre uma região de impressão (par obrigatório desta função)
+- [ContentBlockByName](../content-functions/contentblockbyname.md) - para carregar blocos de conteúdo que podem conter regiões de impressão
+- [ContentBlockByKey](../content-functions/contentblockbykey.md) - alternativa para carregar blocos via chave externa

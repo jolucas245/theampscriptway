@@ -8,7 +8,7 @@ description: Invoca o método Execute em um API Object do Marketing Cloud e reto
 
 ## Descrição
 
-A função `InvokeExecute` invoca o método Execute em um API Object do Marketing Cloud Engagement, retornando o código de status da API como resultado. É usada quando você precisa executar operações específicas da API que possuem o método Execute — como, por exemplo, registrar um evento de descadastro (LogUnsubEvent). Essa função é parte do fluxo de trabalho com API Objects via AMPscript, onde você primeiro cria o objeto com [CreateObject](../api-functions/createobject.md), configura suas propriedades com [SetObjectProperty](../api-functions/setobjectproperty.md) e então executa a ação com `InvokeExecute`.
+A função `InvokeExecute` invoca o método Execute em um API Object do Marketing Cloud Engagement, retornando o código de status da API como resultado. É usada quando você precisa executar operações específicas da API que possuem o método Execute - como, por exemplo, registrar um evento de descadastro (LogUnsubEvent). Essa função é parte do fluxo de trabalho com API Objects via AMPscript, onde você primeiro cria o objeto com [CreateObject](../api-functions/createobject.md), configura suas propriedades com [SetObjectProperty](../api-functions/setobjectproperty.md) e então executa a ação com `InvokeExecute`.
 
 ## Sintaxe
 
@@ -131,7 +131,7 @@ Protocolo: f8a3b1c2-d4e5-6789-abcd-0123456789ab
 
 - A função `InvokeExecute` é voltada para API Objects que possuem o método Execute. O caso de uso documentado é o `LogUnsubEvent`, usado para registrar eventos de descadastro programaticamente.
 
-- O retorno da função é o código de status da API. Use as variáveis `@statusMessage` e `@requestId` para capturar detalhes adicionais sobre o resultado da operação — especialmente útil para logs e tratamento de erros.
+- O retorno da função é o código de status da API. Use as variáveis `@statusMessage` e `@requestId` para capturar detalhes adicionais sobre o resultado da operação - especialmente útil para logs e tratamento de erros.
 
 > **💡 Dica:** Sempre capture o `@requestId` e exiba-o ao assinante como protocolo ou registre-o em uma Data Extension. Em caso de auditoria ou dúvida do cliente, esse ID permite rastrear exatamente o que aconteceu na plataforma.
 
@@ -141,12 +141,12 @@ Protocolo: f8a3b1c2-d4e5-6789-abcd-0123456789ab
 
 ## Funções relacionadas
 
-- [CreateObject](../api-functions/createobject.md) — cria o API Object que será passado para `InvokeExecute`
-- [SetObjectProperty](../api-functions/setobjectproperty.md) — define propriedades no API Object
-- [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) — adiciona itens a propriedades de array do objeto
-- [InvokeCreate](../api-functions/invokecreate.md) — invoca o método Create em um API Object
-- [InvokeUpdate](../api-functions/invokeupdate.md) — invoca o método Update em um API Object
-- [InvokeDelete](../api-functions/invokedelete.md) — invoca o método Delete em um API Object
-- [InvokeRetrieve](../api-functions/invokeretrieve.md) — invoca o método Retrieve em um API Object
-- [InvokePerform](../api-functions/invokeperform.md) — invoca o método Perform em um API Object
-- [RaiseError](../utility-functions/raiseerror.md) — interrompe a execução com mensagem de erro personalizada
+- [CreateObject](../api-functions/createobject.md) - cria o API Object que será passado para `InvokeExecute`
+- [SetObjectProperty](../api-functions/setobjectproperty.md) - define propriedades no API Object
+- [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) - adiciona itens a propriedades de array do objeto
+- [InvokeCreate](../api-functions/invokecreate.md) - invoca o método Create em um API Object
+- [InvokeUpdate](../api-functions/invokeupdate.md) - invoca o método Update em um API Object
+- [InvokeDelete](../api-functions/invokedelete.md) - invoca o método Delete em um API Object
+- [InvokeRetrieve](../api-functions/invokeretrieve.md) - invoca o método Retrieve em um API Object
+- [InvokePerform](../api-functions/invokeperform.md) - invoca o método Perform em um API Object
+- [RaiseError](../utility-functions/raiseerror.md) - interrompe a execução com mensagem de erro personalizada

@@ -84,9 +84,9 @@ Dados codificados: Sm/Do28gU2lsdmF8MTIzLjQ1Ni43ODktMDB8U8OjbyBQYXVsbw==
 
 ## Funções relacionadas
 
-- [Base64Decode](../encryption-functions/base64decode.md) — decodifica uma string Base64 de volta para texto simples.
-- [MD5](../encryption-functions/md5.md) — gera um hash MD5 (diferente de encoding, o hash é irreversível).
-- [SHA256](../encryption-functions/sha256.md) — gera um hash SHA-256 para validação de integridade.
-- [Concat](../string-functions/concat.md) — concatena strings, útil para montar o conteúdo antes de codificar.
-- [URLEncode](../string-functions/urlencode.md) — outra forma de codificar strings para uso seguro em URLs.
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — gera URLs de CloudPages com parâmetros criptografados.
+- [Base64Decode](../encryption-functions/base64decode.md) - decodifica uma string Base64 de volta para texto simples.
+- [MD5](../encryption-functions/md5.md) - gera um hash MD5 (diferente de encoding, o hash é irreversível).
+- [SHA256](../encryption-functions/sha256.md) - gera um hash SHA-256 para validação de integridade.
+- [Concat](../string-functions/concat.md) - concatena strings, útil para montar o conteúdo antes de codificar.
+- [URLEncode](../string-functions/urlencode.md) - outra forma de codificar strings para uso seguro em URLs.
+- [CloudPagesURL](../sites-functions/cloudpagesurl.md) - gera URLs de CloudPages com parâmetros criptografados.

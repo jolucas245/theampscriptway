@@ -8,7 +8,7 @@ description: Converte cada caractere de uma string para seu equivalente hexadeci
 
 ## Descrição
 
-A função `StringToHex()` converte cada caractere de uma string para seu código hexadecimal equivalente. É útil quando você precisa representar dados em formato hexadecimal — por exemplo, para gerar identificadores codificados, preparar valores para integrações que exigem hex ou criar representações seguras de dados de clientes. O valor padrão de encoding é UTF-8, mas você também pode usar UTF-16.
+A função `StringToHex()` converte cada caractere de uma string para seu código hexadecimal equivalente. É útil quando você precisa representar dados em formato hexadecimal - por exemplo, para gerar identificadores codificados, preparar valores para integrações que exigem hex ou criar representações seguras de dados de clientes. O valor padrão de encoding é UTF-8, mas você também pode usar UTF-16.
 
 ## Sintaxe
 
@@ -46,7 +46,7 @@ Hexadecimal (UTF-8): 4ac3a34f20536976616c
 
 ## Exemplo avançado
 
-Comparando a codificação de uma string em UTF-8 e UTF-16 — útil quando você precisa decidir qual encoding usar para uma integração com um sistema externo do Banco Brasilão:
+Comparando a codificação de uma string em UTF-8 e UTF-16 - útil quando você precisa decidir qual encoding usar para uma integração com um sistema externo do Banco Brasilão:
 
 ```ampscript
 %%[
@@ -74,13 +74,13 @@ Hex UTF-16: feff00500065006400690064006f00200023003100300032003400
 
 > **💡 Dica:** Quando o parâmetro `charSet` não é informado, a função usa `UTF-8` por padrão. Para a maioria dos cenários com texto em português (incluindo acentos como ã, é, ç), UTF-8 é a escolha mais comum e gera uma saída mais compacta que UTF-16.
 
-> **⚠️ Atenção:** Os valores aceitos para `charSet` são `UTF-8` e `UTF-16`. A documentação também menciona `UTC-16` como valor aceito. Fique atento à diferença de resultado entre os dois encodings — UTF-16 gera saídas significativamente maiores por usar mais bytes por caractere.
+> **⚠️ Atenção:** Os valores aceitos para `charSet` são `UTF-8` e `UTF-16`. A documentação também menciona `UTC-16` como valor aceito. Fique atento à diferença de resultado entre os dois encodings - UTF-16 gera saídas significativamente maiores por usar mais bytes por caractere.
 
 ## Funções relacionadas
 
-- [Concat](../string-functions/concat.md) — para concatenar strings antes de converter
-- [Replace](../string-functions/replace.md) — para limpar ou substituir caracteres antes da conversão
-- [MD5](../encryption-functions/md5.md) — para gerar hashes a partir de strings
-- [SHA256](../encryption-functions/sha256.md) — para gerar hashes mais seguros
-- [Base64Encode](../encryption-functions/base64encode.md) — para outra forma de codificação de strings
-- [URLEncode](../string-functions/urlencode.md) — para codificar strings para uso em URLs
+- [Concat](../string-functions/concat.md) - para concatenar strings antes de converter
+- [Replace](../string-functions/replace.md) - para limpar ou substituir caracteres antes da conversão
+- [MD5](../encryption-functions/md5.md) - para gerar hashes a partir de strings
+- [SHA256](../encryption-functions/sha256.md) - para gerar hashes mais seguros
+- [Base64Encode](../encryption-functions/base64encode.md) - para outra forma de codificação de strings
+- [URLEncode](../string-functions/urlencode.md) - para codificar strings para uso em URLs

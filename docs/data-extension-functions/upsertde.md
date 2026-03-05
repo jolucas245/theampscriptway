@@ -8,7 +8,7 @@ description: Atualiza dados em uma Data Extension se encontrar correspondência,
 
 ## Descrição
 
-A função `UpsertDE` faz um "upsert" (update + insert) em uma Data Extension: se encontrar uma linha que corresponda aos critérios de busca, atualiza os valores; se não encontrar, insere uma nova linha com os dados informados. Essa função não retorna nenhum valor de saída. É a função ideal para cenários de e-mail onde você precisa garantir que o dado será gravado independentemente de o registro já existir — como atualizar o status de um cliente em uma régua de relacionamento ou registrar a última interação durante o envio de uma campanha.
+A função `UpsertDE` faz um "upsert" (update + insert) em uma Data Extension: se encontrar uma linha que corresponda aos critérios de busca, atualiza os valores; se não encontrar, insere uma nova linha com os dados informados. Essa função não retorna nenhum valor de saída. É a função ideal para cenários de e-mail onde você precisa garantir que o dado será gravado independentemente de o registro já existir - como atualizar o status de um cliente em uma régua de relacionamento ou registrar a última interação durante o envio de uma campanha.
 
 > **⚠️ Atenção:** A `UpsertDE` é exclusiva para uso em **e-mails**. Para landing pages, CloudPages, microsites e SMS (MobileConnect), use a função [UpsertData](../data-extension-functions/upsertdata.md).
 
@@ -43,7 +43,7 @@ UpsertDE(
   "TaxaEntrega", "15.90"
 )
 
-/* ProdutoId 200 não existe — será inserido como nova linha */
+/* ProdutoId 200 não existe - será inserido como nova linha */
 UpsertDE(
   "Produtos", 1,
   "ProdutoId", "200",
@@ -100,7 +100,7 @@ A Data Extension "HistoricoEnvios" terá a linha do cliente atualizada (se já e
 
 ## Observações
 
-- A `UpsertDE` **não retorna nenhum valor**. Ela executa a operação silenciosamente — se precisar confirmar que o dado foi gravado, faça um [Lookup](../data-extension-functions/lookup.md) posterior.
+- A `UpsertDE` **não retorna nenhum valor**. Ela executa a operação silenciosamente - se precisar confirmar que o dado foi gravado, faça um [Lookup](../data-extension-functions/lookup.md) posterior.
 
 - O parâmetro `columnValuePairs` indica **quantos pares de busca** (searchColumnName/searchValue) serão usados, não o total de pares de upsert. Você pode fazer upsert de quantas colunas quiser, mas deve fornecer os critérios de busca correspondentes.
 
@@ -116,9 +116,9 @@ A Data Extension "HistoricoEnvios" terá a linha do cliente atualizada (se já e
 
 ## Funções relacionadas
 
-- [InsertDE](../data-extension-functions/insertde.md) — quando você quer apenas inserir (sem atualizar registros existentes)
-- [UpdateDE](../data-extension-functions/updatede.md) — quando você quer apenas atualizar (sem inserir novos registros)
-- [DeleteDE](../data-extension-functions/deletede.md) — para remover linhas de uma Data Extension em e-mails
-- [UpsertData](../data-extension-functions/upsertdata.md) — equivalente da `UpsertDE` para uso em landing pages, CloudPages, microsites e SMS
-- [Lookup](../data-extension-functions/lookup.md) — para consultar dados em uma Data Extension
-- [LookupRows](../data-extension-functions/lookuprows.md) — para consultar múltiplas linhas de uma Data Extension
+- [InsertDE](../data-extension-functions/insertde.md) - quando você quer apenas inserir (sem atualizar registros existentes)
+- [UpdateDE](../data-extension-functions/updatede.md) - quando você quer apenas atualizar (sem inserir novos registros)
+- [DeleteDE](../data-extension-functions/deletede.md) - para remover linhas de uma Data Extension em e-mails
+- [UpsertData](../data-extension-functions/upsertdata.md) - equivalente da `UpsertDE` para uso em landing pages, CloudPages, microsites e SMS
+- [Lookup](../data-extension-functions/lookup.md) - para consultar dados em uma Data Extension
+- [LookupRows](../data-extension-functions/lookuprows.md) - para consultar múltiplas linhas de uma Data Extension

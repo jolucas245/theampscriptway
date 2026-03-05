@@ -8,7 +8,7 @@ description: Executa um filtro de dados e retorna um rowset ordenado com os resu
 
 ## Descrição
 
-Executa um filtro de dados (Data Filter) previamente criado no Marketing Cloud e retorna um rowset ordenado com os resultados. É a versão "com ordenação" da [ExecuteFilter](../data-extension-functions/executefilter.md) — você define por qual coluna quer ordenar e em qual direção (crescente ou decrescente). Funciona exclusivamente com filtros baseados em Data Extensions, não com profile attributes.
+Executa um filtro de dados (Data Filter) previamente criado no Marketing Cloud e retorna um rowset ordenado com os resultados. É a versão "com ordenação" da [ExecuteFilter](../data-extension-functions/executefilter.md) - você define por qual coluna quer ordenar e em qual direção (crescente ou decrescente). Funciona exclusivamente com filtros baseados em Data Extensions, não com profile attributes.
 
 ## Sintaxe
 
@@ -152,18 +152,18 @@ Posição | Cliente           | Pontos      | Tier      | Cidade
 
 ## Observações
 
-> **⚠️ Atenção:** Esta função funciona **apenas** em CloudPages, landing pages, microsites e mensagens SMS criadas no MobileConnect. Não use em e-mails — ela simplesmente não vai funcionar nesse contexto.
+> **⚠️ Atenção:** Esta função funciona **apenas** em CloudPages, landing pages, microsites e mensagens SMS criadas no MobileConnect. Não use em e-mails - ela simplesmente não vai funcionar nesse contexto.
 
 > **⚠️ Atenção:** O filtro de dados referenciado precisa ser baseado em uma Data Extension. Filtros baseados em profile attributes não são suportados por esta função.
 
-> **💡 Dica:** O parâmetro `numRows` com valor `0` retorna todos os resultados do filtro. Se você precisa de um ranking (top 10, top 5), passe o número exato — isso deixa o código mais eficiente e evita processar linhas desnecessárias.
+> **💡 Dica:** O parâmetro `numRows` com valor `0` retorna todos os resultados do filtro. Se você precisa de um ranking (top 10, top 5), passe o número exato - isso deixa o código mais eficiente e evita processar linhas desnecessárias.
 
 > **💡 Dica:** Se você precisa dos resultados filtrados mas **não** precisa de ordenação, use a [ExecuteFilter](../data-extension-functions/executefilter.md). Se precisa de ordenação mas quer filtrar diretamente por valores (sem um Data Filter pré-criado), considere [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md).
 
 ## Funções relacionadas
 
-- [ExecuteFilter](../data-extension-functions/executefilter.md) — mesma ideia, mas sem ordenação dos resultados
-- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) — busca ordenada direta na DE, sem depender de um Data Filter
-- [Row](../data-extension-functions/row.md) — extrai uma linha específica do rowset retornado
-- [RowCount](../data-extension-functions/rowcount.md) — conta quantas linhas o rowset contém
-- [Field](../data-extension-functions/field.md) — extrai o valor de uma coluna de uma linha do rowset
+- [ExecuteFilter](../data-extension-functions/executefilter.md) - mesma ideia, mas sem ordenação dos resultados
+- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) - busca ordenada direta na DE, sem depender de um Data Filter
+- [Row](../data-extension-functions/row.md) - extrai uma linha específica do rowset retornado
+- [RowCount](../data-extension-functions/rowcount.md) - conta quantas linhas o rowset contém
+- [Field](../data-extension-functions/field.md) - extrai o valor de uma coluna de uma linha do rowset

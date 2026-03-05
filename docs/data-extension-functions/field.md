@@ -102,12 +102,12 @@ Total: R$ 289,80
 
 ## Funções relacionadas
 
-- [Row](../data-extension-functions/row.md) — extrai uma linha específica de um rowset (pré-requisito para usar `Field`)
-- [RowCount](../data-extension-functions/rowcount.md) — retorna a quantidade de linhas em um rowset
-- [LookupRows](../data-extension-functions/lookuprows.md) — consulta múltiplas linhas de uma Data Extension
-- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) — consulta múltiplas linhas com ordenação
-- [Lookup](../data-extension-functions/lookup.md) — retorna o valor de um campo diretamente (sem precisar de `Row` + `Field`)
-- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) — cria um rowset a partir de dados JSON
-- [BuildRowsetFromXml](../content-functions/buildrowsetfromxml.md) — cria um rowset a partir de dados XML
-- [BuildRowsetFromString](../content-functions/buildrowsetfromstring.md) — cria um rowset a partir de uma string delimitada
-- [Empty](../utility-functions/empty.md) — verifica se um valor está vazio (útil para validar o retorno de `Field`)
+- [Row](../data-extension-functions/row.md) - extrai uma linha específica de um rowset (pré-requisito para usar `Field`)
+- [RowCount](../data-extension-functions/rowcount.md) - retorna a quantidade de linhas em um rowset
+- [LookupRows](../data-extension-functions/lookuprows.md) - consulta múltiplas linhas de uma Data Extension
+- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) - consulta múltiplas linhas com ordenação
+- [Lookup](../data-extension-functions/lookup.md) - retorna o valor de um campo diretamente (sem precisar de `Row` + `Field`)
+- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) - cria um rowset a partir de dados JSON
+- [BuildRowsetFromXml](../content-functions/buildrowsetfromxml.md) - cria um rowset a partir de dados XML
+- [BuildRowsetFromString](../content-functions/buildrowsetfromstring.md) - cria um rowset a partir de uma string delimitada
+- [Empty](../utility-functions/empty.md) - verifica se um valor está vazio (útil para validar o retorno de `Field`)

@@ -8,7 +8,7 @@ description: Retorna uma URL de microsite para visualização de conteúdo dinâ
 
 ## Descrição
 
-Gera um link para uma landing page em microsite que exibe conteúdo dinâmico — em vez de renderizar esse conteúdo diretamente no corpo do e-mail. A função é especialmente útil quando você precisa enviar cupons via SMS ou em e-mails somente texto (text-only), onde não é possível exibir conteúdo visual inline. Ela retorna uma URL que aponta para uma página contendo o cupom referenciado.
+Gera um link para uma landing page em microsite que exibe conteúdo dinâmico - em vez de renderizar esse conteúdo diretamente no corpo do e-mail. A função é especialmente útil quando você precisa enviar cupons via SMS ou em e-mails somente texto (text-only), onde não é possível exibir conteúdo visual inline. Ela retorna uma URL que aponta para uma página contendo o cupom referenciado.
 
 ## Sintaxe
 
@@ -77,14 +77,14 @@ Oi, Maria! A FarmaRede preparou um cupom especial pra voce. Acesse: https://pub.
 
 - O único valor aceito para o parâmetro `contentType` é `"coupon"`. Não existem outros tipos documentados.
 
-> **💡 Dica:** Essa função foi pensada para contextos onde o conteúdo visual não pode ser renderizado diretamente — como mensagens SMS e e-mails text-only. Se você está trabalhando com um e-mail HTML e quer exibir o cupom inline, avalie se realmente precisa direcionar para uma landing page ou se faz mais sentido usar outra abordagem.
+> **💡 Dica:** Essa função foi pensada para contextos onde o conteúdo visual não pode ser renderizado diretamente - como mensagens SMS e e-mails text-only. Se você está trabalhando com um e-mail HTML e quer exibir o cupom inline, avalie se realmente precisa direcionar para uma landing page ou se faz mais sentido usar outra abordagem.
 
-> **⚠️ Atenção:** A external key precisa corresponder exatamente ao conteúdo dinâmico do tipo cupom configurado na sua conta. Verifique a chave no setup de Live Content antes de implementar — um typo na external key vai gerar um link que não funciona como esperado.
+> **⚠️ Atenção:** A external key precisa corresponder exatamente ao conteúdo dinâmico do tipo cupom configurado na sua conta. Verifique a chave no setup de Live Content antes de implementar - um typo na external key vai gerar um link que não funciona como esperado.
 
 ## Funções relacionadas
 
-- [MicrositeURL](../sites-functions/micrositeurl.md) — gera URLs de microsite para páginas genéricas
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — gera URLs para Cloud Pages com passagem de parâmetros criptografados
-- [RedirectTo](../http-functions/redirectto.md) — redireciona o usuário para uma URL específica
-- [Concat](../string-functions/concat.md) — concatena strings, útil para montar mensagens com a URL gerada
-- [AttributeValue](../utility-functions/attributevalue.md) — recupera valores de atributos do assinante de forma segura
+- [MicrositeURL](../sites-functions/micrositeurl.md) - gera URLs de microsite para páginas genéricas
+- [CloudPagesURL](../sites-functions/cloudpagesurl.md) - gera URLs para Cloud Pages com passagem de parâmetros criptografados
+- [RedirectTo](../http-functions/redirectto.md) - redireciona o usuário para uma URL específica
+- [Concat](../string-functions/concat.md) - concatena strings, útil para montar mensagens com a URL gerada
+- [AttributeValue](../utility-functions/attributevalue.md) - recupera valores de atributos do assinante de forma segura

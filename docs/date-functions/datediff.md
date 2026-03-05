@@ -8,7 +8,7 @@ description: Retorna a diferença entre duas datas ou horários na unidade de te
 
 ## Descrição
 
-A função `DateDiff` calcula a diferença entre duas datas ou horários, subtraindo a data inicial da data final. Você define a unidade de retorno: anos, meses, dias, horas ou minutos. É essencial em réguas de relacionamento no SFMC — por exemplo, para saber quantos dias faltam para o vencimento de uma fatura, há quanto tempo um cliente não compra, ou quantas horas restam até o fim de uma promoção.
+A função `DateDiff` calcula a diferença entre duas datas ou horários, subtraindo a data inicial da data final. Você define a unidade de retorno: anos, meses, dias, horas ou minutos. É essencial em réguas de relacionamento no SFMC - por exemplo, para saber quantos dias faltam para o vencimento de uma fatura, há quanto tempo um cliente não compra, ou quantas horas restam até o fim de uma promoção.
 
 ## Sintaxe
 
@@ -85,7 +85,7 @@ Essa oferta expira em 1440 minutos!
 
 ## Observações
 
-> **💡 Dica:** A função subtrai a `startDate` da `endDate`. Se a data inicial for posterior à data final, o resultado será negativo. Use isso a seu favor para detectar atrasos — por exemplo, se `DateDiff(dataVencimento, Now(), "D")` retornar um valor positivo, o boleto já está vencido.
+> **💡 Dica:** A função subtrai a `startDate` da `endDate`. Se a data inicial for posterior à data final, o resultado será negativo. Use isso a seu favor para detectar atrasos - por exemplo, se `DateDiff(dataVencimento, Now(), "D")` retornar um valor positivo, o boleto já está vencido.
 
 > **💡 Dica:** Combine `DateDiff` com [DateAdd](../date-functions/dateadd.md) para cenários como o da documentação oficial: adicione um período a uma data e depois calcule a diferença em minutos ou horas. Isso é útil para contagens regressivas em e-mails promocionais.
 
@@ -93,8 +93,8 @@ Essa oferta expira em 1440 minutos!
 
 ## Funções relacionadas
 
-- [Now](../date-functions/now.md) — obtém a data/hora atual para usar como parâmetro
-- [DateAdd](../date-functions/dateadd.md) — adiciona ou subtrai intervalos de tempo a uma data
-- [DatePart](../date-functions/datepart.md) — extrai uma parte específica de uma data
-- [FormatDate](../date-functions/formatdate.md) — formata datas para exibição
-- [Format](../string-functions/format.md) — formatação geral de valores para exibição
+- [Now](../date-functions/now.md) - obtém a data/hora atual para usar como parâmetro
+- [DateAdd](../date-functions/dateadd.md) - adiciona ou subtrai intervalos de tempo a uma data
+- [DatePart](../date-functions/datepart.md) - extrai uma parte específica de uma data
+- [FormatDate](../date-functions/formatdate.md) - formata datas para exibição
+- [Format](../string-functions/format.md) - formatação geral de valores para exibição

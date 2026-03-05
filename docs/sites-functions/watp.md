@@ -8,7 +8,7 @@ description: Representa um placeholder ordinal para valores de parâmetros dentr
 
 ## Descrição
 
-A função `WATP` (WAT Parameter) representa um placeholder posicional para valores de parâmetros dentro de strings WAT. Ela **não funciona de forma independente** — só pode ser usada como parte de uma configuração de string WAT criada pelo Suporte da Salesforce Marketing Cloud. O resultado da `WATP` é incluído na saída gerada pela chamada da função [WAT](../content-functions/wat.md).
+A função `WATP` (WAT Parameter) representa um placeholder posicional para valores de parâmetros dentro de strings WAT. Ela **não funciona de forma independente** - só pode ser usada como parte de uma configuração de string WAT criada pelo Suporte da Salesforce Marketing Cloud. O resultado da `WATP` é incluído na saída gerada pela chamada da função [WAT](../content-functions/wat.md).
 
 ## Sintaxe
 
@@ -60,7 +60,7 @@ Configuração de string WAT com múltiplos parâmetros para montar um link pers
 
 ## Observações
 
-> **⚠️ Atenção:** A função `WATP` **não pode ser usada de forma independente** no seu código AMPscript. Ela só funciona dentro de strings WAT que são configuradas diretamente pelo Suporte da Salesforce Marketing Cloud. Você não consegue criar essas configurações por conta própria — é necessário abrir um chamado com o suporte.
+> **⚠️ Atenção:** A função `WATP` **não pode ser usada de forma independente** no seu código AMPscript. Ela só funciona dentro de strings WAT que são configuradas diretamente pelo Suporte da Salesforce Marketing Cloud. Você não consegue criar essas configurações por conta própria - é necessário abrir um chamado com o suporte.
 
 - A numeração dos parâmetros é ordinal e começa em `1`. O primeiro valor passado na chamada [WAT](../content-functions/wat.md) corresponde a `WATP(1)`, o segundo a `WATP(2)`, e assim por diante.
 - Dentro da configuração da string WAT, você pode combinar `WATP` com outras funções AMPscript como [URLEncode](../string-functions/urlencode.md), [Lowercase](../string-functions/lowercase.md) e [Trim](../string-functions/trim.md) para tratar os valores antes de incluí-los na URL final.
@@ -68,8 +68,8 @@ Configuração de string WAT com múltiplos parâmetros para montar um link pers
 
 ## Funções relacionadas
 
-- [WAT](../content-functions/wat.md) — função principal que processa as strings WAT onde `WATP` é utilizada
-- [URLEncode](../string-functions/urlencode.md) — comumente usada junto com `WATP` para codificar valores em URLs
-- [Lowercase](../string-functions/lowercase.md) — normalização de texto dentro das strings WAT
-- [Trim](../string-functions/trim.md) — remoção de espaços em valores passados como parâmetros
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — alternativa mais comum para geração de URLs parametrizadas sem depender do suporte
+- [WAT](../content-functions/wat.md) - função principal que processa as strings WAT onde `WATP` é utilizada
+- [URLEncode](../string-functions/urlencode.md) - comumente usada junto com `WATP` para codificar valores em URLs
+- [Lowercase](../string-functions/lowercase.md) - normalização de texto dentro das strings WAT
+- [Trim](../string-functions/trim.md) - remoção de espaços em valores passados como parâmetros
+- [CloudPagesURL](../sites-functions/cloudpagesurl.md) - alternativa mais comum para geração de URLs parametrizadas sem depender do suporte

@@ -8,7 +8,7 @@ description: Adiciona um registro (lead, contato ou conta) a uma lista de market
 
 ## Descrição
 
-Adiciona um registro — como um lead, contato ou conta — a uma lista de marketing do Microsoft Dynamics CRM. Essa função é útil quando você precisa, a partir do Marketing Cloud, gerenciar a segmentação de listas diretamente no Dynamics CRM, por exemplo, incluindo clientes em listas de campanhas promocionais ou réguas de relacionamento controladas pelo CRM. A função não retorna valor.
+Adiciona um registro - como um lead, contato ou conta - a uma lista de marketing do Microsoft Dynamics CRM. Essa função é útil quando você precisa, a partir do Marketing Cloud, gerenciar a segmentação de listas diretamente no Dynamics CRM, por exemplo, incluindo clientes em listas de campanhas promocionais ou réguas de relacionamento controladas pelo CRM. A função não retorna valor.
 
 ## Sintaxe
 
@@ -40,7 +40,7 @@ AddMscrmListMember(@recordGuid, @listGuid)
 
 **Saída:**
 ```
-(Sem saída visível — a função não retorna valor. O registro é adicionado à lista no Dynamics CRM.)
+(Sem saída visível - a função não retorna valor. O registro é adicionado à lista no Dynamics CRM.)
 ```
 
 ## Exemplo avançado
@@ -69,7 +69,7 @@ ENDIF
 
 **Saída:**
 ```
-(Sem saída visível — se o contato for encontrado na Data Extension, ele é adicionado à lista "Clientes Ativos" no Dynamics CRM.)
+(Sem saída visível - se o contato for encontrado na Data Extension, ele é adicionado à lista "Clientes Ativos" no Dynamics CRM.)
 ```
 
 ## Observações
@@ -82,9 +82,9 @@ ENDIF
 
 ## Funções relacionadas
 
-- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) — cria um novo registro no Dynamics CRM
-- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) — recupera registros do Dynamics CRM
-- [RetrieveMscrmRecordsFetchXml](../microsoft-dynamics-crm-functions/retrievemscrmrecordsfetchxml.md) — recupera registros usando FetchXML
-- [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) — atualiza registros no Dynamics CRM
-- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) — insere ou atualiza um registro no Dynamics CRM
-- [SetStateMscrmRecord](../microsoft-dynamics-crm-functions/setstatemscrmrecord.md) — altera o estado de um registro no Dynamics CRM
+- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) - cria um novo registro no Dynamics CRM
+- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) - recupera registros do Dynamics CRM
+- [RetrieveMscrmRecordsFetchXml](../microsoft-dynamics-crm-functions/retrievemscrmrecordsfetchxml.md) - recupera registros usando FetchXML
+- [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) - atualiza registros no Dynamics CRM
+- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) - insere ou atualiza um registro no Dynamics CRM
+- [SetStateMscrmRecord](../microsoft-dynamics-crm-functions/setstatemscrmrecord.md) - altera o estado de um registro no Dynamics CRM

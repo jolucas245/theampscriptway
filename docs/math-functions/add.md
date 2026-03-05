@@ -80,7 +80,7 @@ Desconto: R$ -150.00
 Total: R$ 1149.89
 ```
 
-> **💡 Dica:** A função `Add` aceita apenas dois parâmetros por chamada. Para somar três ou mais valores, encadeie chamadas como no exemplo acima — primeiro some dois valores, depois some o resultado com o próximo.
+> **💡 Dica:** A função `Add` aceita apenas dois parâmetros por chamada. Para somar três ou mais valores, encadeie chamadas como no exemplo acima - primeiro some dois valores, depois some o resultado com o próximo.
 
 ## Observações
 
@@ -91,8 +91,8 @@ Total: R$ 1149.89
 
 ## Funções relacionadas
 
-- [Subtract](../math-functions/subtract.md) — subtrai um número de outro
-- [Multiply](../math-functions/multiply.md) — multiplica dois números
-- [Divide](../math-functions/divide.md) — divide um número por outro
-- [FormatNumber](../string-functions/formatnumber.md) — formata a exibição de números
-- [FormatCurrency](../string-functions/formatcurrency.md) — formata valores como moeda
+- [Subtract](../math-functions/subtract.md) - subtrai um número de outro
+- [Multiply](../math-functions/multiply.md) - multiplica dois números
+- [Divide](../math-functions/divide.md) - divide um número por outro
+- [FormatNumber](../string-functions/formatnumber.md) - formata a exibição de números
+- [FormatCurrency](../string-functions/formatcurrency.md) - formata valores como moeda

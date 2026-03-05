@@ -8,7 +8,7 @@ description: Extrai uma parte específica (dia, mês, ano, hora ou minuto) de um
 
 ## Descrição
 
-Extrai uma parte específica de uma data — como o dia, mês, ano, hora ou minuto — a partir de uma string de data ou timestamp. É uma função essencial quando você precisa segmentar conteúdo com base em partes isoladas da data, como exibir uma mensagem diferente conforme o mês de aniversário do cliente ou montar lógicas condicionais baseadas no ano de cadastro. Retorna o valor numérico correspondente à parte extraída.
+Extrai uma parte específica de uma data - como o dia, mês, ano, hora ou minuto - a partir de uma string de data ou timestamp. É uma função essencial quando você precisa segmentar conteúdo com base em partes isoladas da data, como exibir uma mensagem diferente conforme o mês de aniversário do cliente ou montar lógicas condicionais baseadas no ano de cadastro. Retorna o valor numérico correspondente à parte extraída.
 
 ## Sintaxe
 
@@ -40,7 +40,7 @@ A função aceita strings de data em diversos formatos:
 
 > **⚠️ Atenção:** A função **não suporta** os seguintes formatos:
 > - Dias com sufixo ordinal em inglês (`August 5th, 2023` ou `5th August 2023`)
-> - Notação numérica little-endian (`5/8/2023` para representar 5 de agosto) — o formato numérico com barras é interpretado como padrão americano (mês/dia/ano)
+> - Notação numérica little-endian (`5/8/2023` para representar 5 de agosto) - o formato numérico com barras é interpretado como padrão americano (mês/dia/ano)
 > - Nomes de meses em idiomas que não sejam inglês (`5 août 2023`, `5 agosto 2023`)
 > - Numerais que não sejam arábicos ocidentais (`٢٠٢٣/٨/٥`)
 > - Calendários diferentes do gregoriano (`18 Av, 5783` ou `18 Muharram, 1445`)
@@ -138,10 +138,10 @@ O Banco Brasilão preparou uma condição exclusiva para você.
 
 ## Funções relacionadas
 
-- [Now](../date-functions/now.md) — retorna a data e hora atuais (útil como input para `DatePart`)
-- [FormatDate](../date-functions/formatdate.md) — formata a exibição de uma data
-- [DateAdd](../date-functions/dateadd.md) — adiciona intervalos a uma data
-- [DateDiff](../date-functions/datediff.md) — calcula a diferença entre duas datas
-- [DateParse](../date-functions/dateparse.md) — converte uma string em objeto de data
-- [StringToDate](../date-functions/stringtodate.md) — converte string para data
-- [Format](../string-functions/format.md) — formatação genérica de valores
+- [Now](../date-functions/now.md) - retorna a data e hora atuais (útil como input para `DatePart`)
+- [FormatDate](../date-functions/formatdate.md) - formata a exibição de uma data
+- [DateAdd](../date-functions/dateadd.md) - adiciona intervalos a uma data
+- [DateDiff](../date-functions/datediff.md) - calcula a diferença entre duas datas
+- [DateParse](../date-functions/dateparse.md) - converte uma string em objeto de data
+- [StringToDate](../date-functions/stringtodate.md) - converte string para data
+- [Format](../string-functions/format.md) - formatação genérica de valores

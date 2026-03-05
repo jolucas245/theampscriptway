@@ -8,7 +8,7 @@ description: Converte uma string para um formato seguro para uso em URLs, codifi
 
 ## Descrição
 
-A função `URLEncode` modifica uma string para que ela contenha apenas caracteres seguros para uso em URLs. Isso é essencial quando você monta links dinâmicos em e-mails ou CloudPages que incluem dados de clientes — nomes com acentos, endereços com espaços, termos de busca, etc. Ela retorna a string codificada, convertendo caracteres problemáticos para seus códigos hexadecimais (por exemplo, espaço vira `%20`).
+A função `URLEncode` modifica uma string para que ela contenha apenas caracteres seguros para uso em URLs. Isso é essencial quando você monta links dinâmicos em e-mails ou CloudPages que incluem dados de clientes - nomes com acentos, endereços com espaços, termos de busca, etc. Ela retorna a string codificada, convertendo caracteres problemáticos para seus códigos hexadecimais (por exemplo, espaço vira `%20`).
 
 ## Sintaxe
 
@@ -83,7 +83,7 @@ Codificando uma string que não é URL para uso como parâmetro, usando `boolEnc
 
 ```ampscript
 %%[
-SET @textoLivre = "Promoção de Verão — 50% off em eletrônicos!"
+SET @textoLivre = "Promoção de Verão - 50% off em eletrônicos!"
 SET @textoCodificado = URLEncode(@textoLivre, true, true)
 SET @linkFinal = Concat("https://www.farmarede.com.br/lp?msg=", @textoCodificado)
 ]%%
@@ -106,9 +106,9 @@ Link final: https://www.farmarede.com.br/lp?msg=Promo%C3%A7%C3%A3o%20de%20Ver%C3
 
 ## Funções relacionadas
 
-- [Concat](../string-functions/concat.md) — para montar URLs dinâmicas antes de codificá-las
-- [Replace](../string-functions/replace.md) — para substituições manuais em strings antes do encoding
-- [RedirectTo](../http-functions/redirectto.md) — para redirecionar para URLs em CloudPages e Landing Pages
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — para gerar URLs de CloudPages com parâmetros criptografados
-- [Base64Encode](../encryption-functions/base64encode.md) — para outro tipo de codificação de strings
-- [StringToHex](../string-functions/stringtohex.md) — para converter strings em representação hexadecimal
+- [Concat](../string-functions/concat.md) - para montar URLs dinâmicas antes de codificá-las
+- [Replace](../string-functions/replace.md) - para substituições manuais em strings antes do encoding
+- [RedirectTo](../http-functions/redirectto.md) - para redirecionar para URLs em CloudPages e Landing Pages
+- [CloudPagesURL](../sites-functions/cloudpagesurl.md) - para gerar URLs de CloudPages com parâmetros criptografados
+- [Base64Encode](../encryption-functions/base64encode.md) - para outro tipo de codificação de strings
+- [StringToHex](../string-functions/stringtohex.md) - para converter strings em representação hexadecimal

@@ -8,7 +8,7 @@ description: Retorna o valor de uma variável AMPscript a partir do seu nome pas
 
 ## Descrição
 
-A função **V** retorna o valor de uma variável AMPscript. A diferença em relação à referência direta da variável (com `%%variavel%%`) é que aqui você passa o **nome da variável como string** — o que permite acessar variáveis de forma dinâmica. Isso é especialmente útil quando o nome da variável que você precisa acessar é construído em tempo de execução, como em loops ou quando os nomes dos campos seguem um padrão previsível.
+A função **V** retorna o valor de uma variável AMPscript. A diferença em relação à referência direta da variável (com `%%variavel%%`) é que aqui você passa o **nome da variável como string** - o que permite acessar variáveis de forma dinâmica. Isso é especialmente útil quando o nome da variável que você precisa acessar é construído em tempo de execução, como em loops ou quando os nomes dos campos seguem um padrão previsível.
 
 ## Sintaxe
 
@@ -71,15 +71,15 @@ Produto 3: Smartwatch Pulse - R$ 899,90
 
 ## Observações
 
-- Na maioria dos casos simples, usar `%%=V(@variavel)=%%` produz o mesmo resultado que `%%@variavel%%`. A função `V()` se torna essencial quando o nome da variável é **dinâmico** — ou seja, montado em tempo de execução via [Concat](../string-functions/concat.md) ou outra lógica.
+- Na maioria dos casos simples, usar `%%=V(@variavel)=%%` produz o mesmo resultado que `%%@variavel%%`. A função `V()` se torna essencial quando o nome da variável é **dinâmico** - ou seja, montado em tempo de execução via [Concat](../string-functions/concat.md) ou outra lógica.
 
 > **⚠️ Atenção:** Se a variável referenciada por `V()` não tiver sido declarada ou definida previamente, o retorno será vazio. Combine com [Empty](../utility-functions/empty.md) para validar antes de exibir conteúdo ao assinante.
 
 ## Funções relacionadas
 
-- [Output](../utility-functions/output.md) — exibe valores dentro de blocos de código AMPscript
-- [OutputLine](../utility-functions/outputline.md) — exibe valores com quebra de linha
-- [Concat](../string-functions/concat.md) — construa nomes de variáveis dinamicamente para usar com `V()`
-- [TreatAsContent](../utility-functions/treatascontent.md) — processa strings que contêm AMPscript embutido
-- [AttributeValue](../utility-functions/attributevalue.md) — recupera valores de atributos do assinante
-- [Empty](../utility-functions/empty.md) — valida se o retorno de `V()` está vazio antes de usar
+- [Output](../utility-functions/output.md) - exibe valores dentro de blocos de código AMPscript
+- [OutputLine](../utility-functions/outputline.md) - exibe valores com quebra de linha
+- [Concat](../string-functions/concat.md) - construa nomes de variáveis dinamicamente para usar com `V()`
+- [TreatAsContent](../utility-functions/treatascontent.md) - processa strings que contêm AMPscript embutido
+- [AttributeValue](../utility-functions/attributevalue.md) - recupera valores de atributos do assinante
+- [Empty](../utility-functions/empty.md) - valida se o retorno de `V()` está vazio antes de usar

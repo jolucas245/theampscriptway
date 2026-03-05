@@ -8,7 +8,7 @@ description: Insere uma nova linha em uma Data Extension a partir de e-mails no 
 
 ## Descrição
 
-A função `InsertDE` insere uma nova linha (registro) em uma Data Extension. Ela não retorna nenhum valor de saída. Use essa função quando precisar gravar dados em uma DE a partir de **e-mails** — por exemplo, registrar que um assinante abriu uma comunicação, salvar uma preferência capturada via personalização ou alimentar uma DE de log durante o envio de uma campanha.
+A função `InsertDE` insere uma nova linha (registro) em uma Data Extension. Ela não retorna nenhum valor de saída. Use essa função quando precisar gravar dados em uma DE a partir de **e-mails** - por exemplo, registrar que um assinante abriu uma comunicação, salvar uma preferência capturada via personalização ou alimentar uma DE de log durante o envio de uma campanha.
 
 ## Sintaxe
 
@@ -97,12 +97,12 @@ joao.silva@email.com.br   | João  | 15/07/2025 09:30 | Notebook ProMax 15 | R$ 
 
 > **⚠️ Atenção:** A `InsertDE` é destinada ao uso em **e-mails**. Para inserir dados a partir de **CloudPages, landing pages, microsites ou mensagens SMS (MobileConnect)**, use a função [`InsertData`](../data-extension-functions/insertdata.md).
 
-> **💡 Dica:** Você pode inserir quantas colunas precisar em uma única chamada — basta continuar adicionando pares de `"nomeColuna", "valor"` ao final da função. Não é necessário preencher todas as colunas da DE; apenas as que você precisa (respeitando campos obrigatórios e chaves primárias da sua DE).
+> **💡 Dica:** Você pode inserir quantas colunas precisar em uma única chamada - basta continuar adicionando pares de `"nomeColuna", "valor"` ao final da função. Não é necessário preencher todas as colunas da DE; apenas as que você precisa (respeitando campos obrigatórios e chaves primárias da sua DE).
 
 ## Funções relacionadas
 
-- [`InsertData`](../data-extension-functions/insertdata.md) — equivalente para uso em CloudPages, landing pages, microsites e SMS
-- [`UpdateDE`](../data-extension-functions/updatede.md) — atualiza linhas existentes em uma DE (uso em e-mails)
-- [`UpsertDE`](../data-extension-functions/upsertde.md) — insere ou atualiza conforme a existência do registro (uso em e-mails)
-- [`DeleteDE`](../data-extension-functions/deletede.md) — remove linhas de uma DE (uso em e-mails)
-- [`Lookup`](../data-extension-functions/lookup.md) — consulta valores em uma DE antes de decidir se insere ou não
+- [`InsertData`](../data-extension-functions/insertdata.md) - equivalente para uso em CloudPages, landing pages, microsites e SMS
+- [`UpdateDE`](../data-extension-functions/updatede.md) - atualiza linhas existentes em uma DE (uso em e-mails)
+- [`UpsertDE`](../data-extension-functions/upsertde.md) - insere ou atualiza conforme a existência do registro (uso em e-mails)
+- [`DeleteDE`](../data-extension-functions/deletede.md) - remove linhas de uma DE (uso em e-mails)
+- [`Lookup`](../data-extension-functions/lookup.md) - consulta valores em uma DE antes de decidir se insere ou não

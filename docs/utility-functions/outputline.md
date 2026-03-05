@@ -8,7 +8,7 @@ description: Exibe o resultado de uma função AMPscript no conteúdo renderizad
 
 ## Descrição
 
-A função `OutputLine` executa uma função AMPscript aninhada, insere o resultado no conteúdo renderizado e adiciona automaticamente um caractere de nova linha (CRLF) ao final. É muito útil quando você precisa imprimir valores dinâmicos e quer que cada saída fique em uma linha separada — especialmente em versões texto de e-mail e mensagens SMS. Importante: ela só funciona com funções AMPscript como parâmetro; se você passar uma string literal ou qualquer outro valor diretamente, a função não produz nenhuma saída.
+A função `OutputLine` executa uma função AMPscript aninhada, insere o resultado no conteúdo renderizado e adiciona automaticamente um caractere de nova linha (CRLF) ao final. É muito útil quando você precisa imprimir valores dinâmicos e quer que cada saída fique em uma linha separada - especialmente em versões texto de e-mail e mensagens SMS. Importante: ela só funciona com funções AMPscript como parâmetro; se você passar uma string literal ou qualquer outro valor diretamente, a função não produz nenhuma saída.
 
 ## Sintaxe
 
@@ -77,15 +77,15 @@ Maria Santos
 
 ## Observações
 
-> **⚠️ Atenção:** A `OutputLine` só aceita **funções AMPscript** como parâmetro. Se você passar uma string literal diretamente — por exemplo, `OutputLine("texto qualquer")` — a função **não produz nenhuma saída**. Para exibir uma string fixa, envolva-a em uma função como [`v()`](../utility-functions/v.md) ou [`Concat()`](../string-functions/concat.md).
+> **⚠️ Atenção:** A `OutputLine` só aceita **funções AMPscript** como parâmetro. Se você passar uma string literal diretamente - por exemplo, `OutputLine("texto qualquer")` - a função **não produz nenhuma saída**. Para exibir uma string fixa, envolva-a em uma função como [`v()`](../utility-functions/v.md) ou [`Concat()`](../string-functions/concat.md).
 
-> **⚠️ Atenção:** A quebra de linha adicionada é um caractere CRLF (carriage return + line feed), e **não** uma tag HTML `<br/>`. Isso significa que, quando o conteúdo é renderizado como HTML (corpo de um e-mail em HTML, por exemplo), os resultados de múltiplas chamadas de `OutputLine` vão aparecer **na mesma linha visualmente** — porque HTML ignora CRLF. O CRLF só causa quebra de linha visível em saídas que interpretam texto puro, como a **versão texto de um e-mail** ou **mensagens SMS**.
+> **⚠️ Atenção:** A quebra de linha adicionada é um caractere CRLF (carriage return + line feed), e **não** uma tag HTML `<br/>`. Isso significa que, quando o conteúdo é renderizado como HTML (corpo de um e-mail em HTML, por exemplo), os resultados de múltiplas chamadas de `OutputLine` vão aparecer **na mesma linha visualmente** - porque HTML ignora CRLF. O CRLF só causa quebra de linha visível em saídas que interpretam texto puro, como a **versão texto de um e-mail** ou **mensagens SMS**.
 
 > **💡 Dica:** Se você precisa exibir valores em linhas separadas dentro de um e-mail HTML, use [`Output()`](../utility-functions/output.md) combinada com [`Concat()`](../string-functions/concat.md) incluindo `<br/>` manualmente. Reserve `OutputLine` para cenários onde a saída é texto puro (SMS, versão texto do e-mail).
 
 ## Funções relacionadas
 
-- [`Output`](../utility-functions/output.md) — exibe o resultado de uma função AMPscript sem adicionar quebra de linha ao final
-- [`v`](../utility-functions/v.md) — retorna o valor de uma variável (comumente usada dentro de `OutputLine`)
-- [`Concat`](../string-functions/concat.md) — concatena strings (comumente usada dentro de `OutputLine` para montar textos dinâmicos)
-- [`TreatAsContent`](../utility-functions/treatascontent.md) — processa uma string como conteúdo AMPscript renderizável
+- [`Output`](../utility-functions/output.md) - exibe o resultado de uma função AMPscript sem adicionar quebra de linha ao final
+- [`v`](../utility-functions/v.md) - retorna o valor de uma variável (comumente usada dentro de `OutputLine`)
+- [`Concat`](../string-functions/concat.md) - concatena strings (comumente usada dentro de `OutputLine` para montar textos dinâmicos)
+- [`TreatAsContent`](../utility-functions/treatascontent.md) - processa uma string como conteúdo AMPscript renderizável

@@ -8,7 +8,7 @@ description: Retorna os valores do parâmetro de Web Analytics Tracking (WAT) co
 
 ## Descrição
 
-A função `WAT` retorna os valores de um parâmetro de Web Analytics Tracking (WAT) associado a uma chave externa específica. Ela é usada para inserir parâmetros de rastreamento de web analytics (como Adobe Omniture) nos links dos seus e-mails, substituindo referências à função `WATP` dentro do conjunto de parâmetros de tracking configurado no Sender Profile. As chaves externas dos parâmetros são configuradas no Web Analytics Connector — para isso, é necessário entrar em contato com o suporte Salesforce.
+A função `WAT` retorna os valores de um parâmetro de Web Analytics Tracking (WAT) associado a uma chave externa específica. Ela é usada para inserir parâmetros de rastreamento de web analytics (como Adobe Omniture) nos links dos seus e-mails, substituindo referências à função `WATP` dentro do conjunto de parâmetros de tracking configurado no Sender Profile. As chaves externas dos parâmetros são configuradas no Web Analytics Connector - para isso, é necessário entrar em contato com o suporte Salesforce.
 
 ## Sintaxe
 
@@ -61,4 +61,4 @@ Substituindo múltiplos parâmetros de tracking para uma campanha de Black Frida
 
 ## Funções relacionadas
 
-- [WATP](../sites-functions/watp.md) — função usada dentro do conjunto de parâmetros de tracking que é substituída pelos valores passados na chamada `WAT`.
+- [WATP](../sites-functions/watp.md) - função usada dentro do conjunto de parâmetros de tracking que é substituída pelos valores passados na chamada `WAT`.

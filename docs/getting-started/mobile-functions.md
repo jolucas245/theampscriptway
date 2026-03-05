@@ -7,7 +7,7 @@ sidebar_position: 12
 
 # Funções Mobile
 
-O AMPscript tem um conjunto de funções específicas para mensagens mobile enviadas pelo **MobileConnect**. Essas funções trabalham com mensagens originadas pelo próprio subscriber (MO — mobile-originated), ou seja, mensagens que o cliente envia para o seu número de SMS.
+O AMPscript tem um conjunto de funções específicas para mensagens mobile enviadas pelo **MobileConnect**. Essas funções trabalham com mensagens originadas pelo próprio subscriber (MO - mobile-originated), ou seja, mensagens que o cliente envia para o seu número de SMS.
 
 > **⚠️ Atenção:** Essas funções **não funcionam em e-mails, CloudPages ou outros tipos de conteúdo**. Elas retornam valores que só fazem sentido no contexto de mensagens mobile e são exclusivas do MobileConnect.
 
@@ -15,8 +15,8 @@ O AMPscript tem um conjunto de funções específicas para mensagens mobile envi
 
 Antes de ver as funções, é importante entender dois conceitos:
 
-- **MO (Mobile-Originated):** mensagem enviada **pelo subscriber** para o seu número de SMS — por exemplo, o cliente envia "OFERTA" para receber um cupom.
-- **MT (Mobile-Terminated):** mensagem enviada **para o subscriber** — o disparo que você faz para a base.
+- **MO (Mobile-Originated):** mensagem enviada **pelo subscriber** para o seu número de SMS - por exemplo, o cliente envia "OFERTA" para receber um cupom.
+- **MT (Mobile-Terminated):** mensagem enviada **para o subscriber** - o disparo que você faz para a base.
 
 As funções abaixo trabalham com o conteúdo da mensagem MO recebida.
 
@@ -24,7 +24,7 @@ As funções abaixo trabalham com o conteúdo da mensagem MO recebida.
 
 ### `Msg(0)`
 
-Retorna o conteúdo completo da mensagem MO — tudo que o subscriber enviou. O único valor aceito como parâmetro é `0`.
+Retorna o conteúdo completo da mensagem MO - tudo que o subscriber enviou. O único valor aceito como parâmetro é `0`.
 
 ```ampscript
 SET @mensagemCompleta = Msg(0)
@@ -33,7 +33,7 @@ SET @mensagemCompleta = Msg(0)
 
 ### `Verb`
 
-Usado junto com `Msg(0)`, retorna a **palavra-chave** da mensagem MO — o primeiro termo, que corresponde ao keyword configurado no MobileConnect.
+Usado junto com `Msg(0)`, retorna a **palavra-chave** da mensagem MO - o primeiro termo, que corresponde ao keyword configurado no MobileConnect.
 
 ```ampscript
 SET @keyword = Msg(0).Verb
@@ -65,14 +65,14 @@ SET @sobrenome    = Msg(0).Noun(1)
 
 ### `MMS_Content_URL(n)`
 
-Retorna a URL do conteúdo MMS recebido em uma mensagem MO. Funciona apenas com contas MobileConnect que suportam MMS. O parâmetro `n` indica o ordinal do conteúdo MMS na mensagem — `0` para o conteúdo atual.
+Retorna a URL do conteúdo MMS recebido em uma mensagem MO. Funciona apenas com contas MobileConnect que suportam MMS. O parâmetro `n` indica o ordinal do conteúdo MMS na mensagem - `0` para o conteúdo atual.
 
 ```ampscript
 SET @urlImagem = MMS_Content_URL(0)
 /* Retorna a URL da imagem ou mídia enviada pelo subscriber via MMS */
 ```
 
-> **⚠️ Atenção:** A URL retornada por `MMS_Content_URL()` deve ser capturada e armazenada no seu próprio sistema para uso posterior — o Marketing Cloud não garante disponibilidade indefinida do conteúdo nessa URL.
+> **⚠️ Atenção:** A URL retornada por `MMS_Content_URL()` deve ser capturada e armazenada no seu próprio sistema para uso posterior - o Marketing Cloud não garante disponibilidade indefinida do conteúdo nessa URL.
 
 ## Exemplo prático
 
@@ -95,4 +95,4 @@ ENDIF
 
 ## Funções de Data Extension no MobileConnect
 
-Além das funções mobile específicas, você também pode usar `InsertData()` e `DeleteData()` em mensagens MobileConnect — por exemplo, para registrar keywords recebidas ou gerenciar opt-outs em uma Data Extension.
+Além das funções mobile específicas, você também pode usar `InsertData()` e `DeleteData()` em mensagens MobileConnect - por exemplo, para registrar keywords recebidas ou gerenciar opt-outs em uma Data Extension.

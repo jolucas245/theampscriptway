@@ -1,0 +1,38 @@
+{
+  "theme.SearchBar.label": {
+    "message": "Pesquisar",
+    "description": "The ARIA label for search button"
+  },
+  "theme.SearchBar.placeholder": {
+    "message": "Pesquisar documentação...",
+    "description": "The placeholder for search bar input"
+  },
+  "theme.SearchPage.inputPlaceholder": {
+    "message": "Pesquisar documentação...",
+    "description": "The placeholder for search page input"
+  },
+  "theme.SearchPage.existingResultsTitle": {
+    "message": "Resultados para \"{query}\"",
+    "description": "The search page title for non-empty query"
+  },
+  "theme.SearchPage.emptyResultsTitle": {
+    "message": "Pesquisar na documentação",
+    "description": "The search page title for empty query"
+  },
+  "theme.SearchPage.resultsCount": {
+    "message": "{count} resultado(s)",
+    "description": "The placeholder for number of search results"
+  },
+  "theme.SearchPage.fetchingNewResults": {
+    "message": "Buscando resultados...",
+    "description": "The placeholder for fetching new search results"
+  },
+  "theme.SearchPage.noResultsText": {
+    "message": "Nenhum resultado encontrado",
+    "description": "The placeholder text when no search results are found"
+  },
+  "theme.SearchPage.seeAllResults": {
+    "message": "Ver todos os resultados",
+    "description": "The link text to see all search results"
+  }
+}

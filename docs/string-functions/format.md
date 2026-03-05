@@ -8,7 +8,7 @@ description: Formata strings como datas, moedas, números e percentuais usando p
 
 ## Descrição
 
-A função `Format` aplica formatação a uma string, transformando-a em datas, moedas, números, percentuais e outros formatos. É uma das funções mais versáteis do AMPscript — com ela você consegue exibir valores monetários em Real (R$), datas no padrão brasileiro (DD/MM/AAAA) e números com separadores de milhar e decimal corretos para o Brasil. Retorna a string formatada conforme o padrão e o código de cultura especificados.
+A função `Format` aplica formatação a uma string, transformando-a em datas, moedas, números, percentuais e outros formatos. É uma das funções mais versáteis do AMPscript - com ela você consegue exibir valores monetários em Real (R$), datas no padrão brasileiro (DD/MM/AAAA) e números com separadores de milhar e decimal corretos para o Brasil. Retorna a string formatada conforme o padrão e o código de cultura especificados.
 
 ## Sintaxe
 
@@ -144,7 +144,7 @@ Valor final: R$ 2.124,92
 
 - Os formatos de data personalizados (`dd/MM/yyyy`, `dddd`, `MMMM` etc.) combinados com o culture code `"pt-BR"` retornam nomes de meses e dias da semana em português (ex: "segunda-feira", "julho").
 
-> **💡 Dica:** Para exibir datas no padrão brasileiro, use `"dd/MM/yyyy"` — com `MM` maiúsculo para mês. Se usar `mm` minúsculo, vai trazer minutos em vez de mês. Esse é um erro clássico.
+> **💡 Dica:** Para exibir datas no padrão brasileiro, use `"dd/MM/yyyy"` - com `MM` maiúsculo para mês. Se usar `mm` minúsculo, vai trazer minutos em vez de mês. Esse é um erro clássico.
 
 > **💡 Dica:** O formato `"C"` (Currency) com culture code `"pt-BR"` já cuida de tudo: símbolo R$, separador de milhar com ponto e decimal com vírgula. É mais prático do que montar a formatação manualmente com [Concat](../string-functions/concat.md).
 
@@ -154,9 +154,9 @@ Valor final: R$ 2.124,92
 
 ## Funções relacionadas
 
-- [FormatCurrency](../string-functions/formatcurrency.md) — formatação simplificada de valores monetários
-- [FormatNumber](../string-functions/formatnumber.md) — formatação simplificada de números
-- [FormatDate](../date-functions/formatdate.md) — formatação específica para datas
-- [Now](../date-functions/now.md) — retorna a data/hora atual do sistema
-- [Concat](../string-functions/concat.md) — concatenação de strings para montar saídas compostas
-- [Replace](../string-functions/replace.md) — substituição de caracteres em strings
+- [FormatCurrency](../string-functions/formatcurrency.md) - formatação simplificada de valores monetários
+- [FormatNumber](../string-functions/formatnumber.md) - formatação simplificada de números
+- [FormatDate](../date-functions/formatdate.md) - formatação específica para datas
+- [Now](../date-functions/now.md) - retorna a data/hora atual do sistema
+- [Concat](../string-functions/concat.md) - concatenação de strings para montar saídas compostas
+- [Replace](../string-functions/replace.md) - substituição de caracteres em strings

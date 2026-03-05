@@ -8,7 +8,7 @@ description: Insere o conteúdo de um bloco do Content Builder referenciando-o p
 
 ## Descrição
 
-Retorna o conteúdo de um bloco armazenado no Content Builder a partir do seu ID numérico. É a função mais usada no dia a dia para modularizar e-mails e CloudPages — você cria blocos reutilizáveis (header, footer, disclaimer legal, bloco de produto) e os puxa dinamicamente nos seus templates. Funciona **apenas** com conteúdos do Content Builder; para blocos do Classic Content, use a função [ContentArea](../content-functions/contentarea.md).
+Retorna o conteúdo de um bloco armazenado no Content Builder a partir do seu ID numérico. É a função mais usada no dia a dia para modularizar e-mails e CloudPages - você cria blocos reutilizáveis (header, footer, disclaimer legal, bloco de produto) e os puxa dinamicamente nos seus templates. Funciona **apenas** com conteúdos do Content Builder; para blocos do Classic Content, use a função [ContentArea](../content-functions/contentarea.md).
 
 ## Sintaxe
 
@@ -38,14 +38,14 @@ Inserindo o rodapé padrão da Lojas Vitória em um e-mail de boas-vindas, refer
 
 **Saída:**
 ```
-© 2025 Lojas Vitória — CNPJ 12.345.678/0001-90
-Rua Augusta, 1200 — São Paulo/SP — CEP 01304-001
+© 2025 Lojas Vitória - CNPJ 12.345.678/0001-90
+Rua Augusta, 1200 - São Paulo/SP - CEP 01304-001
 Você recebeu este e-mail porque se cadastrou em lojasavitoria.com.br
 ```
 
 ## Exemplo avançado
 
-Em uma régua de relacionamento da MegaStore, você quer inserir um bloco de recomendação de produtos. Se o bloco não existir (por exemplo, alguém apagou sem querer), o e-mail não deve quebrar — exibe um conteúdo alternativo e usa o `statusCode` para mostrar uma mensagem de fallback:
+Em uma régua de relacionamento da MegaStore, você quer inserir um bloco de recomendação de produtos. Se o bloco não existir (por exemplo, alguém apagou sem querer), o e-mail não deve quebrar - exibe um conteúdo alternativo e usa o `statusCode` para mostrar uma mensagem de fallback:
 
 ```ampscript
 %%[
@@ -74,12 +74,12 @@ IF @statusCode == 0 THEN
 %%[ ENDIF ]%%
 ```
 
-**Saída (quando o bloco existe — statusCode 0):**
+**Saída (quando o bloco existe - statusCode 0):**
 ```
 [conteúdo do bloco 78901 renderizado normalmente]
 ```
 
-**Saída (quando o bloco não existe — statusCode -1):**
+**Saída (quando o bloco não existe - statusCode -1):**
 ```
 Confira nossas ofertas em megastore.com.br/ofertas
 ```
@@ -98,17 +98,17 @@ Outro cenário comum: iniciar uma Impression Region ao inserir o bloco, para ras
 
 ## Observações
 
-> **💡 Dica:** O ID do bloco de conteúdo pode ser encontrado no Content Builder — basta abrir o bloco e verificar a URL ou as propriedades do item. Esse ID é numérico e único dentro da Business Unit.
+> **💡 Dica:** O ID do bloco de conteúdo pode ser encontrado no Content Builder - basta abrir o bloco e verificar a URL ou as propriedades do item. Esse ID é numérico e único dentro da Business Unit.
 
 > **⚠️ Atenção:** O valor padrão de `boolErrorOnMissingContentBlock` é `true`. Isso significa que, se você não passar esse parâmetro e o bloco não existir, o envio do e-mail vai gerar erro para aquele subscriber. Em réguas automatizadas e envios em massa, considere sempre passar `false` e tratar o fallback com o `statusCode` para evitar que e-mails deixem de ser enviados.
 
-> **💡 Dica:** Essa função só funciona com blocos do Content Builder. Se você precisa referenciar conteúdo do Classic Content, use [ContentArea](../content-functions/contentarea.md). Se preferir referenciar blocos por chave (Customer Key) em vez de ID — o que é mais seguro em migrações entre ambientes — use [ContentBlockByKey](../content-functions/contentblockbykey.md).
+> **💡 Dica:** Essa função só funciona com blocos do Content Builder. Se você precisa referenciar conteúdo do Classic Content, use [ContentArea](../content-functions/contentarea.md). Se preferir referenciar blocos por chave (Customer Key) em vez de ID - o que é mais seguro em migrações entre ambientes - use [ContentBlockByKey](../content-functions/contentblockbykey.md).
 
 > **💡 Dica:** O `statusCode` é especialmente útil em cenários onde o bloco pode variar por campanha (por exemplo, blocos criados dinamicamente por um time de conteúdo). Ao verificar se o valor é `0` ou `-1`, você garante que o e-mail sempre terá um conteúdo válido.
 
 ## Funções relacionadas
 
-- [ContentBlockByKey](../content-functions/contentblockbykey.md) — insere bloco do Content Builder pela Customer Key
-- [ContentBlockByName](../content-functions/contentblockbyname.md) — insere bloco do Content Builder pelo nome
-- [ContentArea](../content-functions/contentarea.md) — insere conteúdo do Classic Content
-- [EndImpressionRegion](../content-functions/endimpressionregion.md) — encerra uma Impression Region iniciada na inserção do bloco
+- [ContentBlockByKey](../content-functions/contentblockbykey.md) - insere bloco do Content Builder pela Customer Key
+- [ContentBlockByName](../content-functions/contentblockbyname.md) - insere bloco do Content Builder pelo nome
+- [ContentArea](../content-functions/contentarea.md) - insere conteúdo do Classic Content
+- [EndImpressionRegion](../content-functions/endimpressionregion.md) - encerra uma Impression Region iniciada na inserção do bloco

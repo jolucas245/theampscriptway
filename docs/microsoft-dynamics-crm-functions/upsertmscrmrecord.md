@@ -8,7 +8,7 @@ description: Faz upsert (atualiza ou cria) um registro no Microsoft Dynamics CRM
 
 ## Descrição
 
-A função `UpsertMscrmRecord` busca um registro no Microsoft Dynamics CRM usando os filtros informados, ordena os resultados e, se encontrar um registro correspondente, atualiza-o com os valores fornecidos. Se não encontrar nenhum registro, ela cria um novo com os dados passados. A função retorna o GUID do registro atualizado ou criado — muito útil para manter dados sincronizados entre o Marketing Cloud e o Dynamics CRM sem precisar verificar manualmente se o registro já existe.
+A função `UpsertMscrmRecord` busca um registro no Microsoft Dynamics CRM usando os filtros informados, ordena os resultados e, se encontrar um registro correspondente, atualiza-o com os valores fornecidos. Se não encontrar nenhum registro, ela cria um novo com os dados passados. A função retorna o GUID do registro atualizado ou criado - muito útil para manter dados sincronizados entre o Marketing Cloud e o Dynamics CRM sem precisar verificar manualmente se o registro já existe.
 
 ## Sintaxe
 
@@ -103,7 +103,7 @@ Conta 'Grupo Horizonte' sincronizada com sucesso. ID: f9e8d7c6-b5a4-3210-fedc-ba
 
 - A função primeiro busca registros com base nos pares de filtro, ordena pelo campo e direção especificados, e opera sobre o **primeiro registro** retornado. Se houver múltiplos registros que atendam ao filtro, apenas o primeiro (após a ordenação) será atualizado.
 
-- O retorno é sempre o **GUID** do registro — seja ele atualizado ou recém-criado.
+- O retorno é sempre o **GUID** do registro - seja ele atualizado ou recém-criado.
 
 > **💡 Dica:** Use `sortType` como `DESC` em campos de data (como `createdon`) para garantir que o registro mais recente seja o atualizado, caso existam duplicatas.
 
@@ -111,9 +111,9 @@ Conta 'Grupo Horizonte' sincronizada com sucesso. ID: f9e8d7c6-b5a4-3210-fedc-ba
 
 ## Funções relacionadas
 
-- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) — cria um registro no Dynamics CRM (sem verificar se já existe).
-- [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) — atualiza registros existentes no Dynamics CRM.
-- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) — busca registros no Dynamics CRM.
-- [RetrieveMscrmRecordsFetchXml](../microsoft-dynamics-crm-functions/retrievemscrmrecordsfetchxml.md) — busca registros usando FetchXML.
-- [SetStateMscrmRecord](../microsoft-dynamics-crm-functions/setstatemscrmrecord.md) — altera o estado de um registro no Dynamics CRM.
-- [UpsertDE](../data-extension-functions/upsertde.md) — função análoga de upsert, mas para Data Extensions do Marketing Cloud.
+- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) - cria um registro no Dynamics CRM (sem verificar se já existe).
+- [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) - atualiza registros existentes no Dynamics CRM.
+- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) - busca registros no Dynamics CRM.
+- [RetrieveMscrmRecordsFetchXml](../microsoft-dynamics-crm-functions/retrievemscrmrecordsfetchxml.md) - busca registros usando FetchXML.
+- [SetStateMscrmRecord](../microsoft-dynamics-crm-functions/setstatemscrmrecord.md) - altera o estado de um registro no Dynamics CRM.
+- [UpsertDE](../data-extension-functions/upsertde.md) - função análoga de upsert, mas para Data Extensions do Marketing Cloud.

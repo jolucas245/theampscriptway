@@ -8,7 +8,7 @@ description: Adiciona um valor de tempo (anos, meses, dias, horas ou minutos) a 
 
 ## Descrição
 
-A função `DateAdd` adiciona um valor de tempo especificado a uma data. É uma das funções mais usadas no dia a dia de SFMC no Brasil — seja para calcular datas de vencimento de boletos, definir prazos de validade de cupons em réguas de relacionamento, ou determinar janelas de expiração em campanhas de e-mail marketing. Retorna a data resultante após a adição do tempo informado.
+A função `DateAdd` adiciona um valor de tempo especificado a uma data. É uma das funções mais usadas no dia a dia de SFMC no Brasil - seja para calcular datas de vencimento de boletos, definir prazos de validade de cupons em réguas de relacionamento, ou determinar janelas de expiração em campanhas de e-mail marketing. Retorna a data resultante após a adição do tempo informado.
 
 ## Sintaxe
 
@@ -95,7 +95,7 @@ Use o código VITORIA50 até 12/08/2023.
 
 ## Observações
 
-> **💡 Dica:** Você pode usar valores negativos no parâmetro `amountToAdd` para subtrair tempo de uma data. Por exemplo, `DateAdd(@data, -30, "D")` retorna a data de 30 dias atrás — útil para buscar clientes que não compram há um mês.
+> **💡 Dica:** Você pode usar valores negativos no parâmetro `amountToAdd` para subtrair tempo de uma data. Por exemplo, `DateAdd(@data, -30, "D")` retorna a data de 30 dias atrás - útil para buscar clientes que não compram há um mês.
 
 > **💡 Dica:** Combine `DateAdd` com [FormatDate](../date-functions/formatdate.md) para exibir a data resultante no formato brasileiro (DD/MM/AAAA). O `DateAdd` retorna um timestamp completo, então a formatação é quase sempre necessária na saída final.
 
@@ -103,10 +103,10 @@ Use o código VITORIA50 até 12/08/2023.
 
 ## Funções relacionadas
 
-- [Now](../date-functions/now.md) — retorna a data/hora atual do sistema, frequentemente usada como primeiro parâmetro do `DateAdd`.
-- [DateDiff](../date-functions/datediff.md) — calcula a diferença entre duas datas (operação inversa ao `DateAdd`).
-- [FormatDate](../date-functions/formatdate.md) — formata a data retornada pelo `DateAdd` para exibição no formato brasileiro.
-- [DateParse](../date-functions/dateparse.md) — converte uma string em data, útil quando você precisa transformar um texto antes de usar no `DateAdd`.
-- [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) — converte a data do sistema para o fuso horário local antes de fazer cálculos.
-- [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md) — converte uma data local para o horário do sistema.
-- [DatePart](../date-functions/datepart.md) — extrai partes específicas de uma data (dia, mês, ano).
+- [Now](../date-functions/now.md) - retorna a data/hora atual do sistema, frequentemente usada como primeiro parâmetro do `DateAdd`.
+- [DateDiff](../date-functions/datediff.md) - calcula a diferença entre duas datas (operação inversa ao `DateAdd`).
+- [FormatDate](../date-functions/formatdate.md) - formata a data retornada pelo `DateAdd` para exibição no formato brasileiro.
+- [DateParse](../date-functions/dateparse.md) - converte uma string em data, útil quando você precisa transformar um texto antes de usar no `DateAdd`.
+- [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) - converte a data do sistema para o fuso horário local antes de fazer cálculos.
+- [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md) - converte uma data local para o horário do sistema.
+- [DatePart](../date-functions/datepart.md) - extrai partes específicas de uma data (dia, mês, ano).

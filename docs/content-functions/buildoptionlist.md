@@ -8,7 +8,7 @@ description: Gera um conjunto de tags HTML <option> para uso em formulários web
 
 ## Descrição
 
-Cria um conjunto de tags `<option>` prontas para serem integradas em formulários HTML em páginas web. É a função ideal quando você precisa montar dropdowns (`<select>`) em CloudPages — como formulários de cadastro, pesquisas de satisfação ou preference centers. O retorno é uma string com as tags `<option>` geradas, já com a opção padrão pré-selecionada.
+Cria um conjunto de tags `<option>` prontas para serem integradas em formulários HTML em páginas web. É a função ideal quando você precisa montar dropdowns (`<select>`) em CloudPages - como formulários de cadastro, pesquisas de satisfação ou preference centers. O retorno é uma string com as tags `<option>` geradas, já com a opção padrão pré-selecionada.
 
 ## Sintaxe
 
@@ -121,7 +121,7 @@ SET @opcoesFrequencia = BuildOptionList(
 
 ## Observações
 
-- A função gera tags `<option>` para integração em formulários HTML em páginas web (CloudPages). Ela **não** gera o `<select>` — você precisa envolvê-la manualmente com as tags `<select>`.
+- A função gera tags `<option>` para integração em formulários HTML em páginas web (CloudPages). Ela **não** gera o `<select>` - você precisa envolvê-la manualmente com as tags `<select>`.
 
 - Cada opção da lista exige **dois parâmetros**: o valor (`value`) e o texto de exibição. Você pode criar quantas opções precisar, basta acrescentar pares ao final da chamada.
 
@@ -133,8 +133,8 @@ SET @opcoesFrequencia = BuildOptionList(
 
 ## Funções relacionadas
 
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — para gerar a URL de destino do formulário
-- [RequestParameter](../sites-functions/requestparameter.md) — para capturar o valor enviado pelo formulário
-- [Lookup](../data-extension-functions/lookup.md) — para buscar a seleção atual do assinante em uma Data Extension
-- [UpsertDE](../data-extension-functions/upsertde.md) — para salvar a escolha do formulário na Data Extension
-- [V](../utility-functions/v.md) — para exibir o resultado da função no HTML
+- [CloudPagesURL](../sites-functions/cloudpagesurl.md) - para gerar a URL de destino do formulário
+- [RequestParameter](../sites-functions/requestparameter.md) - para capturar o valor enviado pelo formulário
+- [Lookup](../data-extension-functions/lookup.md) - para buscar a seleção atual do assinante em uma Data Extension
+- [UpsertDE](../data-extension-functions/upsertde.md) - para salvar a escolha do formulário na Data Extension
+- [V](../utility-functions/v.md) - para exibir o resultado da função no HTML

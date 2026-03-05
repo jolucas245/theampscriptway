@@ -7,7 +7,7 @@ sidebar_position: 1
 
 # Boas Práticas de AMPscript
 
-Escrever AMPscript que funciona é uma coisa. Escrever AMPscript que outra pessoa consegue entender seis meses depois — inclusive você mesmo — é outra história.
+Escrever AMPscript que funciona é uma coisa. Escrever AMPscript que outra pessoa consegue entender seis meses depois - inclusive você mesmo - é outra história.
 
 Este guia reúne convenções de nomenclatura, organização de código e técnicas defensivas que fazem diferença no dia a dia. Nada aqui é regra absoluta da linguagem: AMPscript é flexível e tolerante. Mas flexibilidade sem disciplina vira bagunça rápido.
 
@@ -21,7 +21,7 @@ Este guia reúne convenções de nomenclatura, organização de código e técni
 
 ### Nomes descritivos
 
-O código que você escreve hoje vai ser lido no futuro — por um colega, por um consultor externo, ou por você mesmo depois de dois meses sem ver aquele template. Use nomes que expliquem o propósito da variável, não só o valor.
+O código que você escreve hoje vai ser lido no futuro - por um colega, por um consultor externo, ou por você mesmo depois de dois meses sem ver aquele template. Use nomes que expliquem o propósito da variável, não só o valor.
 
 ```ampscript
 /* ✅ Nome que diz o que é */
@@ -35,15 +35,15 @@ SET @flag = IIF(Empty(@x), true, false)
 
 Algumas convenções que ajudam:
 
-- Variáveis booleanas começam com `is`, `has`, `pode` ou `tem` — `isAtivo`, `temSaldo`, `podeReceberEmail`
-- Variáveis de data terminam com `Data` ou `Date` — `dataEnvio`, `dataVencimento`
-- Variáveis que guardam resultados de Lookup começam com o nome da DE — `clienteNome`, `pedidoStatus`
+- Variáveis booleanas começam com `is`, `has`, `pode` ou `tem` - `isAtivo`, `temSaldo`, `podeReceberEmail`
+- Variáveis de data terminam com `Data` ou `Date` - `dataEnvio`, `dataVencimento`
+- Variáveis que guardam resultados de Lookup começam com o nome da DE - `clienteNome`, `pedidoStatus`
 
 ### Convenção de caixa
 
-AMPscript não liga para maiúsculas ou minúsculas — `lookup` e `LOOKUP` e `Lookup` funcionam igual. O problema é quando o mesmo projeto usa os três ao mesmo tempo. Escolha uma convenção e siga ela.
+AMPscript não liga para maiúsculas ou minúsculas - `lookup` e `LOOKUP` e `Lookup` funcionam igual. O problema é quando o mesmo projeto usa os três ao mesmo tempo. Escolha uma convenção e siga ela.
 
-A convenção mais adotada pela comunidade — e a que recomendamos aqui — é:
+A convenção mais adotada pela comunidade - e a que recomendamos aqui - é:
 
 | Elemento | Estilo | Exemplo |
 |----------|--------|---------|
@@ -87,7 +87,7 @@ SET @produto = Lookup("Catalogo_DE", 'NomeProduto', "SKU", @sku)
 
 ### Código no topo
 
-Coloque todo o bloco `%%[ ]%%` principal no início do template — antes de qualquer HTML. Isso facilita manutenção, torna o código fácil de localizar e evita problemas com a versão texto do e-mail.
+Coloque todo o bloco `%%[ ]%%` principal no início do template - antes de qualquer HTML. Isso facilita manutenção, torna o código fácil de localizar e evita problemas com a versão texto do e-mail.
 
 ```ampscript
 %%[
@@ -104,7 +104,7 @@ SET @isPremium    = IIF(@saldoPontos > 5000, true, false)
 
 ### Variáveis no bloco, `v()` no corpo
 
-Calcule tudo no bloco do topo e use `%%=v(@variavel)=%%` no corpo do HTML. Evite aninhar funções diretamente no HTML — fica ilegível e difícil de depurar.
+Calcule tudo no bloco do topo e use `%%=v(@variavel)=%%` no corpo do HTML. Evite aninhar funções diretamente no HTML - fica ilegível e difícil de depurar.
 
 ```ampscript
 /* ✅ Cálculo no bloco, exibição limpa no HTML */
@@ -114,12 +114,12 @@ SET @precoFormatado = FormatNumber(@preco, '###.##0,00', 'pt-BR')
 SET @nomeProduto   = Lookup('Produtos_DE', 'Nome', 'SKU', @sku)
 ]%%
 
-<p>%%=v(@nomeProduto)=%% — R$ %%=v(@precoFormatado)=%%</p>
+<p>%%=v(@nomeProduto)=%% - R$ %%=v(@precoFormatado)=%%</p>
 ```
 
 ```ampscript
 /* ❌ Funções aninhadas direto no HTML */
-<p>%%=Lookup('Produtos_DE', 'Nome', 'SKU', @sku)=%% — R$ %%=FormatNumber(Lookup('Produtos_DE', 'Preco', 'SKU', @sku), '###.##0,00', 'pt-BR')=%%</p>
+<p>%%=Lookup('Produtos_DE', 'Nome', 'SKU', @sku)=%% - R$ %%=FormatNumber(Lookup('Produtos_DE', 'Preco', 'SKU', @sku), '###.##0,00', 'pt-BR')=%%</p>
 ```
 
 ### Indentação
@@ -139,7 +139,7 @@ IF @total > 0 THEN
         SET @status = Field(@row, 'Status')
 
         IF @status == 'Entregue' THEN
-            SET @resumo = Concat('Pedido ', @pedido, ' entregue — R$ ', @valor)
+            SET @resumo = Concat('Pedido ', @pedido, ' entregue - R$ ', @valor)
         ENDIF
     NEXT @i
 ENDIF
@@ -152,7 +152,7 @@ ENDIF
 
 ## Comentários
 
-> *O código diz como. O comentário diz por quê.* — Jeff Atwood
+> *O código diz como. O comentário diz por quê.* - Jeff Atwood
 
 Comentários bem escritos são tão importantes quanto o código em si. Com o tempo, você vai agradecer.
 
@@ -163,7 +163,7 @@ Para scripts longos, comece com um bloco descrevendo o propósito e a estrutura 
 ```ampscript
 %%[
 /* ─────────────────────────────────────────────────────────────────────────
-   E-mail de carrinho abandonado — Lojas Vitória
+   E-mail de carrinho abandonado - Lojas Vitória
    
    Lógica:
    1. Busca itens do carrinho na DE Carrinho_Abandonado
@@ -195,14 +195,14 @@ SET @diasAbandonado = DateDiff(Now(), @dataAbandono, 'D')
 
 ### Comentários inline
 
-Use para explicar decisões não óbvias — por que aquele valor, por que aquela lógica:
+Use para explicar decisões não óbvias - por que aquele valor, por que aquela lógica:
 
 ```ampscript
 /* Usa AttributeValue ao invés de Lookup para capturar campos de perfil
    do subscriber mesmo quando não há DE de envio configurada */
 SET @email = AttributeValue('EmailAddress')
 
-/* Limite de 3 itens por e-mail — decisão de negócio da equipe de CRM */
+/* Limite de 3 itens por e-mail - decisão de negócio da equipe de CRM */
 IF @total > 3 THEN
     SET @total = 3
 ENDIF
@@ -226,7 +226,7 @@ IF Empty(@nomeCliente) THEN
 ENDIF
 ```
 
-Para Data Extensions, o `Lookup()` retorna vazio se não encontrar o registro — então sempre trate esse caso:
+Para Data Extensions, o `Lookup()` retorna vazio se não encontrar o registro - então sempre trate esse caso:
 
 ```ampscript
 SET @segmento = Lookup('Segmentos_DE', 'Tier', 'Email', emailaddr)
@@ -238,7 +238,7 @@ ENDIF
 
 ### Use RaiseError para dados críticos
 
-Às vezes é melhor não enviar do que enviar errado. Se um dado é obrigatório para o e-mail fazer sentido — como um número de pedido, um CPF ou um valor de fatura — use `RaiseError()` para abortar o envio daquele subscriber quando o dado estiver faltando.
+Às vezes é melhor não enviar do que enviar errado. Se um dado é obrigatório para o e-mail fazer sentido - como um número de pedido, um CPF ou um valor de fatura - use `RaiseError()` para abortar o envio daquele subscriber quando o dado estiver faltando.
 
 ```ampscript
 SET @numeroPedido = Lookup('Pedidos_DE', 'Numero', 'Email', emailaddr)
@@ -259,7 +259,7 @@ Funções como `HTTPGet()` fazem requisições externas a cada e-mail renderizad
 
 - Máximo de **3 chamadas** de conteúdo externo por e-mail
 - Use `%%Before;HTTPGet "url"%%` para chamadas que devem ocorrer **uma vez** por job de envio, não por subscriber
-- Evite `HTTPGet` dentro de loops — o número de requests cresce de forma proporcional ao tamanho do rowset
+- Evite `HTTPGet` dentro de loops - o número de requests cresce de forma proporcional ao tamanho do rowset
 
 ---
 
@@ -275,7 +275,7 @@ SET @segmento = Lookup('Segmentos_DE', 'Tier', 'Email', emailaddr)
 SET @pontos   = Lookup('Fidelidade_DE', 'Saldo', 'Email', emailaddr)
 ]%%
 
-<!-- DEBUG — remover antes de produção -->
+<!-- DEBUG - remover antes de produção -->
 <pre>
 segmento: %%=v(@segmento)=%%
 pontos: %%=v(@pontos)=%%
@@ -288,7 +288,7 @@ Se o erro é difícil de identificar, remova todo o HTML e deixe só o AMPscript
 
 ### Valide a sintaxe antes de testar
 
-No Content Builder, erros de sintaxe aparecem em vermelho na aba **Pré-visualização e Teste** — antes de você sequer mandar um e-mail de teste. Sempre abra a pré-visualização primeiro para garantir que a sintaxe está certa antes de testar com dados reais.
+No Content Builder, erros de sintaxe aparecem em vermelho na aba **Pré-visualização e Teste** - antes de você sequer mandar um e-mail de teste. Sempre abra a pré-visualização primeiro para garantir que a sintaxe está certa antes de testar com dados reais.
 
 ---
 
@@ -296,7 +296,7 @@ No Content Builder, erros de sintaxe aparecem em vermelho na aba **Pré-visualiz
 
 ### Reutilize com Content Blocks
 
-Se um trecho de AMPscript ou HTML é usado em múltiplos e-mails — um rodapé de programa de fidelidade, um bloco de status de pedido, um banner dinâmico — isole em um Content Block e referencie pelo External Key:
+Se um trecho de AMPscript ou HTML é usado em múltiplos e-mails - um rodapé de programa de fidelidade, um bloco de status de pedido, um banner dinâmico - isole em um Content Block e referencie pelo External Key:
 
 ```ampscript
 %%=ContentBlockByKey('bloco-status-fidelidade')=%%
@@ -306,7 +306,7 @@ Assim, qualquer ajuste no bloco se reflete automaticamente em todos os e-mails q
 
 ### Content Blocks dinâmicos
 
-Você pode calcular qual Content Block carregar com base em dados do subscriber — útil para variações por região, idioma ou segmento:
+Você pode calcular qual Content Block carregar com base em dados do subscriber - útil para variações por região, idioma ou segmento:
 
 ```ampscript
 SET @regiao    = Lookup('Clientes_DE', 'Regiao', 'Email', emailaddr)

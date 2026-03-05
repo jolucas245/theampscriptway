@@ -40,15 +40,14 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
-  plugins: [
+  themes: [
     [
       require.resolve('@easyops-cn/docusaurus-search-local'),
       {
         hashed: true,
-        language: ['pt',],
+        language: ['pt'],
         indexDocs: true,
         indexPages: true,
-        searchBarPosition: 'right'
       },
     ],
   ],
@@ -84,7 +83,7 @@ const config: Config = {
     },
     footer: {
       style: 'dark',
-      copyright: `AMPscript Way | Guia mantido pela comunidade do Salesforce Marketing Cloud`,
+      copyright: `AMPscript Way | Guia mantido pela comunidade do Salesforce Marketing`,
     },
     prism: {
       theme: prismThemes.github,

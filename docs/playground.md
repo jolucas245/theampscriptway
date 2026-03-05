@@ -7,7 +7,7 @@ slug: /docs/playground
 
 # Playground
 
-O AMPScript Way tem um playground interativo que permite escrever e executar código AMPscript diretamente no navegador — sem precisar de acesso ao Marketing Cloud, sem configurar nada, sem logar em lugar nenhum.
+O AMPScript Way tem um playground interativo que permite escrever e executar código AMPscript diretamente no navegador - sem precisar de acesso ao Marketing Cloud, sem configurar nada, sem logar em lugar nenhum.
 
 É útil para aprender a linguagem, testar uma lógica antes de colocar em produção, reproduzir um problema ou simplesmente experimentar uma função que você nunca usou.
 
@@ -19,7 +19,7 @@ O AMPScript Way tem um playground interativo que permite escrever e executar có
 
 ### Editor com syntax highlighting
 
-O editor é baseado no Monaco — o mesmo que alimenta o VS Code. Ele reconhece a sintaxe do AMPscript e destaca visualmente cada elemento:
+O editor é baseado no Monaco - o mesmo que alimenta o VS Code. Ele reconhece a sintaxe do AMPscript e destaca visualmente cada elemento:
 
 - Delimitadores `%%[`, `]%%`, `%%=`, `=%%` e `%%variavel%%`
 - Palavras-chave: `VAR`, `SET`, `IF`, `ELSEIF`, `ELSE`, `ENDIF`, `FOR`, `TO`, `DO`, `NEXT`
@@ -35,17 +35,17 @@ Ao digitar, o editor sugere funções e palavras-chave disponíveis. As sugestõ
 
 Simula os atributos de um subscriber, que no Marketing Cloud seriam os campos da All Subscribers ou de uma Data Extension usada como audiência.
 
-Você define pares de chave e valor — por exemplo, `Nome` = `João`, `Email` = `joao@empresa.com.br` — e esses valores ficam acessíveis no código via `AttributeValue()` ou diretamente como personalization strings (`%%Nome%%`).
+Você define pares de chave e valor - por exemplo, `Nome` = `João`, `Email` = `joao@empresa.com.br` - e esses valores ficam acessíveis no código via `AttributeValue()` ou diretamente como personalization strings (`%%Nome%%`).
 
 ### Painel de Data Extensions
 
 Simula Data Extensions completas com colunas e linhas. Você cria uma DE, define os campos e insere quantas linhas precisar. O código pode então usar `Lookup()`, `LookupRows()`, `InsertDE()`, `UpsertDE()` e todas as demais funções de DE normalmente, como se estivesse dentro do SFMC.
 
-As alterações feitas pelo código (inserts, updates, deletes) refletem em tempo real no painel — o que torna fácil depurar lógicas que manipulam dados.
+As alterações feitas pelo código (inserts, updates, deletes) refletem em tempo real no painel - o que torna fácil depurar lógicas que manipulam dados.
 
 ### Painel de Output
 
-Exibe o resultado da execução do código. Tudo que o script produz — tanto o texto renderizado quanto os valores de `Output()` e `OutputLine()` — aparece aqui.
+Exibe o resultado da execução do código. Tudo que o script produz - tanto o texto renderizado quanto os valores de `Output()` e `OutputLine()` - aparece aqui.
 
 ---
 
@@ -99,11 +99,11 @@ O playground implementa as seguintes funções em TypeScript puro, sem dependên
 
 ### Data Extensions são simuladas em memória
 
-> As DEs do playground existem apenas enquanto a sessão está aberta. Não há persistência — fechar ou recarregar a página apaga tudo. Além disso, o playground não tem acesso a nenhuma DE real da sua conta SFMC.
+> As DEs do playground existem apenas enquanto a sessão está aberta. Não há persistência - fechar ou recarregar a página apaga tudo. Além disso, o playground não tem acesso a nenhuma DE real da sua conta SFMC.
 
 ### Funções de data e fuso horário
 
-> `Now()` e `GetSendTime()` retornam a hora atual do navegador em UTC. No SFMC, `GetSendTime()` retorna o horário configurado no agendamento do job de envio, que pode ser diferente. As funções `LocalDateToSystemDate()` e `SystemDateToLocalDate()` não aplicam conversão de fuso no playground — retornam a data como está.
+> `Now()` e `GetSendTime()` retornam a hora atual do navegador em UTC. No SFMC, `GetSendTime()` retorna o horário configurado no agendamento do job de envio, que pode ser diferente. As funções `LocalDateToSystemDate()` e `SystemDateToLocalDate()` não aplicam conversão de fuso no playground - retornam a data como está.
 
 ### Criptografia
 
@@ -117,11 +117,11 @@ O playground implementa as seguintes funções em TypeScript puro, sem dependên
 
 > `HTTPGet`, `HTTPPost`, `HTTPPost2` e `HTTPPostWithRetry` não estão disponíveis no playground. Requisições HTTP externas não são possíveis no contexto do navegador sem um servidor intermediário.
 
-> `IsChtmlBrowser()` sempre retorna `false`. `WrapLongURL()` retorna a URL sem modificação — o comportamento real depende do sistema de rastreamento do SFMC.
+> `IsChtmlBrowser()` sempre retorna `false`. `WrapLongURL()` retorna a URL sem modificação - o comportamento real depende do sistema de rastreamento do SFMC.
 
 ### Funções de QueryParameter e RequestParameter
 
-> `QueryParameter()` e `RequestParameter()` lêem os parâmetros da URL atual do navegador. Para testá-las, adicione parâmetros na URL do playground — por exemplo: `/playground?cidade=Recife&segmento=premium` — e o código conseguirá lê-los normalmente.
+> `QueryParameter()` e `RequestParameter()` lêem os parâmetros da URL atual do navegador. Para testá-las, adicione parâmetros na URL do playground - por exemplo: `/playground?cidade=Recife&segmento=premium` - e o código conseguirá lê-los normalmente.
 
 ### Funções que dependem do ambiente SFMC
 

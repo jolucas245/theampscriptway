@@ -43,16 +43,16 @@ FOR @i = 1 TO RowCount(@rowset) DO
 
 ]%%
 
-Produto: %%=V(@nome)=%% — %%=V(@preco)=%%
+Produto: %%=V(@nome)=%% - %%=V(@preco)=%%
 
 %%[ NEXT @i ]%%
 ```
 
 **Saída:**
 ```
-Produto: Notebook Gamer — R$ 5.499,90
-Produto: Monitor 27pol — R$ 1.299,90
-Produto: Teclado Mecânico — R$ 349,90
+Produto: Notebook Gamer - R$ 5.499,90
+Produto: Monitor 27pol - R$ 1.299,90
+Produto: Teclado Mecânico - R$ 349,90
 ```
 
 ## Exemplo avançado
@@ -123,19 +123,19 @@ Data         | Descrição                      | Tipo    | Valor
 
 > **⚠️ Atenção:** Os seguintes tipos de nós XML **não retornam valor**: CDATA, Comment, Document, Document Fragments, DocumentType, Entities, Entity References, Notation, ProcessingInformation, Whitespace e XmlDeclaration. Se seu XML depende fortemente de seções CDATA, por exemplo, os dados dentro delas não serão extraídos.
 
-> **⚠️ Atenção:** Preste atenção no parâmetro `boolReturnEmptyOnError`. Use `false` se quiser que o e-mail seja enviado mesmo quando houver erro no XML (retorna rowset vazio) — ideal para envios em massa onde você não quer que um XML malformado quebre o envio inteiro. Use `true` apenas quando precisar identificar erros explicitamente, como em CloudPages de diagnóstico.
+> **⚠️ Atenção:** Preste atenção no parâmetro `boolReturnEmptyOnError`. Use `false` se quiser que o e-mail seja enviado mesmo quando houver erro no XML (retorna rowset vazio) - ideal para envios em massa onde você não quer que um XML malformado quebre o envio inteiro. Use `true` apenas quando precisar identificar erros explicitamente, como em CloudPages de diagnóstico.
 
-> **💡 Dica:** Para percorrer o rowset retornado, combine com [Row](../data-extension-functions/row.md), [RowCount](../data-extension-functions/rowcount.md) e [Field](../data-extension-functions/field.md) — esse é o trio padrão para trabalhar com qualquer rowset no AMPscript.
+> **💡 Dica:** Para percorrer o rowset retornado, combine com [Row](../data-extension-functions/row.md), [RowCount](../data-extension-functions/rowcount.md) e [Field](../data-extension-functions/field.md) - esse é o trio padrão para trabalhar com qualquer rowset no AMPscript.
 
 > **💡 Dica:** Se os dados que você precisa parsear estão em formato JSON e não XML, use [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md). Para dados simples separados por delimitador, veja [BuildRowsetFromString](../content-functions/buildrowsetfromstring.md).
 
 ## Funções relacionadas
 
-- [BuildRowsetFromString](../content-functions/buildrowsetfromstring.md) — cria rowset a partir de string com delimitador
-- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) — cria rowset a partir de dados JSON
-- [TransformXML](../content-functions/transformxml.md) — transforma XML usando XSLT
-- [Row](../data-extension-functions/row.md) — acessa uma linha específica do rowset
-- [RowCount](../data-extension-functions/rowcount.md) — conta o número de linhas do rowset
-- [Field](../data-extension-functions/field.md) — extrai o valor de uma coluna de uma linha do rowset
-- [HTTPGet](../http-functions/httpget.md) — obtém dados de uma URL externa (frequentemente XML)
-- [HTTPPost](../http-functions/httppost.md) — envia dados e recebe resposta (frequentemente XML)
+- [BuildRowsetFromString](../content-functions/buildrowsetfromstring.md) - cria rowset a partir de string com delimitador
+- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) - cria rowset a partir de dados JSON
+- [TransformXML](../content-functions/transformxml.md) - transforma XML usando XSLT
+- [Row](../data-extension-functions/row.md) - acessa uma linha específica do rowset
+- [RowCount](../data-extension-functions/rowcount.md) - conta o número de linhas do rowset
+- [Field](../data-extension-functions/field.md) - extrai o valor de uma coluna de uma linha do rowset
+- [HTTPGet](../http-functions/httpget.md) - obtém dados de uma URL externa (frequentemente XML)
+- [HTTPPost](../http-functions/httppost.md) - envia dados e recebe resposta (frequentemente XML)

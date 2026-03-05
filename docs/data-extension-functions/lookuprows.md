@@ -8,7 +8,7 @@ description: Retorna um conjunto de linhas (rowset) de uma Data Extension com ba
 
 ## Descrição
 
-A função `LookupRows` busca e retorna um conjunto de linhas (rowset) não ordenado de uma Data Extension, filtrando pelos critérios que você definir. É uma das funções mais usadas no dia a dia de SFMC — ideal para trazer múltiplos registros de um cliente, como histórico de pedidos, produtos comprados ou cupons disponíveis. A função retorna um rowset com até 2.000 linhas e a busca é **case-insensitive** (não diferencia maiúsculas de minúsculas).
+A função `LookupRows` busca e retorna um conjunto de linhas (rowset) não ordenado de uma Data Extension, filtrando pelos critérios que você definir. É uma das funções mais usadas no dia a dia de SFMC - ideal para trazer múltiplos registros de um cliente, como histórico de pedidos, produtos comprados ou cupons disponíveis. A função retorna um rowset com até 2.000 linhas e a busca é **case-insensitive** (não diferencia maiúsculas de minúsculas).
 
 ## Sintaxe
 
@@ -110,7 +110,7 @@ MEGAVIP10      R$ 10,00    30/09/2025
 
 > **⚠️ Atenção:** O rowset retornado **não possui ordenação garantida**. Se a ordem dos registros importa (por data, valor etc.), use [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) em vez de `LookupRows`.
 
-- A busca é **case-insensitive** — tanto os nomes das colunas quanto os valores buscados não diferenciam maiúsculas de minúsculas. Se você precisa de busca case-sensitive, use [LookupRowsCS](../data-extension-functions/lookuprowscs.md).
+- A busca é **case-insensitive** - tanto os nomes das colunas quanto os valores buscados não diferenciam maiúsculas de minúsculas. Se você precisa de busca case-sensitive, use [LookupRowsCS](../data-extension-functions/lookuprowscs.md).
 
 - Sempre valide o resultado com [RowCount](../data-extension-functions/rowcount.md) antes de iterar. Se nenhuma linha for encontrada, tentar acessar com [Row](../data-extension-functions/row.md) vai gerar erro.
 
@@ -118,10 +118,10 @@ MEGAVIP10      R$ 10,00    30/09/2025
 
 ## Funções relacionadas
 
-- [Lookup](../data-extension-functions/lookup.md) — retorna o valor de **uma única coluna** da primeira linha encontrada (quando você só precisa de um dado).
-- [LookupRowsCS](../data-extension-functions/lookuprowscs.md) — versão **case-sensitive** do `LookupRows`.
-- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) — permite ordenar o rowset retornado por uma coluna e direção.
-- [LookupOrderedRowsCS](../data-extension-functions/lookuporderedrowscs.md) — versão **case-sensitive** do `LookupOrderedRows`.
-- [Row](../data-extension-functions/row.md) — acessa uma linha específica do rowset por índice.
-- [RowCount](../data-extension-functions/rowcount.md) — retorna o número de linhas no rowset.
-- [Field](../data-extension-functions/field.md) — extrai o valor de uma coluna de uma linha do rowset.
+- [Lookup](../data-extension-functions/lookup.md) - retorna o valor de **uma única coluna** da primeira linha encontrada (quando você só precisa de um dado).
+- [LookupRowsCS](../data-extension-functions/lookuprowscs.md) - versão **case-sensitive** do `LookupRows`.
+- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) - permite ordenar o rowset retornado por uma coluna e direção.
+- [LookupOrderedRowsCS](../data-extension-functions/lookuporderedrowscs.md) - versão **case-sensitive** do `LookupOrderedRows`.
+- [Row](../data-extension-functions/row.md) - acessa uma linha específica do rowset por índice.
+- [RowCount](../data-extension-functions/rowcount.md) - retorna o número de linhas no rowset.
+- [Field](../data-extension-functions/field.md) - extrai o valor de uma coluna de uma linha do rowset.

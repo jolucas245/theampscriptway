@@ -103,7 +103,7 @@ Protocolo: f9e8d7c6-b5a4-3210-fedc-ba9876543210
 
 ## Observações
 
-- A função retorna o **GUID** do registro criado no Dynamics CRM. Guarde esse valor se precisar referenciar o registro depois — por exemplo, para atualizações com [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) ou para associar a listas com [AddMscrmListMember](../microsoft-dynamics-crm-functions/addmscrmlistmember.md).
+- A função retorna o **GUID** do registro criado no Dynamics CRM. Guarde esse valor se precisar referenciar o registro depois - por exemplo, para atualizações com [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) ou para associar a listas com [AddMscrmListMember](../microsoft-dynamics-crm-functions/addmscrmlistmember.md).
 
 - O parâmetro `numFields` precisa corresponder exatamente à quantidade de pares nome-valor que você está passando. Se informar 3 mas passar apenas 2 pares, o comportamento pode ser imprevisível.
 
@@ -113,9 +113,9 @@ Protocolo: f9e8d7c6-b5a4-3210-fedc-ba9876543210
 
 ## Funções relacionadas
 
-- [AddMscrmListMember](../microsoft-dynamics-crm-functions/addmscrmlistmember.md) — adiciona um registro como membro de uma lista no Dynamics CRM.
-- [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) — atualiza registros existentes em uma entidade do Dynamics CRM.
-- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) — insere ou atualiza um registro no Dynamics CRM.
-- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) — recupera registros de uma entidade do Dynamics CRM.
-- [DescribeMscrmEntities](../microsoft-dynamics-crm-functions/describemscrmentities.md) — lista as entidades disponíveis no Dynamics CRM.
-- [DescribeMscrmEntityAttributes](../microsoft-dynamics-crm-functions/describemscrmentityattributes.md) — lista os atributos de uma entidade do Dynamics CRM.
+- [AddMscrmListMember](../microsoft-dynamics-crm-functions/addmscrmlistmember.md) - adiciona um registro como membro de uma lista no Dynamics CRM.
+- [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) - atualiza registros existentes em uma entidade do Dynamics CRM.
+- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) - insere ou atualiza um registro no Dynamics CRM.
+- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) - recupera registros de uma entidade do Dynamics CRM.
+- [DescribeMscrmEntities](../microsoft-dynamics-crm-functions/describemscrmentities.md) - lista as entidades disponíveis no Dynamics CRM.
+- [DescribeMscrmEntityAttributes](../microsoft-dynamics-crm-functions/describemscrmentityattributes.md) - lista os atributos de uma entidade do Dynamics CRM.

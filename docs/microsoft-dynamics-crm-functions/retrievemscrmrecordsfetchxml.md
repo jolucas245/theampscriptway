@@ -8,7 +8,7 @@ description: Retorna atributos de registros do Microsoft Dynamics CRM usando uma
 
 ## Descrição
 
-Executa uma query Fetch XML no Microsoft Dynamics CRM e retorna os atributos especificados na consulta. Essa função é útil quando você precisa buscar dados de contatos ou outras entidades do Dynamics CRM diretamente dentro de um e-mail, CloudPage ou automação no SFMC — por exemplo, para personalizar comunicações com dados que vivem no CRM, como nome, e-mail ou ID de contato. O resultado traz os registros que atendem aos critérios definidos na query Fetch XML.
+Executa uma query Fetch XML no Microsoft Dynamics CRM e retorna os atributos especificados na consulta. Essa função é útil quando você precisa buscar dados de contatos ou outras entidades do Dynamics CRM diretamente dentro de um e-mail, CloudPage ou automação no SFMC - por exemplo, para personalizar comunicações com dados que vivem no CRM, como nome, e-mail ou ID de contato. O resultado traz os registros que atendem aos critérios definidos na query Fetch XML.
 
 ## Sintaxe
 
@@ -143,11 +143,11 @@ Ana Lima          | não informado
 
 ## Funções relacionadas
 
-- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) — consulta registros do Dynamics CRM sem usar Fetch XML
-- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) — cria registros no Dynamics CRM
-- [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) — atualiza registros no Dynamics CRM
-- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) — insere ou atualiza registros no Dynamics CRM
-- [RowCount](../data-extension-functions/rowcount.md) — conta os registros retornados
-- [Row](../data-extension-functions/row.md) — acessa uma linha específica do resultado
-- [Field](../data-extension-functions/field.md) — extrai o valor de um campo do registro
-- [Concat](../string-functions/concat.md) — monta a query Fetch XML dinamicamente
+- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) - consulta registros do Dynamics CRM sem usar Fetch XML
+- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) - cria registros no Dynamics CRM
+- [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) - atualiza registros no Dynamics CRM
+- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) - insere ou atualiza registros no Dynamics CRM
+- [RowCount](../data-extension-functions/rowcount.md) - conta os registros retornados
+- [Row](../data-extension-functions/row.md) - acessa uma linha específica do resultado
+- [Field](../data-extension-functions/field.md) - extrai o valor de um campo do registro
+- [Concat](../string-functions/concat.md) - monta a query Fetch XML dinamicamente

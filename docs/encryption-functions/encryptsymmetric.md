@@ -8,7 +8,7 @@ description: Criptografa dados em texto plano usando um algoritmo simétrico e v
 
 ## Descrição
 
-Criptografa uma string de texto plano usando o algoritmo simétrico especificado (AES, DES ou Triple DES), junto com senha, salt e vetor de inicialização (IV). É a função essencial quando você precisa proteger dados sensíveis de clientes — como CPF, número de cartão ou qualquer informação pessoal — antes de armazená-los em Data Extensions ou passá-los via parâmetros em URLs de CloudPages. Retorna a string criptografada, que posteriormente pode ser revertida com [DecryptSymmetric](../encryption-functions/decryptsymmetric.md).
+Criptografa uma string de texto plano usando o algoritmo simétrico especificado (AES, DES ou Triple DES), junto com senha, salt e vetor de inicialização (IV). É a função essencial quando você precisa proteger dados sensíveis de clientes - como CPF, número de cartão ou qualquer informação pessoal - antes de armazená-los em Data Extensions ou passá-los via parâmetros em URLs de CloudPages. Retorna a string criptografada, que posteriormente pode ser revertida com [DecryptSymmetric](../encryption-functions/decryptsymmetric.md).
 
 ## Sintaxe
 
@@ -123,7 +123,7 @@ SET @linkSeguro = Concat("https://cloud.farmarede.com.br/minha-conta?token=", UR
 
 ## Observações
 
-> **⚠️ Atenção:** Os valores de Salt e IV são tratados como **strings hexadecimais**, onde cada par de caracteres representa um byte. O Salt deve ter **8 bytes** (16 caracteres hex) e o IV deve ter **16 bytes** (32 caracteres hex). Não tente usar esses valores como strings de cifra — você não conseguirá descriptografar corretamente depois.
+> **⚠️ Atenção:** Os valores de Salt e IV são tratados como **strings hexadecimais**, onde cada par de caracteres representa um byte. O Salt deve ter **8 bytes** (16 caracteres hex) e o IV deve ter **16 bytes** (32 caracteres hex). Não tente usar esses valores como strings de cifra - você não conseguirá descriptografar corretamente depois.
 
 > **⚠️ Atenção:** As funções `EncryptSymmetric` e `DecryptSymmetric` funcionam **exclusivamente com dados dentro do Marketing Cloud**. Não é possível usá-las com funcionalidades de criptografia/descriptografia de terceiros.
 
@@ -135,16 +135,16 @@ SET @linkSeguro = Concat("https://cloud.farmarede.com.br/minha-conta?token=", UR
 
 > **💡 Dica:** Se você já criou chaves na seção **Key Management** da interface do Marketing Cloud, pode referenciar as external keys diretamente nos parâmetros, sem precisar expor valores sensíveis no código. Essa é a abordagem mais segura para ambientes de produção.
 
-> **💡 Dica:** Entre os algoritmos disponíveis, prefira **AES** — é o mais seguro. Use Triple DES ou DES apenas quando houver necessidade de compatibilidade com sistemas legados.
+> **💡 Dica:** Entre os algoritmos disponíveis, prefira **AES** - é o mais seguro. Use Triple DES ou DES apenas quando houver necessidade de compatibilidade com sistemas legados.
 
 ## Funções relacionadas
 
-- [DecryptSymmetric](../encryption-functions/decryptsymmetric.md) — descriptografa dados criptografados com `EncryptSymmetric`
-- [Base64Encode](../encryption-functions/base64encode.md) — codifica a string criptografada em Base64 para visualização e transporte
-- [Base64Decode](../encryption-functions/base64decode.md) — decodifica Base64 antes de descriptografar
-- [MD5](../encryption-functions/md5.md) — gera hash MD5 (criptografia unidirecional)
-- [SHA256](../encryption-functions/sha256.md) — gera hash SHA-256 (criptografia unidirecional)
-- [SHA512](../encryption-functions/sha512.md) — gera hash SHA-512 (criptografia unidirecional)
-- [URLEncode](../string-functions/urlencode.md) — codifica strings para uso seguro em URLs
-- [RedirectTo](../http-functions/redirectto.md) — redireciona para URLs construídas dinamicamente
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — gera URLs de CloudPages com parâmetros criptografados
+- [DecryptSymmetric](../encryption-functions/decryptsymmetric.md) - descriptografa dados criptografados com `EncryptSymmetric`
+- [Base64Encode](../encryption-functions/base64encode.md) - codifica a string criptografada em Base64 para visualização e transporte
+- [Base64Decode](../encryption-functions/base64decode.md) - decodifica Base64 antes de descriptografar
+- [MD5](../encryption-functions/md5.md) - gera hash MD5 (criptografia unidirecional)
+- [SHA256](../encryption-functions/sha256.md) - gera hash SHA-256 (criptografia unidirecional)
+- [SHA512](../encryption-functions/sha512.md) - gera hash SHA-512 (criptografia unidirecional)
+- [URLEncode](../string-functions/urlencode.md) - codifica strings para uso seguro em URLs
+- [RedirectTo](../http-functions/redirectto.md) - redireciona para URLs construídas dinamicamente
+- [CloudPagesURL](../sites-functions/cloudpagesurl.md) - gera URLs de CloudPages com parâmetros criptografados

@@ -8,7 +8,7 @@ description: Define a próxima keyword do fluxo de conversação SMS no MobileCo
 
 ## Descrição
 
-Define qual será a próxima keyword no fluxo de conversação SMS, redirecionando o caminho da conversa com base na resposta do contato. Essa função é útil quando você precisa desviar o fluxo de uma conversa SMS para outro caminho (outra keyword) sem criar uma conversa nova — por exemplo, quando o contato responde algo inesperado e você quer redirecioná-lo para um fluxo alternativo. A keyword não é aplicada imediatamente: ela só entra em vigor quando o contato enviar a próxima mensagem.
+Define qual será a próxima keyword no fluxo de conversação SMS, redirecionando o caminho da conversa com base na resposta do contato. Essa função é útil quando você precisa desviar o fluxo de uma conversa SMS para outro caminho (outra keyword) sem criar uma conversa nova - por exemplo, quando o contato responde algo inesperado e você quer redirecioná-lo para um fluxo alternativo. A keyword não é aplicada imediatamente: ela só entra em vigor quando o contato enviar a próxima mensagem.
 
 ## Sintaxe
 
@@ -83,8 +83,8 @@ A keyword só será aplicada quando o contato enviar a próxima mensagem.
 
 ## Funções relacionadas
 
-- [CreateSmsConversation](../sms-functions/createsmsconversation.md) — cria uma nova conversação SMS com o contato.
-- [EndSmsConversation](../sms-functions/endsmsconversation.md) — encerra a conversação SMS ativa com o contato.
-- [Concat](../string-functions/concat.md) — útil para montar o número de telefone com código do país.
-- [Uppercase](../string-functions/uppercase.md) — normaliza a resposta do contato para comparação com keywords.
-- [Trim](../string-functions/trim.md) — remove espaços extras da resposta do contato antes de processar.
+- [CreateSmsConversation](../sms-functions/createsmsconversation.md) - cria uma nova conversação SMS com o contato.
+- [EndSmsConversation](../sms-functions/endsmsconversation.md) - encerra a conversação SMS ativa com o contato.
+- [Concat](../string-functions/concat.md) - útil para montar o número de telefone com código do país.
+- [Uppercase](../string-functions/uppercase.md) - normaliza a resposta do contato para comparação com keywords.
+- [Trim](../string-functions/trim.md) - remove espaços extras da resposta do contato antes de processar.

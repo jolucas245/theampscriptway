@@ -8,7 +8,7 @@ description: Cria uma conversa SMS com um contato no MobileConnect, definindo o 
 
 ## Descrição
 
-Cria uma conversa SMS com um contato no MobileConnect, passando o número de origem (short code ou long code), o número do destinatário, o próximo keyword da conversa e a aplicação utilizada. É útil para iniciar fluxos conversacionais via SMS — como confirmações de pedido, pesquisas de satisfação ou interações de atendimento. A função retorna `true` em caso de sucesso e lança uma exceção em caso de falha.
+Cria uma conversa SMS com um contato no MobileConnect, passando o número de origem (short code ou long code), o número do destinatário, o próximo keyword da conversa e a aplicação utilizada. É útil para iniciar fluxos conversacionais via SMS - como confirmações de pedido, pesquisas de satisfação ou interações de atendimento. A função retorna `true` em caso de sucesso e lança uma exceção em caso de falha.
 
 ## Sintaxe
 
@@ -78,8 +78,8 @@ true
 
 ## Funções relacionadas
 
-- [EndSmsConversation](../sms-functions/endsmsconversation.md) — encerra uma conversa SMS ativa.
-- [SetSmsConversationNextKeyword](../sms-functions/setsmsconversationnextkeyword.md) — altera o próximo keyword de uma conversa SMS já em andamento.
-- [Lookup](../data-extension-functions/lookup.md) — útil para buscar o telefone do contato em uma Data Extension antes de iniciar a conversa.
-- [Empty](../utility-functions/empty.md) — para validar se o número de telefone existe antes de chamar a função.
-- [Concat](../string-functions/concat.md) — para montar o número completo com código do país.
+- [EndSmsConversation](../sms-functions/endsmsconversation.md) - encerra uma conversa SMS ativa.
+- [SetSmsConversationNextKeyword](../sms-functions/setsmsconversationnextkeyword.md) - altera o próximo keyword de uma conversa SMS já em andamento.
+- [Lookup](../data-extension-functions/lookup.md) - útil para buscar o telefone do contato em uma Data Extension antes de iniciar a conversa.
+- [Empty](../utility-functions/empty.md) - para validar se o número de telefone existe antes de chamar a função.
+- [Concat](../string-functions/concat.md) - para montar o número completo com código do país.

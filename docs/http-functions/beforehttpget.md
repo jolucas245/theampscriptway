@@ -76,12 +76,12 @@ Banco Brasilão S.A. – CNPJ 00.000.000/0001-00. Ouvidoria: 0800 123 4567.
 
 - Cenários típicos de uso incluem: acionar webhooks de início de campanha, registrar logs em sistemas externos, buscar conteúdo compartilhado (avisos legais, banners dinâmicos) que seja o mesmo para todos os destinatários, e disparar processos de pré-envio em plataformas integradas.
 
-> **💡 Dica:** Se você precisa executar uma ação uma vez **após** o envio (depois que o último subscriber for processado), confira o [AfterHTTPGet](../http-functions/afterhttpget.md). Combinando `BeforeHTTPGet` e `AfterHTTPGet`, você consegue criar um fluxo completo de notificação para sistemas externos — marcando início e fim da campanha.
+> **💡 Dica:** Se você precisa executar uma ação uma vez **após** o envio (depois que o último subscriber for processado), confira o [AfterHTTPGet](../http-functions/afterhttpget.md). Combinando `BeforeHTTPGet` e `AfterHTTPGet`, você consegue criar um fluxo completo de notificação para sistemas externos - marcando início e fim da campanha.
 
 ## Funções relacionadas
 
-- [HTTPGet](../http-functions/httpget.md) — requisição GET executada uma vez por subscriber
-- [AfterHTTPGet](../http-functions/afterhttpget.md) — requisição GET executada uma vez ao final do envio
-- [HTTPGetWrap](../http-functions/httpgetwrap.md) — requisição GET com quebra de linha automática
-- [HTTPPost](../http-functions/httppost.md) — requisição POST para envio de dados a endpoints externos
-- [HTTPRequestHeader](../http-functions/httprequestheader.md) — define headers customizados para requisições HTTP
+- [HTTPGet](../http-functions/httpget.md) - requisição GET executada uma vez por subscriber
+- [AfterHTTPGet](../http-functions/afterhttpget.md) - requisição GET executada uma vez ao final do envio
+- [HTTPGetWrap](../http-functions/httpgetwrap.md) - requisição GET com quebra de linha automática
+- [HTTPPost](../http-functions/httppost.md) - requisição POST para envio de dados a endpoints externos
+- [HTTPRequestHeader](../http-functions/httprequestheader.md) - define headers customizados para requisições HTTP

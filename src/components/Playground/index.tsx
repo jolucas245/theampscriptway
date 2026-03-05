@@ -32,7 +32,7 @@ function saveState(state: SavedState) {
   } catch {}
 }
 
-const DEFAULT_CODE = `%%[\n  VAR @firstName, @score, @grade\n\n  SET @firstName = AttributeValue("FirstName")\n  SET @score = 87\n\n  IF @score >= 90 THEN\n    SET @grade = "A"\n  ELSEIF @score >= 80 THEN\n    SET @grade = "B"\n  ELSEIF @score >= 70 THEN\n    SET @grade = "C"\n  ELSE\n    SET @grade = "F"\n  ENDIF\n]%%\n\n<h2>Hello, %%=V(@firstName)=%%!</h2>\n<p>Your score is <strong>%%=V(@score)=%%</strong> — Grade: <strong>%%=V(@grade)=%%</strong></p>\n<p>Report generated on %%=FormatDate(Now(), "MMMM DD, YYYY")=%%</p>\n`;
+const DEFAULT_CODE = `%%[\n  VAR @firstName, @score, @grade\n\n  SET @firstName = AttributeValue("FirstName")\n  SET @score = 87\n\n  IF @score >= 90 THEN\n    SET @grade = "A"\n  ELSEIF @score >= 80 THEN\n    SET @grade = "B"\n  ELSEIF @score >= 70 THEN\n    SET @grade = "C"\n  ELSE\n    SET @grade = "F"\n  ENDIF\n]%%\n\n<h2>Hello, %%=V(@firstName)=%%!</h2>\n<p>Your score is <strong>%%=V(@score)=%%</strong> - Grade: <strong>%%=V(@grade)=%%</strong></p>\n<p>Report generated on %%=FormatDate(Now(), "MMMM DD, YYYY")=%%</p>\n`;
 
 const DEFAULT_ATTRIBUTES: SubscriberAttributes = {
   FirstName:    'Maria',

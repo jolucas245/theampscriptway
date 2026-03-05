@@ -8,7 +8,7 @@ description: Cria um objeto da API do Marketing Cloud Engagement para uso com fu
 
 ## Descrição
 
-Cria um objeto da API do Marketing Cloud Engagement. Essa função é o ponto de partida quando você precisa interagir diretamente com a API do SFMC via AMPscript — por exemplo, para criar subscribers, disparar triggered sends ou manipular Data Extensions pela camada de API. O objeto criado é usado em conjunto com funções como [SetObjectProperty](../api-functions/setobjectproperty.md), [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) e as funções de invocação ([InvokeCreate](../api-functions/invokecreate.md), [InvokeUpdate](../api-functions/invokeupdate.md), etc.).
+Cria um objeto da API do Marketing Cloud Engagement. Essa função é o ponto de partida quando você precisa interagir diretamente com a API do SFMC via AMPscript - por exemplo, para criar subscribers, disparar triggered sends ou manipular Data Extensions pela camada de API. O objeto criado é usado em conjunto com funções como [SetObjectProperty](../api-functions/setobjectproperty.md), [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) e as funções de invocação ([InvokeCreate](../api-functions/invokecreate.md), [InvokeUpdate](../api-functions/invokeupdate.md), etc.).
 
 ## Sintaxe
 
@@ -88,15 +88,15 @@ Bem-vinda, Maria Santos! Cadastro realizado com sucesso.
 
 > **⚠️ Atenção:** Um objeto criado com `CreateObject` persiste apenas para **uma única chamada Invoke**. Isso significa que se você criar um objeto Subscriber e utilizá-lo com [InvokeUpdate](../api-functions/invokeupdate.md), por exemplo, não será possível reutilizar esse mesmo objeto para passá-lo a um Triggered Send. Para cada operação distinta, crie um novo objeto.
 
-- `CreateObject` sozinha não faz nada no Marketing Cloud — ela apenas instancia o objeto em memória. Você precisa usar funções complementares como [SetObjectProperty](../api-functions/setobjectproperty.md) para definir propriedades e uma função de invocação para executar a ação.
+- `CreateObject` sozinha não faz nada no Marketing Cloud - ela apenas instancia o objeto em memória. Você precisa usar funções complementares como [SetObjectProperty](../api-functions/setobjectproperty.md) para definir propriedades e uma função de invocação para executar a ação.
 
 ## Funções relacionadas
 
-- [SetObjectProperty](../api-functions/setobjectproperty.md) — define propriedades no objeto criado
-- [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) — adiciona itens a propriedades do tipo array no objeto
-- [InvokeCreate](../api-functions/invokecreate.md) — executa a criação do objeto na API
-- [InvokeUpdate](../api-functions/invokeupdate.md) — executa a atualização do objeto na API
-- [InvokeDelete](../api-functions/invokedelete.md) — executa a exclusão do objeto na API
-- [InvokeRetrieve](../api-functions/invokeretrieve.md) — recupera dados de objetos da API
-- [InvokeExecute](../api-functions/invokeexecute.md) — executa ações sobre objetos da API
-- [InvokePerform](../api-functions/invokeperform.md) — executa operações de perform sobre objetos da API
+- [SetObjectProperty](../api-functions/setobjectproperty.md) - define propriedades no objeto criado
+- [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) - adiciona itens a propriedades do tipo array no objeto
+- [InvokeCreate](../api-functions/invokecreate.md) - executa a criação do objeto na API
+- [InvokeUpdate](../api-functions/invokeupdate.md) - executa a atualização do objeto na API
+- [InvokeDelete](../api-functions/invokedelete.md) - executa a exclusão do objeto na API
+- [InvokeRetrieve](../api-functions/invokeretrieve.md) - recupera dados de objetos da API
+- [InvokeExecute](../api-functions/invokeexecute.md) - executa ações sobre objetos da API
+- [InvokePerform](../api-functions/invokeperform.md) - executa operações de perform sobre objetos da API

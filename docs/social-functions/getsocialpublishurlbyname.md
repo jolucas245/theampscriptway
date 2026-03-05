@@ -8,7 +8,7 @@ description: Retorna o código HTML para compartilhamento de uma região de cont
 
 ## Descrição
 
-Retorna o código HTML necessário para compartilhar uma região de conteúdo em uma rede social suportada, identificando a rede pelo nome. Essa função é usada em conjunto com o recurso **Social Forward** do Marketing Cloud Engagement. É útil quando você quer incluir botões de compartilhamento social nos seus e-mails — por exemplo, permitir que o assinante compartilhe uma promoção da sua loja no Facebook ou LinkedIn.
+Retorna o código HTML necessário para compartilhar uma região de conteúdo em uma rede social suportada, identificando a rede pelo nome. Essa função é usada em conjunto com o recurso **Social Forward** do Marketing Cloud Engagement. É útil quando você quer incluir botões de compartilhamento social nos seus e-mails - por exemplo, permitir que o assinante compartilhe uma promoção da sua loja no Facebook ou LinkedIn.
 
 ## Sintaxe
 
@@ -112,7 +112,7 @@ Olá, João! Compartilhe essa oferta com seus amigos:
 ## Observações
 
 - A função **depende do recurso Social Forward** estar habilitado na sua conta do Marketing Cloud. Sem ele, a função não vai gerar o resultado esperado.
-- Você pode passar **múltiplos pares chave-valor** como parâmetros adicionais — basta adicioná-los sequencialmente ao final da chamada da função. Isso é muito útil para adicionar parâmetros UTM de rastreamento.
+- Você pode passar **múltiplos pares chave-valor** como parâmetros adicionais - basta adicioná-los sequencialmente ao final da chamada da função. Isso é muito útil para adicionar parâmetros UTM de rastreamento.
 - A diferença entre esta função e [GetSocialPublishUrl](../social-functions/getsocialpublishurl.md) é que aqui você referencia a rede social pelo **nome** (string), o que torna o código mais legível.
 
 > **💡 Dica:** No mercado brasileiro, os botões de compartilhamento social em e-mail marketing são mais comuns em campanhas de indicação (member-get-member) e lançamentos de produto. Lembre-se de que o código ISO do Brasil é `"BR"`.
@@ -121,5 +121,5 @@ Olá, João! Compartilhe essa oferta com seus amigos:
 
 ## Funções relacionadas
 
-- [GetSocialPublishUrl](../social-functions/getsocialpublishurl.md) — versão que identifica a rede social por ID em vez do nome.
-- [GetPublishedSocialContent](../social-functions/getpublishedsocialcontent.md) — recupera conteúdo já publicado em rede social.
+- [GetSocialPublishUrl](../social-functions/getsocialpublishurl.md) - versão que identifica a rede social por ID em vez do nome.
+- [GetPublishedSocialContent](../social-functions/getpublishedsocialcontent.md) - recupera conteúdo já publicado em rede social.

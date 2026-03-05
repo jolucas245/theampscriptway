@@ -41,7 +41,7 @@ SET @resultado = TransformXML(@xml, @xsl)
 
 **Saída:**
 ```
-(O HTML resultante da transformação XSL aplicada ao XML do catálogo — por exemplo, uma tabela formatada com os produtos da MegaStore)
+(O HTML resultante da transformação XSL aplicada ao XML do catálogo - por exemplo, uma tabela formatada com os produtos da MegaStore)
 ```
 
 ## Exemplo avançado
@@ -69,7 +69,7 @@ SET @resultado = TransformXML(@xmlDecoded, @xslDecoded)
 
 **Saída:**
 ```
-(O HTML resultante da transformação — por exemplo, um resumo formatado dos pedidos do cliente na Lojas Vitória, com valores em R$ e datas no formato DD/MM/AAAA conforme definido no XSL)
+(O HTML resultante da transformação - por exemplo, um resumo formatado dos pedidos do cliente na Lojas Vitória, com valores em R$ e datas no formato DD/MM/AAAA conforme definido no XSL)
 ```
 
 ## Observações
@@ -85,7 +85,7 @@ SET @resultado = TransformXML(@xmlDecoded, @xslDecoded)
 
 ## Funções relacionadas
 
-- [`TreatAsContent()`](../utility-functions/treatascontent.md) — avalia AMPscript contido no resultado da transformação
-- [`BuildRowsetFromXml()`](../content-functions/buildrowsetfromxml.md) — alternativa recomendada para lidar com conteúdo XML
-- [`Base64Decode()`](../encryption-functions/base64decode.md) — decodifica conteúdo Base64 para uso com Content Builder
-- [`GetPortfolioItem()`](../content-functions/getportfolioitem.md) — recupera arquivos XML/XSL do Portfolio (Classic Content)
+- [`TreatAsContent()`](../utility-functions/treatascontent.md) - avalia AMPscript contido no resultado da transformação
+- [`BuildRowsetFromXml()`](../content-functions/buildrowsetfromxml.md) - alternativa recomendada para lidar com conteúdo XML
+- [`Base64Decode()`](../encryption-functions/base64decode.md) - decodifica conteúdo Base64 para uso com Content Builder
+- [`GetPortfolioItem()`](../content-functions/getportfolioitem.md) - recupera arquivos XML/XSL do Portfolio (Classic Content)

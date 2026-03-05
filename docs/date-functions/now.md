@@ -8,7 +8,7 @@ description: Retorna a data e hora atual do sistema no momento da execução.
 
 ## Descrição
 
-A função `Now` retorna o timestamp atual do sistema da Salesforce Marketing Cloud. É a forma mais comum de capturar "agora" dentro de um e-mail, CloudPage ou qualquer peça AMPscript — útil para exibir a data de envio, registrar timestamps em Data Extensions ou criar lógicas condicionais baseadas em horário (como saudações "Bom dia / Boa tarde / Boa noite"). Quando usada sem parâmetros, retorna a data e hora correntes; quando chamada com `true`, retorna o horário de início do job de envio (ou o horário de publicação, no caso de triggered/journey sends).
+A função `Now` retorna o timestamp atual do sistema da Salesforce Marketing Cloud. É a forma mais comum de capturar "agora" dentro de um e-mail, CloudPage ou qualquer peça AMPscript - útil para exibir a data de envio, registrar timestamps em Data Extensions ou criar lógicas condicionais baseadas em horário (como saudações "Bom dia / Boa tarde / Boa noite"). Quando usada sem parâmetros, retorna a data e hora correntes; quando chamada com `true`, retorna o horário de início do job de envio (ou o horário de publicação, no caso de triggered/journey sends).
 
 ## Sintaxe
 
@@ -123,9 +123,9 @@ Tempo de processamento: 47 minuto(s)
 
 ## Observações
 
-> **⚠️ Atenção:** O horário retornado por `Now()` é o **horário do sistema da Salesforce Marketing Cloud (CST/CDT — Central Time dos EUA)**. Para exibir no fuso horário de Brasília (BRT), você precisa ajustar manualmente com [`DateAdd`](../date-functions/dateadd.md). Exemplo: `DateAdd(Now(), 3, "H")` para converter de CDT para BRT durante o horário de verão dos EUA — mas lembre-se de que essa diferença varia conforme daylight saving time americano.
+> **⚠️ Atenção:** O horário retornado por `Now()` é o **horário do sistema da Salesforce Marketing Cloud (CST/CDT - Central Time dos EUA)**. Para exibir no fuso horário de Brasília (BRT), você precisa ajustar manualmente com [`DateAdd`](../date-functions/dateadd.md). Exemplo: `DateAdd(Now(), 3, "H")` para converter de CDT para BRT durante o horário de verão dos EUA - mas lembre-se de que essa diferença varia conforme daylight saving time americano.
 
-> **⚠️ Atenção:** Em **triggered sends e journey sends**, o `Now(true)` não retorna o momento do envio individual — ele retorna o horário em que a **triggered send definition foi publicada**. Se você precisa do horário exato em que cada subscriber recebeu a mensagem, use [`GetSendTime()`](../date-functions/getsendtime.md).
+> **⚠️ Atenção:** Em **triggered sends e journey sends**, o `Now(true)` não retorna o momento do envio individual - ele retorna o horário em que a **triggered send definition foi publicada**. Se você precisa do horário exato em que cada subscriber recebeu a mensagem, use [`GetSendTime()`](../date-functions/getsendtime.md).
 
 > **⚠️ Atenção:** Quando usada em **CloudPages**, a função `Now()` sempre retorna a hora atual do sistema, **independentemente** do valor passado no parâmetro `boolPreserveEmailSentTime`. Ou seja, `Now(true)` se comporta igual a `Now()` em CloudPages.
 
@@ -133,8 +133,8 @@ Tempo de processamento: 47 minuto(s)
 
 ## Funções relacionadas
 
-- [`GetSendTime`](../date-functions/getsendtime.md) — retorna o horário em que o envio individual de cada subscriber foi concluído
-- [`FormatDate`](../date-functions/formatdate.md) — formata a data retornada por `Now()` no padrão desejado (ex: DD/MM/AAAA)
-- [`DateAdd`](../date-functions/dateadd.md) — adiciona ou subtrai intervalos de tempo (útil para ajuste de fuso horário)
-- [`DateDiff`](../date-functions/datediff.md) — calcula a diferença entre duas datas
-- [`DatePart`](../date-functions/datepart.md) — extrai partes específicas da data (hora, minuto, dia, mês etc.)
+- [`GetSendTime`](../date-functions/getsendtime.md) - retorna o horário em que o envio individual de cada subscriber foi concluído
+- [`FormatDate`](../date-functions/formatdate.md) - formata a data retornada por `Now()` no padrão desejado (ex: DD/MM/AAAA)
+- [`DateAdd`](../date-functions/dateadd.md) - adiciona ou subtrai intervalos de tempo (útil para ajuste de fuso horário)
+- [`DateDiff`](../date-functions/datediff.md) - calcula a diferença entre duas datas
+- [`DatePart`](../date-functions/datepart.md) - extrai partes específicas da data (hora, minuto, dia, mês etc.)

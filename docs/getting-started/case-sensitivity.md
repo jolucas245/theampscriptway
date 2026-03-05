@@ -1,13 +1,13 @@
 ---
 title: Case Sensitivity
 sidebar_label: Case Sensitivity
-description: AMPscript não diferencia maiúsculas de minúsculas em palavras-chave e nomes de funções — entenda o que isso significa na prática.
+description: AMPscript não diferencia maiúsculas de minúsculas em palavras-chave e nomes de funções - entenda o que isso significa na prática.
 sidebar_position: 10
 ---
 
 # Case Sensitivity
 
-AMPscript é **case-insensitive** para palavras-chave e nomes de funções. Isso significa que `Replace`, `replace` e `REPLACE` são tratados exatamente da mesma forma — produzem o mesmo resultado.
+AMPscript é **case-insensitive** para palavras-chave e nomes de funções. Isso significa que `Replace`, `replace` e `REPLACE` são tratados exatamente da mesma forma - produzem o mesmo resultado.
 
 ```ampscript
 %%[
@@ -26,9 +26,9 @@ O mesmo vale para palavras-chave estruturais da linguagem: `IF`, `If` e `if` fun
 
 ## Por que isso importa
 
-A flexibilidade é boa, mas pode virar problema em projetos com múltiplos desenvolvedores. Sem uma convenção definida, o mesmo projeto pode ter `Lookup`, `LOOKUP` e `lookup` misturados — o que funciona, mas dificulta muito a leitura e manutenção.
+A flexibilidade é boa, mas pode virar problema em projetos com múltiplos desenvolvedores. Sem uma convenção definida, o mesmo projeto pode ter `Lookup`, `LOOKUP` e `lookup` misturados - o que funciona, mas dificulta muito a leitura e manutenção.
 
-A documentação oficial da Salesforce adota **PascalCase** para funções — primeira letra de cada palavra em maiúsculo. Na AMPScript Way, recomendamos essa convenção combinada com `MAIÚSCULAS` para palavras-chave estruturais:
+A documentação oficial da Salesforce adota **PascalCase** para funções - primeira letra de cada palavra em maiúsculo. Na AMPScript Way, recomendamos essa convenção combinada com `MAIÚSCULAS` para palavras-chave estruturais:
 
 | Elemento | Convenção | Exemplo |
 |----------|-----------|---------|
@@ -36,6 +36,6 @@ A documentação oficial da Salesforce adota **PascalCase** para funções — p
 | Variáveis | camelCase | `@nomeCliente`, `@totalPedidos` |
 | Palavras-chave | MAIÚSCULAS | `SET`, `IF THEN ENDIF`, `FOR DO NEXT` |
 
-> **💡 Dica:** O mais importante não é qual convenção você escolhe — é ser consistente. Defina o padrão com sua equipe no início do projeto e documente-o. Isso economiza tempo e evita discussões desnecessárias.
+> **💡 Dica:** O mais importante não é qual convenção você escolhe - é ser consistente. Defina o padrão com sua equipe no início do projeto e documente-o. Isso economiza tempo e evita discussões desnecessárias.
 
-Para mais detalhes sobre convenções de nomenclatura e organização de código, veja [Boas Práticas](/docs/getting-started/best-practices).
+Para mais detalhes sobre convenções de nomenclatura e organização de código, veja [Boas Práticas](/docs/getting-started/boas-praticas).

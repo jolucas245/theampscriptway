@@ -119,7 +119,7 @@ SET @urlTwitter = GetSocialPublishURL("11", "black_friday_2024", "hashtags", "Bl
 
 ## Funções relacionadas
 
-- [GetSocialPublishUrlByName](../social-functions/getsocialpublishurlbyname.md) — mesma funcionalidade, mas usando o nome da rede social ao invés do código numérico.
-- [GetPublishedSocialContent](../social-functions/getpublishedsocialcontent.md) — recupera conteúdo social já publicado.
-- [ContentArea](../content-functions/contentarea.md) — trabalha com regiões de conteúdo que podem ser compartilhadas via Social Forward.
-- [RedirectTo](../http-functions/redirectto.md) — útil para redirecionamentos de URLs geradas dinamicamente.
+- [GetSocialPublishUrlByName](../social-functions/getsocialpublishurlbyname.md) - mesma funcionalidade, mas usando o nome da rede social ao invés do código numérico.
+- [GetPublishedSocialContent](../social-functions/getpublishedsocialcontent.md) - recupera conteúdo social já publicado.
+- [ContentArea](../content-functions/contentarea.md) - trabalha com regiões de conteúdo que podem ser compartilhadas via Social Forward.
+- [RedirectTo](../http-functions/redirectto.md) - útil para redirecionamentos de URLs geradas dinamicamente.

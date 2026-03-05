@@ -8,7 +8,7 @@ description: Verifica se o valor informado é um número de telefone válido no 
 
 ## Descrição
 
-A função `IsPhoneNumber` testa se o valor informado é um número de telefone válido de acordo com o **North American Numbering Plan (NANP)** — o plano de numeração usado em 25 países e territórios, a maioria na América do Norte e Caribe (EUA, Canadá, República Dominicana, entre outros). Se o número for válido no NANP, retorna `true`; caso contrário, retorna `false`. **Números de telefone que não fazem parte do NANP — como os brasileiros — sempre retornam `false`**, o que limita bastante seu uso direto para validação de telefones no Brasil.
+A função `IsPhoneNumber` testa se o valor informado é um número de telefone válido de acordo com o **North American Numbering Plan (NANP)** - o plano de numeração usado em 25 países e territórios, a maioria na América do Norte e Caribe (EUA, Canadá, República Dominicana, entre outros). Se o número for válido no NANP, retorna `true`; caso contrário, retorna `false`. **Números de telefone que não fazem parte do NANP - como os brasileiros - sempre retornam `false`**, o que limita bastante seu uso direto para validação de telefones no Brasil.
 
 ## Sintaxe
 
@@ -24,7 +24,7 @@ IsPhoneNumber(phoneNumber)
 
 ## Exemplo básico
 
-Verificando se um número de telefone norte-americano é válido — útil quando sua base tem contatos nos EUA ou Canadá:
+Verificando se um número de telefone norte-americano é válido - útil quando sua base tem contatos nos EUA ou Canadá:
 
 ```ampscript
 %%[
@@ -81,7 +81,7 @@ Olá, João Silva! Identificamos seu telefone como válido no plano norte-americ
 
 ## Observações
 
-> **⚠️ Atenção:** Telefones brasileiros — como `(11) 99999-9999` ou `11999999999` — **sempre retornam `false`**, pois o Brasil não faz parte do NANP. Essa função **não serve para validar telefones brasileiros**. Se você precisa validar formato de telefone BR, considere usar [RegExMatch](../string-functions/regexmatch.md) com uma expressão regular adequada.
+> **⚠️ Atenção:** Telefones brasileiros - como `(11) 99999-9999` ou `11999999999` - **sempre retornam `false`**, pois o Brasil não faz parte do NANP. Essa função **não serve para validar telefones brasileiros**. Se você precisa validar formato de telefone BR, considere usar [RegExMatch](../string-functions/regexmatch.md) com uma expressão regular adequada.
 
 > **⚠️ Atenção:** Caracteres além de números, espaços, pontos, hífens e parênteses fazem a função retornar `false`, **mesmo que o número em si seja válido no NANP**. Por exemplo, `"+14255550142"` retorna `false` por causa do sinal de `+`. Para melhores resultados, passe apenas números para a função.
 
@@ -92,9 +92,9 @@ Olá, João Silva! Identificamos seu telefone como válido no plano norte-americ
 
 ## Funções relacionadas
 
-- [IsEmailAddress](../utility-functions/isemailaddress.md) — valida se um valor é um endereço de e-mail válido
-- [Empty](../utility-functions/empty.md) — verifica se um valor está vazio ou nulo
-- [RegExMatch](../string-functions/regexmatch.md) — alternativa para validar telefones brasileiros com expressão regular
-- [Replace](../string-functions/replace.md) — útil para limpar caracteres do telefone antes da validação
-- [AttributeValue](../utility-functions/attributevalue.md) — recupera valores de atributos do assinante de forma segura
-- [RaiseError](../utility-functions/raiseerror.md) — pode ser usada para interromper o envio quando o telefone não é válido
+- [IsEmailAddress](../utility-functions/isemailaddress.md) - valida se um valor é um endereço de e-mail válido
+- [Empty](../utility-functions/empty.md) - verifica se um valor está vazio ou nulo
+- [RegExMatch](../string-functions/regexmatch.md) - alternativa para validar telefones brasileiros com expressão regular
+- [Replace](../string-functions/replace.md) - útil para limpar caracteres do telefone antes da validação
+- [AttributeValue](../utility-functions/attributevalue.md) - recupera valores de atributos do assinante de forma segura
+- [RaiseError](../utility-functions/raiseerror.md) - pode ser usada para interromper o envio quando o telefone não é válido

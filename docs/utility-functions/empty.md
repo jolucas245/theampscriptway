@@ -8,7 +8,7 @@ description: Verifica se uma variável está vazia ou nula, retornando true ou f
 
 ## Descrição
 
-A função `Empty()` testa se uma variável possui valor. Se a variável contém algum valor, retorna **false**. Se a variável é uma string vazia ou null (não foi definida), retorna **true**. É uma das funções mais usadas no dia a dia de SFMC — essencial para validar dados de subscribers antes de personalizar e-mails, evitando que campos em branco quebrem o layout ou gerem mensagens constrangedoras como "Olá, !".
+A função `Empty()` testa se uma variável possui valor. Se a variável contém algum valor, retorna **false**. Se a variável é uma string vazia ou null (não foi definida), retorna **true**. É uma das funções mais usadas no dia a dia de SFMC - essencial para validar dados de subscribers antes de personalizar e-mails, evitando que campos em branco quebrem o layout ou gerem mensagens constrangedoras como "Olá, !".
 
 ## Sintaxe
 
@@ -85,7 +85,7 @@ ENDIF
 
 SET @saudacao = IIF(NOT Empty(@nome), Concat("Olá, ", @nome, "!"), "Olá, cliente!")
 
-SET @infoCpf = IIF(NOT Empty(@cpf), Concat("CPF cadastrado: ", @cpf), "CPF não informado — atualize seu cadastro.")
+SET @infoCpf = IIF(NOT Empty(@cpf), Concat("CPF cadastrado: ", @cpf), "CPF não informado - atualize seu cadastro.")
 
 SET @infoTelefone = IIF(NOT Empty(@telefone), Concat("Telefone: ", @telefone), "Cadastre seu telefone para receber alertas por SMS.")
 
@@ -114,17 +114,17 @@ Seu limite disponível: R$ 5.500,50
 
 - A função `Empty()` retorna **true** em dois cenários: quando a variável contém uma string vazia (`""`) e quando a variável é null (nunca recebeu um valor via `SET`).
 
-- Combiná-la com `IF` ou [IIF](../utility-functions/iif.md) é o padrão mais comum no dia a dia — praticamente todo e-mail personalizado no SFMC brasileiro usa essa abordagem para tratar campos opcionais do cadastro.
+- Combiná-la com `IF` ou [IIF](../utility-functions/iif.md) é o padrão mais comum no dia a dia - praticamente todo e-mail personalizado no SFMC brasileiro usa essa abordagem para tratar campos opcionais do cadastro.
 
 > **💡 Dica:** Use `Empty()` junto com [AttributeValue](../utility-functions/attributevalue.md) para validar campos vindos de Data Extensions ou atributos de perfil. O `AttributeValue` já retorna string vazia quando o campo não existe, o que combina perfeitamente com `Empty()`.
 
-> **⚠️ Atenção:** Uma variável que contém um espaço em branco (`" "`) **não** é considerada vazia por `Empty()` — ela tem um valor (o espaço). Se seus dados podem vir com espaços indesejados, combine com [Trim](../string-functions/trim.md) antes de testar: `Empty(Trim(@variavel))`.
+> **⚠️ Atenção:** Uma variável que contém um espaço em branco (`" "`) **não** é considerada vazia por `Empty()` - ela tem um valor (o espaço). Se seus dados podem vir com espaços indesejados, combine com [Trim](../string-functions/trim.md) antes de testar: `Empty(Trim(@variavel))`.
 
 ## Funções relacionadas
 
-- [IIF](../utility-functions/iif.md) — ternário inline, ideal para combinar com `Empty()` em tratamentos de uma linha
-- [IsNull](../utility-functions/isnull.md) — testa especificamente se o valor é null
-- [IsNullDefault](../utility-functions/isnulldefault.md) — retorna um valor padrão quando a variável é null
-- [AttributeValue](../utility-functions/attributevalue.md) — recupera atributos de subscriber retornando string vazia quando não existem
-- [Trim](../string-functions/trim.md) — remove espaços em branco antes de testar com `Empty()`
-- [RaiseError](../utility-functions/raiseerror.md) — cancela o envio quando um campo obrigatório está vazio
+- [IIF](../utility-functions/iif.md) - ternário inline, ideal para combinar com `Empty()` em tratamentos de uma linha
+- [IsNull](../utility-functions/isnull.md) - testa especificamente se o valor é null
+- [IsNullDefault](../utility-functions/isnulldefault.md) - retorna um valor padrão quando a variável é null
+- [AttributeValue](../utility-functions/attributevalue.md) - recupera atributos de subscriber retornando string vazia quando não existem
+- [Trim](../string-functions/trim.md) - remove espaços em branco antes de testar com `Empty()`
+- [RaiseError](../utility-functions/raiseerror.md) - cancela o envio quando um campo obrigatório está vazio

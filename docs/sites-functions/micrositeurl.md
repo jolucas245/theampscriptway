@@ -74,8 +74,8 @@ Em uma régua de relacionamento do Banco Brasilão, você precisa direcionar o c
 
 ## Funções relacionadas
 
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — alternativa moderna para landing pages no CloudPages, com criptografia de parâmetros
-- [LiveContentMicrositeURL](../sites-functions/livecontentmicrositeurl.md) — variação para conteúdo dinâmico em microsites
-- [RedirectTo](../http-functions/redirectto.md) — para redirecionar corretamente links gerados por funções de URL
-- [Concat](../string-functions/concat.md) — para concatenar parâmetros adicionais à URL
-- [RequestParameter](../sites-functions/requestparameter.md) — para recuperar os parâmetros criptografados na página de destino
+- [CloudPagesURL](../sites-functions/cloudpagesurl.md) - alternativa moderna para landing pages no CloudPages, com criptografia de parâmetros
+- [LiveContentMicrositeURL](../sites-functions/livecontentmicrositeurl.md) - variação para conteúdo dinâmico em microsites
+- [RedirectTo](../http-functions/redirectto.md) - para redirecionar corretamente links gerados por funções de URL
+- [Concat](../string-functions/concat.md) - para concatenar parâmetros adicionais à URL
+- [RequestParameter](../sites-functions/requestparameter.md) - para recuperar os parâmetros criptografados na página de destino

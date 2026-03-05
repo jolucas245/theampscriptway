@@ -8,7 +8,7 @@ description: Retorna uma tag img completa a partir do ID de uma imagem armazenad
 
 ## Descrição
 
-Retorna uma tag `<img>` completa cujo atributo `src` aponta para uma imagem do Content Builder, identificada pelo seu ID. A tag gerada já inclui os atributos `title`, `alt`, `border="0"` e um `thid` com o ID interno da imagem. É muito útil quando você precisa inserir imagens dinâmicas em e-mails — como banners de campanha, logos de parceiros ou imagens de produtos — garantindo que, se a imagem principal não for encontrada, um fallback será exibido no lugar.
+Retorna uma tag `<img>` completa cujo atributo `src` aponta para uma imagem do Content Builder, identificada pelo seu ID. A tag gerada já inclui os atributos `title`, `alt`, `border="0"` e um `thid` com o ID interno da imagem. É muito útil quando você precisa inserir imagens dinâmicas em e-mails - como banners de campanha, logos de parceiros ou imagens de produtos - garantindo que, se a imagem principal não for encontrada, um fallback será exibido no lugar.
 
 ## Sintaxe
 
@@ -100,8 +100,8 @@ SET @imgUrl = RegExMatch(@imgTag, 'src="([^"]+)"', 1)
 
 ## Funções relacionadas
 
-- [ContentImageByKey](../content-functions/contentimagebykey.md) — mesma função, mas usando a External Key da imagem em vez do ID
-- [ImageById](../content-functions/imagebyid.md) — retorna uma tag `<img>` a partir do ID de uma imagem no portfólio clássico
-- [ContentBlockById](../content-functions/contentblockbyid.md) — retorna o conteúdo de um bloco do Content Builder pelo ID
-- [RegExMatch](../string-functions/regexmatch.md) — útil para extrair apenas a URL do `src` da tag retornada
-- [Image](../content-functions/image.md) — retorna uma tag `<img>` a partir do portfólio clássico
+- [ContentImageByKey](../content-functions/contentimagebykey.md) - mesma função, mas usando a External Key da imagem em vez do ID
+- [ImageById](../content-functions/imagebyid.md) - retorna uma tag `<img>` a partir do ID de uma imagem no portfólio clássico
+- [ContentBlockById](../content-functions/contentblockbyid.md) - retorna o conteúdo de um bloco do Content Builder pelo ID
+- [RegExMatch](../string-functions/regexmatch.md) - útil para extrair apenas a URL do `src` da tag retornada
+- [Image](../content-functions/image.md) - retorna uma tag `<img>` a partir do portfólio clássico

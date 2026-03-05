@@ -107,9 +107,9 @@ Cadastro atualizado com sucesso, obrigado!
 
 ## Funções relacionadas
 
-- [`UpdateDE`](../data-extension-functions/updatede.md) — versão equivalente para uso em e-mails
-- [`UpsertData`](../data-extension-functions/upsertdata.md) — insere ou atualiza (útil quando você não sabe se o registro já existe)
-- [`InsertData`](../data-extension-functions/insertdata.md) — insere novos registros na Data Extension
-- [`DeleteData`](../data-extension-functions/deletedata.md) — remove registros da Data Extension
-- [`Lookup`](../data-extension-functions/lookup.md) — consulta dados antes de decidir o que atualizar
-- [`RequestParameter`](../sites-functions/requestparameter.md) — captura parâmetros de formulário em CloudPages
+- [`UpdateDE`](../data-extension-functions/updatede.md) - versão equivalente para uso em e-mails
+- [`UpsertData`](../data-extension-functions/upsertdata.md) - insere ou atualiza (útil quando você não sabe se o registro já existe)
+- [`InsertData`](../data-extension-functions/insertdata.md) - insere novos registros na Data Extension
+- [`DeleteData`](../data-extension-functions/deletedata.md) - remove registros da Data Extension
+- [`Lookup`](../data-extension-functions/lookup.md) - consulta dados antes de decidir o que atualizar
+- [`RequestParameter`](../sites-functions/requestparameter.md) - captura parâmetros de formulário em CloudPages

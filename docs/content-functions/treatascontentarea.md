@@ -8,7 +8,7 @@ description: Trata conteúdo recuperado de uma Data Extension ou outra fonte com
 
 ## Descrição
 
-A função `TreatAsContentArea` pega um conteúdo que você buscou de uma Data Extension (ou outra fonte) e faz o SFMC tratá-lo como se fosse uma Content Area nativa — uma "Content Area virtual". Isso é muito útil quando você monta conteúdo dinâmico a partir de dados externos e precisa que ele seja rastreável via Impression Regions, ou quando quer reutilizar blocos de conteúdo identificados por uma chave. É bastante comum em cenários de e-mail marketing onde diferentes versões de conteúdo (texto e HTML) são armazenadas em Data Extensions e precisam ser renderizadas no momento do envio.
+A função `TreatAsContentArea` pega um conteúdo que você buscou de uma Data Extension (ou outra fonte) e faz o SFMC tratá-lo como se fosse uma Content Area nativa - uma "Content Area virtual". Isso é muito útil quando você monta conteúdo dinâmico a partir de dados externos e precisa que ele seja rastreável via Impression Regions, ou quando quer reutilizar blocos de conteúdo identificados por uma chave. É bastante comum em cenários de e-mail marketing onde diferentes versões de conteúdo (texto e HTML) são armazenadas em Data Extensions e precisam ser renderizadas no momento do envio.
 
 ## Sintaxe
 
@@ -20,7 +20,7 @@ TreatAsContentArea(contentKey, contentValue [, impressionRegion])
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| contentKey | string | Sim | Chave que identifica o conteúdo. A função trata uma chave em contexto de texto como distinta de uma chave em contexto HTML — ou seja, você pode usar a mesma chave para identificar versões distintas de texto e HTML do conteúdo. O processamento das chaves é case-insensitive. |
+| contentKey | string | Sim | Chave que identifica o conteúdo. A função trata uma chave em contexto de texto como distinta de uma chave em contexto HTML - ou seja, você pode usar a mesma chave para identificar versões distintas de texto e HTML do conteúdo. O processamento das chaves é case-insensitive. |
 | contentValue | string | Sim | O conteúdo a ser armazenado para o envio do e-mail sob a chave especificada. Para recuperar esse conteúdo, use as funções `HTTPGet()` ou `Lookup()`. |
 | impressionRegion | string | Não | Nome da Impression Region para a Content Area virtual. O número máximo de blocos de conteúdo virtual é 300. |
 
@@ -79,19 +79,19 @@ e rastreado na Impression Region "Oferta Geral".
 
 ## Observações
 
-> **⚠️ Atenção:** Sempre sanitize a entrada do usuário dentro de um bloco `TreatAsContentArea()`. Remova, escape ou bloqueie conteúdo que contenha tags HTML ou código AMPscript. Uma abordagem segura é usar uma allowlist de caracteres permitidos. Isso é crítico — como o conteúdo é tratado como Content Area, qualquer código AMPscript ou HTML malicioso inserido será processado e renderizado.
+> **⚠️ Atenção:** Sempre sanitize a entrada do usuário dentro de um bloco `TreatAsContentArea()`. Remova, escape ou bloqueie conteúdo que contenha tags HTML ou código AMPscript. Uma abordagem segura é usar uma allowlist de caracteres permitidos. Isso é crítico - como o conteúdo é tratado como Content Area, qualquer código AMPscript ou HTML malicioso inserido será processado e renderizado.
 
 > **⚠️ Atenção:** O número máximo de blocos de conteúdo virtual (Content Areas virtuais) é **300** por envio. Se você estiver montando e-mails altamente dinâmicos com muitas variações, fique de olho nesse limite.
 
-> **💡 Dica:** A função trata chaves de forma **case-insensitive** — ou seja, `"BannerPromo"`, `"bannerpromo"` e `"BANNERPROMO"` são a mesma chave. Porém, uma chave usada em contexto de texto é considerada distinta da mesma chave usada em contexto HTML. Isso significa que você pode usar a mesma chave para mapear a versão texto puro e a versão HTML do mesmo conteúdo sem conflito.
+> **💡 Dica:** A função trata chaves de forma **case-insensitive** - ou seja, `"BannerPromo"`, `"bannerpromo"` e `"BANNERPROMO"` são a mesma chave. Porém, uma chave usada em contexto de texto é considerada distinta da mesma chave usada em contexto HTML. Isso significa que você pode usar a mesma chave para mapear a versão texto puro e a versão HTML do mesmo conteúdo sem conflito.
 
 > **💡 Dica:** Para buscar o conteúdo que será passado como `contentValue`, use [`Lookup()`](../data-extension-functions/lookup.md) para Data Extensions ou [`HTTPGet()`](../http-functions/httpget.md) para fontes externas.
 
 ## Funções relacionadas
 
-- [`TreatAsContent`](../utility-functions/treatascontent.md) — renderiza uma string como conteúdo AMPscript/HTML, mas sem criar uma Content Area virtual com chave e Impression Region
-- [`Lookup`](../data-extension-functions/lookup.md) — para buscar o conteúdo em uma Data Extension antes de passá-lo para `TreatAsContentArea`
-- [`HTTPGet`](../http-functions/httpget.md) — para buscar conteúdo de uma URL externa
-- [`ContentArea`](../content-functions/contentarea.md) — para referenciar Content Areas reais (não virtuais)
-- [`ContentBlockByKey`](../content-functions/contentblockbykey.md) — para incluir Content Blocks por chave
-- [`BeginImpressionRegion`](../content-functions/beginimpressionregion.md) / [`EndImpressionRegion`](../content-functions/endimpressionregion.md) — para criar Impression Regions manualmente em torno de blocos de conteúdo
+- [`TreatAsContent`](../utility-functions/treatascontent.md) - renderiza uma string como conteúdo AMPscript/HTML, mas sem criar uma Content Area virtual com chave e Impression Region
+- [`Lookup`](../data-extension-functions/lookup.md) - para buscar o conteúdo em uma Data Extension antes de passá-lo para `TreatAsContentArea`
+- [`HTTPGet`](../http-functions/httpget.md) - para buscar conteúdo de uma URL externa
+- [`ContentArea`](../content-functions/contentarea.md) - para referenciar Content Areas reais (não virtuais)
+- [`ContentBlockByKey`](../content-functions/contentblockbykey.md) - para incluir Content Blocks por chave
+- [`BeginImpressionRegion`](../content-functions/beginimpressionregion.md) / [`EndImpressionRegion`](../content-functions/endimpressionregion.md) - para criar Impression Regions manualmente em torno de blocos de conteúdo

@@ -8,7 +8,7 @@ description: Retorna o conteúdo de um arquivo armazenado no Portfolio do Market
 
 ## Descrição
 
-A função `GetPortfolioItem` retorna o conteúdo de um arquivo armazenado no seu Portfolio (a biblioteca de arquivos do Marketing Cloud). Ela é especialmente útil quando você quer manter trechos de texto em arquivos externos e puxá-los dinamicamente para dentro dos seus e-mails, CloudPages ou qualquer conteúdo. Pense nela como uma forma de centralizar textos reutilizáveis — termos legais, disclaimers, rodapés padrão — em um único lugar, sem precisar replicar em cada peça.
+A função `GetPortfolioItem` retorna o conteúdo de um arquivo armazenado no seu Portfolio (a biblioteca de arquivos do Marketing Cloud). Ela é especialmente útil quando você quer manter trechos de texto em arquivos externos e puxá-los dinamicamente para dentro dos seus e-mails, CloudPages ou qualquer conteúdo. Pense nela como uma forma de centralizar textos reutilizáveis - termos legais, disclaimers, rodapés padrão - em um único lugar, sem precisar replicar em cada peça.
 
 ## Sintaxe
 
@@ -76,9 +76,9 @@ Banco Brasilão S.A. - Instituição financeira autorizada pelo Banco Central do
 
 ## Funções relacionadas
 
-- [ContentBlockByKey](../content-functions/contentblockbykey.md) — carrega blocos de conteúdo pela chave externa (alternativa mais moderna para conteúdo reutilizável)
-- [ContentBlockByName](../content-functions/contentblockbyname.md) — carrega blocos de conteúdo pelo caminho/nome
-- [ContentBlockById](../content-functions/contentblockbyid.md) — carrega blocos de conteúdo pelo ID
-- [TreatAsContent](../utility-functions/treatascontent.md) — processa AMPscript dentro de uma string retornada
-- [Concat](../string-functions/concat.md) — concatena strings para compor mensagens dinâmicas
-- [AttachFile](../content-functions/attachfile.md) — anexa arquivos do Portfolio a e-mails
+- [ContentBlockByKey](../content-functions/contentblockbykey.md) - carrega blocos de conteúdo pela chave externa (alternativa mais moderna para conteúdo reutilizável)
+- [ContentBlockByName](../content-functions/contentblockbyname.md) - carrega blocos de conteúdo pelo caminho/nome
+- [ContentBlockById](../content-functions/contentblockbyid.md) - carrega blocos de conteúdo pelo ID
+- [TreatAsContent](../utility-functions/treatascontent.md) - processa AMPscript dentro de uma string retornada
+- [Concat](../string-functions/concat.md) - concatena strings para compor mensagens dinâmicas
+- [AttachFile](../content-functions/attachfile.md) - anexa arquivos do Portfolio a e-mails

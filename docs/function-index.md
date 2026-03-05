@@ -143,7 +143,7 @@ Lista completa das funções AMPscript disponíveis no Salesforce Marketing Clou
 | [RatingStars](./content-functions/ratingstars.md) | Gera uma imagem de estrelas de avaliação para Einstein Email Recommendations |
 | [TransformXML](./content-functions/transformxml.md) | Aplica uma transformação XSL a dados XML |
 | [TreatAsContentArea](./content-functions/treatascontentarea.md) | Processa uma string como Content Area |
-| [WAT](./content-functions/wat.md) | Web Analytics Tracking — adiciona rastreamento a uma URL |
+| [WAT](./content-functions/wat.md) | Web Analytics Tracking - adiciona rastreamento a uma URL |
 
 ## Funções HTTP
 

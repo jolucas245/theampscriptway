@@ -8,7 +8,7 @@ description: Retorna uma tag img com o caminho de uma imagem do Content Builder 
 
 ## Descrição
 
-A função `ContentImageById` retorna uma tag `<img>` completa apontando para uma imagem armazenada no Content Builder, localizada pelo seu ID. A tag gerada já inclui os atributos `title`, `alt`, `border="0"` e um `thid` com o ID da imagem. É muito útil quando você precisa inserir imagens dinâmicas em e-mails — por exemplo, banners personalizados por segmento ou imagens de produtos — e quer garantir que, se a imagem principal não for encontrada, um fallback seja exibido automaticamente.
+A função `ContentImageById` retorna uma tag `<img>` completa apontando para uma imagem armazenada no Content Builder, localizada pelo seu ID. A tag gerada já inclui os atributos `title`, `alt`, `border="0"` e um `thid` com o ID da imagem. É muito útil quando você precisa inserir imagens dinâmicas em e-mails - por exemplo, banners personalizados por segmento ou imagens de produtos - e quer garantir que, se a imagem principal não for encontrada, um fallback seja exibido automaticamente.
 
 > **⚠️ Atenção:** Essa função funciona **apenas com imagens no Content Builder**. Ela não funciona com blocos de imagem (image blocks).
 
@@ -105,7 +105,7 @@ SET @urlImagem = RegExMatch(@tagImagem, 'src="([^"]+)"', 1)
 
 ## Funções relacionadas
 
-- [ContentImageByKey](../content-functions/contentimagebykey.md) — mesma funcionalidade, mas localiza a imagem pela Customer Key em vez do ID.
-- [Image](../content-functions/image.md) — para trabalhar com imagens usando referências do Portfolio clássico.
-- [RegExMatch](../string-functions/regexmatch.md) — útil para extrair apenas a URL do `src` a partir da tag `<img>` retornada.
-- [ContentBlockById](../content-functions/contentblockbyid.md) — para inserir blocos de conteúdo completos do Content Builder por ID.
+- [ContentImageByKey](../content-functions/contentimagebykey.md) - mesma funcionalidade, mas localiza a imagem pela Customer Key em vez do ID.
+- [Image](../content-functions/image.md) - para trabalhar com imagens usando referências do Portfolio clássico.
+- [RegExMatch](../string-functions/regexmatch.md) - útil para extrair apenas a URL do `src` a partir da tag `<img>` retornada.
+- [ContentBlockById](../content-functions/contentblockbyid.md) - para inserir blocos de conteúdo completos do Content Builder por ID.

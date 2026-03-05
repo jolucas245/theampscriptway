@@ -8,7 +8,7 @@ description: Substitui uma ou mais substrings de uma só vez por uma única stri
 
 ## Descrição
 
-A função `ReplaceList()` substitui uma ou mais substrings dentro de um texto por uma única string de substituição. É perfeita para quando você precisa limpar ou padronizar dados que podem conter vários caracteres ou padrões diferentes — tudo em uma única chamada, sem precisar encadear múltiplos [Replace()](../string-functions/replace.md). Retorna a string original com todas as substituições aplicadas.
+A função `ReplaceList()` substitui uma ou mais substrings dentro de um texto por uma única string de substituição. É perfeita para quando você precisa limpar ou padronizar dados que podem conter vários caracteres ou padrões diferentes - tudo em uma única chamada, sem precisar encadear múltiplos [Replace()](../string-functions/replace.md). Retorna a string original com todas as substituições aplicadas.
 
 ## Sintaxe
 
@@ -88,10 +88,10 @@ Caso precise de suporte, ligue para (11) 3000-1234.
 
 > **⚠️ Atenção:** Note que o segundo parâmetro é a string de **substituição** e o terceiro em diante são as strings de **busca**. Essa ordem é diferente do [Replace()](../string-functions/replace.md), onde a busca vem antes da substituição. Preste atenção para não inverter.
 
-> **💡 Dica:** Se você precisar substituir por valores **diferentes** para cada busca, o `ReplaceList()` não é a função certa — nesse caso, use chamadas separadas de [Replace()](../string-functions/replace.md) para cada substituição.
+> **💡 Dica:** Se você precisar substituir por valores **diferentes** para cada busca, o `ReplaceList()` não é a função certa - nesse caso, use chamadas separadas de [Replace()](../string-functions/replace.md) para cada substituição.
 
 ## Funções relacionadas
 
-- [Replace()](../string-functions/replace.md) — substitui uma única substring por outra (quando cada busca precisa de uma substituição diferente)
-- [Trim()](../string-functions/trim.md) — remove espaços em branco das extremidades de uma string
-- [Concat()](../string-functions/concat.md) — concatena strings, útil para reconstruir textos após substituições
+- [Replace()](../string-functions/replace.md) - substitui uma única substring por outra (quando cada busca precisa de uma substituição diferente)
+- [Trim()](../string-functions/trim.md) - remove espaços em branco das extremidades de uma string
+- [Concat()](../string-functions/concat.md) - concatena strings, útil para reconstruir textos após substituições

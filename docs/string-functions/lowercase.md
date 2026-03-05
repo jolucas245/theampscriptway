@@ -8,7 +8,7 @@ description: Converte todos os caracteres de uma string para letras minúsculas.
 
 ## Descrição
 
-A função `Lowercase` converte todos os caracteres de uma string para letras minúsculas. É extremamente útil para padronizar dados antes de fazer comparações — por exemplo, garantir que e-mails estejam sempre em minúsculo ou normalizar valores vindos de Data Extensions onde o preenchimento foi inconsistente. Retorna a string fornecida inteiramente em caracteres minúsculos.
+A função `Lowercase` converte todos os caracteres de uma string para letras minúsculas. É extremamente útil para padronizar dados antes de fazer comparações - por exemplo, garantir que e-mails estejam sempre em minúsculo ou normalizar valores vindos de Data Extensions onde o preenchimento foi inconsistente. Retorna a string fornecida inteiramente em caracteres minúsculos.
 
 ## Sintaxe
 
@@ -74,8 +74,8 @@ Frete grátis para São Paulo em compras acima de R$ 199,90!
 
 ## Funções relacionadas
 
-- [Uppercase](../string-functions/uppercase.md) — converte todos os caracteres para maiúsculas (operação inversa).
-- [ProperCase](../string-functions/propercase.md) — capitaliza a primeira letra de cada palavra, ideal para nomes de pessoas.
-- [Trim](../string-functions/trim.md) — remove espaços em branco do início e fim da string, ótimo para combinar com `Lowercase` na padronização de dados.
-- [Replace](../string-functions/replace.md) — substitui partes de uma string, útil em conjunto com `Lowercase` para normalização avançada.
-- [Concat](../string-functions/concat.md) — concatena strings, frequentemente usada junto com `Lowercase` para montar valores padronizados.
+- [Uppercase](../string-functions/uppercase.md) - converte todos os caracteres para maiúsculas (operação inversa).
+- [ProperCase](../string-functions/propercase.md) - capitaliza a primeira letra de cada palavra, ideal para nomes de pessoas.
+- [Trim](../string-functions/trim.md) - remove espaços em branco do início e fim da string, ótimo para combinar com `Lowercase` na padronização de dados.
+- [Replace](../string-functions/replace.md) - substitui partes de uma string, útil em conjunto com `Lowercase` para normalização avançada.
+- [Concat](../string-functions/concat.md) - concatena strings, frequentemente usada junto com `Lowercase` para montar valores padronizados.

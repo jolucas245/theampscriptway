@@ -8,7 +8,7 @@ description: Atualiza dados em uma ou mais colunas de uma Data Extension a parti
 
 ## Descrição
 
-A função `UpdateDE` atualiza dados em uma Data Extension, localizando a linha através de critérios de busca (coluna + valor) e aplicando as alterações nas colunas especificadas. É a função indicada para atualização de dados dentro de **e-mails** — se você precisa atualizar dados em CloudPages, landing pages, microsites ou mensagens SMS no MobileConnect, use a função [UpdateData](../data-extension-functions/updatedata.md). A função não retorna nenhuma saída.
+A função `UpdateDE` atualiza dados em uma Data Extension, localizando a linha através de critérios de busca (coluna + valor) e aplicando as alterações nas colunas especificadas. É a função indicada para atualização de dados dentro de **e-mails** - se você precisa atualizar dados em CloudPages, landing pages, microsites ou mensagens SMS no MobileConnect, use a função [UpdateData](../data-extension-functions/updatedata.md). A função não retorna nenhuma saída.
 
 ## Sintaxe
 
@@ -44,7 +44,7 @@ UpdateDE(
 
 **Saída:**
 ```
-(nenhuma saída é gerada — o valor da coluna "Preco" do produto 1042 é atualizado para 1299.90)
+(nenhuma saída é gerada - o valor da coluna "Preco" do produto 1042 é atualizado para 1299.90)
 ```
 
 ## Exemplo avançado
@@ -74,7 +74,7 @@ UpdateDE(
 
 **Saída:**
 ```
-(nenhuma saída é gerada — as colunas "CEP_Destino", "Frete" e "TaxaEmbalagem" da linha do pedido PED-78523 são atualizadas)
+(nenhuma saída é gerada - as colunas "CEP_Destino", "Frete" e "TaxaEmbalagem" da linha do pedido PED-78523 são atualizadas)
 ```
 
 ## Observações
@@ -93,8 +93,8 @@ UpdateDE(
 
 ## Funções relacionadas
 
-- [UpdateData](../data-extension-functions/updatedata.md) — equivalente para uso em CloudPages, landing pages, microsites e SMS
-- [InsertDE](../data-extension-functions/insertde.md) — insere uma nova linha na Data Extension (em e-mails)
-- [UpsertDE](../data-extension-functions/upsertde.md) — insere ou atualiza conforme a existência do registro (em e-mails)
-- [DeleteDE](../data-extension-functions/deletede.md) — exclui linhas de uma Data Extension (em e-mails)
-- [Lookup](../data-extension-functions/lookup.md) — consulta um valor na Data Extension antes de atualizar
+- [UpdateData](../data-extension-functions/updatedata.md) - equivalente para uso em CloudPages, landing pages, microsites e SMS
+- [InsertDE](../data-extension-functions/insertde.md) - insere uma nova linha na Data Extension (em e-mails)
+- [UpsertDE](../data-extension-functions/upsertde.md) - insere ou atualiza conforme a existência do registro (em e-mails)
+- [DeleteDE](../data-extension-functions/deletede.md) - exclui linhas de uma Data Extension (em e-mails)
+- [Lookup](../data-extension-functions/lookup.md) - consulta um valor na Data Extension antes de atualizar

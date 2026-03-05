@@ -77,11 +77,11 @@ Em uma régua de relacionamento da Lojas Vitória, a imagem do e-mail muda confo
 
 ## Funções relacionadas
 
-- [ContentImageById](../content-functions/contentimagebyid.md) — mesma ideia, mas localiza a imagem pelo ID numérico em vez da external key.
-- [ImageByKey](../content-functions/imagebykey.md) — outra função para referenciar imagens por external key.
-- [ImageById](../content-functions/imagebyid.md) — referencia imagens pelo ID numérico.
-- [Image](../content-functions/image.md) — função base para trabalhar com imagens.
-- [ContentBlockByKey](../content-functions/contentblockbykey.md) — para inserir blocos de conteúdo (não imagens) por external key.
-- [Concat](../string-functions/concat.md) — útil para montar external keys dinâmicas.
-- [Lowercase](../string-functions/lowercase.md) — para padronizar strings antes de usar como chave.
-- [Empty](../utility-functions/empty.md) — para validar valores antes de montar a chave da imagem.
+- [ContentImageById](../content-functions/contentimagebyid.md) - mesma ideia, mas localiza a imagem pelo ID numérico em vez da external key.
+- [ImageByKey](../content-functions/imagebykey.md) - outra função para referenciar imagens por external key.
+- [ImageById](../content-functions/imagebyid.md) - referencia imagens pelo ID numérico.
+- [Image](../content-functions/image.md) - função base para trabalhar com imagens.
+- [ContentBlockByKey](../content-functions/contentblockbykey.md) - para inserir blocos de conteúdo (não imagens) por external key.
+- [Concat](../string-functions/concat.md) - útil para montar external keys dinâmicas.
+- [Lowercase](../string-functions/lowercase.md) - para padronizar strings antes de usar como chave.
+- [Empty](../utility-functions/empty.md) - para validar valores antes de montar a chave da imagem.

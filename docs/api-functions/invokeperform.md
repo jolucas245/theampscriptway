@@ -8,7 +8,7 @@ description: Invoca o método Perform em um API Object do Marketing Cloud e reto
 
 ## Descrição
 
-A função `InvokePerform` invoca o método **Perform** em um API Object do Marketing Cloud e retorna o código de status da API. Ela é usada quando você precisa executar uma ação sobre um objeto já criado — como iniciar ou parar uma campanha, disparar um envio ou qualquer outra ação suportada pelo tipo do objeto. O retorno é o código de status da operação (por exemplo, `"OK"`), e uma variável AMPscript captura a mensagem de status detalhada.
+A função `InvokePerform` invoca o método **Perform** em um API Object do Marketing Cloud e retorna o código de status da API. Ela é usada quando você precisa executar uma ação sobre um objeto já criado - como iniciar ou parar uma campanha, disparar um envio ou qualquer outra ação suportada pelo tipo do objeto. O retorno é o código de status da operação (por exemplo, `"OK"`), e uma variável AMPscript captura a mensagem de status detalhada.
 
 ## Sintaxe
 
@@ -26,7 +26,7 @@ InvokePerform(@apiObject, "actionToPerform", @statusMessage)
 
 ## Exemplo básico
 
-Cenário onde uma campanha de e-mail marketing da MegaStore precisa ser interrompida via AMPscript — por exemplo, ao detectar que o estoque de uma promoção relâmpago acabou.
+Cenário onde uma campanha de e-mail marketing da MegaStore precisa ser interrompida via AMPscript - por exemplo, ao detectar que o estoque de uma promoção relâmpago acabou.
 
 ```ampscript
 %%[
@@ -89,17 +89,17 @@ Mensagem: Campaign not found or insufficient permissions
 
 > **⚠️ Atenção:** Os valores válidos para o parâmetro `actionToPerform` variam conforme o tipo do API Object. Usar uma ação incompatível com o objeto resultará em erro.
 
-> **💡 Dica:** Sempre capture a variável `@statusMessage` e use-a em tratamentos de erro. Quando algo dá errado, essa mensagem é a melhor pista para entender o que aconteceu — especialmente em automações que rodam sem supervisão.
+> **💡 Dica:** Sempre capture a variável `@statusMessage` e use-a em tratamentos de erro. Quando algo dá errado, essa mensagem é a melhor pista para entender o que aconteceu - especialmente em automações que rodam sem supervisão.
 
 - A função depende de um API Object previamente criado com [CreateObject](../api-functions/createobject.md) e configurado com [SetObjectProperty](../api-functions/setobjectproperty.md). Sem essas etapas, não há objeto sobre o qual executar a ação.
 
 ## Funções relacionadas
 
-- [CreateObject](../api-functions/createobject.md) — cria o API Object que será usado no Perform
-- [SetObjectProperty](../api-functions/setobjectproperty.md) — define propriedades no objeto antes de invocar a ação
-- [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) — adiciona itens a propriedades de array do objeto
-- [InvokeCreate](../api-functions/invokecreate.md) — invoca o método Create em um API Object
-- [InvokeUpdate](../api-functions/invokeupdate.md) — invoca o método Update em um API Object
-- [InvokeDelete](../api-functions/invokedelete.md) — invoca o método Delete em um API Object
-- [InvokeRetrieve](../api-functions/invokeretrieve.md) — invoca o método Retrieve em um API Object
-- [InvokeExecute](../api-functions/invokeexecute.md) — invoca o método Execute em um API Object
+- [CreateObject](../api-functions/createobject.md) - cria o API Object que será usado no Perform
+- [SetObjectProperty](../api-functions/setobjectproperty.md) - define propriedades no objeto antes de invocar a ação
+- [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) - adiciona itens a propriedades de array do objeto
+- [InvokeCreate](../api-functions/invokecreate.md) - invoca o método Create em um API Object
+- [InvokeUpdate](../api-functions/invokeupdate.md) - invoca o método Update em um API Object
+- [InvokeDelete](../api-functions/invokedelete.md) - invoca o método Delete em um API Object
+- [InvokeRetrieve](../api-functions/invokeretrieve.md) - invoca o método Retrieve em um API Object
+- [InvokeExecute](../api-functions/invokeexecute.md) - invoca o método Execute em um API Object

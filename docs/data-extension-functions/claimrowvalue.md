@@ -8,7 +8,7 @@ description: Busca uma linha não reivindicada em uma Data Extension, retorna um
 
 ## Descrição
 
-A função `ClaimRowValue` busca em uma Data Extension a próxima linha que ainda não foi reivindicada (claimed), retorna o valor de uma coluna específica dessa linha e automaticamente marca a linha como reivindicada para que nenhum outro subscriber receba o mesmo valor. É a função ideal para distribuição de cupons únicos, códigos promocionais e vouchers em campanhas de e-mail marketing — cenários muito comuns em varejo, farmácias e programas de fidelidade no Brasil. Diferente da [ClaimRow](../data-extension-functions/claimrow.md), que retorna a linha inteira, esta função retorna apenas o valor de uma coluna e permite definir um valor de fallback caso todos os registros já tenham sido reivindicados.
+A função `ClaimRowValue` busca em uma Data Extension a próxima linha que ainda não foi reivindicada (claimed), retorna o valor de uma coluna específica dessa linha e automaticamente marca a linha como reivindicada para que nenhum outro subscriber receba o mesmo valor. É a função ideal para distribuição de cupons únicos, códigos promocionais e vouchers em campanhas de e-mail marketing - cenários muito comuns em varejo, farmácias e programas de fidelidade no Brasil. Diferente da [ClaimRow](../data-extension-functions/claimrow.md), que retorna a linha inteira, esta função retorna apenas o valor de uma coluna e permite definir um valor de fallback caso todos os registros já tenham sido reivindicados.
 
 ## Sintaxe
 
@@ -27,7 +27,7 @@ ClaimRowValue(
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |-----------|------|-------------|-----------|
-| dataExt | String | Sim | Nome da Data Extension que contém os valores a serem distribuídos. **Deve ser hard-coded** — se você passar uma variável AMPscript, a função lança uma exceção. |
+| dataExt | String | Sim | Nome da Data Extension que contém os valores a serem distribuídos. **Deve ser hard-coded** - se você passar uma variável AMPscript, a função lança uma exceção. |
 | returnValueColumn | String | Sim | Nome da coluna cujo valor você quer que a função retorne (ex: o código do cupom). |
 | claimColumn | String | Sim | Nome da coluna booleana usada para controlar se a linha já foi reivindicada. Veja a configuração obrigatória da Data Extension nas observações. |
 | valueIfClaimed | String | Sim | Valor de fallback retornado quando não há mais linhas disponíveis (todas já foram reivindicadas). |
@@ -146,21 +146,21 @@ Use o código FARMA15GERAL e ganhe 15% de desconto em todo o site.
 
 > **⚠️ Atenção:** A Data Extension precisa obrigatoriamente ter uma coluna booleana configurada como **obrigatória (non-nullable)** com valor padrão **False**. Essa coluna é o mecanismo que a função usa para identificar quais linhas ainda estão disponíveis.
 
-> **💡 Dica:** A grande vantagem da `ClaimRowValue` sobre a [ClaimRow](../data-extension-functions/claimrow.md) é o parâmetro `valueIfClaimed`. Em campanhas de alto volume — como Black Friday ou Dia das Mães — é muito comum os cupons acabarem antes do fim do envio. Com o fallback, você garante que nenhum cliente receba um e-mail quebrado: todos recebem pelo menos um cupom genérico.
+> **💡 Dica:** A grande vantagem da `ClaimRowValue` sobre a [ClaimRow](../data-extension-functions/claimrow.md) é o parâmetro `valueIfClaimed`. Em campanhas de alto volume - como Black Friday ou Dia das Mães - é muito comum os cupons acabarem antes do fim do envio. Com o fallback, você garante que nenhum cliente receba um e-mail quebrado: todos recebem pelo menos um cupom genérico.
 
 > **💡 Dica:** Você pode preencher colunas adicionais na linha reivindicada adicionando pares de nome de coluna e valor ao final da chamada da função. Isso é útil para registrar informações extras como nome do cliente, ID da campanha ou canal de origem.
 
-> **💡 Dica:** Se a Data Extension incluir uma coluna chamada exatamente **"ClaimedDate"** (tipo Date, nullable), a função preenche automaticamente com o timestamp do momento da reivindicação — sem necessidade de código adicional.
+> **💡 Dica:** Se a Data Extension incluir uma coluna chamada exatamente **"ClaimedDate"** (tipo Date, nullable), a função preenche automaticamente com o timestamp do momento da reivindicação - sem necessidade de código adicional.
 
 - A função busca sempre a próxima linha não reivindicada. Chamadas subsequentes retornam linhas diferentes, garantindo que cada subscriber receba um valor único.
 - Cada linha reivindicada é atualizada na Data Extension com o valor do `claimantValue` na coluna `claimantColumn` e o campo booleano é marcado como `True`.
 
 ## Funções relacionadas
 
-- [ClaimRow](../data-extension-functions/claimrow.md) — Versão que retorna a linha inteira em vez de um único valor, sem suporte a fallback.
-- [Lookup](../data-extension-functions/lookup.md) — Busca simples em Data Extension (sem reivindicação).
-- [LookupRows](../data-extension-functions/lookuprows.md) — Retorna múltiplas linhas de uma Data Extension.
-- [InsertDE](../data-extension-functions/insertde.md) — Insere registros em uma Data Extension.
-- [UpdateDE](../data-extension-functions/updatede.md) — Atualiza registros em uma Data Extension.
-- [DataExtensionRowCount](../data-extension-functions/dataextensionrowcount.md) — Conta o total de linhas em uma Data Extension (útil para monitorar estoque de cupons).
-- [Empty](../utility-functions/empty.md) — Verifica se um valor está vazio.
+- [ClaimRow](../data-extension-functions/claimrow.md) - Versão que retorna a linha inteira em vez de um único valor, sem suporte a fallback.
+- [Lookup](../data-extension-functions/lookup.md) - Busca simples em Data Extension (sem reivindicação).
+- [LookupRows](../data-extension-functions/lookuprows.md) - Retorna múltiplas linhas de uma Data Extension.
+- [InsertDE](../data-extension-functions/insertde.md) - Insere registros em uma Data Extension.
+- [UpdateDE](../data-extension-functions/updatede.md) - Atualiza registros em uma Data Extension.
+- [DataExtensionRowCount](../data-extension-functions/dataextensionrowcount.md) - Conta o total de linhas em uma Data Extension (útil para monitorar estoque de cupons).
+- [Empty](../utility-functions/empty.md) - Verifica se um valor está vazio.

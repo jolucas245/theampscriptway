@@ -132,7 +132,7 @@ A função aceita datas de entrada nos seguintes formatos:
 
 > **⚠️ Atenção:** A função **não aceita** os seguintes formatos de entrada:
 > - Datas com sufixo ordinal no dia (ex: `August 5th, 2024` ou `5th August 2024`)
-> - Notação numérica little-endian (ex: `5/8/2024` para representar 5 de agosto) — isso é particularmente importante no Brasil, onde costumamos escrever dia/mês/ano. A string `5/8/2024` será interpretada como **8 de maio**, não 5 de agosto
+> - Notação numérica little-endian (ex: `5/8/2024` para representar 5 de agosto) - isso é particularmente importante no Brasil, onde costumamos escrever dia/mês/ano. A string `5/8/2024` será interpretada como **8 de maio**, não 5 de agosto
 > - Nomes de meses em idiomas que não sejam inglês (ex: `5 agosto 2024` não funciona)
 > - Numerais que não sejam arábicos ocidentais
 > - Calendários que não sejam o gregoriano
@@ -151,14 +151,14 @@ A função aceita datas de entrada nos seguintes formatos:
 
 ## Funções relacionadas
 
-- [Now](../date-functions/now.md) — retorna a data/hora atual, útil para formatar o momento do envio
-- [GetSendTime](../date-functions/getsendtime.md) — retorna a data/hora do envio
-- [DateAdd](../date-functions/dateadd.md) — adiciona intervalos a uma data antes de formatá-la
-- [DateDiff](../date-functions/datediff.md) — calcula a diferença entre duas datas
-- [DatePart](../date-functions/datepart.md) — extrai partes específicas de uma data
-- [DateParse](../date-functions/dateparse.md) — converte uma string em objeto de data
-- [StringToDate](../date-functions/stringtodate.md) — converte string em data
-- [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) — converte data do sistema para fuso local
-- [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md) — converte data local para fuso do sistema
-- [Format](../string-functions/format.md) — formatação genérica de strings
-- [Concat](../string-functions/concat.md) — concatena strings, útil para montar textos com datas formatadas
+- [Now](../date-functions/now.md) - retorna a data/hora atual, útil para formatar o momento do envio
+- [GetSendTime](../date-functions/getsendtime.md) - retorna a data/hora do envio
+- [DateAdd](../date-functions/dateadd.md) - adiciona intervalos a uma data antes de formatá-la
+- [DateDiff](../date-functions/datediff.md) - calcula a diferença entre duas datas
+- [DatePart](../date-functions/datepart.md) - extrai partes específicas de uma data
+- [DateParse](../date-functions/dateparse.md) - converte uma string em objeto de data
+- [StringToDate](../date-functions/stringtodate.md) - converte string em data
+- [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) - converte data do sistema para fuso local
+- [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md) - converte data local para fuso do sistema
+- [Format](../string-functions/format.md) - formatação genérica de strings
+- [Concat](../string-functions/concat.md) - concatena strings, útil para montar textos com datas formatadas

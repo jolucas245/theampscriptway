@@ -8,9 +8,9 @@ description: Busca linhas de uma Data Extension com ordenação por uma ou mais 
 
 ## Descrição
 
-A função `LookupOrderedRows` busca registros em uma Data Extension e retorna os resultados **ordenados** pela coluna (ou colunas) que você especificar, em ordem ascendente (`ASC`) ou descendente (`DESC`). Se os valores de busca não forem encontrados, ela retorna um rowset vazio. A busca é **case-insensitive** — ou seja, não diferencia maiúsculas de minúsculas.
+A função `LookupOrderedRows` busca registros em uma Data Extension e retorna os resultados **ordenados** pela coluna (ou colunas) que você especificar, em ordem ascendente (`ASC`) ou descendente (`DESC`). Se os valores de busca não forem encontrados, ela retorna um rowset vazio. A busca é **case-insensitive** - ou seja, não diferencia maiúsculas de minúsculas.
 
-Essa é uma das funções mais úteis no dia a dia de SFMC quando você precisa, por exemplo, mostrar os últimos pedidos de um cliente, os produtos mais caros de uma categoria ou o histórico de transações mais recente — tudo já ordenado, sem depender de SQL.
+Essa é uma das funções mais úteis no dia a dia de SFMC quando você precisa, por exemplo, mostrar os últimos pedidos de um cliente, os produtos mais caros de uma categoria ou o histórico de transações mais recente - tudo já ordenado, sem depender de SQL.
 
 ## Sintaxe
 
@@ -30,7 +30,7 @@ LookupOrderedRows(dataExt, numRows, sortColumn, searchColumn1, searchValue1, ...
 
 ## Exemplo básico
 
-Buscando os 3 pedidos mais recentes de um cliente na Data Extension "Pedidos", ordenados por data decrescente — cenário clássico de e-mail transacional com histórico de compras.
+Buscando os 3 pedidos mais recentes de um cliente na Data Extension "Pedidos", ordenados por data decrescente - cenário clássico de e-mail transacional com histórico de compras.
 
 ```ampscript
 %%[
@@ -149,9 +149,9 @@ ENDIF
 
 > **⚠️ Atenção:** O limite máximo de retorno é **2.000 linhas**. Mesmo que você passe um valor menor que 1 no parâmetro `numRows` (o que faz a função tentar retornar tudo), ela nunca vai ultrapassar esse teto. Se a sua Data Extension tem mais registros que isso, considere filtros mais específicos ou use SQL via Query Activity.
 
-> **💡 Dica:** Diferente da [LookupRows](../data-extension-functions/lookuprows.md), que retorna linhas sem qualquer garantia de ordem, a `LookupOrderedRows` é a escolha certa sempre que a sequência dos dados importa — rankings, históricos, listas de "mais recentes" ou "mais caros".
+> **💡 Dica:** Diferente da [LookupRows](../data-extension-functions/lookuprows.md), que retorna linhas sem qualquer garantia de ordem, a `LookupOrderedRows` é a escolha certa sempre que a sequência dos dados importa - rankings, históricos, listas de "mais recentes" ou "mais caros".
 
-> **💡 Dica:** Você pode ordenar por **múltiplas colunas** separando-as com vírgula no parâmetro `sortColumn`. Isso é muito útil para desempates — por exemplo, `"Cidade ASC, Nome ASC"` ordena primeiro por cidade e, dentro da mesma cidade, por nome.
+> **💡 Dica:** Você pode ordenar por **múltiplas colunas** separando-as com vírgula no parâmetro `sortColumn`. Isso é muito útil para desempates - por exemplo, `"Cidade ASC, Nome ASC"` ordena primeiro por cidade e, dentro da mesma cidade, por nome.
 
 - A função é **case-insensitive** tanto nos nomes das colunas de busca quanto nos valores procurados. Se você precisa de busca sensível a maiúsculas/minúsculas, use [LookupOrderedRowsCS](../data-extension-functions/lookuporderedrowscs.md).
 
@@ -159,10 +159,10 @@ ENDIF
 
 ## Funções relacionadas
 
-- [Lookup](../data-extension-functions/lookup.md) — retorna o valor de uma única coluna de uma única linha.
-- [LookupRows](../data-extension-functions/lookuprows.md) — retorna múltiplas linhas, mas **sem ordenação**.
-- [LookupRowsCS](../data-extension-functions/lookuprowscs.md) — versão case-sensitive do `LookupRows`.
-- [LookupOrderedRowsCS](../data-extension-functions/lookuporderedrowscs.md) — versão case-sensitive do `LookupOrderedRows`.
-- [Row](../data-extension-functions/row.md) — extrai uma linha específica de um rowset.
-- [Field](../data-extension-functions/field.md) — extrai o valor de uma coluna de uma linha.
-- [RowCount](../data-extension-functions/rowcount.md) — conta quantas linhas existem em um rowset.
+- [Lookup](../data-extension-functions/lookup.md) - retorna o valor de uma única coluna de uma única linha.
+- [LookupRows](../data-extension-functions/lookuprows.md) - retorna múltiplas linhas, mas **sem ordenação**.
+- [LookupRowsCS](../data-extension-functions/lookuprowscs.md) - versão case-sensitive do `LookupRows`.
+- [LookupOrderedRowsCS](../data-extension-functions/lookuporderedrowscs.md) - versão case-sensitive do `LookupOrderedRows`.
+- [Row](../data-extension-functions/row.md) - extrai uma linha específica de um rowset.
+- [Field](../data-extension-functions/field.md) - extrai o valor de uma coluna de uma linha.
+- [RowCount](../data-extension-functions/rowcount.md) - conta quantas linhas existem em um rowset.

@@ -20,7 +20,7 @@ Divide(dividend, divisor)
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |-----------|------|-------------|-----------|
-| dividend | Número | Sim | O número inicial — o valor que será dividido. Pode ser inteiro ou decimal, positivo ou negativo. |
+| dividend | Número | Sim | O número inicial - o valor que será dividido. Pode ser inteiro ou decimal, positivo ou negativo. |
 | divisor | Número | Sim | O número pelo qual o dividend será dividido. Pode ser inteiro ou decimal, positivo ou negativo. |
 
 ## Exemplo básico
@@ -84,7 +84,7 @@ Que tal conhecer nossas ofertas especiais da semana?
 
 ## Observações
 
-> **⚠️ Atenção:** Cuidado ao usar `Divide` quando o divisor puder ser zero — divisão por zero vai gerar erro na renderização. Sempre valide o divisor antes de executar a função, especialmente quando o valor vier de uma Data Extension ou de um campo preenchido pelo usuário.
+> **⚠️ Atenção:** Cuidado ao usar `Divide` quando o divisor puder ser zero - divisão por zero vai gerar erro na renderização. Sempre valide o divisor antes de executar a função, especialmente quando o valor vier de uma Data Extension ou de um campo preenchido pelo usuário.
 
 ```ampscript
 %%[
@@ -102,8 +102,8 @@ ENDIF
 
 ## Funções relacionadas
 
-- [Add](../math-functions/add.md) — soma dois números
-- [Subtract](../math-functions/subtract.md) — subtrai dois números
-- [Multiply](../math-functions/multiply.md) — multiplica dois números
-- [Mod](../math-functions/mod.md) — retorna o resto da divisão
-- [FormatNumber](../string-functions/formatnumber.md) — formata números para exibição
+- [Add](../math-functions/add.md) - soma dois números
+- [Subtract](../math-functions/subtract.md) - subtrai dois números
+- [Multiply](../math-functions/multiply.md) - multiplica dois números
+- [Mod](../math-functions/mod.md) - retorna o resto da divisão
+- [FormatNumber](../string-functions/formatnumber.md) - formata números para exibição

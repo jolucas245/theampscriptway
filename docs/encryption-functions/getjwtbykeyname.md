@@ -8,7 +8,7 @@ description: Cria um JSON Web Token (JWT) a partir de um payload JSON, usando um
 
 ## Descrição
 
-Cria um JSON Web Token (JWT) assinado digitalmente a partir de um payload JSON. A assinatura é feita com uma chave armazenada no **Key Management** do Marketing Cloud, o que significa que você nunca expõe o segredo diretamente no código — diferente da função [GetJwt](../encryption-functions/getjwt.md), onde a chave é passada em texto puro. Suporta algoritmos HMAC (HS256, HS384, HS512) e RSA (RS256, RS384, RS512), e retorna o token JWT completo como string.
+Cria um JSON Web Token (JWT) assinado digitalmente a partir de um payload JSON. A assinatura é feita com uma chave armazenada no **Key Management** do Marketing Cloud, o que significa que você nunca expõe o segredo diretamente no código - diferente da função [GetJwt](../encryption-functions/getjwt.md), onde a chave é passada em texto puro. Suporta algoritmos HMAC (HS256, HS384, HS512) e RSA (RS256, RS384, RS512), e retorna o token JWT completo como string.
 
 ## Sintaxe
 
@@ -95,7 +95,7 @@ ENDIF
 
 - A Salesforce **recomenda usar `GetJwtByKeyName` em vez de [`GetJwt`](../encryption-functions/getjwt.md)**. A diferença fundamental é que em `GetJwtByKeyName` você referencia a chave pela external key do Key Management, enquanto em `GetJwt` o segredo é passado em texto puro no código. Isso traz mais segurança e permite controlar o acesso às chaves por usuário.
 
-- O payload do JWT **não é criptografado** — ele é apenas assinado. Isso significa que qualquer pessoa que tenha o token pode decodificar e ler o payload. Nunca inclua dados sensíveis como senhas ou números completos de cartão no payload.
+- O payload do JWT **não é criptografado** - ele é apenas assinado. Isso significa que qualquer pessoa que tenha o token pode decodificar e ler o payload. Nunca inclua dados sensíveis como senhas ou números completos de cartão no payload.
 
 > **⚠️ Atenção:** Se a sintaxe da chamada estiver incorreta (número errado de parâmetros ou tipo de dado inválido), a função retorna um erro **InvalidFunctionException**. Se os valores dos parâmetros forem inválidos (por exemplo, um JSON mal formatado no payload), o erro retornado é **FunctionExecutionException**. Valide seu JSON antes de passar para a função.
 
@@ -103,11 +103,11 @@ ENDIF
 
 ## Funções relacionadas
 
-- [GetJwt](../encryption-functions/getjwt.md) — versão onde o segredo é passado em texto puro (menos segura)
-- [Base64Encode](../encryption-functions/base64encode.md) — codificação Base64, útil para entender a estrutura de um JWT
-- [Base64Decode](../encryption-functions/base64decode.md) — decodificação Base64
-- [SHA256](../encryption-functions/sha256.md) — hash SHA-256, um dos algoritmos usados nos JWTs
-- [SHA512](../encryption-functions/sha512.md) — hash SHA-512, outro algoritmo disponível
-- [EncryptSymmetric](../encryption-functions/encryptsymmetric.md) — criptografia simétrica para quando precisar proteger o conteúdo (não apenas assinar)
-- [Concat](../string-functions/concat.md) — essencial para montar payloads JSON dinâmicos
-- [Lookup](../data-extension-functions/lookup.md) — para buscar dados do assinante e incluir no payload
+- [GetJwt](../encryption-functions/getjwt.md) - versão onde o segredo é passado em texto puro (menos segura)
+- [Base64Encode](../encryption-functions/base64encode.md) - codificação Base64, útil para entender a estrutura de um JWT
+- [Base64Decode](../encryption-functions/base64decode.md) - decodificação Base64
+- [SHA256](../encryption-functions/sha256.md) - hash SHA-256, um dos algoritmos usados nos JWTs
+- [SHA512](../encryption-functions/sha512.md) - hash SHA-512, outro algoritmo disponível
+- [EncryptSymmetric](../encryption-functions/encryptsymmetric.md) - criptografia simétrica para quando precisar proteger o conteúdo (não apenas assinar)
+- [Concat](../string-functions/concat.md) - essencial para montar payloads JSON dinâmicos
+- [Lookup](../data-extension-functions/lookup.md) - para buscar dados do assinante e incluir no payload

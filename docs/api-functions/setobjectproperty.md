@@ -8,7 +8,7 @@ description: Define o valor de uma propriedade em um objeto da API criado com Cr
 
 ## Descrição
 
-A função `SetObjectProperty` define o valor de uma propriedade em um objeto da API do Marketing Cloud que foi previamente criado com a função [`CreateObject`](../api-functions/createobject.md). No dia a dia de SFMC, você vai usar essa função sempre que precisar montar objetos da API via AMPscript — por exemplo, para criar subscribers, disparar e-mails ou manipular Data Extensions diretamente pela API. Ela trabalha em conjunto com `CreateObject` e as funções de invocação como `InvokeCreate`.
+A função `SetObjectProperty` define o valor de uma propriedade em um objeto da API do Marketing Cloud que foi previamente criado com a função [`CreateObject`](../api-functions/createobject.md). No dia a dia de SFMC, você vai usar essa função sempre que precisar montar objetos da API via AMPscript - por exemplo, para criar subscribers, disparar e-mails ou manipular Data Extensions diretamente pela API. Ela trabalha em conjunto com `CreateObject` e as funções de invocação como `InvokeCreate`.
 
 ## Sintaxe
 
@@ -38,7 +38,7 @@ SetObjectProperty(@assinante, "EmailAddress", "joao.silva@lojasvitoria.com.br")
 
 **Saída:**
 ```
-(Nenhuma saída visível — o objeto @assinante agora possui a propriedade EmailAddress com o valor "joao.silva@lojasvitoria.com.br")
+(Nenhuma saída visível - o objeto @assinante agora possui a propriedade EmailAddress com o valor "joao.silva@lojasvitoria.com.br")
 ```
 
 ## Exemplo avançado
@@ -74,13 +74,13 @@ Assinante criado com sucesso: maria.santos@megastore.com.br
 
 > **⚠️ Atenção:** O parâmetro `@apiObject` precisa ser um objeto válido criado por `CreateObject`. Se você tentar usar `SetObjectProperty` em uma variável que não seja um API Object, o código vai gerar erro.
 
-> **💡 Dica:** Quando o objeto precisa de várias propriedades, chame `SetObjectProperty` uma vez para cada propriedade. Não existe sintaxe para definir múltiplas propriedades em uma única chamada — é uma chamada por propriedade.
+> **💡 Dica:** Quando o objeto precisa de várias propriedades, chame `SetObjectProperty` uma vez para cada propriedade. Não existe sintaxe para definir múltiplas propriedades em uma única chamada - é uma chamada por propriedade.
 
 ## Funções relacionadas
 
-- [`CreateObject`](../api-functions/createobject.md) — cria o objeto da API que será configurado com `SetObjectProperty`
-- [`AddObjectArrayItem`](../api-functions/addobjectarrayitem.md) — adiciona itens a propriedades do tipo array no objeto
-- [`InvokeCreate`](../api-functions/invokecreate.md) — executa a criação do objeto configurado na API
-- [`InvokeUpdate`](../api-functions/invokeupdate.md) — executa a atualização de um objeto na API
-- [`InvokeDelete`](../api-functions/invokedelete.md) — executa a exclusão de um objeto na API
-- [`InvokeRetrieve`](../api-functions/invokeretrieve.md) — recupera dados de um objeto da API
+- [`CreateObject`](../api-functions/createobject.md) - cria o objeto da API que será configurado com `SetObjectProperty`
+- [`AddObjectArrayItem`](../api-functions/addobjectarrayitem.md) - adiciona itens a propriedades do tipo array no objeto
+- [`InvokeCreate`](../api-functions/invokecreate.md) - executa a criação do objeto configurado na API
+- [`InvokeUpdate`](../api-functions/invokeupdate.md) - executa a atualização de um objeto na API
+- [`InvokeDelete`](../api-functions/invokedelete.md) - executa a exclusão de um objeto na API
+- [`InvokeRetrieve`](../api-functions/invokeretrieve.md) - recupera dados de um objeto da API

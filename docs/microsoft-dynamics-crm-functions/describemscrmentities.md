@@ -8,7 +8,7 @@ description: Retorna os nomes lógicos e de exibição de todas as entidades de 
 
 ## Descrição
 
-Retorna os nomes lógicos (logical names) e os nomes de exibição (display names) de todas as entidades disponíveis em uma conta Microsoft Dynamics CRM conectada ao Marketing Cloud. É útil quando você precisa fazer um inventário ou diagnóstico das entidades do CRM — por exemplo, para montar uma página administrativa em CloudPage que liste tudo que está disponível para integração. A função não recebe nenhum parâmetro.
+Retorna os nomes lógicos (logical names) e os nomes de exibição (display names) de todas as entidades disponíveis em uma conta Microsoft Dynamics CRM conectada ao Marketing Cloud. É útil quando você precisa fazer um inventário ou diagnóstico das entidades do CRM - por exemplo, para montar uma página administrativa em CloudPage que liste tudo que está disponível para integração. A função não recebe nenhum parâmetro.
 
 ## Sintaxe
 
@@ -118,19 +118,19 @@ Entidades filtradas com "Cliente": 2
 
 > **💡 Dica:** Essa função é excelente para fins de diagnóstico e documentação. Antes de usar funções como [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) ou [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md), rode `DescribeMscrmEntities()` para confirmar quais entidades estão disponíveis e qual o nome lógico exato de cada uma.
 
-> **⚠️ Atenção:** Como a função retorna **todas** as entidades da conta CRM, o volume de dados pode ser grande. Evite usá-la em contexto de envio de e-mail — prefira executá-la em uma CloudPage administrativa para consulta pontual.
+> **⚠️ Atenção:** Como a função retorna **todas** as entidades da conta CRM, o volume de dados pode ser grande. Evite usá-la em contexto de envio de e-mail - prefira executá-la em uma CloudPage administrativa para consulta pontual.
 
 - O retorno é um rowset que pode ser percorrido com [Row](../data-extension-functions/row.md) e [Field](../data-extension-functions/field.md), e contado com [RowCount](../data-extension-functions/rowcount.md).
 - Para detalhar os atributos de uma entidade específica encontrada, use [DescribeMscrmEntityAttributes](../microsoft-dynamics-crm-functions/describemscrmentityattributes.md).
 
 ## Funções relacionadas
 
-- [DescribeMscrmEntityAttributes](../microsoft-dynamics-crm-functions/describemscrmentityattributes.md) — retorna os atributos de uma entidade específica do Dynamics CRM
-- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) — recupera registros de uma entidade do CRM
-- [RetrieveMscrmRecordsFetchXml](../microsoft-dynamics-crm-functions/retrievemscrmrecordsfetchxml.md) — recupera registros usando FetchXML
-- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) — cria um registro no Dynamics CRM
-- [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) — atualiza registros no CRM
-- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) — insere ou atualiza um registro no CRM
-- [Row](../data-extension-functions/row.md) — acessa uma linha específica do rowset retornado
-- [Field](../data-extension-functions/field.md) — extrai o valor de um campo de uma linha
-- [RowCount](../data-extension-functions/rowcount.md) — conta o total de linhas no rowset
+- [DescribeMscrmEntityAttributes](../microsoft-dynamics-crm-functions/describemscrmentityattributes.md) - retorna os atributos de uma entidade específica do Dynamics CRM
+- [RetrieveMscrmRecords](../microsoft-dynamics-crm-functions/retrievemscrmrecords.md) - recupera registros de uma entidade do CRM
+- [RetrieveMscrmRecordsFetchXml](../microsoft-dynamics-crm-functions/retrievemscrmrecordsfetchxml.md) - recupera registros usando FetchXML
+- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) - cria um registro no Dynamics CRM
+- [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) - atualiza registros no CRM
+- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) - insere ou atualiza um registro no CRM
+- [Row](../data-extension-functions/row.md) - acessa uma linha específica do rowset retornado
+- [Field](../data-extension-functions/field.md) - extrai o valor de um campo de uma linha
+- [RowCount](../data-extension-functions/rowcount.md) - conta o total de linhas no rowset

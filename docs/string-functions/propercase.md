@@ -73,8 +73,8 @@ Rua Quinze De Novembro, Centro - Belo Horizonte/MG - CEP: 30130-000
 
 ## Funções relacionadas
 
-- [Uppercase](../string-functions/uppercase.md) — converte toda a string para maiúsculas
-- [Lowercase](../string-functions/lowercase.md) — converte toda a string para minúsculas
-- [Concat](../string-functions/concat.md) — concatena múltiplas strings (ótimo para montar endereços e nomes completos após o ProperCase)
-- [Trim](../string-functions/trim.md) — remove espaços extras antes e depois da string (bom usar antes do ProperCase)
-- [Replace](../string-functions/replace.md) — substitui trechos da string (útil para corrigir preposições após o ProperCase)
+- [Uppercase](../string-functions/uppercase.md) - converte toda a string para maiúsculas
+- [Lowercase](../string-functions/lowercase.md) - converte toda a string para minúsculas
+- [Concat](../string-functions/concat.md) - concatena múltiplas strings (ótimo para montar endereços e nomes completos após o ProperCase)
+- [Trim](../string-functions/trim.md) - remove espaços extras antes e depois da string (bom usar antes do ProperCase)
+- [Replace](../string-functions/replace.md) - substitui trechos da string (útil para corrigir preposições após o ProperCase)

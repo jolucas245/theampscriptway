@@ -89,7 +89,7 @@ SET @urlSegura = WrapLongURL(@urlCompleta)
 
 > **⚠️ Atenção:** Se o Member DB (banco de dados da sua BU) estiver indisponível no momento do envio, a função retorna um erro. Em réguas críticas, leve isso em consideração.
 
-- A função só altera URLs com **mais de 975 caracteres**. Abaixo desse limite, a URL original é retornada sem modificação — então é seguro aplicar `WrapLongURL` em qualquer URL sem se preocupar se ela vai ser encurtada desnecessariamente.
+- A função só altera URLs com **mais de 975 caracteres**. Abaixo desse limite, a URL original é retornada sem modificação - então é seguro aplicar `WrapLongURL` em qualquer URL sem se preocupar se ela vai ser encurtada desnecessariamente.
 - O caso de uso principal é para tags `<img>` onde a URL da imagem é montada dinamicamente com muitos parâmetros (personalização, tracking, tokens). Links `<a>` normalmente são tratados pelo próprio link tracking do SFMC, mas imagens com URLs longas podem quebrar silenciosamente no Outlook.
 - A URL encurtada redireciona pelos servidores do Marketing Cloud Engagement antes de chegar ao destino final.
 
@@ -97,7 +97,7 @@ SET @urlSegura = WrapLongURL(@urlCompleta)
 
 ## Funções relacionadas
 
-- [Concat](../string-functions/concat.md) — para construir URLs dinâmicas concatenando parâmetros
-- [URLEncode](../string-functions/urlencode.md) — para codificar valores antes de incluí-los como query parameters
-- [RedirectTo](../http-functions/redirectto.md) — para redirecionamentos rastreados em links clicáveis
-- [Replace](../string-functions/replace.md) — útil para sanitizar valores antes de incluí-los em URLs
+- [Concat](../string-functions/concat.md) - para construir URLs dinâmicas concatenando parâmetros
+- [URLEncode](../string-functions/urlencode.md) - para codificar valores antes de incluí-los como query parameters
+- [RedirectTo](../http-functions/redirectto.md) - para redirecionamentos rastreados em links clicáveis
+- [Replace](../string-functions/replace.md) - útil para sanitizar valores antes de incluí-los em URLs

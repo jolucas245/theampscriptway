@@ -8,7 +8,7 @@ description: Marca o início de uma região de rastreamento de impressões em e-
 
 ## Descrição
 
-Define o início de uma região de rastreamento de impressões (impression tracking) no corpo de um e-mail. Isso permite que você monitore quais seções do e-mail foram efetivamente renderizadas para cada destinatário — útil para medir a visibilidade de blocos de conteúdo dinâmico como banners, ofertas segmentadas ou seções condicionais. A função não produz nenhuma saída visível no e-mail.
+Define o início de uma região de rastreamento de impressões (impression tracking) no corpo de um e-mail. Isso permite que você monitore quais seções do e-mail foram efetivamente renderizadas para cada destinatário - útil para medir a visibilidade de blocos de conteúdo dinâmico como banners, ofertas segmentadas ou seções condicionais. A função não produz nenhuma saída visível no e-mail.
 
 ## Sintaxe
 
@@ -48,7 +48,7 @@ Rastreando a impressão de um banner promocional em um e-mail da MegaStore:
 
 ## Exemplo avançado
 
-E-mail de régua de relacionamento da Lojas Vitória com conteúdo condicional — cada bloco exibido é rastreado como uma região de impressão separada, permitindo analisar depois qual oferta foi mostrada para cada segmento de clientes:
+E-mail de régua de relacionamento da Lojas Vitória com conteúdo condicional - cada bloco exibido é rastreado como uma região de impressão separada, permitindo analisar depois qual oferta foi mostrada para cada segmento de clientes:
 
 ```ampscript
 %%[
@@ -116,12 +116,12 @@ Olá, %%=v(@nome)=%%! Confira sua oferta exclusiva:
 > **⚠️ Atenção:** Regiões de impressão funcionam **apenas em mensagens de e-mail enviadas (outbound)**. CloudPages **não suportam** impression regions.
 
 - A função não gera nenhuma saída visível no e-mail. Ela apenas marca internamente onde começa a região de rastreamento.
-- Toda região aberta com `BeginImpressionRegion` deve ser fechada com [`EndImpressionRegion`](../content-functions/endimpressionregion.md). Se você esquecer de fechar, o sistema fecha automaticamente no final do e-mail — mas é boa prática sempre fechar explicitamente para evitar que o rastreamento capture conteúdo que você não pretendia incluir na região.
+- Toda região aberta com `BeginImpressionRegion` deve ser fechada com [`EndImpressionRegion`](../content-functions/endimpressionregion.md). Se você esquecer de fechar, o sistema fecha automaticamente no final do e-mail - mas é boa prática sempre fechar explicitamente para evitar que o rastreamento capture conteúdo que você não pretendia incluir na região.
 
 > **💡 Dica:** Use nomes descritivos e padronizados para as regiões (ex: `"Header_Principal"`, `"Bloco_Oferta_Eletronicos"`, `"Footer_RedesSociais"`). Isso facilita muito a análise posterior nos relatórios de impression tracking, especialmente quando você trabalha com vários blocos de conteúdo dinâmico no mesmo e-mail.
 
 ## Funções relacionadas
 
-- [EndImpressionRegion](../content-functions/endimpressionregion.md) — fecha a região de impressão aberta por `BeginImpressionRegion`
-- [ContentBlockByName](../content-functions/contentblockbyname.md) — útil para modularizar blocos de conteúdo que serão rastreados
-- [ContentBlockByKey](../content-functions/contentblockbykey.md) — alternativa para referenciar blocos de conteúdo por chave
+- [EndImpressionRegion](../content-functions/endimpressionregion.md) - fecha a região de impressão aberta por `BeginImpressionRegion`
+- [ContentBlockByName](../content-functions/contentblockbyname.md) - útil para modularizar blocos de conteúdo que serão rastreados
+- [ContentBlockByKey](../content-functions/contentblockbykey.md) - alternativa para referenciar blocos de conteúdo por chave

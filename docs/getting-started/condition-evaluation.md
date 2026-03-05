@@ -7,7 +7,7 @@ sidebar_position: 5
 
 # Operadores e Condições
 
-Antes de escrever condicionais complexas, é importante conhecer os operadores disponíveis no AMPscript — as ferramentas que permitem comparar valores e combinar múltiplas condições.
+Antes de escrever condicionais complexas, é importante conhecer os operadores disponíveis no AMPscript. Eles são as ferramentas que permitem comparar valores e combinar múltiplas condições.
 
 ## Operadores de comparação
 
@@ -48,12 +48,12 @@ Use `AND` e `OR` para combinar múltiplas condições em uma única avaliação.
 SET @idade    = Lookup('Clientes_DE', 'Idade', 'Email', emailaddr)
 SET @segmento = Lookup('Clientes_DE', 'Segmento', 'Email', emailaddr)
 
-/* AND — as duas condições precisam ser verdadeiras */
+/* AND - as duas condições precisam ser verdadeiras */
 IF @idade >= 18 AND @segmento == 'Premium' THEN
     SET @oferta = 'Acesso antecipado à coleção de inverno'
 ENDIF
 
-/* OR — basta uma ser verdadeira */
+/* OR - basta uma ser verdadeira */
 IF @segmento == 'Premium' OR @segmento == 'VIP' THEN
     SET @frete = 'grátis'
 ENDIF
@@ -84,7 +84,7 @@ ENDIF
 
 ## O operador NOT
 
-O `NOT` inverte o resultado de uma condição — o bloco é executado quando a condição for **falsa**.
+O `NOT` inverte o resultado de uma condição - o bloco é executado quando a condição for **falsa**.
 
 ```ampscript
 %%[

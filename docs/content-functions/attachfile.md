@@ -8,7 +8,7 @@ description: Anexa um arquivo a um e-mail enviado pelo Marketing Cloud, com supo
 
 ## Descrição
 
-A função `AttachFile` anexa um arquivo a um e-mail que está sendo enviado pelo Marketing Cloud. Você pode puxar o arquivo de uma URL (HTTP/HTTPS), do Enhanced FTP ou do Content Builder. É muito usada em cenários como envio de boletos em PDF, segunda via de documentos, ingressos digitais (.pkpass), calendários (.ics) e relatórios personalizados — situações comuns em réguas de relacionamento no mercado brasileiro.
+A função `AttachFile` anexa um arquivo a um e-mail que está sendo enviado pelo Marketing Cloud. Você pode puxar o arquivo de uma URL (HTTP/HTTPS), do Enhanced FTP ou do Content Builder. É muito usada em cenários como envio de boletos em PDF, segunda via de documentos, ingressos digitais (.pkpass), calendários (.ics) e relatórios personalizados - situações comuns em réguas de relacionamento no mercado brasileiro.
 
 > **⚠️ Atenção:** Antes de usar essa função, você precisa solicitar a habilitação de anexos em AMPscript junto ao seu Account Executive da Salesforce. Sem isso, a função simplesmente não vai funcionar.
 
@@ -147,11 +147,11 @@ Ao clicar em "Visualizar como Página Web", aparece o link "Baixar Proposta Come
 
 - A funcionalidade precisa ser habilitada previamente pelo seu Account Executive da Salesforce. Sem essa habilitação, a função não estará disponível na sua conta.
 
-> **⚠️ Atenção:** Se o servidor remoto (no caso de `http`) não responder à chamada do `AttachFile` dentro de **30 segundos**, o envio é reagendado para **15 minutos depois**. Considere isso em envios com alto volume — servidores lentos podem atrasar significativamente a sua régua.
+> **⚠️ Atenção:** Se o servidor remoto (no caso de `http`) não responder à chamada do `AttachFile` dentro de **30 segundos**, o envio é reagendado para **15 minutos depois**. Considere isso em envios com alto volume - servidores lentos podem atrasar significativamente a sua régua.
 
 > **⚠️ Atenção:** Você só pode anexar arquivos que estejam na mesma conta (Business Unit) usada para o envio. A função **não suporta conteúdo compartilhado** do Content Builder ou Portfolio.
 
-> **💡 Dica:** Você pode pedir ao seu Account Executive para ajustar o threshold de erro que interrompe o job de envio prematuramente. Isso evita que um único erro de anexo (ex: URL fora do ar) pare o envio inteiro — muito útil em réguas de boleto onde a URL é dinâmica por cliente.
+> **💡 Dica:** Você pode pedir ao seu Account Executive para ajustar o threshold de erro que interrompe o job de envio prematuramente. Isso evita que um único erro de anexo (ex: URL fora do ar) pare o envio inteiro - muito útil em réguas de boleto onde a URL é dinâmica por cliente.
 
 - O parâmetro `fileLocation` aceita no máximo **2088 caracteres**. Se você monta URLs dinâmicas com [Concat](../string-functions/concat.md), fique atento a esse limite.
 
@@ -163,8 +163,8 @@ Ao clicar em "Visualizar como Página Web", aparece o link "Baixar Proposta Come
 
 ## Funções relacionadas
 
-- [Concat](../string-functions/concat.md) — para montar URLs e nomes de arquivo dinamicamente
-- [AttributeValue](../utility-functions/attributevalue.md) — para resgatar dados do assinante usados na construção do caminho do arquivo
-- [ContentBlockByKey](../content-functions/contentblockbykey.md) — para incluir blocos de conteúdo dinâmico no corpo do e-mail
-- [Lookup](../data-extension-functions/lookup.md) — para buscar dados como número do boleto ou chave do arquivo em uma Data Extension
-- [RaiseError](../utility-functions/raiseerror.md) — para tratar erros quando o arquivo não estiver disponível
+- [Concat](../string-functions/concat.md) - para montar URLs e nomes de arquivo dinamicamente
+- [AttributeValue](../utility-functions/attributevalue.md) - para resgatar dados do assinante usados na construção do caminho do arquivo
+- [ContentBlockByKey](../content-functions/contentblockbykey.md) - para incluir blocos de conteúdo dinâmico no corpo do e-mail
+- [Lookup](../data-extension-functions/lookup.md) - para buscar dados como número do boleto ou chave do arquivo em uma Data Extension
+- [RaiseError](../utility-functions/raiseerror.md) - para tratar erros quando o arquivo não estiver disponível

@@ -8,7 +8,7 @@ description: Envia conteúdo via POST para uma URL com capacidade de retry autom
 
 ## Descrição
 
-Envia conteúdo via HTTP POST para uma URL especificada, com a vantagem de tentar novamente automaticamente caso a requisição falhe na primeira tentativa. Funciona apenas com HTTP na porta 80 e HTTPS na porta 443. É similar à [HTTPPost2](../http-functions/httppost2.md), mas com o diferencial de permitir configurar o número de retentativas e até reagendar o envio caso todas as tentativas falhem — algo muito útil quando você integra com APIs externas que podem estar instáveis (gateways de pagamento, CRMs, sistemas de estoque etc.).
+Envia conteúdo via HTTP POST para uma URL especificada, com a vantagem de tentar novamente automaticamente caso a requisição falhe na primeira tentativa. Funciona apenas com HTTP na porta 80 e HTTPS na porta 443. É similar à [HTTPPost2](../http-functions/httppost2.md), mas com o diferencial de permitir configurar o número de retentativas e até reagendar o envio caso todas as tentativas falhem - algo muito útil quando você integra com APIs externas que podem estar instáveis (gateways de pagamento, CRMs, sistemas de estoque etc.).
 
 ## Sintaxe
 
@@ -135,16 +135,16 @@ Ativação registrada com sucesso
 
 > **💡 Dica:** O parâmetro `boolReschedule` como `true` é especialmente útil em envios de e-mail em larga escala. Se a API de destino ficar temporariamente indisponível, o sistema pausa e retenta após 15 minutos em vez de simplesmente perder a chamada. Isso é muito valioso em integrações com sistemas de estoque ou CRMs que podem ter janelas de manutenção.
 
-> **💡 Dica:** Você pode incluir quantos pares de headers adicionais precisar — basta adicioná-los ao final da função. Isso é comum para enviar tokens de autenticação (`Authorization`), headers de rastreamento (`X-Correlation-Id`) ou headers customizados exigidos pela API de destino.
+> **💡 Dica:** Você pode incluir quantos pares de headers adicionais precisar - basta adicioná-los ao final da função. Isso é comum para enviar tokens de autenticação (`Authorization`), headers de rastreamento (`X-Correlation-Id`) ou headers customizados exigidos pela API de destino.
 
 - A primeira retentativa ocorre imediatamente após a falha. As retentativas seguintes acontecem entre 1 e 4 segundos após a falha anterior, implementando um mecanismo de backoff.
 
 ## Funções relacionadas
 
-- [HTTPPost](../http-functions/httppost.md) — versão mais simples, sem suporte a headers customizados e sem retry.
-- [HTTPPost2](../http-functions/httppost2.md) — versão com headers customizados, mas sem retry automático.
-- [HTTPGet](../http-functions/httpget.md) — para requisições GET em vez de POST.
-- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) — útil para parsear a resposta JSON armazenada no rowset de retorno.
-- [Concat](../string-functions/concat.md) — para montar dinamicamente o payload e headers.
-- [GUID](../utility-functions/guid.md) — para gerar identificadores únicos de correlação nos headers.
-- [RaiseError](../utility-functions/raiseerror.md) — para tratar erros de forma controlada quando `boolReturnExceptionOnError` é `false`.
+- [HTTPPost](../http-functions/httppost.md) - versão mais simples, sem suporte a headers customizados e sem retry.
+- [HTTPPost2](../http-functions/httppost2.md) - versão com headers customizados, mas sem retry automático.
+- [HTTPGet](../http-functions/httpget.md) - para requisições GET em vez de POST.
+- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) - útil para parsear a resposta JSON armazenada no rowset de retorno.
+- [Concat](../string-functions/concat.md) - para montar dinamicamente o payload e headers.
+- [GUID](../utility-functions/guid.md) - para gerar identificadores únicos de correlação nos headers.
+- [RaiseError](../utility-functions/raiseerror.md) - para tratar erros de forma controlada quando `boolReturnExceptionOnError` é `false`.

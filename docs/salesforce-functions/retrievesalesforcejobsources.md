@@ -8,7 +8,7 @@ description: Retorna um rowset com informações sobre as fontes de dados (sourc
 
 ## Descrição
 
-Retorna um rowset contendo informações sobre as fontes de dados usadas em um envio (send) do Salesforce. Para cada fonte, o rowset traz os valores de **SourceID**, **SourceType** e **IsInclusionSource** referentes ao Job ID informado. Essa função é útil quando você precisa auditar ou registrar quais listas, relatórios ou campanhas do Salesforce CRM foram utilizadas como fonte em um determinado envio — algo comum em operações que integram Sales Cloud com Marketing Cloud.
+Retorna um rowset contendo informações sobre as fontes de dados usadas em um envio (send) do Salesforce. Para cada fonte, o rowset traz os valores de **SourceID**, **SourceType** e **IsInclusionSource** referentes ao Job ID informado. Essa função é útil quando você precisa auditar ou registrar quais listas, relatórios ou campanhas do Salesforce CRM foram utilizadas como fonte em um determinado envio - algo comum em operações que integram Sales Cloud com Marketing Cloud.
 
 ## Sintaxe
 
@@ -112,10 +112,10 @@ Total de fontes encontradas: 2
 
 ## Funções relacionadas
 
-- [RetrieveSalesforceObjects](../salesforce-functions/retrievesalesforceobjects.md) — recupera registros de objetos do Salesforce CRM
-- [CreateSalesforceObject](../salesforce-functions/createsalesforceobject.md) — cria registros em objetos do Salesforce CRM
-- [UpdateSingleSalesforceObject](../salesforce-functions/updatesinglesalesforceobject.md) — atualiza um registro no Salesforce CRM
-- [LongSfid](../salesforce-functions/longsfid.md) — converte Salesforce IDs de 15 para 18 caracteres
-- [RowCount](../data-extension-functions/rowcount.md) — conta registros em um rowset
-- [Row](../data-extension-functions/row.md) — acessa uma linha específica de um rowset
-- [Field](../data-extension-functions/field.md) — extrai o valor de um campo de uma linha do rowset
+- [RetrieveSalesforceObjects](../salesforce-functions/retrievesalesforceobjects.md) - recupera registros de objetos do Salesforce CRM
+- [CreateSalesforceObject](../salesforce-functions/createsalesforceobject.md) - cria registros em objetos do Salesforce CRM
+- [UpdateSingleSalesforceObject](../salesforce-functions/updatesinglesalesforceobject.md) - atualiza um registro no Salesforce CRM
+- [LongSfid](../salesforce-functions/longsfid.md) - converte Salesforce IDs de 15 para 18 caracteres
+- [RowCount](../data-extension-functions/rowcount.md) - conta registros em um rowset
+- [Row](../data-extension-functions/row.md) - acessa uma linha específica de um rowset
+- [Field](../data-extension-functions/field.md) - extrai o valor de um campo de uma linha do rowset

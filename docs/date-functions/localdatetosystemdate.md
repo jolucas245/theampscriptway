@@ -8,7 +8,7 @@ description: Converte uma data/hora no fuso local da conta Marketing Cloud para 
 
 ## Descrição
 
-Converte uma string de data/hora no fuso horário local da sua conta Marketing Cloud para o horário do sistema. O horário do sistema é o North American Central Standard Time (UTC-6), **sem** ajuste para horário de verão. O fuso local é o configurado na sua conta SFMC em Setup — no caso de contas brasileiras, geralmente configurado para o horário de Brasília (UTC-3).
+Converte uma string de data/hora no fuso horário local da sua conta Marketing Cloud para o horário do sistema. O horário do sistema é o North American Central Standard Time (UTC-6), **sem** ajuste para horário de verão. O fuso local é o configurado na sua conta SFMC em Setup - no caso de contas brasileiras, geralmente configurado para o horário de Brasília (UTC-3).
 
 ## Sintaxe
 
@@ -77,14 +77,14 @@ Olá, Maria Santos. Este e-mail foi gerado em 25/06/2025 10:30.
 
 > **⚠️ Atenção:** O horário do sistema (CST) é fixo em UTC-6 e **não** se ajusta para horário de verão. Isso significa que a diferença entre o horário de Brasília e o horário do sistema será sempre a mesma (3 horas), independentemente da época do ano. Leve isso em conta ao calcular intervalos de tempo.
 
-> **💡 Dica:** Essa função é essencial quando você precisa comparar timestamps de diferentes fontes no SFMC. Como o sistema opera internamente em CST, converter para o horário do sistema antes de gravar em Data Extensions garante consistência nos dados — especialmente útil em réguas de relacionamento que dependem de cálculos precisos com [DateDiff](../date-functions/datediff.md) ou [DateAdd](../date-functions/dateadd.md).
+> **💡 Dica:** Essa função é essencial quando você precisa comparar timestamps de diferentes fontes no SFMC. Como o sistema opera internamente em CST, converter para o horário do sistema antes de gravar em Data Extensions garante consistência nos dados - especialmente útil em réguas de relacionamento que dependem de cálculos precisos com [DateDiff](../date-functions/datediff.md) ou [DateAdd](../date-functions/dateadd.md).
 
-> **💡 Dica:** Para fazer o caminho inverso — converter do horário do sistema para o horário local da conta — use [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md).
+> **💡 Dica:** Para fazer o caminho inverso - converter do horário do sistema para o horário local da conta - use [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md).
 
 ## Funções relacionadas
 
-- [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) — faz a conversão inversa, do horário do sistema para o horário local
-- [Now](../date-functions/now.md) — retorna a data/hora atual
-- [FormatDate](../date-functions/formatdate.md) — formata datas para exibição
-- [DateDiff](../date-functions/datediff.md) — calcula a diferença entre duas datas
-- [DateAdd](../date-functions/dateadd.md) — adiciona intervalos a uma data
+- [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) - faz a conversão inversa, do horário do sistema para o horário local
+- [Now](../date-functions/now.md) - retorna a data/hora atual
+- [FormatDate](../date-functions/formatdate.md) - formata datas para exibição
+- [DateDiff](../date-functions/datediff.md) - calcula a diferença entre duas datas
+- [DateAdd](../date-functions/dateadd.md) - adiciona intervalos a uma data

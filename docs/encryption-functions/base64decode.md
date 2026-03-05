@@ -8,7 +8,7 @@ description: Decodifica uma string codificada em Base64, convertendo-a de volta 
 
 ## Descrição
 
-A função `Base64Decode` converte dados binários codificados em Base64 de volta para uma string de texto simples. É muito útil quando você recebe dados codificados de sistemas externos, APIs ou Data Extensions que armazenam informações em Base64 — cenário comum em integrações entre SFMC e plataformas de e-commerce ou CRMs no mercado brasileiro. O retorno é a string decodificada no formato de texto legível.
+A função `Base64Decode` converte dados binários codificados em Base64 de volta para uma string de texto simples. É muito útil quando você recebe dados codificados de sistemas externos, APIs ou Data Extensions que armazenam informações em Base64 - cenário comum em integrações entre SFMC e plataformas de e-commerce ou CRMs no mercado brasileiro. O retorno é a string decodificada no formato de texto legível.
 
 ## Sintaxe
 
@@ -75,11 +75,11 @@ Pedido #48712 - Smartphone Galaxy - R$ 1.299,90 - Entrega: Rua das Flores, 123 -
 
 > **⚠️ Atenção:** O comportamento padrão de `abortSendOnFail` é `1`, ou seja, se a string não puder ser decodificada, o envio do e-mail será **abortado** para aquele subscriber. Em réguas de alto volume, considere usar `0` e tratar a falha manualmente com uma verificação via [Empty](../utility-functions/empty.md), para evitar que um dado corrompido impeça o envio inteiro.
 
-> **💡 Dica:** Se você precisa fazer o caminho inverso — codificar texto em Base64 para enviar dados a uma API externa via [HTTPPost](../http-functions/httppost.md), por exemplo — use a função [Base64Encode](../encryption-functions/base64encode.md).
+> **💡 Dica:** Se você precisa fazer o caminho inverso - codificar texto em Base64 para enviar dados a uma API externa via [HTTPPost](../http-functions/httppost.md), por exemplo - use a função [Base64Encode](../encryption-functions/base64encode.md).
 
 ## Funções relacionadas
 
-- [Base64Encode](../encryption-functions/base64encode.md) — função complementar que codifica texto simples em Base64.
-- [Lookup](../data-extension-functions/lookup.md) — para buscar a string codificada em uma Data Extension.
-- [Empty](../utility-functions/empty.md) — para validar se o valor retornado está vazio antes de decodificar.
-- [TreatAsContent](../utility-functions/treatascontent.md) — útil quando o conteúdo decodificado contém HTML ou AMPscript que precisa ser renderizado.
+- [Base64Encode](../encryption-functions/base64encode.md) - função complementar que codifica texto simples em Base64.
+- [Lookup](../data-extension-functions/lookup.md) - para buscar a string codificada em uma Data Extension.
+- [Empty](../utility-functions/empty.md) - para validar se o valor retornado está vazio antes de decodificar.
+- [TreatAsContent](../utility-functions/treatascontent.md) - útil quando o conteúdo decodificado contém HTML ou AMPscript que precisa ser renderizado.

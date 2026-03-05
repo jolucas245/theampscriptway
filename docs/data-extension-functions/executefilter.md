@@ -8,7 +8,7 @@ description: Executa um filtro de dados (Data Filter) e retorna um rowset não o
 
 ## Descrição
 
-A função `ExecuteFilter` executa um Data Filter previamente criado no Marketing Cloud e retorna um rowset não ordenado com os registros que atendem aos critérios do filtro. Ela funciona exclusivamente com filtros baseados em Data Extensions — não aceita filtros baseados em Profile Attributes. É uma boa opção quando você já tem filtros configurados na interface do SFMC e quer reaproveitá-los em CloudPages, landing pages, microsites ou mensagens SMS do MobileConnect.
+A função `ExecuteFilter` executa um Data Filter previamente criado no Marketing Cloud e retorna um rowset não ordenado com os registros que atendem aos critérios do filtro. Ela funciona exclusivamente com filtros baseados em Data Extensions - não aceita filtros baseados em Profile Attributes. É uma boa opção quando você já tem filtros configurados na interface do SFMC e quer reaproveitá-los em CloudPages, landing pages, microsites ou mensagens SMS do MobileConnect.
 
 ## Sintaxe
 
@@ -42,7 +42,7 @@ IF @totalLinhas > 0 THEN
     SET @pontos = Field(@linha, "PontosRecompensa")
 ]%%
 
-<p>%%=v(@nome)=%% %%=v(@sobrenome)=%% — %%=FormatNumber(@pontos, "N0")=%% pontos</p>
+<p>%%=v(@nome)=%% %%=v(@sobrenome)=%% - %%=FormatNumber(@pontos, "N0")=%% pontos</p>
 
 %%[
   NEXT @i
@@ -58,9 +58,9 @@ ENDIF
 
 **Saída:**
 ```
-João Silveira — 92.374 pontos
-Maria Chatterjee — 201.042 pontos
-Carlos Santos — 69.311 pontos
+João Silveira - 92.374 pontos
+Maria Chatterjee - 201.042 pontos
+Carlos Santos - 69.311 pontos
 ```
 
 ## Exemplo avançado
@@ -78,7 +78,7 @@ SET @totalLinhas = RowCount(@resultados)
 
 ]%%
 
-<h2>Clientes Premium — Programa Fidelidade Lojas Vitória</h2>
+<h2>Clientes Premium - Programa Fidelidade Lojas Vitória</h2>
 
 %%[ IF @totalLinhas > 0 THEN ]%%
 
@@ -149,7 +149,7 @@ SET @totalLinhas = RowCount(@resultados)
 
 **Saída:**
 ```
-Clientes Premium — Programa Fidelidade Lojas Vitória
+Clientes Premium - Programa Fidelidade Lojas Vitória
 
 #   ID   Nome Completo       Pontos       Nível          Região
 1   1    João Silveira        92.374 pts   🥈 Ouro        São Paulo
@@ -172,9 +172,9 @@ Total de clientes premium: 3
 
 ## Funções relacionadas
 
-- [ExecuteFilterOrderedRows](../data-extension-functions/executefilterorderedrows.md) — versão que retorna resultados ordenados
-- [LookupRows](../data-extension-functions/lookuprows.md) — alternativa para buscar registros com critérios definidos inline
-- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) — busca com ordenação sem depender de Data Filters
-- [RowCount](../data-extension-functions/rowcount.md) — conta o número de linhas no rowset retornado
-- [Row](../data-extension-functions/row.md) — acessa uma linha específica do rowset
-- [Field](../data-extension-functions/field.md) — extrai o valor de uma coluna em uma linha do rowset
+- [ExecuteFilterOrderedRows](../data-extension-functions/executefilterorderedrows.md) - versão que retorna resultados ordenados
+- [LookupRows](../data-extension-functions/lookuprows.md) - alternativa para buscar registros com critérios definidos inline
+- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) - busca com ordenação sem depender de Data Filters
+- [RowCount](../data-extension-functions/rowcount.md) - conta o número de linhas no rowset retornado
+- [Row](../data-extension-functions/row.md) - acessa uma linha específica do rowset
+- [Field](../data-extension-functions/field.md) - extrai o valor de uma coluna em uma linha do rowset

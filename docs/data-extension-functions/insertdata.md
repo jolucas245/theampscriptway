@@ -96,13 +96,13 @@ Obrigado, Maria Santos! Seu interesse no plano Conecta Ultra 300MB foi registrad
 > **⚠️ Atenção:** A função `InsertData` pode ser usada em **CloudPages, landing pages, microsites e mensagens SMS (Mobile Connect)**. Para inserir dados a partir de **e-mails**, use a função [InsertDE](../data-extension-functions/insertde.md).
 
 - A função retorna o número de linhas inseridas. Use esse retorno para validar se a operação foi bem-sucedida.
-- A função sempre **insere** uma nova linha — ela não verifica se já existe um registro com a mesma chave primária. Se você precisa inserir ou atualizar dependendo da existência do registro, considere usar [UpsertData](../data-extension-functions/upsertdata.md).
+- A função sempre **insere** uma nova linha - ela não verifica se já existe um registro com a mesma chave primária. Se você precisa inserir ou atualizar dependendo da existência do registro, considere usar [UpsertData](../data-extension-functions/upsertdata.md).
 - Você pode inserir valores em quantas colunas precisar, basta continuar adicionando pares de nome de coluna e valor ao final da chamada.
 
 ## Funções relacionadas
 
-- [InsertDE](../data-extension-functions/insertde.md) — versão equivalente para uso em e-mails
-- [UpdateData](../data-extension-functions/updatedata.md) — atualiza linhas existentes em uma Data Extension
-- [UpsertData](../data-extension-functions/upsertdata.md) — insere ou atualiza dependendo da existência do registro
-- [DeleteData](../data-extension-functions/deletedata.md) — remove linhas de uma Data Extension
-- [Lookup](../data-extension-functions/lookup.md) — consulta valores em uma Data Extension
+- [InsertDE](../data-extension-functions/insertde.md) - versão equivalente para uso em e-mails
+- [UpdateData](../data-extension-functions/updatedata.md) - atualiza linhas existentes em uma Data Extension
+- [UpsertData](../data-extension-functions/upsertdata.md) - insere ou atualiza dependendo da existência do registro
+- [DeleteData](../data-extension-functions/deletedata.md) - remove linhas de uma Data Extension
+- [Lookup](../data-extension-functions/lookup.md) - consulta valores em uma Data Extension

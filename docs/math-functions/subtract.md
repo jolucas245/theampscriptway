@@ -91,7 +91,7 @@ Faltam apenas 1.400 pontos para você resgatar seu próximo prêmio!
 
 ## Observações
 
-- A função aceita números inteiros e decimais, tanto positivos quanto negativos. Se o subtrahend for maior que o minuend, o resultado será negativo — o que é útil para identificar saldo devedor ou déficit de pontos, por exemplo.
+- A função aceita números inteiros e decimais, tanto positivos quanto negativos. Se o subtrahend for maior que o minuend, o resultado será negativo - o que é útil para identificar saldo devedor ou déficit de pontos, por exemplo.
 
 - Subtrair um número negativo equivale a uma soma. Por exemplo, `Subtract(100, -50)` retorna `150`.
 
@@ -99,9 +99,9 @@ Faltam apenas 1.400 pontos para você resgatar seu próximo prêmio!
 
 ## Funções relacionadas
 
-- [Add](../math-functions/add.md) — soma dois números (operação inversa)
-- [Multiply](../math-functions/multiply.md) — multiplica dois números
-- [Divide](../math-functions/divide.md) — divide dois números
-- [Mod](../math-functions/mod.md) — retorna o resto da divisão
-- [FormatNumber](../string-functions/formatnumber.md) — formata o resultado numérico para exibição
-- [FormatCurrency](../string-functions/formatcurrency.md) — formata valores monetários
+- [Add](../math-functions/add.md) - soma dois números (operação inversa)
+- [Multiply](../math-functions/multiply.md) - multiplica dois números
+- [Divide](../math-functions/divide.md) - divide dois números
+- [Mod](../math-functions/mod.md) - retorna o resto da divisão
+- [FormatNumber](../string-functions/formatnumber.md) - formata o resultado numérico para exibição
+- [FormatCurrency](../string-functions/formatcurrency.md) - formata valores monetários

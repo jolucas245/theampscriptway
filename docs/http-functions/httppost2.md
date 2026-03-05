@@ -8,7 +8,7 @@ description: Envia uma requisição HTTP POST para uma URL especificada, com sup
 
 ## Descrição
 
-A função `HTTPPost2` envia conteúdo via requisição HTTP POST para uma URL especificada, permitindo incluir headers adicionais na chamada e capturando a resposta tanto como status quanto como rowset. É a versão mais completa do [HTTPPost](../http-functions/httppost.md), ideal para quando você precisa inspecionar os headers de resposta ou processar o retorno de forma estruturada. No dia a dia de SFMC no Brasil, você vai usar bastante para integrar com APIs de parceiros — sistemas de frete, gateways de pagamento, CRMs internos — enviando e recebendo dados em JSON ou XML.
+A função `HTTPPost2` envia conteúdo via requisição HTTP POST para uma URL especificada, permitindo incluir headers adicionais na chamada e capturando a resposta tanto como status quanto como rowset. É a versão mais completa do [HTTPPost](../http-functions/httppost.md), ideal para quando você precisa inspecionar os headers de resposta ou processar o retorno de forma estruturada. No dia a dia de SFMC no Brasil, você vai usar bastante para integrar com APIs de parceiros - sistemas de frete, gateways de pagamento, CRMs internos - enviando e recebendo dados em JSON ou XML.
 
 ## Sintaxe
 
@@ -121,15 +121,15 @@ Olá! Seu pedido #98432 está com status: Em separação
 
 > **💡 Dica:** A grande diferença entre `HTTPPost2` e `HTTPPost` é o parâmetro `responseRowSet`, que permite capturar a resposta de forma estruturada. Se você não precisa inspecionar a resposta como rowset, o [HTTPPost](../http-functions/httppost.md) mais simples pode ser suficiente.
 
-> **⚠️ Atenção:** Quando usar `boolExceptionOnError` como `false`, lembre-se de tratar manualmente os cenários de erro verificando o valor retornado — senão seu e-mail pode renderizar com dados em branco ou incompletos sem você perceber.
+> **⚠️ Atenção:** Quando usar `boolExceptionOnError` como `false`, lembre-se de tratar manualmente os cenários de erro verificando o valor retornado - senão seu e-mail pode renderizar com dados em branco ou incompletos sem você perceber.
 
 > **💡 Dica:** Você pode passar quantos pares de headers adicionais precisar, basta ir adicionando `headerName`, `headerValue` ao final da chamada. Muito útil para APIs que exigem `Authorization`, `X-Api-Key` ou headers customizados.
 
 ## Funções relacionadas
 
-- [HTTPPost](../http-functions/httppost.md) — versão mais simples, sem captura de resposta como rowset.
-- [HTTPGet](../http-functions/httpget.md) — para requisições GET quando você só precisa recuperar dados.
-- [HTTPRequestHeader](../http-functions/httprequestheader.md) — para ler headers da requisição recebida.
-- [TreatAsContent](../utility-functions/treatascontent.md) — para renderizar conteúdo retornado dinamicamente.
-- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) — para parsear respostas JSON em rowsets.
-- [Concat](../string-functions/concat.md) — para montar payloads dinâmicos concatenando variáveis.
+- [HTTPPost](../http-functions/httppost.md) - versão mais simples, sem captura de resposta como rowset.
+- [HTTPGet](../http-functions/httpget.md) - para requisições GET quando você só precisa recuperar dados.
+- [HTTPRequestHeader](../http-functions/httprequestheader.md) - para ler headers da requisição recebida.
+- [TreatAsContent](../utility-functions/treatascontent.md) - para renderizar conteúdo retornado dinamicamente.
+- [BuildRowsetFromJson](../content-functions/buildrowsetfromjson.md) - para parsear respostas JSON em rowsets.
+- [Concat](../string-functions/concat.md) - para montar payloads dinâmicos concatenando variáveis.

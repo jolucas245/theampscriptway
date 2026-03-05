@@ -8,7 +8,7 @@ description: Recupera registros de entidades do Microsoft Dynamics CRM aplicando
 
 ## Descrição
 
-A função `RetrieveMscrmRecords` recupera dados de entidades do Microsoft Dynamics CRM diretamente via AMPscript. Você define a entidade, os campos que quer trazer e um filtro simples (campo, operador e valor) para buscar os registros desejados. É útil quando sua operação no Brasil integra o SFMC com o Dynamics CRM — por exemplo, para puxar dados de contatos ou oportunidades e personalizar e-mails de régua de relacionamento.
+A função `RetrieveMscrmRecords` recupera dados de entidades do Microsoft Dynamics CRM diretamente via AMPscript. Você define a entidade, os campos que quer trazer e um filtro simples (campo, operador e valor) para buscar os registros desejados. É útil quando sua operação no Brasil integra o SFMC com o Dynamics CRM - por exemplo, para puxar dados de contatos ou oportunidades e personalizar e-mails de régua de relacionamento.
 
 ## Sintaxe
 
@@ -115,7 +115,7 @@ Ana Lima        ana.lima@email.com.br         São Paulo
 
 ## Observações
 
-- O resultado retornado é um rowset. Para iterar sobre os registros, use [RowCount](../data-extension-functions/rowcount.md), [Row](../data-extension-functions/row.md) e [Field](../data-extension-functions/field.md) — exatamente como faria com resultados de [LookupRows](../data-extension-functions/lookuprows.md).
+- O resultado retornado é um rowset. Para iterar sobre os registros, use [RowCount](../data-extension-functions/rowcount.md), [Row](../data-extension-functions/row.md) e [Field](../data-extension-functions/field.md) - exatamente como faria com resultados de [LookupRows](../data-extension-functions/lookuprows.md).
 
 > **⚠️ Atenção:** Essa função depende da integração entre o Marketing Cloud e o Microsoft Dynamics CRM estar configurada corretamente na sua conta. Sem o conector ativo, a chamada vai falhar.
 
@@ -123,12 +123,12 @@ Ana Lima        ana.lima@email.com.br         São Paulo
 
 ## Funções relacionadas
 
-- [RetrieveMscrmRecordsFetchXml](../microsoft-dynamics-crm-functions/retrievemscrmrecordsfetchxml.md) — para consultas mais complexas usando FetchXML
-- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) — para criar registros no Dynamics CRM
-- [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) — para atualizar registros existentes
-- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) — para inserir ou atualizar registros
-- [DescribeMscrmEntities](../microsoft-dynamics-crm-functions/describemscrmentities.md) — para listar as entidades disponíveis
-- [DescribeMscrmEntityAttributes](../microsoft-dynamics-crm-functions/describemscrmentityattributes.md) — para descobrir os campos de uma entidade
-- [RowCount](../data-extension-functions/rowcount.md) — para contar registros no rowset retornado
-- [Row](../data-extension-functions/row.md) — para acessar uma linha específica do rowset
-- [Field](../data-extension-functions/field.md) — para extrair o valor de um campo de uma linha
+- [RetrieveMscrmRecordsFetchXml](../microsoft-dynamics-crm-functions/retrievemscrmrecordsfetchxml.md) - para consultas mais complexas usando FetchXML
+- [CreateMscrmRecord](../microsoft-dynamics-crm-functions/createmscrmrecord.md) - para criar registros no Dynamics CRM
+- [UpdateMscrmRecords](../microsoft-dynamics-crm-functions/updatemscrmrecords.md) - para atualizar registros existentes
+- [UpsertMscrmRecord](../microsoft-dynamics-crm-functions/upsertmscrmrecord.md) - para inserir ou atualizar registros
+- [DescribeMscrmEntities](../microsoft-dynamics-crm-functions/describemscrmentities.md) - para listar as entidades disponíveis
+- [DescribeMscrmEntityAttributes](../microsoft-dynamics-crm-functions/describemscrmentityattributes.md) - para descobrir os campos de uma entidade
+- [RowCount](../data-extension-functions/rowcount.md) - para contar registros no rowset retornado
+- [Row](../data-extension-functions/row.md) - para acessar uma linha específica do rowset
+- [Field](../data-extension-functions/field.md) - para extrair o valor de um campo de uma linha

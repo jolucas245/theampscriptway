@@ -8,7 +8,7 @@ description: Retorna um rowset com dados de objetos do Salesforce CRM que corres
 
 ## Descrição
 
-Consulta objetos do Salesforce CRM (Sales Cloud ou Service Cloud) diretamente do AMPscript e retorna um rowset com os registros que correspondem aos filtros informados. Para funcionar, é obrigatório ter o **Marketing Cloud Connect** configurado e integrado com o seu org Salesforce. Essa função é muito usada em e-mails e CloudPages para puxar dados em tempo real do CRM — como oportunidades, casos de suporte, leads ou qualquer objeto padrão ou customizado — sem precisar sincronizar tudo em Data Extensions.
+Consulta objetos do Salesforce CRM (Sales Cloud ou Service Cloud) diretamente do AMPscript e retorna um rowset com os registros que correspondem aos filtros informados. Para funcionar, é obrigatório ter o **Marketing Cloud Connect** configurado e integrado com o seu org Salesforce. Essa função é muito usada em e-mails e CloudPages para puxar dados em tempo real do CRM - como oportunidades, casos de suporte, leads ou qualquer objeto padrão ou customizado - sem precisar sincronizar tudo em Data Extensions.
 
 ## Sintaxe
 
@@ -136,7 +136,7 @@ Total encontrado: 3
 
 > **⚠️ Atenção:** Cada chamada dessa função dispara uma **requisição SOAP** para o seu org Salesforce. Essas requisições **não** contam nos limites de uso de API do org, mas podem impactar a performance do envio de e-mail se forem muito demoradas. Evite usar essa função em loops pesados dentro de envios de alto volume.
 
-> **💡 Dica:** Essa função exige que o **Marketing Cloud Connect** esteja configurado e ativo. Sem essa integração, a função simplesmente não vai funcionar. Se você só precisa de dados que já estão sincronizados em Data Extensions, prefira usar [LookupRows](../data-extension-functions/lookuprows.md) — é mais rápido e não depende de chamada externa.
+> **💡 Dica:** Essa função exige que o **Marketing Cloud Connect** esteja configurado e ativo. Sem essa integração, a função simplesmente não vai funcionar. Se você só precisa de dados que já estão sincronizados em Data Extensions, prefira usar [LookupRows](../data-extension-functions/lookuprows.md) - é mais rápido e não depende de chamada externa.
 
 > **💡 Dica:** Quando você adiciona múltiplos conjuntos de filtro, todos são conectados com lógica **AND**. Não existe suporte nativo a **OR** nessa função. Se precisar de lógica OR, você terá que fazer múltiplas chamadas e combinar os resultados.
 
@@ -144,11 +144,11 @@ Total encontrado: 3
 
 ## Funções relacionadas
 
-- [CreateSalesforceObject](../salesforce-functions/createsalesforceobject.md) — cria registros em objetos do Salesforce
-- [UpdateSingleSalesforceObject](../salesforce-functions/updatesinglesalesforceobject.md) — atualiza um registro específico no Salesforce
-- [RetrieveSalesforceJobSources](../salesforce-functions/retrievesalesforcejobsources.md) — recupera fontes de jobs do Salesforce
-- [LongSfid](../salesforce-functions/longsfid.md) — converte Salesforce ID de 15 para 18 caracteres
-- [Row](../data-extension-functions/row.md) — acessa uma linha específica do rowset
-- [Field](../data-extension-functions/field.md) — extrai o valor de um campo de uma linha
-- [RowCount](../data-extension-functions/rowcount.md) — conta o número de linhas no rowset
-- [LookupRows](../data-extension-functions/lookuprows.md) — alternativa para consultar dados já sincronizados em Data Extensions
+- [CreateSalesforceObject](../salesforce-functions/createsalesforceobject.md) - cria registros em objetos do Salesforce
+- [UpdateSingleSalesforceObject](../salesforce-functions/updatesinglesalesforceobject.md) - atualiza um registro específico no Salesforce
+- [RetrieveSalesforceJobSources](../salesforce-functions/retrievesalesforcejobsources.md) - recupera fontes de jobs do Salesforce
+- [LongSfid](../salesforce-functions/longsfid.md) - converte Salesforce ID de 15 para 18 caracteres
+- [Row](../data-extension-functions/row.md) - acessa uma linha específica do rowset
+- [Field](../data-extension-functions/field.md) - extrai o valor de um campo de uma linha
+- [RowCount](../data-extension-functions/rowcount.md) - conta o número de linhas no rowset
+- [LookupRows](../data-extension-functions/lookuprows.md) - alternativa para consultar dados já sincronizados em Data Extensions

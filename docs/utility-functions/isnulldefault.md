@@ -105,14 +105,14 @@ Origem: Google Ads
 
 ## Observações
 
-> **⚠️ Atenção:** A função `IsNullDefault` foi projetada especificamente para uso com formulários **Smart Capture**. Ela avalia se o campo do formulário é nulo — não confunda com campos vazios vindos de Data Extensions ou outras fontes de dados.
+> **⚠️ Atenção:** A função `IsNullDefault` foi projetada especificamente para uso com formulários **Smart Capture**. Ela avalia se o campo do formulário é nulo - não confunda com campos vazios vindos de Data Extensions ou outras fontes de dados.
 
 > **💡 Dica:** Usar `IsNullDefault` é uma forma prática de garantir que sua Data Extension nunca receba valores nulos de formulários Smart Capture. Isso evita problemas em personalizações posteriores de e-mails e réguas de relacionamento que dependam desses campos.
 
 ## Funções relacionadas
 
-- [IsNull](../utility-functions/isnull.md) — verifica se um valor é nulo (retorna booleano)
-- [Empty](../utility-functions/empty.md) — verifica se um valor é vazio ou nulo
-- [IIF](../utility-functions/iif.md) — retorna um valor ou outro com base em uma condição
-- [InsertDE](../data-extension-functions/insertde.md) — insere registros em uma Data Extension
-- [AttributeValue](../utility-functions/attributevalue.md) — recupera valor de atributo retornando string vazia em vez de erro quando não encontrado
+- [IsNull](../utility-functions/isnull.md) - verifica se um valor é nulo (retorna booleano)
+- [Empty](../utility-functions/empty.md) - verifica se um valor é vazio ou nulo
+- [IIF](../utility-functions/iif.md) - retorna um valor ou outro com base em uma condição
+- [InsertDE](../data-extension-functions/insertde.md) - insere registros em uma Data Extension
+- [AttributeValue](../utility-functions/attributevalue.md) - recupera valor de atributo retornando string vazia em vez de erro quando não encontrado

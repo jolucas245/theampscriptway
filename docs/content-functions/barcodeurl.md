@@ -8,7 +8,7 @@ description: Gera a URL de uma imagem de código de barras a partir de uma strin
 
 ## Descrição
 
-A função `BarcodeUrl` gera um código de barras a partir de uma string de entrada, retornando a URL da imagem gerada. Ela suporta a maioria dos formatos lineares (unidimensionais) e também os formatos bidimensionais Data Matrix e PDF417 — mas **não gera QR Codes**. É muito útil para incluir códigos de barras em e-mails transacionais e landing pages, como boletos, cupons de desconto, ingressos ou vouchers de troca em lojas físicas.
+A função `BarcodeUrl` gera um código de barras a partir de uma string de entrada, retornando a URL da imagem gerada. Ela suporta a maioria dos formatos lineares (unidimensionais) e também os formatos bidimensionais Data Matrix e PDF417 - mas **não gera QR Codes**. É muito útil para incluir códigos de barras em e-mails transacionais e landing pages, como boletos, cupons de desconto, ingressos ou vouchers de troca em lojas físicas.
 
 ## Sintaxe
 
@@ -136,13 +136,13 @@ SET @urlBarcode = BarcodeUrl(
 
 > **⚠️ Atenção:** A função **não gera QR Codes**. Se você precisa de QR Code, será necessário usar um serviço externo (API de terceiros, por exemplo, via [HTTPGet](../http-functions/httpget.md)).
 
-> **⚠️ Atenção:** Tipos de código de barras com comprimento fixo (como `ean8`, `ean13`, `upca`, `upce`) exigem a quantidade exata de dígitos. Se o número de caracteres estiver errado, o código de barras simplesmente **não será renderizado** — sem erro.
+> **⚠️ Atenção:** Tipos de código de barras com comprimento fixo (como `ean8`, `ean13`, `upca`, `upce`) exigem a quantidade exata de dígitos. Se o número de caracteres estiver errado, o código de barras simplesmente **não será renderizado** - sem erro.
 
 > **⚠️ Atenção:** Os tipos `mat25`, `onecode`, `plaintext`, `planet`, `postnet` e `telepen` podem ser passados como parâmetro sem gerar exceção, mas **não produzem nenhum código de barras**.
 
 - Para renderizar o código de barras, você precisa envolver a chamada da função em uma tag HTML `<img>`. A função retorna apenas a URL da imagem.
 
-- Se você quiser usar parâmetros opcionais que não são os primeiros na lista, precisa incluir todos os anteriores. Por exemplo, para usar `altText` (7º parâmetro), você deve passar valores para `checksumValue` e `boolShowText` também — use string vazia `""` quando não precisar definir um valor.
+- Se você quiser usar parâmetros opcionais que não são os primeiros na lista, precisa incluir todos os anteriores. Por exemplo, para usar `altText` (7º parâmetro), você deve passar valores para `checksumValue` e `boolShowText` também - use string vazia `""` quando não precisar definir um valor.
 
 > **💡 Dica:** O tipo `code128auto` é o mais versátil para a maioria dos cenários de cupons e vouchers no Brasil, pois aceita todos os caracteres ASCII e tem comprimento variável. É uma boa escolha padrão.
 
@@ -150,9 +150,9 @@ SET @urlBarcode = BarcodeUrl(
 
 ## Funções relacionadas
 
-- [Concat](../string-functions/concat.md) — para montar dinamicamente a string que será codificada no barcode
-- [Lookup](../data-extension-functions/lookup.md) — para buscar códigos de voucher ou dados do cliente em Data Extensions
-- [AttributeValue](../utility-functions/attributevalue.md) — para acessar atributos do assinante de forma segura
-- [V](../utility-functions/v.md) — para exibir a URL gerada dentro de tags HTML
-- [Empty](../utility-functions/empty.md) — para validar se o valor existe antes de gerar o código de barras
-- [IIF](../utility-functions/iif.md) — para lógica condicional na montagem do barcode
+- [Concat](../string-functions/concat.md) - para montar dinamicamente a string que será codificada no barcode
+- [Lookup](../data-extension-functions/lookup.md) - para buscar códigos de voucher ou dados do cliente em Data Extensions
+- [AttributeValue](../utility-functions/attributevalue.md) - para acessar atributos do assinante de forma segura
+- [V](../utility-functions/v.md) - para exibir a URL gerada dentro de tags HTML
+- [Empty](../utility-functions/empty.md) - para validar se o valor existe antes de gerar o código de barras
+- [IIF](../utility-functions/iif.md) - para lógica condicional na montagem do barcode

@@ -8,7 +8,7 @@ description: Converte um Salesforce ID de 15 caracteres para o formato completo 
 
 ## Descrição
 
-A função `LongSfid` recebe um Salesforce ID no formato curto (15 caracteres) e retorna o ID completo de 18 caracteres. Isso é essencial quando você precisa garantir compatibilidade entre sistemas, já que o ID de 15 caracteres é case-sensitive e o de 18 caracteres é case-insensitive — evitando problemas em comparações, lookups e integrações entre o Sales Cloud e o Marketing Cloud.
+A função `LongSfid` recebe um Salesforce ID no formato curto (15 caracteres) e retorna o ID completo de 18 caracteres. Isso é essencial quando você precisa garantir compatibilidade entre sistemas, já que o ID de 15 caracteres é case-sensitive e o de 18 caracteres é case-insensitive - evitando problemas em comparações, lookups e integrações entre o Sales Cloud e o Marketing Cloud.
 
 ## Sintaxe
 
@@ -74,15 +74,15 @@ Consultor, acesse o registro: https://bancobrasilao.my.salesforce.com/0036000000
 
 ## Observações
 
-> **⚠️ Atenção:** O parâmetro deve ser um Salesforce ID válido de exatamente 15 caracteres. Certifique-se de validar o valor antes de passar para a função — se o campo vier vazio ou com um ID já no formato de 18 caracteres, o comportamento pode ser inesperado.
+> **⚠️ Atenção:** O parâmetro deve ser um Salesforce ID válido de exatamente 15 caracteres. Certifique-se de validar o valor antes de passar para a função - se o campo vier vazio ou com um ID já no formato de 18 caracteres, o comportamento pode ser inesperado.
 
-> **💡 Dica:** No dia a dia de SFMC, é comum receber IDs de 15 caracteres vindos de relatórios do Salesforce ou exportações de Data Extensions sincronizadas. Sempre que for comparar IDs entre sistemas diferentes (por exemplo, em um [Lookup](../data-extension-functions/lookup.md) cruzando dados de uma DE com registros do Sales Cloud), converta para 18 caracteres primeiro — isso evita falhas em comparações case-sensitive.
+> **💡 Dica:** No dia a dia de SFMC, é comum receber IDs de 15 caracteres vindos de relatórios do Salesforce ou exportações de Data Extensions sincronizadas. Sempre que for comparar IDs entre sistemas diferentes (por exemplo, em um [Lookup](../data-extension-functions/lookup.md) cruzando dados de uma DE com registros do Sales Cloud), converta para 18 caracteres primeiro - isso evita falhas em comparações case-sensitive.
 
 ## Funções relacionadas
 
-- [RetrieveSalesforceObjects](../salesforce-functions/retrievesalesforceobjects.md) — para consultar objetos do Salesforce diretamente via AMPscript
-- [CreateSalesforceObject](../salesforce-functions/createsalesforceobject.md) — para criar registros no Salesforce a partir do Marketing Cloud
-- [UpdateSingleSalesforceObject](../salesforce-functions/updatesinglesalesforceobject.md) — para atualizar registros no Salesforce usando o ID completo
-- [Concat](../string-functions/concat.md) — para montar URLs e strings combinando o ID convertido
-- [Empty](../utility-functions/empty.md) — para validar se o ID existe antes de converter
-- [Lookup](../data-extension-functions/lookup.md) — para buscar dados em Data Extensions usando o ID convertido
+- [RetrieveSalesforceObjects](../salesforce-functions/retrievesalesforceobjects.md) - para consultar objetos do Salesforce diretamente via AMPscript
+- [CreateSalesforceObject](../salesforce-functions/createsalesforceobject.md) - para criar registros no Salesforce a partir do Marketing Cloud
+- [UpdateSingleSalesforceObject](../salesforce-functions/updatesinglesalesforceobject.md) - para atualizar registros no Salesforce usando o ID completo
+- [Concat](../string-functions/concat.md) - para montar URLs e strings combinando o ID convertido
+- [Empty](../utility-functions/empty.md) - para validar se o ID existe antes de converter
+- [Lookup](../data-extension-functions/lookup.md) - para buscar dados em Data Extensions usando o ID convertido

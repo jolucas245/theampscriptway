@@ -30,7 +30,7 @@
   <ellipse cx="36" cy="74" rx="12" ry="20" fill="#3a56d4" transform="rotate(-10 36 74)"/>
   <ellipse cx="84" cy="74" rx="12" ry="20" fill="#3a56d4" transform="rotate(10 84 74)"/>
 
-  <!-- Belly pattern — %% motif -->
+  <!-- Belly pattern - %% motif -->
   <text x="60" y="78" font-family="'Fira Code', monospace" font-size="13" font-weight="700"
         fill="white" opacity="0.35" text-anchor="middle" letter-spacing="1">%%</text>
 

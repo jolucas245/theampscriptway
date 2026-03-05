@@ -109,7 +109,7 @@ Pronto! Removemos 1 registro(s) dos alertas promocionais para São Paulo.
 ## Observações
 
 - A função **retorna o número de linhas deletadas**, o que é muito útil para exibir confirmações ao usuário ou para lógica condicional na sua página.
-- Ao passar múltiplos pares de coluna/valor, a função utiliza todos como critério conjunto (todas as condições precisam ser atendidas na mesma linha para que ela seja deletada — funciona como um AND). Porém, se um mesmo valor aparece em colunas diferentes de linhas distintas, múltiplas linhas podem ser removidas, como demonstrado na documentação oficial onde registros com "ATL" tanto em Origin quanto em Dest resultaram na exclusão de 3 linhas.
+- Ao passar múltiplos pares de coluna/valor, a função utiliza todos como critério conjunto (todas as condições precisam ser atendidas na mesma linha para que ela seja deletada - funciona como um AND). Porém, se um mesmo valor aparece em colunas diferentes de linhas distintas, múltiplas linhas podem ser removidas, como demonstrado na documentação oficial onde registros com "ATL" tanto em Origin quanto em Dest resultaram na exclusão de 3 linhas.
 
 > **⚠️ Atenção:** Esta função pode ser usada em **landing pages**, **microsites** e **mensagens SMS** (Mobile Connect). Para exclusão de dados em contexto de **e-mail**, utilize [`DeleteDE`](../data-extension-functions/deletede.md).
 
@@ -117,8 +117,8 @@ Pronto! Removemos 1 registro(s) dos alertas promocionais para São Paulo.
 
 ## Funções relacionadas
 
-- [`DeleteDE`](../data-extension-functions/deletede.md) — Exclui linhas de uma Data Extension em contexto de e-mail.
-- [`InsertData`](../data-extension-functions/insertdata.md) — Insere linhas em uma Data Extension (landing pages, microsites, SMS).
-- [`UpdateData`](../data-extension-functions/updatedata.md) — Atualiza linhas em uma Data Extension (landing pages, microsites, SMS).
-- [`UpsertData`](../data-extension-functions/upsertdata.md) — Insere ou atualiza linhas em uma Data Extension (landing pages, microsites, SMS).
-- [`LookupRows`](../data-extension-functions/lookuprows.md) — Busca linhas em uma Data Extension para verificação antes de operações de exclusão.
+- [`DeleteDE`](../data-extension-functions/deletede.md) - Exclui linhas de uma Data Extension em contexto de e-mail.
+- [`InsertData`](../data-extension-functions/insertdata.md) - Insere linhas em uma Data Extension (landing pages, microsites, SMS).
+- [`UpdateData`](../data-extension-functions/updatedata.md) - Atualiza linhas em uma Data Extension (landing pages, microsites, SMS).
+- [`UpsertData`](../data-extension-functions/upsertdata.md) - Insere ou atualiza linhas em uma Data Extension (landing pages, microsites, SMS).
+- [`LookupRows`](../data-extension-functions/lookuprows.md) - Busca linhas em uma Data Extension para verificação antes de operações de exclusão.

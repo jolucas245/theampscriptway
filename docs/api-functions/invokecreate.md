@@ -141,7 +141,7 @@ Código de erro: 180
 
 ## Observações
 
-- A função `InvokeCreate` retorna um código de status da API. Sempre verifique esse retorno para garantir que a operação foi concluída — nunca assuma que deu certo sem checar.
+- A função `InvokeCreate` retorna um código de status da API. Sempre verifique esse retorno para garantir que a operação foi concluída - nunca assuma que deu certo sem checar.
 
 - As variáveis de `statusMessage` e `errorCode` são populadas automaticamente pela função. Você precisa declará-las como variáveis AMPscript comuns (com `SET` ou apenas referenciando com `@`), e elas serão preenchidas após a execução.
 
@@ -149,16 +149,16 @@ Código de erro: 180
 
 > **⚠️ Atenção:** O quarto parâmetro (`createOptionsObject`) é opcional e aceita um objeto `CreateOptions` da API. Use-o apenas se precisar configurar opções avançadas de criação. Na maioria dos cenários de Triggered Send do dia a dia, os três primeiros parâmetros são suficientes.
 
-> **💡 Dica:** No tratamento de erros, exiba tanto o `statusCode` retornado pela função quanto o `@statusMsg` e `@errorCode`. Essa combinação de informações facilita muito a identificação do problema quando algo dá errado — especialmente em CloudPages onde você pode renderizar o feedback na tela durante o desenvolvimento.
+> **💡 Dica:** No tratamento de erros, exiba tanto o `statusCode` retornado pela função quanto o `@statusMsg` e `@errorCode`. Essa combinação de informações facilita muito a identificação do problema quando algo dá errado - especialmente em CloudPages onde você pode renderizar o feedback na tela durante o desenvolvimento.
 
 ## Funções relacionadas
 
-- [CreateObject](../api-functions/createobject.md) — cria a instância do objeto da API que será passado para `InvokeCreate`
-- [SetObjectProperty](../api-functions/setobjectproperty.md) — define as propriedades do objeto antes de invocar a criação
-- [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) — adiciona itens em propriedades de array do objeto (como Subscribers)
-- [InvokeUpdate](../api-functions/invokeupdate.md) — invoca o método Update em um objeto da API
-- [InvokeDelete](../api-functions/invokedelete.md) — invoca o método Delete em um objeto da API
-- [InvokeRetrieve](../api-functions/invokeretrieve.md) — invoca o método Retrieve para consultar objetos da API
-- [InvokeExecute](../api-functions/invokeexecute.md) — invoca o método Execute em um objeto da API
-- [InvokePerform](../api-functions/invokeperform.md) — invoca o método Perform em um objeto da API
-- [RaiseError](../utility-functions/raiseerror.md) — útil para interromper a execução quando o `InvokeCreate` retorna erro crítico
+- [CreateObject](../api-functions/createobject.md) - cria a instância do objeto da API que será passado para `InvokeCreate`
+- [SetObjectProperty](../api-functions/setobjectproperty.md) - define as propriedades do objeto antes de invocar a criação
+- [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) - adiciona itens em propriedades de array do objeto (como Subscribers)
+- [InvokeUpdate](../api-functions/invokeupdate.md) - invoca o método Update em um objeto da API
+- [InvokeDelete](../api-functions/invokedelete.md) - invoca o método Delete em um objeto da API
+- [InvokeRetrieve](../api-functions/invokeretrieve.md) - invoca o método Retrieve para consultar objetos da API
+- [InvokeExecute](../api-functions/invokeexecute.md) - invoca o método Execute em um objeto da API
+- [InvokePerform](../api-functions/invokeperform.md) - invoca o método Perform em um objeto da API
+- [RaiseError](../utility-functions/raiseerror.md) - útil para interromper a execução quando o `InvokeCreate` retorna erro crítico

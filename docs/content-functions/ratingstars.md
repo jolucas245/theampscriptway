@@ -76,11 +76,11 @@ SET @htmlEstrelas = RatingStars(@nota, "#FFD700", 30)
 
 - O retorno da função é um elemento HTML `<img>` completo, com o `src` apontando para a URL da imagem gerada. Você não precisa montar a tag manualmente.
 - Para a cor, você pode usar tanto nomes de cor em inglês (`"yellow"`, `"red"`) quanto códigos hexadecimais HTML (`"#FFD700"`).
-- O valor de `starSize` define tanto a largura quanto a altura de cada estrela em pixels — escolha um tamanho que se encaixe bem no layout do seu template de e-mail.
+- O valor de `starSize` define tanto a largura quanto a altura de cada estrela em pixels - escolha um tamanho que se encaixe bem no layout do seu template de e-mail.
 
 ## Funções relacionadas
 
-- [Image](../content-functions/image.md) — para inserir outras imagens no conteúdo
-- [Concat](../string-functions/concat.md) — para combinar texto com a saída das estrelas
-- [V](../utility-functions/v.md) — para exibir variáveis no HTML
-- [BeginImpressionRegion](../content-functions/beginimpressionregion.md) — para rastrear impressões em blocos de recomendação
+- [Image](../content-functions/image.md) - para inserir outras imagens no conteúdo
+- [Concat](../string-functions/concat.md) - para combinar texto com a saída das estrelas
+- [V](../utility-functions/v.md) - para exibir variáveis no HTML
+- [BeginImpressionRegion](../content-functions/beginimpressionregion.md) - para rastrear impressões em blocos de recomendação

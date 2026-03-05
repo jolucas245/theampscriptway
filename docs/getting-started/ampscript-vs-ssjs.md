@@ -8,7 +8,7 @@ description: Comparação entre AMPscript e Server-Side JavaScript no Marketing 
 
 O Marketing Cloud Engagement suporta duas linguagens de script do lado do servidor: **AMPscript** e **Server-Side JavaScript (SSJS)**. Elas coexistem no mesmo template e cada uma tem seu lugar.
 
-Entender quando usar cada uma — e como fazer elas conversarem — é uma habilidade essencial para projetos mais avançados no SFMC.
+Entender quando usar cada uma - e como fazer elas conversarem - é uma habilidade essencial para projetos mais avançados no SFMC.
 
 ---
 
@@ -53,7 +53,7 @@ Entender quando usar cada uma — e como fazer elas conversarem — é uma habil
 
 ## Compartilhando variáveis entre as linguagens
 
-As duas linguagens têm espaços de variáveis separados — uma variável `@nome` do AMPscript não é automaticamente visível no SSJS, e vice-versa. Para transferir valores, o SSJS oferece duas funções utilitárias: `Variable.GetValue()` e `Variable.SetValue()`.
+As duas linguagens têm espaços de variáveis separados - uma variável `@nome` do AMPscript não é automaticamente visível no SSJS, e vice-versa. Para transferir valores, o SSJS oferece duas funções utilitárias: `Variable.GetValue()` e `Variable.SetValue()`.
 
 ### Variable.GetValue()
 
@@ -67,7 +67,7 @@ Variable.GetValue(nomeVariavel)
 |-----------|------|-------------|-----------|
 | 1 | String | Sim | Nome da variável AMPscript. O prefixo `@` é opcional. |
 
-**Exemplo — passando uma variável AMPscript para o SSJS:**
+**Exemplo - passando uma variável AMPscript para o SSJS:**
 
 ```html
 %%[
@@ -82,7 +82,7 @@ Variable.GetValue(nomeVariavel)
   var segmento  = Variable.GetValue("@segmento");
 
   /* Agora você pode usar esses valores em lógica SSJS */
-  Write("Cliente " + clienteId + " — Segmento: " + segmento);
+  Write("Cliente " + clienteId + " - Segmento: " + segmento);
 </script>
 ```
 
@@ -103,7 +103,7 @@ Variable.SetValue(nomeVariavel, valor)
 | 1 | String | Sim | Nome da variável AMPscript. O prefixo `@` é opcional. |
 | 2 | String | Sim | Valor a definir. Pode ser um literal ou uma variável SSJS. |
 
-**Exemplo — passando um valor do SSJS para o AMPscript:**
+**Exemplo - passando um valor do SSJS para o AMPscript:**
 
 ```html
 <script runat="server">
@@ -138,7 +138,7 @@ Olá, Mariana! Você é membro Prata com 4750 pontos.
 
 ---
 
-## Exemplo completo — fluxo SSJS → AMPscript → SSJS
+## Exemplo completo - fluxo SSJS → AMPscript → SSJS
 
 O padrão mais poderoso é o ciclo completo: o AMPscript prepara dados do subscriber, o SSJS os usa para buscar ou calcular algo, e o resultado volta para o AMPscript renderizar o conteúdo.
 
@@ -187,7 +187,7 @@ O padrão mais poderoso é o ciclo completo: o AMPscript prepara dados do subscr
 
 **Defina as variáveis AMPscript antes de usá-las no SSJS.** O `Variable.GetValue()` retorna vazio se a variável não existir ainda. Se precisar de uma variável de "saída" (que o SSJS vai preencher), declare-a com `VAR` ou `SET @var = ''` antes do bloco `<script>`.
 
-**Use `Variable.SetValue()` antes do bloco AMPscript que vai consumir o valor.** O SSJS executa de cima para baixo junto com o AMPscript — então o bloco `<script>` precisa vir antes do `%%[` que usa a variável.
+**Use `Variable.SetValue()` antes do bloco AMPscript que vai consumir o valor.** O SSJS executa de cima para baixo junto com o AMPscript - então o bloco `<script>` precisa vir antes do `%%[` que usa a variável.
 
 **Prefira AMPscript para personalização de e-mail em escala.** Em jobs com milhões de envios, SSJS pode ter impacto de performance. Use SSJS onde for realmente necessário e AMPscript para o restante.
 

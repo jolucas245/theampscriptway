@@ -8,7 +8,7 @@ description: Prefixo aplicado em links dentro de conteúdo HTML externo (syndica
 
 ## Descrição
 
-`HTTPGetWrap` não é uma função AMPscript tradicional — é um **prefixo** que você aplica no atributo `href` de links dentro de conteúdo HTML externo, carregado via syndicated content (como [HTTPGet](../http-functions/httpget.md)). Quando o Marketing Cloud busca HTML de uma URL externa, os links desse conteúdo não passam pelo wrapper de rastreamento de cliques por padrão. Ao adicionar o prefixo `HTTPGetWrap|` antes da URL no HTML externo, você instrui o Marketing Cloud a aplicar o rastreamento de cliques nesses links, permitindo que apareçam nos relatórios de tracking normalmente.
+`HTTPGetWrap` não é uma função AMPscript tradicional - é um **prefixo** que você aplica no atributo `href` de links dentro de conteúdo HTML externo, carregado via syndicated content (como [HTTPGet](../http-functions/httpget.md)). Quando o Marketing Cloud busca HTML de uma URL externa, os links desse conteúdo não passam pelo wrapper de rastreamento de cliques por padrão. Ao adicionar o prefixo `HTTPGetWrap|` antes da URL no HTML externo, você instrui o Marketing Cloud a aplicar o rastreamento de cliques nesses links, permitindo que apareçam nos relatórios de tracking normalmente.
 
 ## Sintaxe
 
@@ -125,15 +125,15 @@ Todos os links agora são rastreados nos relatórios de clique do Marketing Clou
 
 > **⚠️ Atenção:** O prefixo `HTTPGetWrap|` **precisa ser habilitado pelo Suporte da Salesforce**. A business rule que ativa essa funcionalidade se chama **WRAP_HTTPGET_URLS**. Sem essa regra ativada na sua conta, o prefixo será ignorado e os links não serão rastreados. Abra um case com o suporte solicitando a ativação antes de implementar.
 
-> **⚠️ Atenção:** O prefixo `HTTPGetWrap|` é aplicado **no HTML do servidor externo**, e não no código AMPscript do e-mail. Quem edita é o desenvolvedor que controla o conteúdo externo — é fundamental alinhar isso com a equipe responsável pelo servidor que hospeda o HTML.
+> **⚠️ Atenção:** O prefixo `HTTPGetWrap|` é aplicado **no HTML do servidor externo**, e não no código AMPscript do e-mail. Quem edita é o desenvolvedor que controla o conteúdo externo - é fundamental alinhar isso com a equipe responsável pelo servidor que hospeda o HTML.
 
-> **💡 Dica:** Esse recurso é essencial quando você trabalha com conteúdo sindicalizado (syndicated content) — cenário comum em operações brasileiras onde uma equipe de produto ou e-commerce mantém o HTML de ofertas em um CMS separado, e o Marketing Cloud apenas consome esse conteúdo. Sem o `HTTPGetWrap|`, você perde toda a visibilidade de cliques nesses links nos relatórios de tracking.
+> **💡 Dica:** Esse recurso é essencial quando você trabalha com conteúdo sindicalizado (syndicated content) - cenário comum em operações brasileiras onde uma equipe de produto ou e-commerce mantém o HTML de ofertas em um CMS separado, e o Marketing Cloud apenas consome esse conteúdo. Sem o `HTTPGetWrap|`, você perde toda a visibilidade de cliques nesses links nos relatórios de tracking.
 
 ## Funções relacionadas
 
-- [HTTPGet](../http-functions/httpget.md) — função que busca o conteúdo HTML externo onde o prefixo `HTTPGetWrap|` é utilizado
-- [BeforeHTTPGet](../http-functions/beforehttpget.md) — executada antes da chamada HTTPGet
-- [AfterHTTPGet](../http-functions/afterhttpget.md) — executada após a chamada HTTPGet
-- [RedirectTo](../http-functions/redirectto.md) — redireciona para uma URL com rastreamento de cliques
-- [WrapLongURL](../http-functions/wraplongurl.md) — encapsula URLs longas para rastreamento
-- [ContentBlockByName](../content-functions/contentblockbyname.md) — alternativa para incluir conteúdo reutilizável sem depender de servidor externo
+- [HTTPGet](../http-functions/httpget.md) - função que busca o conteúdo HTML externo onde o prefixo `HTTPGetWrap|` é utilizado
+- [BeforeHTTPGet](../http-functions/beforehttpget.md) - executada antes da chamada HTTPGet
+- [AfterHTTPGet](../http-functions/afterhttpget.md) - executada após a chamada HTTPGet
+- [RedirectTo](../http-functions/redirectto.md) - redireciona para uma URL com rastreamento de cliques
+- [WrapLongURL](../http-functions/wraplongurl.md) - encapsula URLs longas para rastreamento
+- [ContentBlockByName](../content-functions/contentblockbyname.md) - alternativa para incluir conteúdo reutilizável sem depender de servidor externo

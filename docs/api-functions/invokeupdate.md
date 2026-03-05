@@ -8,7 +8,7 @@ description: Executa o método Update em um objeto da API do SFMC, permitindo at
 
 ## Descrição
 
-A função `InvokeUpdate` invoca o método Update em um objeto da API do Marketing Cloud. É a função que você usa quando precisa atualizar programaticamente objetos do sistema — como dados de um Subscriber — diretamente via AMPscript, sem precisar recorrer a chamadas SOAP externas. Após a execução, ela armazena a mensagem de status e o código de erro em variáveis AMPscript para que você possa validar se a operação foi bem-sucedida.
+A função `InvokeUpdate` invoca o método Update em um objeto da API do Marketing Cloud. É a função que você usa quando precisa atualizar programaticamente objetos do sistema - como dados de um Subscriber - diretamente via AMPscript, sem precisar recorrer a chamadas SOAP externas. Após a execução, ela armazena a mensagem de status e o código de erro em variáveis AMPscript para que você possa validar se a operação foi bem-sucedida.
 
 ## Sintaxe
 
@@ -110,13 +110,13 @@ E-mail do subscriber JS-00012345 atualizado para joao.novo@grupohorizonte.com.br
 
 > **⚠️ Atenção:** O objeto da API precisa ser criado com [CreateObject](../api-functions/createobject.md) e ter suas propriedades definidas com [SetObjectProperty](../api-functions/setobjectproperty.md) antes de ser passado para `InvokeUpdate`. Sem isso, a chamada não terá os dados necessários para a operação.
 
-> **💡 Dica:** Use as variáveis `@statusMsg` e `@errorCode` para implementar tratamento de erros robusto. Em cenários de régua automatizada, isso evita que falhas silenciosas passem despercebidas — registre os erros em uma Data Extension de log para acompanhamento posterior.
+> **💡 Dica:** Use as variáveis `@statusMsg` e `@errorCode` para implementar tratamento de erros robusto. Em cenários de régua automatizada, isso evita que falhas silenciosas passem despercebidas - registre os erros em uma Data Extension de log para acompanhamento posterior.
 
 ## Funções relacionadas
 
-- [CreateObject](../api-functions/createobject.md) — cria o objeto da API que será atualizado
-- [SetObjectProperty](../api-functions/setobjectproperty.md) — define as propriedades do objeto antes do update
-- [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) — adiciona itens a arrays de objetos da API
-- [InvokeCreate](../api-functions/invokecreate.md) — invoca o método Create em um objeto da API
-- [InvokeDelete](../api-functions/invokedelete.md) — invoca o método Delete em um objeto da API
-- [InvokeRetrieve](../api-functions/invokeretrieve.md) — invoca o método Retrieve em um objeto da API
+- [CreateObject](../api-functions/createobject.md) - cria o objeto da API que será atualizado
+- [SetObjectProperty](../api-functions/setobjectproperty.md) - define as propriedades do objeto antes do update
+- [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) - adiciona itens a arrays de objetos da API
+- [InvokeCreate](../api-functions/invokecreate.md) - invoca o método Create em um objeto da API
+- [InvokeDelete](../api-functions/invokedelete.md) - invoca o método Delete em um objeto da API
+- [InvokeRetrieve](../api-functions/invokeretrieve.md) - invoca o método Retrieve em um objeto da API

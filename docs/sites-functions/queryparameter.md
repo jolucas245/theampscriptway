@@ -8,7 +8,7 @@ description: Recupera o valor de um parâmetro de URL ou campo de formulário em
 
 ## Descrição
 
-A função `QueryParameter` retorna o valor de um parâmetro passado via URL (query string) ou campo de formulário em uma landing page. Ela também consegue recuperar parâmetros de uma query string criptografada gerada pela função [CloudPagesURL](../sites-functions/cloudpagesurl.md). Essa função se comporta exatamente da mesma forma que a [RequestParameter](../sites-functions/requestparameter.md) — ambas existem por questões de compatibilidade retroativa.
+A função `QueryParameter` retorna o valor de um parâmetro passado via URL (query string) ou campo de formulário em uma landing page. Ela também consegue recuperar parâmetros de uma query string criptografada gerada pela função [CloudPagesURL](../sites-functions/cloudpagesurl.md). Essa função se comporta exatamente da mesma forma que a [RequestParameter](../sites-functions/requestparameter.md) - ambas existem por questões de compatibilidade retroativa.
 
 ## Sintaxe
 
@@ -112,7 +112,7 @@ Obrigado, Maria Santos! Seu interesse na categoria Eletrodomésticos (R$ 1.299,9
 
 ## Observações
 
-- A função `QueryParameter` tem comportamento idêntico ao da [RequestParameter](../sites-functions/requestparameter.md). Ambas são mantidas por compatibilidade retroativa. Você pode escolher qualquer uma delas — o resultado será o mesmo.
+- A função `QueryParameter` tem comportamento idêntico ao da [RequestParameter](../sites-functions/requestparameter.md). Ambas são mantidas por compatibilidade retroativa. Você pode escolher qualquer uma delas - o resultado será o mesmo.
 
 - Ela recupera tanto parâmetros visíveis na URL (query string aberta) quanto parâmetros de uma query string criptografada gerada pela função [CloudPagesURL](../sites-functions/cloudpagesurl.md).
 
@@ -122,8 +122,8 @@ Obrigado, Maria Santos! Seu interesse na categoria Eletrodomésticos (R$ 1.299,9
 
 ## Funções relacionadas
 
-- [RequestParameter](../sites-functions/requestparameter.md) — função idêntica, mantida por compatibilidade retroativa
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — gera URLs de CloudPages com parâmetros criptografados, que podem ser lidos por `QueryParameter`
-- [RedirectTo](../http-functions/redirectto.md) — usada no e-mail para redirecionar o clique para a URL gerada por `CloudPagesURL`
-- [Empty](../utility-functions/empty.md) — para validar se o parâmetro retornou algum valor antes de processá-lo
-- [V](../utility-functions/v.md) — para exibir o valor da variável no HTML renderizado
+- [RequestParameter](../sites-functions/requestparameter.md) - função idêntica, mantida por compatibilidade retroativa
+- [CloudPagesURL](../sites-functions/cloudpagesurl.md) - gera URLs de CloudPages com parâmetros criptografados, que podem ser lidos por `QueryParameter`
+- [RedirectTo](../http-functions/redirectto.md) - usada no e-mail para redirecionar o clique para a URL gerada por `CloudPagesURL`
+- [Empty](../utility-functions/empty.md) - para validar se o parâmetro retornou algum valor antes de processá-lo
+- [V](../utility-functions/v.md) - para exibir o valor da variável no HTML renderizado

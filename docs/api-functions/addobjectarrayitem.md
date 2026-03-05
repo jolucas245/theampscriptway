@@ -8,7 +8,7 @@ description: Adiciona um objeto a uma propriedade de array dentro de um objeto d
 
 ## Descrição
 
-A função `AddObjectArrayItem` adiciona um item a uma propriedade de array dentro de um objeto da API do Marketing Cloud Engagement. É uma função essencial quando você está construindo objetos complexos via AMPscript que possuem propriedades do tipo array — como, por exemplo, adicionar atributos a um subscriber ou itens a uma lista. Você vai usar essa função em conjunto com [CreateObject](../api-functions/createobject.md) e [SetObjectProperty](../api-functions/setobjectproperty.md) para montar objetos completos antes de invocar operações da API.
+A função `AddObjectArrayItem` adiciona um item a uma propriedade de array dentro de um objeto da API do Marketing Cloud Engagement. É uma função essencial quando você está construindo objetos complexos via AMPscript que possuem propriedades do tipo array - como, por exemplo, adicionar atributos a um subscriber ou itens a uma lista. Você vai usar essa função em conjunto com [CreateObject](../api-functions/createobject.md) e [SetObjectProperty](../api-functions/setobjectproperty.md) para montar objetos completos antes de invocar operações da API.
 
 ## Sintaxe
 
@@ -26,7 +26,7 @@ AddObjectArrayItem(apiObject, arrayProperty, itemToAdd)
 
 ## Exemplo básico
 
-Adicionando um atributo personalizado ao objeto Subscriber — neste caso, o nome da cidade de um cliente da Lojas Vitória.
+Adicionando um atributo personalizado ao objeto Subscriber - neste caso, o nome da cidade de um cliente da Lojas Vitória.
 
 ```ampscript
 %%[
@@ -51,7 +51,7 @@ O atributo "Cidade" com valor "São Paulo" é adicionado ao array Attributes do 
 
 ## Exemplo avançado
 
-Cenário real de régua de relacionamento: ao cadastrar um novo subscriber via AMPscript, você precisa passar múltiplos atributos de perfil de uma só vez — nome, cidade e telefone do cliente da Conecta Telecom.
+Cenário real de régua de relacionamento: ao cadastrar um novo subscriber via AMPscript, você precisa passar múltiplos atributos de perfil de uma só vez - nome, cidade e telefone do cliente da Conecta Telecom.
 
 ```ampscript
 %%[
@@ -92,7 +92,7 @@ O objeto @subscriber é montado com três atributos (NomeCompleto, Cidade e Tele
 
 ## Observações
 
-> **💡 Dica:** Cada item que você adiciona ao array precisa ser um objeto criado separadamente com [CreateObject](../api-functions/createobject.md). Você não consegue passar uma string simples diretamente — primeiro crie o objeto, defina suas propriedades com [SetObjectProperty](../api-functions/setobjectproperty.md) e só então use `AddObjectArrayItem` para inseri-lo no array.
+> **💡 Dica:** Cada item que você adiciona ao array precisa ser um objeto criado separadamente com [CreateObject](../api-functions/createobject.md). Você não consegue passar uma string simples diretamente - primeiro crie o objeto, defina suas propriedades com [SetObjectProperty](../api-functions/setobjectproperty.md) e só então use `AddObjectArrayItem` para inseri-lo no array.
 
 > **💡 Dica:** Você pode chamar `AddObjectArrayItem` várias vezes no mesmo array do mesmo objeto. Cada chamada adiciona um novo item ao final do array, como mostrado no exemplo avançado.
 
@@ -100,8 +100,8 @@ O objeto @subscriber é montado com três atributos (NomeCompleto, Cidade e Tele
 
 ## Funções relacionadas
 
-- [CreateObject](../api-functions/createobject.md) — cria o objeto da API que será manipulado
-- [SetObjectProperty](../api-functions/setobjectproperty.md) — define propriedades simples no objeto
-- [InvokeCreate](../api-functions/invokecreate.md) — executa a criação do objeto na API após montá-lo
-- [InvokeUpdate](../api-functions/invokeupdate.md) — executa a atualização de um objeto na API
-- [InvokeRetrieve](../api-functions/invokeretrieve.md) — recupera objetos da API
+- [CreateObject](../api-functions/createobject.md) - cria o objeto da API que será manipulado
+- [SetObjectProperty](../api-functions/setobjectproperty.md) - define propriedades simples no objeto
+- [InvokeCreate](../api-functions/invokecreate.md) - executa a criação do objeto na API após montá-lo
+- [InvokeUpdate](../api-functions/invokeupdate.md) - executa a atualização de um objeto na API
+- [InvokeRetrieve](../api-functions/invokeretrieve.md) - recupera objetos da API

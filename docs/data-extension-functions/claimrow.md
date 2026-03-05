@@ -8,7 +8,7 @@ description: Resgata e reserva a primeira linha não reivindicada de uma Data Ex
 
 ## Descrição
 
-A função `ClaimRow` busca a primeira linha ainda não reivindicada em uma Data Extension, marca essa linha como "claimed" (reivindicada) e retorna a linha inteira. É a função clássica para distribuição de cupons únicos, códigos promocionais ou vouchers — qualquer cenário em que cada subscriber deve receber um valor exclusivo e irrepetível. Se não houver mais linhas disponíveis na Data Extension, a função lança uma exceção.
+A função `ClaimRow` busca a primeira linha ainda não reivindicada em uma Data Extension, marca essa linha como "claimed" (reivindicada) e retorna a linha inteira. É a função clássica para distribuição de cupons únicos, códigos promocionais ou vouchers - qualquer cenário em que cada subscriber deve receber um valor exclusivo e irrepetível. Se não houver mais linhas disponíveis na Data Extension, a função lança uma exceção.
 
 ## Sintaxe
 
@@ -20,7 +20,7 @@ ClaimRow("dataExt", "claimColumn", "claimantColumn", "claimantValue" [, "additio
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| dataExt | String | Sim | Nome da Data Extension que contém as linhas a serem reivindicadas. **Deve ser hard-coded** — se você passar uma variável AMPscript, a função lança uma exceção. |
+| dataExt | String | Sim | Nome da Data Extension que contém as linhas a serem reivindicadas. **Deve ser hard-coded** - se você passar uma variável AMPscript, a função lança uma exceção. |
 | claimColumn | String | Sim | Nome da coluna booleana usada para rastrear se a linha já foi reivindicada. Essa coluna precisa ser configurada como obrigatória (non-nullable) com valor padrão `False`. |
 | claimantColumn | String | Sim | Nome da coluna usada para registrar quem reivindicou a linha (ex: e-mail do subscriber). |
 | claimantValue | String | Sim | Valor a ser inserido na coluna `claimantColumn` no momento da reivindicação. |
@@ -57,7 +57,7 @@ Olá! Seu cupom exclusivo de desconto é: %%=v(@cupom)=%%
 Olá! Seu cupom exclusivo de desconto é: S5MY7BVU
 ```
 
-Após a execução, a Data Extension é atualizada automaticamente — a linha reivindicada fica assim:
+Após a execução, a Data Extension é atualizada automaticamente - a linha reivindicada fica assim:
 
 | CouponCode | EmailAddress | IsClaimed | ClaimedDate |
 |---|---|---|---|
@@ -112,16 +112,16 @@ Infelizmente todos os vouchers já foram resgatados. Fique de olho nas próximas
 - A coluna booleana usada como `claimColumn` precisa ser **obrigatória (non-nullable)** e ter o valor padrão **False**.
 - Se a Data Extension possuir uma coluna chamada exatamente **"ClaimedDate"** (tipo Date, nullable), a função preenche automaticamente com a data e hora da reivindicação.
 - Você pode preencher colunas extras da linha reivindicada adicionando pares de coluna/valor ao final da chamada da função.
-- A função retorna **a linha inteira** — use [`Field`](../data-extension-functions/field.md) para extrair o valor de uma coluna específica do resultado.
+- A função retorna **a linha inteira** - use [`Field`](../data-extension-functions/field.md) para extrair o valor de uma coluna específica do resultado.
 
 > **💡 Dica:** Antes de um envio grande, verifique se a quantidade de linhas não reivindicadas na Data Extension é suficiente para o tamanho da audiência. Você pode usar [`DataExtensionRowCount`](../data-extension-functions/dataextensionrowcount.md) para ter uma noção do total, mas lembre-se de que ela conta todas as linhas (claimed e unclaimed).
 
 ## Funções relacionadas
 
-- [`ClaimRowValue`](../data-extension-functions/claimrowvalue.md) — semelhante, mas retorna apenas o valor de uma coluna específica e aceita um valor de fallback quando não há linhas disponíveis
-- [`Field`](../data-extension-functions/field.md) — para extrair o valor de uma coluna específica da linha retornada por `ClaimRow`
-- [`Lookup`](../data-extension-functions/lookup.md) — para buscar valores em Data Extensions sem reivindicação
-- [`LookupRows`](../data-extension-functions/lookuprows.md) — para buscar múltiplas linhas de uma Data Extension
-- [`DataExtensionRowCount`](../data-extension-functions/dataextensionrowcount.md) — para verificar o total de linhas em uma Data Extension
-- [`Empty`](../utility-functions/empty.md) — para verificar se o resultado retornado é vazio
-- [`RaiseError`](../utility-functions/raiseerror.md) — para tratamento personalizado de erros quando cupons acabam
+- [`ClaimRowValue`](../data-extension-functions/claimrowvalue.md) - semelhante, mas retorna apenas o valor de uma coluna específica e aceita um valor de fallback quando não há linhas disponíveis
+- [`Field`](../data-extension-functions/field.md) - para extrair o valor de uma coluna específica da linha retornada por `ClaimRow`
+- [`Lookup`](../data-extension-functions/lookup.md) - para buscar valores em Data Extensions sem reivindicação
+- [`LookupRows`](../data-extension-functions/lookuprows.md) - para buscar múltiplas linhas de uma Data Extension
+- [`DataExtensionRowCount`](../data-extension-functions/dataextensionrowcount.md) - para verificar o total de linhas em uma Data Extension
+- [`Empty`](../utility-functions/empty.md) - para verificar se o resultado retornado é vazio
+- [`RaiseError`](../utility-functions/raiseerror.md) - para tratamento personalizado de erros quando cupons acabam

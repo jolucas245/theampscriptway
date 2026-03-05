@@ -98,12 +98,12 @@ Se não foi você, entre em contato com a central:
 
 > **💡 Dica:** Use essa função sempre que precisar exibir horários para o assinante final. Mostrar horários em CST em um e-mail para clientes brasileiros gera confusão. Combine com [FormatDate](../date-functions/formatdate.md) para formatar no padrão DD/MM/AAAA que o público brasileiro espera.
 
-> **💡 Dica:** Para fazer a operação inversa — converter um horário local para o horário do sistema — use [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md).
+> **💡 Dica:** Para fazer a operação inversa - converter um horário local para o horário do sistema - use [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md).
 
 ## Funções relacionadas
 
-- [Now](../date-functions/now.md) — retorna a data/hora atual do sistema
-- [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md) — operação inversa: converte horário local para horário do sistema
-- [FormatDate](../date-functions/formatdate.md) — formata datas para exibição (ex: padrão brasileiro DD/MM/AAAA)
-- [DateAdd](../date-functions/dateadd.md) — adiciona intervalos a uma data
-- [DatePart](../date-functions/datepart.md) — extrai partes específicas de uma data
+- [Now](../date-functions/now.md) - retorna a data/hora atual do sistema
+- [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md) - operação inversa: converte horário local para horário do sistema
+- [FormatDate](../date-functions/formatdate.md) - formata datas para exibição (ex: padrão brasileiro DD/MM/AAAA)
+- [DateAdd](../date-functions/dateadd.md) - adiciona intervalos a uma data
+- [DatePart](../date-functions/datepart.md) - extrai partes específicas de uma data

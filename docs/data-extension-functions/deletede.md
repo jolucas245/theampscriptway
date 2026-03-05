@@ -8,7 +8,7 @@ description: Remove linhas de uma Data Extension com base em critérios de colun
 
 ## Descrição
 
-A função `DeleteDE` remove linhas de uma Data Extension com base em um ou mais critérios de coluna e valor. Ela é usada especificamente em contexto de **e-mail** — se você precisa deletar registros em CloudPages, landing pages, microsites ou mensagens SMS no MobileConnect, use a função [DeleteData](../data-extension-functions/deletedata.md). A função não retorna nenhum valor de saída.
+A função `DeleteDE` remove linhas de uma Data Extension com base em um ou mais critérios de coluna e valor. Ela é usada especificamente em contexto de **e-mail** - se você precisa deletar registros em CloudPages, landing pages, microsites ou mensagens SMS no MobileConnect, use a função [DeleteData](../data-extension-functions/deletedata.md). A função não retorna nenhum valor de saída.
 
 ## Sintaxe
 
@@ -53,7 +53,7 @@ DeleteDE("Ofertas", "Cidade", "Curitiba")
 
 ## Exemplo avançado
 
-Em uma régua de relacionamento da MegaStore, você mantém uma Data Extension "FilaAtendimento" com solicitações de suporte. Ao enviar um e-mail de encerramento de chamado, você precisa remover todas as linhas em que a origem **ou** o destino do atendimento seja "Rio de Janeiro" — por exemplo, porque aquela regional foi migrada para outro sistema.
+Em uma régua de relacionamento da MegaStore, você mantém uma Data Extension "FilaAtendimento" com solicitações de suporte. Ao enviar um e-mail de encerramento de chamado, você precisa remover todas as linhas em que a origem **ou** o destino do atendimento seja "Rio de Janeiro" - por exemplo, porque aquela regional foi migrada para outro sistema.
 
 **Data Extension "FilaAtendimento" antes:**
 
@@ -88,19 +88,19 @@ DeleteDE("FilaAtendimento", "Origem", "Rio de Janeiro", "Destino", "Rio de Janei
 | Belo Horizonte | Recife | R$ 300,00 | |
 | Porto Alegre | Brasília | R$ 5,00 | |
 
-> **💡 Dica:** Quando você passa múltiplos pares de coluna/valor, a função remove as linhas que atendem a **qualquer um** dos critérios informados — no exemplo acima, foram removidas as linhas onde `Origem` era "Rio de Janeiro" **ou** `Destino` era "Rio de Janeiro".
+> **💡 Dica:** Quando você passa múltiplos pares de coluna/valor, a função remove as linhas que atendem a **qualquer um** dos critérios informados - no exemplo acima, foram removidas as linhas onde `Origem` era "Rio de Janeiro" **ou** `Destino` era "Rio de Janeiro".
 
 ## Observações
 
 > **⚠️ Atenção:** A função `DeleteDE` é exclusiva para uso em **e-mails**. Se você precisa deletar registros em CloudPages, landing pages, microsites ou mensagens SMS do MobileConnect, utilize a função [DeleteData](../data-extension-functions/deletedata.md).
 
 - A função **não retorna nenhum valor de saída**. Ela executa a deleção silenciosamente.
-- Você pode expandir a operação para múltiplos critérios adicionando pares de nome de coluna e valor ao final da chamada. Cada par adicional funciona como um critério **OR** — qualquer linha que corresponda a pelo menos um dos critérios será removida.
+- Você pode expandir a operação para múltiplos critérios adicionando pares de nome de coluna e valor ao final da chamada. Cada par adicional funciona como um critério **OR** - qualquer linha que corresponda a pelo menos um dos critérios será removida.
 
 ## Funções relacionadas
 
-- [DeleteData](../data-extension-functions/deletedata.md) — equivalente para uso em CloudPages, landing pages, microsites e SMS
-- [InsertDE](../data-extension-functions/insertde.md) — insere linhas em uma Data Extension (contexto de e-mail)
-- [UpdateDE](../data-extension-functions/updatede.md) — atualiza linhas em uma Data Extension (contexto de e-mail)
-- [UpsertDE](../data-extension-functions/upsertde.md) — insere ou atualiza linhas em uma Data Extension (contexto de e-mail)
-- [LookupRows](../data-extension-functions/lookuprows.md) — consulta linhas de uma Data Extension antes de decidir o que deletar
+- [DeleteData](../data-extension-functions/deletedata.md) - equivalente para uso em CloudPages, landing pages, microsites e SMS
+- [InsertDE](../data-extension-functions/insertde.md) - insere linhas em uma Data Extension (contexto de e-mail)
+- [UpdateDE](../data-extension-functions/updatede.md) - atualiza linhas em uma Data Extension (contexto de e-mail)
+- [UpsertDE](../data-extension-functions/upsertde.md) - insere ou atualiza linhas em uma Data Extension (contexto de e-mail)
+- [LookupRows](../data-extension-functions/lookuprows.md) - consulta linhas de uma Data Extension antes de decidir o que deletar

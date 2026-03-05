@@ -64,7 +64,7 @@ Em uma régua de relacionamento da Lojas Vitória, o banner muda conforme a cate
 
 > **💡 Dica:** Sempre defina o segundo parâmetro (imagem de fallback) em cenários dinâmicos. Se a external key do primeiro parâmetro estiver errada ou a imagem tiver sido removida do Portfolio, o fallback garante que seu e-mail não fique com imagem quebrada.
 
-> **⚠️ Atenção:** A função busca a imagem pela **external key** no Portfolio. Certifique-se de que suas imagens tenham external keys bem definidas e padronizadas — isso facilita muito a montagem de chaves dinâmicas com [Concat](../string-functions/concat.md). Se você não definir uma external key ao fazer upload, o SFMC pode gerar uma automaticamente que não é intuitiva.
+> **⚠️ Atenção:** A função busca a imagem pela **external key** no Portfolio. Certifique-se de que suas imagens tenham external keys bem definidas e padronizadas - isso facilita muito a montagem de chaves dinâmicas com [Concat](../string-functions/concat.md). Se você não definir uma external key ao fazer upload, o SFMC pode gerar uma automaticamente que não é intuitiva.
 
 - Os atributos `title` e `alt` da tag `<img>` retornada são preenchidos automaticamente com as informações cadastradas na imagem dentro do Portfolio.
 - O atributo `border` é sempre definido como `0`.
@@ -72,10 +72,10 @@ Em uma régua de relacionamento da Lojas Vitória, o banner muda conforme a cate
 
 ## Funções relacionadas
 
-- [ImageById](../content-functions/imagebyid.md) — busca a imagem pelo ID numérico em vez da external key.
-- [ImageByKey](../content-functions/imagebykey.md) — outra forma de buscar imagem por key no Portfolio.
-- [ContentImageById](../content-functions/contentimagebyid.md) — retorna imagem do Content Builder pelo ID.
-- [ContentImageByKey](../content-functions/contentimagebykey.md) — retorna imagem do Content Builder pela key.
-- [Concat](../string-functions/concat.md) — útil para montar external keys dinâmicas.
-- [Lowercase](../string-functions/lowercase.md) — para normalizar valores antes de compor a key da imagem.
-- [AttributeValue](../utility-functions/attributevalue.md) — para capturar dados do assinante de forma segura.
+- [ImageById](../content-functions/imagebyid.md) - busca a imagem pelo ID numérico em vez da external key.
+- [ImageByKey](../content-functions/imagebykey.md) - outra forma de buscar imagem por key no Portfolio.
+- [ContentImageById](../content-functions/contentimagebyid.md) - retorna imagem do Content Builder pelo ID.
+- [ContentImageByKey](../content-functions/contentimagebykey.md) - retorna imagem do Content Builder pela key.
+- [Concat](../string-functions/concat.md) - útil para montar external keys dinâmicas.
+- [Lowercase](../string-functions/lowercase.md) - para normalizar valores antes de compor a key da imagem.
+- [AttributeValue](../utility-functions/attributevalue.md) - para capturar dados do assinante de forma segura.

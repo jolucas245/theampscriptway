@@ -8,7 +8,7 @@ description: Carrega dados JSON em um rowset para uso programático em e-mails e
 
 ## Descrição
 
-Transforma dados JSON em um rowset que você pode percorrer e exibir no seu conteúdo. É a função ideal quando você precisa consumir respostas de APIs (via [HTTPGet](../http-functions/httpget.md) ou [HTTPPost](../http-functions/httppost.md)) ou trabalhar com dados JSON armazenados em Data Extensions — cenários cada vez mais comuns em réguas de relacionamento que integram com sistemas externos. A função é executada no momento do envio para e-mails e no carregamento para CloudPages.
+Transforma dados JSON em um rowset que você pode percorrer e exibir no seu conteúdo. É a função ideal quando você precisa consumir respostas de APIs (via [HTTPGet](../http-functions/httpget.md) ou [HTTPPost](../http-functions/httppost.md)) ou trabalhar com dados JSON armazenados em Data Extensions - cenários cada vez mais comuns em réguas de relacionamento que integram com sistemas externos. A função é executada no momento do envio para e-mails e no carregamento para CloudPages.
 
 ## Sintaxe
 
@@ -20,7 +20,7 @@ BuildRowsetFromJson(@jsonData, @jsonPathExpression, @boolReturnEmptyOnError)
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |-----------|------|-------------|-----------|
-| jsonData | string | Sim | Os dados JSON que você quer processar. Não pode ser um objeto JSON simples (ex: `{"nome": "João"}`) — precisa conter um array ou estrutura mais complexa. |
+| jsonData | string | Sim | Os dados JSON que você quer processar. Não pode ser um objeto JSON simples (ex: `{"nome": "João"}`) - precisa conter um array ou estrutura mais complexa. |
 | jsonPathExpression | string | Sim | A expressão JSONPath que define quais dados extrair do JSON. Aceita notação de ponto (dot notation) ou colchetes (bracket notation). Não suporta expressões de filtro JSONPath. |
 | boolReturnEmptyOnError | boolean | Sim | Se `true` (ou `1`), retorna um rowset vazio quando há erro de sintaxe no JSON ou na expressão JSONPath. Se `false` (ou `0`), lança uma exceção quando ocorre erro. |
 
@@ -127,28 +127,28 @@ ENDIF
 > **⚠️ Atenção:** O valor do parâmetro `jsonData` **não pode** ser um objeto JSON simples como `{"nome": "João", "email": "joao@email.com.br"}`. O JSON precisa conter arrays ou estruturas mais complexas para que a função funcione corretamente.
 
 - Quando a expressão JSONPath retorna **valores simples** (como só os preços de um array), o rowset conterá uma única coluna chamada `Value`.
-- Quando a expressão JSONPath retorna **objetos**, cada campo do objeto vira uma coluna no rowset, com os respectivos valores. A exceção é quando o valor de um campo é um objeto ou array — nesses casos, o valor retornado será `JSON Object` ou `JSON Object Array`, respectivamente.
+- Quando a expressão JSONPath retorna **objetos**, cada campo do objeto vira uma coluna no rowset, com os respectivos valores. A exceção é quando o valor de um campo é um objeto ou array - nesses casos, o valor retornado será `JSON Object` ou `JSON Object Array`, respectivamente.
 - A função **não suporta expressões de filtro** JSONPath.
 - A expressão JSONPath aceita tanto **dot notation** (`$.pedido.itens`) quanto **bracket notation** (`$['pedido']['itens']`).
 
-> **⚠️ Atenção:** Sobre o comportamento de erros — preste atenção na lógica do terceiro parâmetro:
+> **⚠️ Atenção:** Sobre o comportamento de erros - preste atenção na lógica do terceiro parâmetro:
 > - Com `false` (ou `0`): a função **lança exceção** quando há erro de sintaxe no JSON ou no JSONPath. Use quando quiser que erros apareçam de forma explícita em desenvolvimento.
 > - Com `true` (ou `1`): a função **retorna rowset vazio** em caso de erro. Use em produção para evitar que o e-mail quebre.
 
 - Se a expressão JSONPath é válida mas não encontra dados no JSON, a função retorna um rowset vazio (independente do terceiro parâmetro).
 - A função gera exceção quando: não recebe os 3 parâmetros obrigatórios, ou quando o terceiro parâmetro não é um número nem booleano.
 
-> **💡 Dica:** Sempre use [RowCount](../data-extension-functions/rowcount.md) para verificar se o rowset retornou dados antes de iterar. Isso evita que o e-mail mostre uma tabela vazia ou quebre o layout — como demonstrado no exemplo avançado acima.
+> **💡 Dica:** Sempre use [RowCount](../data-extension-functions/rowcount.md) para verificar se o rowset retornou dados antes de iterar. Isso evita que o e-mail mostre uma tabela vazia ou quebre o layout - como demonstrado no exemplo avançado acima.
 
 > **💡 Dica:** Combine `BuildRowsetFromJson` com [HTTPGet](../http-functions/httpget.md) para consumir APIs REST e renderizar os dados diretamente no e-mail. Um padrão muito comum em campanhas que puxam dados de catálogo, rastreamento de pedidos ou informações personalizadas em tempo real.
 
 ## Funções relacionadas
 
-- [BuildRowsetFromString](../content-functions/buildrowsetfromstring.md) — para transformar strings delimitadas em rowset
-- [BuildRowsetFromXml](../content-functions/buildrowsetfromxml.md) — para fazer o mesmo com dados XML
-- [Row](../data-extension-functions/row.md) — para acessar uma linha específica do rowset
-- [RowCount](../data-extension-functions/rowcount.md) — para contar as linhas retornadas
-- [Field](../data-extension-functions/field.md) — para extrair o valor de uma coluna do rowset
-- [Empty](../utility-functions/empty.md) — para validar campos vazios antes de exibir
-- [HTTPGet](../http-functions/httpget.md) — para buscar dados JSON de APIs externas
-- [HTTPPost](../http-functions/httppost.md) — para enviar e receber dados JSON via POST
+- [BuildRowsetFromString](../content-functions/buildrowsetfromstring.md) - para transformar strings delimitadas em rowset
+- [BuildRowsetFromXml](../content-functions/buildrowsetfromxml.md) - para fazer o mesmo com dados XML
+- [Row](../data-extension-functions/row.md) - para acessar uma linha específica do rowset
+- [RowCount](../data-extension-functions/rowcount.md) - para contar as linhas retornadas
+- [Field](../data-extension-functions/field.md) - para extrair o valor de uma coluna do rowset
+- [Empty](../utility-functions/empty.md) - para validar campos vazios antes de exibir
+- [HTTPGet](../http-functions/httpget.md) - para buscar dados JSON de APIs externas
+- [HTTPPost](../http-functions/httppost.md) - para enviar e receber dados JSON via POST

@@ -82,17 +82,17 @@ SET @linkConfirmacao = Concat(
 
 ## Observações
 
-> **⚠️ Atenção:** O hash gerado com `UTF-8` e `UTF-16` para a mesma string produz resultados completamente diferentes. Se você gera o hash em um e-mail e valida em uma CloudPage, garanta que ambos usem o mesmo charset — caso contrário, os tokens nunca vão bater.
+> **⚠️ Atenção:** O hash gerado com `UTF-8` e `UTF-16` para a mesma string produz resultados completamente diferentes. Se você gera o hash em um e-mail e valida em uma CloudPage, garanta que ambos usem o mesmo charset - caso contrário, os tokens nunca vão bater.
 
-> **💡 Dica:** O `SHA1` gera um hash de mão única — não é possível reverter o hash para obter a string original. Isso é útil para ofuscar dados como CPF ou e-mail em logs e Data Extensions de auditoria, sem expor a informação em texto claro.
+> **💡 Dica:** O `SHA1` gera um hash de mão única - não é possível reverter o hash para obter a string original. Isso é útil para ofuscar dados como CPF ou e-mail em logs e Data Extensions de auditoria, sem expor a informação em texto claro.
 
 > **💡 Dica:** Se você precisa de um nível de segurança maior, considere usar [SHA256](../encryption-functions/sha256.md) ou [SHA512](../encryption-functions/sha512.md), que geram hashes mais longos e são mais resistentes a colisões.
 
 ## Funções relacionadas
 
-- [MD5](../encryption-functions/md5.md) — gera um hash de 128 bits (menos seguro, mas mais curto)
-- [SHA256](../encryption-functions/sha256.md) — gera um hash de 256 bits, mais robusto que SHA1
-- [SHA512](../encryption-functions/sha512.md) — gera um hash de 512 bits, o mais robusto disponível em AMPscript
-- [Base64Encode](../encryption-functions/base64encode.md) — codifica strings em Base64 (reversível, diferente de hash)
-- [Concat](../string-functions/concat.md) — útil para combinar strings antes de gerar o hash
-- [URLEncode](../string-functions/urlencode.md) — para usar o hash com segurança em URLs
+- [MD5](../encryption-functions/md5.md) - gera um hash de 128 bits (menos seguro, mas mais curto)
+- [SHA256](../encryption-functions/sha256.md) - gera um hash de 256 bits, mais robusto que SHA1
+- [SHA512](../encryption-functions/sha512.md) - gera um hash de 512 bits, o mais robusto disponível em AMPscript
+- [Base64Encode](../encryption-functions/base64encode.md) - codifica strings em Base64 (reversível, diferente de hash)
+- [Concat](../string-functions/concat.md) - útil para combinar strings antes de gerar o hash
+- [URLEncode](../string-functions/urlencode.md) - para usar o hash com segurança em URLs

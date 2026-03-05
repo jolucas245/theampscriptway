@@ -45,7 +45,7 @@ Nome limpo: "João Silva"
 
 ## Exemplo avançado
 
-Tratando dados de um formulário de CloudPage antes de gravar na Data Extension — combinando Trim com outras funções para padronizar o cadastro:
+Tratando dados de um formulário de CloudPage antes de gravar na Data Extension - combinando Trim com outras funções para padronizar o cadastro:
 
 ```ampscript
 %%[
@@ -77,14 +77,14 @@ Cadastro atualizado: Maria Santos (maria.santos@megastore.com.br) - São Paulo
 
 - A função remove **apenas** espaços em branco do início e do fim da string. Espaços no meio do texto são preservados (por exemplo, entre nome e sobrenome).
 
-> **💡 Dica:** Sempre aplique `Trim` em dados que vêm de fontes externas — importações de CSV, formulários de CloudPages, integrações via API. É muito comum virem espaços invisíveis que causam falhas em comparações e lookups. Um `Lookup` que busca `"joao@email.com.br"` não vai encontrar `" joao@email.com.br "` se o dado não for tratado.
+> **💡 Dica:** Sempre aplique `Trim` em dados que vêm de fontes externas - importações de CSV, formulários de CloudPages, integrações via API. É muito comum virem espaços invisíveis que causam falhas em comparações e lookups. Um `Lookup` que busca `"joao@email.com.br"` não vai encontrar `" joao@email.com.br "` se o dado não for tratado.
 
 > **💡 Dica:** Combine `Trim` com [Lowercase](../string-functions/lowercase.md) ou [ProperCase](../string-functions/propercase.md) para criar um pipeline de limpeza de dados. Essa combinação é praticamente obrigatória em formulários de captura.
 
 ## Funções relacionadas
 
-- [Lowercase](../string-functions/lowercase.md) — converte a string para minúsculas
-- [Uppercase](../string-functions/uppercase.md) — converte a string para maiúsculas
-- [ProperCase](../string-functions/propercase.md) — capitaliza a primeira letra de cada palavra
-- [Replace](../string-functions/replace.md) — substitui ocorrências dentro de uma string
-- [Concat](../string-functions/concat.md) — concatena múltiplas strings
+- [Lowercase](../string-functions/lowercase.md) - converte a string para minúsculas
+- [Uppercase](../string-functions/uppercase.md) - converte a string para maiúsculas
+- [ProperCase](../string-functions/propercase.md) - capitaliza a primeira letra de cada palavra
+- [Replace](../string-functions/replace.md) - substitui ocorrências dentro de uma string
+- [Concat](../string-functions/concat.md) - concatena múltiplas strings

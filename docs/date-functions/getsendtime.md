@@ -8,7 +8,7 @@ description: Retorna o timestamp do início do job ou do momento em que o envio 
 
 ## Descrição
 
-A função `GetSendTime` retorna um timestamp relacionado ao envio de um e-mail — pode ser o horário em que o job começou (nível geral) ou o horário em que o envio foi concluído para aquele subscriber específico (nível individual). O valor retornado está sempre em **Central Standard Time (CST), sem horário de verão**. É especialmente útil quando você precisa registrar ou exibir o momento exato em que cada contato recebeu a comunicação, algo comum em réguas de relacionamento com SLAs de envio ou auditorias.
+A função `GetSendTime` retorna um timestamp relacionado ao envio de um e-mail - pode ser o horário em que o job começou (nível geral) ou o horário em que o envio foi concluído para aquele subscriber específico (nível individual). O valor retornado está sempre em **Central Standard Time (CST), sem horário de verão**. É especialmente útil quando você precisa registrar ou exibir o momento exato em que cada contato recebeu a comunicação, algo comum em réguas de relacionamento com SLAs de envio ou auditorias.
 
 ## Sintaxe
 
@@ -63,7 +63,7 @@ SET @horaBrasiliaIndividual = DateAdd(@horaIndividual, 1, "H")
 SET @horaBrasiliaJob = DateAdd(@horaJob, 1, "H")
 ]%%
 
-Conecta Telecom — Confirmação de envio
+Conecta Telecom - Confirmação de envio
 
 Prezado(a) %%=v(@primeiroNome)=%%,
 
@@ -82,7 +82,7 @@ IF @diffMinutos > 30 THEN
 
 **Saída:**
 ```
-Conecta Telecom — Confirmação de envio
+Conecta Telecom - Confirmação de envio
 
 Prezado(a) Maria,
 
@@ -94,9 +94,9 @@ Seu e-mail processado em: 15/11/2024 16:42:18
 
 ## Observações
 
-> **⚠️ Atenção:** O valor retornado está sempre em **Central Standard Time (CST) sem ajuste de horário de verão**. Para exibir no fuso de Brasília, você precisa fazer a conversão manualmente com [DateAdd](../date-functions/dateadd.md). A diferença entre CST e Brasília varia conforme o período do ano — fique atento.
+> **⚠️ Atenção:** O valor retornado está sempre em **Central Standard Time (CST) sem ajuste de horário de verão**. Para exibir no fuso de Brasília, você precisa fazer a conversão manualmente com [DateAdd](../date-functions/dateadd.md). A diferença entre CST e Brasília varia conforme o período do ano - fique atento.
 
-- **Durante o envio** (enquanto o job está em execução), tanto `GetSendTime()` quanto `GetSendTime(true)` retornam o horário atual do sistema — comportamento idêntico a [Now](../date-functions/now.md).
+- **Durante o envio** (enquanto o job está em execução), tanto `GetSendTime()` quanto `GetSendTime(true)` retornam o horário atual do sistema - comportamento idêntico a [Now](../date-functions/now.md).
 - **Após um envio de lista, Data Extension ou envio manual:**
   - `GetSendTime()` (sem parâmetro ou `false`) → horário em que o envio completou para aquele subscriber individual.
   - `GetSendTime(true)` → horário de início do job.
@@ -106,12 +106,12 @@ Seu e-mail processado em: 15/11/2024 16:42:18
 
 > **💡 Dica:** A diferença entre `GetSendTime()` e `Now()` só aparece **após** o envio (por exemplo, em uma open-time render ou preview). Durante o processamento do envio, ambas retornam o mesmo valor. Se você precisa sempre do horário atual do sistema independentemente do contexto, use [Now](../date-functions/now.md). Se precisa do horário real em que aquele subscriber foi processado, `GetSendTime()` é a escolha certa.
 
-> **💡 Dica:** `GetSendTime(true)` e `Now(true)` retornam o mesmo valor — ambas trazem o horário de início/publicação do job. A diferença está na versão sem parâmetro: `GetSendTime()` congela o timestamp do subscriber, enquanto `Now()` sempre retorna o horário atual.
+> **💡 Dica:** `GetSendTime(true)` e `Now(true)` retornam o mesmo valor - ambas trazem o horário de início/publicação do job. A diferença está na versão sem parâmetro: `GetSendTime()` congela o timestamp do subscriber, enquanto `Now()` sempre retorna o horário atual.
 
 ## Funções relacionadas
 
-- [Now](../date-functions/now.md) — retorna o horário atual do sistema (ou o horário de início do job quando usada com `true`)
-- [FormatDate](../date-functions/formatdate.md) — para formatar o timestamp retornado no padrão brasileiro DD/MM/AAAA
-- [DateAdd](../date-functions/dateadd.md) — para converter o horário CST para o fuso de Brasília
-- [DateDiff](../date-functions/datediff.md) — para calcular a diferença entre o início do job e o processamento individual
-- [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) — para conversão de fuso horário do sistema
+- [Now](../date-functions/now.md) - retorna o horário atual do sistema (ou o horário de início do job quando usada com `true`)
+- [FormatDate](../date-functions/formatdate.md) - para formatar o timestamp retornado no padrão brasileiro DD/MM/AAAA
+- [DateAdd](../date-functions/dateadd.md) - para converter o horário CST para o fuso de Brasília
+- [DateDiff](../date-functions/datediff.md) - para calcular a diferença entre o início do job e o processamento individual
+- [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) - para conversão de fuso horário do sistema

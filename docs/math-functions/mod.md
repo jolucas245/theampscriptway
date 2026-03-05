@@ -95,13 +95,13 @@ Resto com negativos (-25.5 / 7.88): -1.88300000000001
 
 ## Observações
 
-> **💡 Dica:** O uso mais comum de `Mod()` no dia a dia de SFMC é verificar par/ímpar com `Mod(valor, 2)`. Se o resultado for 0, o número é par — perfeito para alternar estilos em tabelas de e-mail, distribuir clientes em grupos de teste A/B ou rotacionar banners.
+> **💡 Dica:** O uso mais comum de `Mod()` no dia a dia de SFMC é verificar par/ímpar com `Mod(valor, 2)`. Se o resultado for 0, o número é par - perfeito para alternar estilos em tabelas de e-mail, distribuir clientes em grupos de teste A/B ou rotacionar banners.
 
 > **⚠️ Atenção:** Ao trabalhar com números decimais e negativos, o resultado pode apresentar imprecisão de ponto flutuante (como `-1.88300000000001` em vez de `-1.883`). Se você precisa exibir o resultado para o cliente, considere usar [FormatNumber](../string-functions/formatnumber.md) para arredondar as casas decimais.
 
 ## Funções relacionadas
 
-- [Add](../math-functions/add.md) — soma dois números
-- [Subtract](../math-functions/subtract.md) — subtrai dois números
-- [Multiply](../math-functions/multiply.md) — multiplica dois números
-- [Divide](../math-functions/divide.md) — divide dois números
+- [Add](../math-functions/add.md) - soma dois números
+- [Subtract](../math-functions/subtract.md) - subtrai dois números
+- [Multiply](../math-functions/multiply.md) - multiplica dois números
+- [Divide](../math-functions/divide.md) - divide dois números

@@ -8,7 +8,7 @@ description: Recupera o valor de um parâmetro de URL ou campo de formulário em
 
 ## Descrição
 
-A função `RequestParameter` recupera o valor de um parâmetro vindo de uma URL, campo de formulário ou query string criptografada gerada pela função [CloudPagesURL](../sites-functions/cloudpagesurl.md). É a função essencial para capturar dados dinâmicos em CloudPages — seja para personalizar uma página de confirmação de cadastro, processar um formulário de atualização de dados ou identificar o assinante que clicou em um link do e-mail. Essa função tem o mesmo comportamento da função [QueryParameter](../sites-functions/queryparameter.md), e ambas são mantidas por compatibilidade.
+A função `RequestParameter` recupera o valor de um parâmetro vindo de uma URL, campo de formulário ou query string criptografada gerada pela função [CloudPagesURL](../sites-functions/cloudpagesurl.md). É a função essencial para capturar dados dinâmicos em CloudPages - seja para personalizar uma página de confirmação de cadastro, processar um formulário de atualização de dados ou identificar o assinante que clicou em um link do e-mail. Essa função tem o mesmo comportamento da função [QueryParameter](../sites-functions/queryparameter.md), e ambas são mantidas por compatibilidade.
 
 ## Sintaxe
 
@@ -113,16 +113,16 @@ Seus dados foram atualizados com sucesso.
 
 ## Observações
 
-> **💡 Dica:** Use `RequestParameter` tanto para capturar parâmetros de URL (GET) quanto valores de campos de formulário (POST). Isso torna a função perfeita para CloudPages que exibem dados personalizados e também processam formulários — como no exemplo do centro de preferências acima.
+> **💡 Dica:** Use `RequestParameter` tanto para capturar parâmetros de URL (GET) quanto valores de campos de formulário (POST). Isso torna a função perfeita para CloudPages que exibem dados personalizados e também processam formulários - como no exemplo do centro de preferências acima.
 
 > **💡 Dica:** Quando o link no e-mail é gerado com [CloudPagesURL](../sites-functions/cloudpagesurl.md), os parâmetros trafegam criptografados na query string. A `RequestParameter` consegue recuperar esses valores automaticamente, sem necessidade de descriptografar manualmente.
 
-> **⚠️ Atenção:** `RequestParameter` e [QueryParameter](../sites-functions/queryparameter.md) têm exatamente o mesmo comportamento. Ambas são mantidas por compatibilidade. Você pode padronizar seu código usando qualquer uma delas — o importante é manter consistência no projeto.
+> **⚠️ Atenção:** `RequestParameter` e [QueryParameter](../sites-functions/queryparameter.md) têm exatamente o mesmo comportamento. Ambas são mantidas por compatibilidade. Você pode padronizar seu código usando qualquer uma delas - o importante é manter consistência no projeto.
 
 ## Funções relacionadas
 
-- [QueryParameter](../sites-functions/queryparameter.md) — função idêntica, mantida por compatibilidade
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — gera URLs com parâmetros criptografados que podem ser recuperados por `RequestParameter`
-- [Redirect](../sites-functions/redirect.md) — redireciona o usuário para outra URL a partir de uma CloudPage
-- [Empty](../utility-functions/empty.md) — útil para validar se o parâmetro retornado está vazio antes de usá-lo
-- [UpsertDE](../data-extension-functions/upsertde.md) — comum em conjunto com `RequestParameter` para gravar dados recebidos de formulários
+- [QueryParameter](../sites-functions/queryparameter.md) - função idêntica, mantida por compatibilidade
+- [CloudPagesURL](../sites-functions/cloudpagesurl.md) - gera URLs com parâmetros criptografados que podem ser recuperados por `RequestParameter`
+- [Redirect](../sites-functions/redirect.md) - redireciona o usuário para outra URL a partir de uma CloudPage
+- [Empty](../utility-functions/empty.md) - útil para validar se o parâmetro retornado está vazio antes de usá-lo
+- [UpsertDE](../data-extension-functions/upsertde.md) - comum em conjunto com `RequestParameter` para gravar dados recebidos de formulários

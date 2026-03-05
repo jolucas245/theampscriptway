@@ -82,9 +82,9 @@ Protocolo: a0f71563-b064-4b02-a21a-571dadadafb1
 
 ## Funções relacionadas
 
-- [`Concat`](../string-functions/concat.md) — para combinar o GUID com prefixos ou sufixos e criar códigos personalizados
-- [`Substring`](../string-functions/substring.md) — para extrair parte do GUID quando precisar de um código mais curto
-- [`Replace`](../string-functions/replace.md) — para remover os hífens do GUID, se necessário
-- [`Uppercase`](../string-functions/uppercase.md) — para converter o GUID para letras maiúsculas
-- [`InsertDE`](../data-extension-functions/insertde.md) — para gravar o GUID como chave única em uma Data Extension
-- [`Now`](../date-functions/now.md) — para registrar o timestamp junto com o GUID gerado
+- [`Concat`](../string-functions/concat.md) - para combinar o GUID com prefixos ou sufixos e criar códigos personalizados
+- [`Substring`](../string-functions/substring.md) - para extrair parte do GUID quando precisar de um código mais curto
+- [`Replace`](../string-functions/replace.md) - para remover os hífens do GUID, se necessário
+- [`Uppercase`](../string-functions/uppercase.md) - para converter o GUID para letras maiúsculas
+- [`InsertDE`](../data-extension-functions/insertde.md) - para gravar o GUID como chave única em uma Data Extension
+- [`Now`](../date-functions/now.md) - para registrar o timestamp junto com o GUID gerado
