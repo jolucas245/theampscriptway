@@ -18,7 +18,7 @@ const config: Config = {
 
   i18n: {
     defaultLocale: 'pt-BR',
-    locales: ['pt-BR', 'en'],
+    locales: ['pt-BR'],
     localeConfigs: {
       'pt-BR': { label: 'Português (BR)', direction: 'ltr' },
       en: { label: 'English', direction: 'ltr' },

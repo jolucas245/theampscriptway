@@ -88,4 +88,4 @@ SET @diasValidade = 30
 ]%%
 ```
 
-Para guias completos sobre como estruturar comentários em projetos maiores - incluindo cabeçalhos de script e comentários de seção - veja [Boas Práticas](/docs/getting-started/boas-praticas).
+Para guias completos sobre como estruturar comentários em projetos maiores - incluindo cabeçalhos de script e comentários de seção - veja [Boas Práticas](/getting-started/best-practices).

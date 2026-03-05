@@ -52,11 +52,11 @@ Tudo isso é possível porque o AMPscript puxa os dados diretamente da sua base 
 
 Este guia cobre os fundamentos que você precisa dominar para trabalhar com AMPscript. Cada tópico a seguir aprofunda um aspecto da linguagem:
 
-1. [Sintaxe](/docs/getting-started/syntax) - como escrever e estruturar código AMPscript
-2. [Variáveis](/docs/getting-started/variables) - como armazenar e manipular dados
-3. [Condicionais](/docs/getting-started/conditionals) - como criar lógica e regras de exibição
-4. [Loops](/docs/getting-started/loops) - como repetir blocos de conteúdo
-5. [Comentários](/docs/getting-started/comments) - como documentar seu código
-6. [Strings de personalização](/docs/getting-started/personalization-strings) - como exibir dados dos assinantes no conteúdo
+1. [Sintaxe](/getting-started/syntax) - como escrever e estruturar código AMPscript
+2. [Variáveis](/getting-started/variables) - como armazenar e manipular dados
+3. [Condicionais](/getting-started/conditionals) - como criar lógica e regras de exibição
+4. [Loops](/getting-started/loops) - como repetir blocos de conteúdo
+5. [Comentários](/getting-started/comments) - como documentar seu código
+6. [Strings de personalização](/getting-started/personalization-strings) - como exibir dados dos assinantes no conteúdo
 
 > **💡 Dica:** Se você já programa em qualquer linguagem, vai se sentir confortável rapidamente. Se é sua primeira vez com código, não se preocupe, o AMPscript tem uma curva de aprendizado acessível, e esse guia foi feito para acompanhar você passo a passo.

@@ -88,4 +88,4 @@ Sua solicitação foi registrada em %%=v(@dataAtual)=%% na agência de %%=v(@cid
 
 ---
 
-Variáveis são a base de tudo. Com `VAR` e `SET` dominados, você está pronto para avançar para [condicionais](/docs/getting-started/conditionals) e [loops](/docs/getting-started/loops), onde essas variáveis ganham vida dentro de lógica de verdade.
+Variáveis são a base de tudo. Com `VAR` e `SET` dominados, você está pronto para avançar para [condicionais](/getting-started/conditionals) e [loops](/getting-started/loops), onde essas variáveis ganham vida dentro de lógica de verdade.

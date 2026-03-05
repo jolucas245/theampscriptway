@@ -98,4 +98,4 @@ Como `@idade` é 28 - fora das duas faixas definidas - o bloco `Else` entra em a
 
 ---
 
-Agora que você domina condicionais, o próximo passo é aprender a percorrer conjuntos de dados com [Loops](/docs/getting-started/loops). Para revisar como criar e usar as variáveis que aparecem nas condições, volte em [Variáveis](/docs/getting-started/variables).
+Agora que você domina condicionais, o próximo passo é aprender a percorrer conjuntos de dados com [Loops](/getting-started/loops). Para revisar como criar e usar as variáveis que aparecem nas condições, volte em [Variáveis](/getting-started/variables).

@@ -38,4 +38,4 @@ A documentação oficial da Salesforce adota **PascalCase** para funções - pri
 
 > **💡 Dica:** O mais importante não é qual convenção você escolhe - é ser consistente. Defina o padrão com sua equipe no início do projeto e documente-o. Isso economiza tempo e evita discussões desnecessárias.
 
-Para mais detalhes sobre convenções de nomenclatura e organização de código, veja [Boas Práticas](/docs/getting-started/boas-praticas).
+Para mais detalhes sobre convenções de nomenclatura e organização de código, veja [Boas Práticas](/getting-started/best-practices).

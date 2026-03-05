@@ -135,4 +135,4 @@ NEXT @i
 
 ---
 
-Com loops dominados, você tem todas as ferramentas fundamentais para construir AMPscript dinâmico. Para boas práticas sobre como organizar código com loops complexos, veja [Boas Práticas](/docs/getting-started/boas-praticas).
+Com loops dominados, você tem todas as ferramentas fundamentais para construir AMPscript dinâmico. Para boas práticas sobre como organizar código com loops complexos, veja [Boas Práticas](/getting-started/best-practices).

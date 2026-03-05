@@ -101,4 +101,4 @@ ENDIF
 
 ---
 
-Com os operadores em mãos, você está pronto para construir condicionais completas. Veja [Condicionais](/docs/getting-started/conditionals) para a sintaxe completa de `IF`, `ELSEIF` e `ELSE`.
+Com os operadores em mãos, você está pronto para construir condicionais completas. Veja [Condicionais](/getting-started/conditionals) para a sintaxe completa de `IF`, `ELSEIF` e `ELSE`.
