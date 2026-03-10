@@ -10,9 +10,10 @@
 
 A documentação oficial do AMPscript é em inglês, técnica e muitas vezes incompleta nos exemplos. O **AMPScript Way** nasceu para resolver isso: uma referência completa em PT-BR, com exemplos que fazem sentido para a realidade brasileira.
 
+- Explicação clara sobre as funções, com uma linguagem bem acessível
 - Nomes brasileiros, moeda em Real, datas no formato DD/MM/AAAA
 - Cenários reais: programas de fidelidade, cashback, Dia das Mães, Black Friday
-- Playground para testar AMPscript diretamente no browser, sem acesso ao Marketing Cloud
+- Playground para testar AMPscript diretamente dentro do nosso projeto, sem acesso ao Marketing Cloud
 - Guias de boas práticas e comportamentos específicos do Marketing Cloud Engagement
 
 ## Funcionalidades
@@ -58,9 +59,9 @@ src/
 ├── components/
 │   └── Playground/        # Playground interativo
 ├── lib/
-│   └── ampscript/         # Interpretador AMPscript (browser)
+│   └── ampscript/         # Recriação do Interpretador AMPScript
 └── css/
-    └── custom.css
+    └── custom.css         # Estilização pra ficar bonitin
 ```
 
 ## Como contribuir
@@ -80,7 +81,7 @@ Cada função tem seu próprio arquivo `.md` seguindo esta estrutura:
 ---
 title: NomeDaFuncao
 sidebar_label: NomeDaFuncao
-description: Descrição curta da função.
+description: Descrição bem curtinha da função.
 ---
 
 # NomeDaFuncao
@@ -107,5 +108,5 @@ MIT © [João Lucas](https://linkedin.com/in/jolucas245)
 ---
 
 <p align="center">
-  Feito com ☕ para a comunidade brasileira de Salesforce Marketing Cloud
+  Feito com café para a comunidade brasileira de Salesforce Marketing Cloud
 </p>
