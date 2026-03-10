@@ -1,14 +1,14 @@
 ---
 title: SetSmsConversationNextKeyword
 sidebar_label: SetSmsConversationNextKeyword
-description: Define a próxima keyword de conversação SMS para direcionar o fluxo da conversa com o contato no MobileConnect.
+description: Define a próxima keyword do fluxo de conversação SMS no MobileConnect, redirecionando o caminho da conversa sem iniciar uma nova.
 ---
 
 # SetSmsConversationNextKeyword
 
 ## Descrição
 
-A função `SetSmsConversationNextKeyword` define qual será a próxima keyword (palavra-chave) usada no fluxo de conversação SMS, sem iniciar uma nova conversa. Basicamente, ela redireciona a conversa atual para um caminho diferente baseado em uma keyword que você especificar. É super útil quando você quer criar fluxos de SMS interativos e ramificados — por exemplo, quando o cliente responde uma mensagem e você quer levá-lo para uma próxima etapa específica. A keyword não é aplicada imediatamente: ela só entra em vigor quando o contato enviar a próxima mensagem.
+Define qual será a próxima keyword no fluxo de conversação SMS, redirecionando o caminho da conversa com base na resposta do contato. Essa função é útil quando você precisa desviar o fluxo de uma conversa SMS para outro caminho (outra keyword) sem criar uma conversa nova - por exemplo, quando o contato responde algo inesperado e você quer redirecioná-lo para um fluxo alternativo. A keyword não é aplicada imediatamente: ela só entra em vigor quando o contato enviar a próxima mensagem.
 
 ## Sintaxe
 
@@ -19,100 +19,72 @@ SetSmsConversationNextKeyword(originationNumber, destinationNumber, keyword)
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|---|---|---|---|
-| originationNumber | String | Sim | O número de telefone usado no MobileConnect (short code ou long code) — é o número de origem da sua empresa. |
-| destinationNumber | String | Sim | O número de telefone do contato, incluindo o código do país (ex: `5511999998888`). |
-| keyword | String | Sim | A palavra-chave que será definida como próximo passo na conversação SMS. |
+|-----------|------|-------------|-----------|
+| originationNumber | string | Sim | Número de telefone usado no MobileConnect (short code ou long code) para envio das mensagens. |
+| destinationNumber | string | Sim | Número de telefone do contato, incluindo o código do país. |
+| keyword | string | Sim | A keyword que será definida como próximo passo no fluxo de conversação. |
 
 ## Exemplo básico
 
-Imagine que a **Conecta Telecom** tem um fluxo de SMS onde, após o cliente confirmar interesse em um plano, a conversa é direcionada para a keyword `PLANOS` para apresentar as opções disponíveis:
+Redirecionando um contato da Conecta Telecom para o fluxo de confirmação de plano após uma resposta via SMS.
 
 ```ampscript
 %%[
-VAR @shortCode, @telefoneCliente, @proximaKeyword
-
-SET @shortCode = "28456"
-SET @telefoneCliente = "5511999887766"
-SET @proximaKeyword = "PLANOS"
-
-SetSmsConversationNextKeyword(@shortCode, @telefoneCliente, @proximaKeyword)
+SetSmsConversationNextKeyword("28455", "5511999998888", "CONFIRMAR_PLANO")
 ]%%
-Ótimo! Quando você enviar sua próxima mensagem, vamos te mostrar nossos planos disponíveis.
 ```
 
-**Saída (SMS enviado ao cliente):**
+**Saída:**
 ```
-Ótimo! Quando você enviar sua próxima mensagem, vamos te mostrar nossos planos disponíveis.
+A próxima keyword do fluxo de conversação para o número 5511999998888 será "CONFIRMAR_PLANO" quando o contato enviar a próxima mensagem.
 ```
-
-Quando o cliente responder qualquer coisa, a conversa será processada pela keyword `PLANOS` automaticamente.
 
 ## Exemplo avançado
 
-Agora um cenário mais completo: a **FarmaRede** tem um programa de fidelidade por SMS. O cliente envia `PONTOS` e recebe o saldo. Dependendo da quantidade de pontos, o fluxo é direcionado para keywords diferentes — `RESGATAR` se tiver pontos suficientes ou `ACUMULAR` se precisar juntar mais:
+Cenário de régua de atendimento da FarmaRede: dependendo da resposta do cliente, o fluxo SMS é redirecionado para consultar status de pedido ou falar com um atendente.
 
 ```ampscript
 %%[
-VAR @shortCode, @telefoneCliente, @pontos, @proximaKeyword, @nomeCliente
+VAR @shortCode, @telefoneCliente, @resposta, @proximaKeyword
 
-SET @shortCode = "49300"
-SET @telefoneCliente = "5521988776655"
+SET @shortCode = "28455"
+SET @telefoneCliente = Concat("55", "11988887777")
+SET @resposta = Uppercase(Trim(_MessageText))
 
-/* Busca dados do cliente na Data Extension */
-SET @rows = LookupRows("Programa_Fidelidade", "Telefone", @telefoneCliente)
-
-IF RowCount(@rows) > 0 THEN
-  SET @row = Row(@rows, 1)
-  SET @nomeCliente = Field(@row, "Nome")
-  SET @pontos = Field(@row, "Pontos")
-
-  IF @pontos >= 500 THEN
-    SET @proximaKeyword = "RESGATAR"
-    SET @mensagem = Concat("Oi, ", @nomeCliente, "! Você tem ", Format(@pontos, "#,##0"), " pontos. Você já pode trocar por descontos! Responda qualquer coisa para ver as opções de resgate.")
-  ELSE
-    SET @proximaKeyword = "ACUMULAR"
-    SET @mensagem = Concat("Oi, ", @nomeCliente, "! Você tem ", Format(@pontos, "#,##0"), " pontos. Faltam ", Subtract(500, @pontos), " pontos para resgatar prêmios. Responda qualquer coisa para ver como acumular mais rápido!")
-  ENDIF
-
-  SetSmsConversationNextKeyword(@shortCode, @telefoneCliente, @proximaKeyword)
-
-  /* Registra a interação */
-  InsertDE("Log_Interacoes_SMS", "Telefone", @telefoneCliente, "Data", Now(), "Keyword_Atual", "PONTOS", "Proxima_Keyword", @proximaKeyword, "Pontos_No_Momento", @pontos)
+IF @resposta == "PEDIDO" THEN
+  SET @proximaKeyword = "STATUS_PEDIDO"
+ELSEIF @resposta == "ATENDENTE" THEN
+  SET @proximaKeyword = "FALAR_ATENDENTE"
 ELSE
-  SET @mensagem = "Não encontramos seu cadastro no programa de fidelidade FarmaRede. Envie CADASTRO para se inscrever!"
-  SetSmsConversationNextKeyword(@shortCode, @telefoneCliente, "CADASTRO")
+  SET @proximaKeyword = "MENU_PRINCIPAL"
 ENDIF
 
-Output(v(@mensagem))
+SetSmsConversationNextKeyword(@shortCode, @telefoneCliente, @proximaKeyword)
 ]%%
 ```
 
-**Saída (SMS para cliente com 720 pontos):**
+**Saída:**
 ```
-Oi, Maria Santos! Você tem 720 pontos. Você já pode trocar por descontos! Responda qualquer coisa para ver as opções de resgate.
-```
-
-**Saída (SMS para cliente com 180 pontos):**
-```
-Oi, Carlos Oliveira! Você tem 180 pontos. Faltam 320 pontos para resgatar prêmios. Responda qualquer coisa para ver como acumular mais rápido!
+Se o cliente respondeu "PEDIDO", a próxima keyword será "STATUS_PEDIDO".
+Se respondeu "ATENDENTE", será "FALAR_ATENDENTE".
+Qualquer outra resposta redireciona para "MENU_PRINCIPAL".
+A keyword só será aplicada quando o contato enviar a próxima mensagem.
 ```
 
 ## Observações
 
-- **Exclusivo do MobileConnect**: essa função só pode ser usada dentro do contexto do MobileConnect. Não funciona em emails, CloudPages ou Journey Builder fora do SMS.
-- **Não funciona com templates baseados em conversação**: você **não pode** usar essa função com templates de Double Opt-In ou Info Capture do MobileConnect.
-- **A keyword não é aplicada imediatamente**: a mudança de keyword só entra em vigor quando o contato enviar a próxima mensagem SMS. Ou seja, a função "agenda" o próximo caminho, mas não dispara nada sozinha.
-- **Código do país obrigatório**: o parâmetro `destinationNumber` precisa incluir o código do país. Para números brasileiros, use o prefixo `55` (ex: `5511999998888`).
-- **A keyword precisa existir**: a keyword informada no terceiro parâmetro deve estar previamente configurada no MobileConnect. Se a keyword não existir, o comportamento pode ser inesperado.
-- **Diferente de `CreateSmsConversation`**: enquanto `CreateSmsConversation` inicia uma nova conversa do zero, `SetSmsConversationNextKeyword` apenas redireciona o fluxo da conversa já existente para outra keyword.
+> **⚠️ Atenção:** Essa função só pode ser usada no **MobileConnect**. Não funciona em e-mails, CloudPages ou qualquer outro contexto do Marketing Cloud.
+
+> **⚠️ Atenção:** A função **não pode** ser usada com templates baseados em conversação, como **Double Opt-In** e **Info Capture**. Se você está trabalhando com esses templates, será preciso usar outra abordagem.
+
+> **💡 Dica:** A keyword definida por essa função **não é aplicada imediatamente**. Ela só entra em vigor quando o contato enviar a próxima mensagem SMS. Ou seja, você está preparando o próximo passo do fluxo, não executando uma ação instantânea.
+
+> **💡 Dica:** O parâmetro `destinationNumber` precisa incluir o código do país. Para números brasileiros, lembre-se de incluir o prefixo `55` (ex: `5511999998888`). Usar a função [Concat](../string-functions/concat.md) para montar o número pode ajudar a manter o código mais organizado.
 
 ## Funções relacionadas
 
-- [CreateSmsConversation](../sms-functions/createsmsconversation.md) — Inicia uma nova conversação SMS com um contato no MobileConnect.
-- [EndSmsConversation](../sms-functions/endsmsconversation.md) — Encerra a conversação SMS ativa com um contato.
-- [Lookup](../data-extension-functions/lookup.md) — Busca um valor em uma Data Extension, útil para consultar dados do contato durante o fluxo SMS.
-- [LookupRows](../data-extension-functions/lookuprows.md) — Retorna múltiplas linhas de uma Data Extension para cenários mais complexos.
-- [InsertDE](../data-extension-functions/insertde.md) — Insere registros em uma Data Extension para logar interações SMS.
-- [Concat](../string-functions/concat.md) — Concatena strings para montar mensagens SMS dinâmicas.
-- [IsPhoneNumber](../utility-functions/isphonenumber.md) — Valida se um valor é um número de telefone válido.
+- [CreateSmsConversation](../sms-functions/createsmsconversation.md) - cria uma nova conversação SMS com o contato.
+- [EndSmsConversation](../sms-functions/endsmsconversation.md) - encerra a conversação SMS ativa com o contato.
+- [Concat](../string-functions/concat.md) - útil para montar o número de telefone com código do país.
+- [Uppercase](../string-functions/uppercase.md) - normaliza a resposta do contato para comparação com keywords.
+- [Trim](../string-functions/trim.md) - remove espaços extras da resposta do contato antes de processar.

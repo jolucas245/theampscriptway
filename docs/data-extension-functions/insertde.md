@@ -1,153 +1,108 @@
 ---
 title: InsertDE
 sidebar_label: InsertDE
-description: Insere uma nova linha em uma Data Extension a partir de um contexto de envio de e-mail.
+description: Insere uma nova linha em uma Data Extension a partir de e-mails no Salesforce Marketing Cloud.
 ---
 
 # InsertDE
 
 ## Descrição
 
-A função `InsertDE` insere uma nova linha (registro) em uma Data Extension. Ela não retorna nenhum valor — apenas executa a inserção dos dados. Essa função é destinada ao uso em **e-mails**. Se você precisa inserir dados a partir de CloudPages, landing pages, microsites ou mensagens SMS (MobileConnect), use a função [InsertData](../data-extension-functions/insertdata.md). Você pode inserir múltiplas colunas de uma só vez, basta adicionar pares de nome de coluna e valor ao final da chamada da função.
+A função `InsertDE` insere uma nova linha (registro) em uma Data Extension. Ela não retorna nenhum valor de saída. Use essa função quando precisar gravar dados em uma DE a partir de **e-mails** - por exemplo, registrar que um assinante abriu uma comunicação, salvar uma preferência capturada via personalização ou alimentar uma DE de log durante o envio de uma campanha.
 
 ## Sintaxe
 
 ```ampscript
-InsertDE("NomeDaDataExtension", "coluna1", "valor1" [, "coluna2", "valor2", ...])
+InsertDE("dataExt", "columnName1", "valueToInsert1" [, "columnName2", "valueToInsert2" ...])
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| dataExt | string | Sim | O nome da Data Extension onde você quer inserir os dados. |
-| columnName1 | string | Sim | O nome da primeira coluna onde o dado será inserido. |
-| valueToInsert1 | string | Sim | O valor a ser inserido na coluna especificada. |
-| columnNameN | string | Não | Nome de uma coluna adicional. Você pode adicionar quantos pares coluna/valor precisar. |
-| valueToInsertN | string | Não | Valor correspondente à coluna adicional. |
+| dataExt | string | Sim | Nome da Data Extension onde a linha será inserida. |
+| columnName1 | string | Sim | Nome da coluna onde o valor será inserido. |
+| valueToInsert1 | string | Sim | Valor a ser inserido na coluna especificada. |
+
+Você pode inserir dados em múltiplas colunas de uma mesma linha adicionando pares de nome de coluna e valor ao final da chamada da função.
 
 ## Exemplo básico
 
-Imagine que você tem uma Data Extension chamada **Pedidos_Loja** com os seguintes dados:
-
-| PedidoId | NomeCliente | Produto | Valor |
-|---|---|---|---|
-| 1001 | João Silva | Camiseta | 79.90 |
-| 1002 | Maria Santos | Tênis | 299.90 |
-
-Para inserir um novo pedido durante o envio de um e-mail:
+Inserindo um novo voo na Data Extension "Voos" de uma campanha da Conecta Telecom que oferece passagens promocionais:
 
 ```ampscript
 %%[
 InsertDE(
-  "Pedidos_Loja",
-  "PedidoId", "1003",
-  "NomeCliente", "Carlos Oliveira",
-  "Produto", "Mochila",
-  "Valor", "149.90"
+  "Voos",
+  "VooId", "4",
+  "Origem", "GRU",
+  "Destino", "GIG",
+  "Preco", "125"
 )
 ]%%
 ```
 
 **Saída:**
 
-A função não gera nenhuma saída visível no e-mail. Porém, a Data Extension **Pedidos_Loja** agora contém:
+A função não gera saída visível. A Data Extension "Voos" passa a conter:
 
-| PedidoId | NomeCliente | Produto | Valor |
-|---|---|---|---|
-| 1001 | João Silva | Camiseta | 79.90 |
-| 1002 | Maria Santos | Tênis | 299.90 |
-| 1003 | Carlos Oliveira | Mochila | 149.90 |
+```
+VooId | Origem | Destino | Preco | TaxaBagagem
+------+--------+---------+-------+------------
+1     | GRU    | SSA     | 100   |
+2     | GRU    | CWB     | 200   |
+3     | GRU    | POA     | 500   | 25
+4     | GRU    | GIG     | 125   |
+```
 
 ## Exemplo avançado
 
-Vamos a um cenário real: a **MegaStore** está rodando uma campanha de **Black Friday** e quer registrar em uma Data Extension de log cada subscriber que abriu o e-mail promocional. A DE **Log_Abertura_BlackFriday** tem as colunas `EmailAssinante`, `NomeAssinante`, `DataAbertura` e `Campanha`.
+Registrando o interesse de um assinante em uma régua de relacionamento da MegaStore. A cada abertura de e-mail promocional, uma linha é gravada na DE "LogInteresse" com os dados do subscriber, a data/hora do envio e o produto visualizado:
 
 ```ampscript
 %%[
-VAR @email, @nome, @dataAtual, @campanha
+VAR @email, @nome, @dataEnvio, @produto, @preco
 
-SET @email = AttributeValue("emailaddr")
-SET @nome = AttributeValue("SubscriberKey")
-SET @dataAtual = FormatDate(Now(), "dd/MM/yyyy HH:mm", "Brasilia Standard Time")
-SET @campanha = "BlackFriday2024"
+SET @email = AttributeValue("EmailAddress")
+SET @nome = AttributeValue("PrimeiroNome")
+SET @dataEnvio = FormatDate(Now(), "DD/MM/YYYY", "HH:mm")
+SET @produto = "Notebook ProMax 15"
+SET @preco = "R$ 4.299,90"
 
-/* Verifica se o e-mail do subscriber não está vazio antes de inserir */
-IF NOT Empty(@email) THEN
-  InsertDE(
-    "Log_Abertura_BlackFriday",
-    "EmailAssinante", @email,
-    "NomeAssinante", @nome,
-    "DataAbertura", @dataAtual,
-    "Campanha", @campanha
-  )
-ENDIF
+InsertDE(
+  "LogInteresse",
+  "Email", @email,
+  "Nome", @nome,
+  "DataRegistro", @dataEnvio,
+  "Produto", @produto,
+  "PrecoExibido", @preco,
+  "Origem", "Email Promocional"
+)
 ]%%
 ```
 
 **Saída:**
 
-Nenhuma saída visível no e-mail. A Data Extension **Log_Abertura_BlackFriday** recebe um novo registro, por exemplo:
-
-| EmailAssinante | NomeAssinante | DataAbertura | Campanha |
-|---|---|---|---|
-| joao.silva@email.com.br | João Silva | 29/11/2024 09:32 | BlackFriday2024 |
-
-Outro cenário prático: a **Conecta Telecom** quer registrar a participação de clientes em um sorteio de **Dia das Mães**. Ao receber o e-mail, o subscriber é automaticamente inscrito:
-
-```ampscript
-%%[
-VAR @cpf, @nomeCliente, @telefone, @codigoSorteio
-
-SET @cpf = AttributeValue("CPF")
-SET @nomeCliente = AttributeValue("NomeCompleto")
-SET @telefone = AttributeValue("Telefone")
-SET @codigoSorteio = Concat("MAE2024-", GUID())
-
-InsertDE(
-  "Sorteio_DiaDasMaes",
-  "CPF", @cpf,
-  "Nome", @nomeCliente,
-  "Telefone", @telefone,
-  "CodigoSorteio", @codigoSorteio,
-  "DataInscricao", Now()
-)
-]%%
-
-<p>Oi, %%=v(@nomeCliente)=%%! 🎉</p>
-<p>Você está participando do nosso sorteio de Dia das Mães!</p>
-<p>Seu código de participação é: <strong>%%=v(@codigoSorteio)=%%</strong></p>
-<p>Boa sorte! 💐</p>
-```
-
-**Saída no e-mail:**
+Nenhuma saída visível no e-mail. Uma nova linha é inserida na Data Extension "LogInteresse":
 
 ```
-Oi, Ana Beatriz Ferreira! 🎉
-Você está participando do nosso sorteio de Dia das Mães!
-Seu código de participação é: MAE2024-a3f2b1c4-5d6e-7f89-0abc-def123456789
-Boa sorte! 💐
+Email                     | Nome  | DataRegistro     | Produto            | PrecoExibido  | Origem
+--------------------------+-------+------------------+--------------------+---------------+-------------------
+joao.silva@email.com.br   | João  | 15/07/2025 09:30 | Notebook ProMax 15 | R$ 4.299,90   | Email Promocional
 ```
 
 ## Observações
 
-- **A função não retorna nenhum valor.** Ela apenas executa a inserção — não exibe nada no e-mail.
-- **Use apenas em contexto de e-mail.** Para CloudPages, landing pages, microsites e SMS no MobileConnect, utilize a função [InsertData](../data-extension-functions/insertdata.md).
-- **Sempre insere uma nova linha.** Se você precisa atualizar um registro existente ou inserir caso não exista, considere usar [UpdateDE](../data-extension-functions/updatede.md) ou [UpsertDE](../data-extension-functions/upsertde.md).
-- **Colunas obrigatórias da DE precisam ser preenchidas.** Se a Data Extension tem campos obrigatórios (como uma Primary Key) e você não os informar, a inserção vai falhar.
-- **Cuidado com inserções duplicadas.** Se a Data Extension tiver uma Primary Key e você tentar inserir um registro com um valor de chave que já existe, a operação vai gerar um erro. Nesse caso, use [UpsertDE](../data-extension-functions/upsertde.md).
-- **Os pares coluna/valor são passados em sequência.** Você pode inserir quantas colunas precisar — basta ir adicionando pares `"nomeColuna", "valor"` ao final da chamada.
-- **Performance em envios de alto volume:** tenha cuidado ao usar `InsertDE` em e-mails enviados para listas muito grandes, pois cada envio individual vai executar uma operação de escrita na Data Extension.
-- **O nome da Data Extension é case-insensitive**, mas é uma boa prática manter a grafia exata para facilitar a manutenção do código.
+- A função `InsertDE` **não retorna nenhum valor**. Ela apenas executa a inserção na Data Extension.
+
+> **⚠️ Atenção:** A `InsertDE` é destinada ao uso em **e-mails**. Para inserir dados a partir de **CloudPages, landing pages, microsites ou mensagens SMS (MobileConnect)**, use a função [`InsertData`](../data-extension-functions/insertdata.md).
+
+> **💡 Dica:** Você pode inserir quantas colunas precisar em uma única chamada - basta continuar adicionando pares de `"nomeColuna", "valor"` ao final da função. Não é necessário preencher todas as colunas da DE; apenas as que você precisa (respeitando campos obrigatórios e chaves primárias da sua DE).
 
 ## Funções relacionadas
 
-- [InsertData](../data-extension-functions/insertdata.md) — Equivalente ao `InsertDE`, mas para uso em CloudPages, landing pages, microsites e SMS.
-- [UpdateDE](../data-extension-functions/updatede.md) — Atualiza registros existentes em uma Data Extension (contexto de e-mail).
-- [UpsertDE](../data-extension-functions/upsertde.md) — Insere ou atualiza um registro dependendo se já existe (contexto de e-mail).
-- [DeleteDE](../data-extension-functions/deletede.md) — Remove registros de uma Data Extension (contexto de e-mail).
-- [Lookup](../data-extension-functions/lookup.md) — Busca um valor específico em uma Data Extension.
-- [LookupRows](../data-extension-functions/lookuprows.md) — Retorna múltiplas linhas de uma Data Extension com base em critérios de busca.
-- [Empty](../utility-functions/empty.md) — Verifica se um valor está vazio, útil para validar antes de inserir.
-- [Now](../date-functions/now.md) — Retorna a data e hora atuais, útil para registrar timestamps na inserção.
-- [GUID](../utility-functions/guid.md) — Gera um identificador único, útil para criar chaves primárias ou códigos únicos.
+- [`InsertData`](../data-extension-functions/insertdata.md) - equivalente para uso em CloudPages, landing pages, microsites e SMS
+- [`UpdateDE`](../data-extension-functions/updatede.md) - atualiza linhas existentes em uma DE (uso em e-mails)
+- [`UpsertDE`](../data-extension-functions/upsertde.md) - insere ou atualiza conforme a existência do registro (uso em e-mails)
+- [`DeleteDE`](../data-extension-functions/deletede.md) - remove linhas de uma DE (uso em e-mails)
+- [`Lookup`](../data-extension-functions/lookup.md) - consulta valores em uma DE antes de decidir se insere ou não

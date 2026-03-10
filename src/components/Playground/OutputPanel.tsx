@@ -13,7 +13,8 @@ export function OutputPanel({ result }: Props) {
     return (
       <div className={styles.outputPanel}>
         <div className={styles.outputEmpty}>
-          Run your code to see the output.
+          <span>Clique em Executar para visualizar a saída</span>
+          <span className={styles.outputEmptyKbd}>Ctrl + Enter</span>
         </div>
       </div>
     );
@@ -23,16 +24,16 @@ export function OutputPanel({ result }: Props) {
     <div className={styles.outputPanel}>
       <div className={styles.viewToggle}>
         <button
-          className={view === 'preview' ? styles.viewActive : ''}
+          className={`${styles.viewBtn} ${view === 'preview' ? styles.viewActive : ''}`}
           onClick={() => setView('preview')}
         >
           Preview
         </button>
         <button
-          className={view === 'html' ? styles.viewActive : ''}
+          className={`${styles.viewBtn} ${view === 'html' ? styles.viewActive : ''}`}
           onClick={() => setView('html')}
         >
-          HTML
+          HTML Source
         </button>
       </div>
 

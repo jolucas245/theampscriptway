@@ -1,122 +1,139 @@
 ---
 title: HTTPGetWrap
 sidebar_label: HTTPGetWrap
-description: Faz uma requisição HTTP GET para uma URL e envolve o resultado em tags que permitem rastreamento de links pelo Marketing Cloud.
+description: Prefixo aplicado em links dentro de conteúdo HTML externo (syndicated content) para habilitar o rastreamento de cliques pelo Marketing Cloud.
 ---
-
-<!-- generated-by-script -->
 
 # HTTPGetWrap
 
 ## Descrição
 
-A função `HTTPGetWrap` faz uma requisição HTTP GET para a URL especificada e retorna o conteúdo da resposta, envolvendo automaticamente quaisquer links encontrados no conteúdo retornado com o wrapper de rastreamento de cliques do Marketing Cloud. Isso é útil quando você precisa incluir conteúdo externo em um e-mail e quer que os links nesse conteúdo sejam rastreados normalmente pelo sistema de tracking do SFMC. Basicamente, ela combina a funcionalidade do [HTTPGet](../http-functions/httpget.md) com o encapsulamento automático de URLs para rastreamento.
+`HTTPGetWrap` não é uma função AMPscript tradicional - é um **prefixo** que você aplica no atributo `href` de links dentro de conteúdo HTML externo, carregado via syndicated content (como [HTTPGet](../http-functions/httpget.md)). Quando o Marketing Cloud busca HTML de uma URL externa, os links desse conteúdo não passam pelo wrapper de rastreamento de cliques por padrão. Ao adicionar o prefixo `HTTPGetWrap|` antes da URL no HTML externo, você instrui o Marketing Cloud a aplicar o rastreamento de cliques nesses links, permitindo que apareçam nos relatórios de tracking normalmente.
 
 ## Sintaxe
 
-```ampscript
-HTTPGetWrap(URL)
+No HTML do conteúdo externo (o arquivo que será buscado pelo Marketing Cloud):
+
+```html
+<a href="HTTPGetWrap|http://exemplo.com.br/pagina">texto do link</a>
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|-----------|--------|-------------|-----------|
-| URL | String | Sim | A URL completa para a qual a requisição HTTP GET será feita. O conteúdo retornado terá seus links automaticamente encapsulados para rastreamento de cliques. |
+|-----------|------|-------------|-----------|
+| URL | String | Sim | A URL de destino do link, precedida pelo prefixo `HTTPGetWrap\|`. O prefixo é inserido diretamente no atributo `href` do HTML externo, separado da URL por um pipe (`\|`). |
 
 ## Exemplo básico
 
-Imagine que a **Lojas Vitória** tem um serviço que gera banners HTML personalizados com ofertas do dia. Você quer incluir esse conteúdo no e-mail e garantir que os links sejam rastreados:
+Imagine que a Lojas Vitória hospeda um HTML com ofertas em um servidor externo e esse conteúdo é puxado para o e-mail via syndicated content. Para que o clique no link de produto seja rastreado, o HTML externo precisa usar o prefixo:
+
+```html
+<!-- Este HTML fica no servidor externo (ex: https://conteudo.lojasvitoria.com.br/ofertas.html) -->
+
+<h2>Oferta da Semana</h2>
+<p>Smartphone Galaxy por apenas R$ 1.299,90!</p>
+<a href="HTTPGetWrap|https://www.lojasvitoria.com.br/produto/smartphone-galaxy">Ver produto</a>
+```
+
+No e-mail dentro do Marketing Cloud, você puxa esse conteúdo:
 
 ```ampscript
-%%[
-VAR @conteudoBanner
-SET @conteudoBanner = HTTPGetWrap("https://api.lojasvitoria.com.br/banners/oferta-do-dia")
-]%%
-
-%%=v(@conteudoBanner)=%%
+%%=HTTPGet("https://conteudo.lojasvitoria.com.br/ofertas.html")=%%
 ```
 
-**Saída:**
+**Saída no e-mail (após processamento):**
+
 ```html
-<a href="[link rastreado pelo SFMC]">
-  <img src="https://cdn.lojasvitoria.com.br/banners/oferta-natal.jpg" alt="Oferta de Natal - Até 50% OFF" />
-</a>
+<h2>Oferta da Semana</h2>
+<p>Smartphone Galaxy por apenas R$ 1.299,90!</p>
+<a href="https://click.seudominio.com.br/tracking?url=https://www.lojasvitoria.com.br/produto/smartphone-galaxy">Ver produto</a>
 ```
 
-Os links retornados pelo endpoint são automaticamente encapsulados pelo sistema de rastreamento do Marketing Cloud.
+O link agora passa pelo wrapper de rastreamento do Marketing Cloud.
 
 ## Exemplo avançado
 
-Aqui, a **FarmaRede** busca um bloco de conteúdo personalizado de um serviço externo, passando dados do assinante na URL para que o conteúdo seja dinâmico. Os links no HTML retornado serão rastreados automaticamente:
+A MegaStore mantém um servidor que gera HTML dinâmico com múltiplos produtos. O conteúdo externo precisa ter o prefixo em cada link que deve ser rastreado:
+
+```html
+<!-- HTML no servidor externo: https://api.megastore.com.br/email/destaques.html -->
+
+<table>
+  <tr>
+    <td>
+      <h3>Notebook Pro 15"</h3>
+      <p>De R$ 4.999,00 por R$ 3.799,90</p>
+      <a href="HTTPGetWrap|https://www.megastore.com.br/notebook-pro-15">Comprar agora</a>
+    </td>
+    <td>
+      <h3>Fone Bluetooth Elite</h3>
+      <p>De R$ 399,00 por R$ 249,90</p>
+      <a href="HTTPGetWrap|https://www.megastore.com.br/fone-bluetooth-elite">Comprar agora</a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <a href="HTTPGetWrap|https://www.megastore.com.br/ofertas?utm_source=email&utm_medium=syndicated">
+        Ver todas as ofertas
+      </a>
+    </td>
+  </tr>
+</table>
+```
+
+No template de e-mail do Marketing Cloud:
 
 ```ampscript
 %%[
-VAR @email, @emailEncoded, @urlApi, @conteudoOfertas
-
-SET @email = AttributeValue("EmailAddress")
-SET @emailEncoded = URLEncode(@email)
-
-/* Monta a URL com o e-mail do assinante para personalização */
-SET @urlApi = Concat("https://api.farmarede.com.br/ofertas/personalizadas?email=", @emailEncoded)
-
-/* Busca o conteúdo e envolve os links para rastreamento */
-SET @conteudoOfertas = HTTPGetWrap(@urlApi)
-
-IF NOT Empty(@conteudoOfertas) THEN
+  VAR @urlConteudo
+  SET @urlConteudo = "https://api.megastore.com.br/email/destaques.html"
 ]%%
 
-<div style="padding: 20px; background-color: #f5f5f5;">
-  <h2 style="color: #2c7a3e;">🎯 Ofertas selecionadas pra você</h2>
-  %%=v(@conteudoOfertas)=%%
-</div>
-
-%%[
-ELSE
-]%%
-
-<div style="padding: 20px; background-color: #f5f5f5;">
-  <h2 style="color: #2c7a3e;">🎯 Confira nossas ofertas</h2>
-  <p>Acesse nosso site e veja as promoções da semana!</p>
-  <a href="https://www.farmarede.com.br/ofertas">Ver ofertas</a>
-</div>
-
-%%[
-ENDIF
-]%%
+%%=HTTPGet(@urlConteudo)=%%
 ```
 
-**Saída (quando o serviço retorna conteúdo):**
+**Saída:**
+
 ```html
-<div style="padding: 20px; background-color: #f5f5f5;">
-  <h2 style="color: #2c7a3e;">🎯 Ofertas selecionadas pra você</h2>
-  <p>Vitamina C 1000mg - De R$45,90 por <strong>R$29,90</strong></p>
-  <a href="[link rastreado pelo SFMC]">Comprar agora</a>
-  <p>Protetor Solar FPS 50 - De R$89,00 por <strong>R$59,90</strong></p>
-  <a href="[link rastreado pelo SFMC]">Comprar agora</a>
-</div>
+<table>
+  <tr>
+    <td>
+      <h3>Notebook Pro 15"</h3>
+      <p>De R$ 4.999,00 por R$ 3.799,90</p>
+      <a href="https://click.seudominio.com.br/tracking?url=https://www.megastore.com.br/notebook-pro-15">Comprar agora</a>
+    </td>
+    <td>
+      <h3>Fone Bluetooth Elite</h3>
+      <p>De R$ 399,00 por R$ 249,90</p>
+      <a href="https://click.seudominio.com.br/tracking?url=https://www.megastore.com.br/fone-bluetooth-elite">Comprar agora</a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <a href="https://click.seudominio.com.br/tracking?url=https://www.megastore.com.br/ofertas?utm_source=email&utm_medium=syndicated">
+        Ver todas as ofertas
+      </a>
+    </td>
+  </tr>
+</table>
 ```
+
+Todos os links agora são rastreados nos relatórios de clique do Marketing Cloud.
 
 ## Observações
 
-- **Diferença principal do HTTPGet:** A função `HTTPGetWrap` funciona de forma muito parecida com [HTTPGet](../http-functions/httpget.md), mas com a diferença crucial de que ela **encapsula automaticamente os links** encontrados no conteúdo retornado para que o Marketing Cloud consiga rastrear os cliques. Se você usar `HTTPGet` puro, os links no conteúdo retornado **não serão rastreados**.
-- **Use em e-mails quando precisar de tracking:** Se o conteúdo externo será usado em um e-mail e contém links que você quer rastrear, prefira `HTTPGetWrap`. Se o rastreamento não importa (como em CloudPages ou processamento de dados), use [HTTPGet](../http-functions/httpget.md) mesmo.
-- **Timeout e performance:** Assim como o `HTTPGet`, chamadas HTTP externas adicionam latência ao tempo de renderização do e-mail. Se o serviço externo estiver lento ou fora do ar, isso pode impactar o envio. Sempre tenha um conteúdo de fallback (como no exemplo avançado com `Empty()`).
-- **Protocolo HTTPS:** Dê preferência a URLs com HTTPS para garantir segurança na comunicação.
-- **Limitações de tamanho:** O conteúdo retornado deve ser compatível com o tamanho máximo permitido pelo Marketing Cloud para processamento de AMPscript.
-- **Conteúdo retornado deve ser HTML válido:** Para que o encapsulamento de links funcione corretamente, o conteúdo retornado pelo endpoint deve conter links em formato HTML padrão (tags `<a href="...">`).
-- **Cuidado com dados sensíveis na URL:** Evite passar dados sensíveis como CPF diretamente na query string. Prefira usar identificadores opacos ou tokens temporários.
-- **Não confunda com WrapLongURL:** A função [WrapLongURL](../http-functions/wraplongurl.md) serve para lidar com URLs longas que podem quebrar em clientes de e-mail. `HTTPGetWrap` é sobre buscar conteúdo externo com rastreamento de links.
+> **⚠️ Atenção:** O prefixo `HTTPGetWrap|` **precisa ser habilitado pelo Suporte da Salesforce**. A business rule que ativa essa funcionalidade se chama **WRAP_HTTPGET_URLS**. Sem essa regra ativada na sua conta, o prefixo será ignorado e os links não serão rastreados. Abra um case com o suporte solicitando a ativação antes de implementar.
+
+> **⚠️ Atenção:** O prefixo `HTTPGetWrap|` é aplicado **no HTML do servidor externo**, e não no código AMPscript do e-mail. Quem edita é o desenvolvedor que controla o conteúdo externo - é fundamental alinhar isso com a equipe responsável pelo servidor que hospeda o HTML.
+
+> **💡 Dica:** Esse recurso é essencial quando você trabalha com conteúdo sindicalizado (syndicated content) - cenário comum em operações brasileiras onde uma equipe de produto ou e-commerce mantém o HTML de ofertas em um CMS separado, e o Marketing Cloud apenas consome esse conteúdo. Sem o `HTTPGetWrap|`, você perde toda a visibilidade de cliques nesses links nos relatórios de tracking.
 
 ## Funções relacionadas
 
-- [HTTPGet](../http-functions/httpget.md) — Faz uma requisição HTTP GET sem encapsular links para rastreamento
-- [BeforeHTTPGet](../http-functions/beforehttpget.md) — Define conteúdo a ser exibido antes da chamada HTTP GET
-- [AfterHTTPGet](../http-functions/afterhttpget.md) — Define conteúdo a ser exibido após a chamada HTTP GET
-- [HTTPPost](../http-functions/httppost.md) — Faz uma requisição HTTP POST para uma URL
-- [HTTPPost2](../http-functions/httppost2.md) — Faz uma requisição HTTP POST com mais opções de configuração
-- [WrapLongURL](../http-functions/wraplongurl.md) — Encapsula URLs longas para evitar quebra em clientes de e-mail
-- [URLEncode](../string-functions/urlencode.md) — Codifica uma string para uso seguro em URLs
-- [TreatAsContent](../utility-functions/treatascontent.md) — Processa uma string como conteúdo AMPscript
-- [Empty](../utility-functions/empty.md) — Verifica se um valor está vazio ou nulo
-- [RedirectTo](../http-functions/redirectto.md) — Redireciona o usuário para uma URL específica
+- [HTTPGet](../http-functions/httpget.md) - função que busca o conteúdo HTML externo onde o prefixo `HTTPGetWrap|` é utilizado
+- [BeforeHTTPGet](../http-functions/beforehttpget.md) - executada antes da chamada HTTPGet
+- [AfterHTTPGet](../http-functions/afterhttpget.md) - executada após a chamada HTTPGet
+- [RedirectTo](../http-functions/redirectto.md) - redireciona para uma URL com rastreamento de cliques
+- [WrapLongURL](../http-functions/wraplongurl.md) - encapsula URLs longas para rastreamento
+- [ContentBlockByName](../content-functions/contentblockbyname.md) - alternativa para incluir conteúdo reutilizável sem depender de servidor externo

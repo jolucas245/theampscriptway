@@ -1,132 +1,107 @@
 ---
 title: AddObjectArrayItem
 sidebar_label: AddObjectArrayItem
-description: Adiciona um objeto a uma propriedade de array dentro de um objeto da API do Marketing Cloud Engagement.
+description: Adiciona um objeto a uma propriedade de array dentro de um objeto da API do Marketing Cloud.
 ---
 
 # AddObjectArrayItem
 
 ## Descrição
 
-A função `AddObjectArrayItem` adiciona um item (geralmente um objeto da API) a uma propriedade do tipo array dentro de outro objeto da API do Marketing Cloud Engagement. Ela é usada quando você precisa montar objetos complexos da SOAP API que possuem propriedades que aceitam múltiplos itens — por exemplo, adicionar atributos a um subscriber ou adicionar múltiplos objetos a uma lista. Essa função faz parte do conjunto de funções de API do AMPscript que permitem interagir diretamente com a SOAP API do Marketing Cloud sem precisar de chamadas externas.
+A função `AddObjectArrayItem` adiciona um item a uma propriedade de array dentro de um objeto da API do Marketing Cloud Engagement. É uma função essencial quando você está construindo objetos complexos via AMPscript que possuem propriedades do tipo array - como, por exemplo, adicionar atributos a um subscriber ou itens a uma lista. Você vai usar essa função em conjunto com [CreateObject](../api-functions/createobject.md) e [SetObjectProperty](../api-functions/setobjectproperty.md) para montar objetos completos antes de invocar operações da API.
 
 ## Sintaxe
 
 ```ampscript
-AddObjectArrayItem(@apiObject, "arrayProperty", @itemToAdd)
+AddObjectArrayItem(apiObject, arrayProperty, itemToAdd)
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|----------------|-----------|---------------|----------------|
-| @apiObject | API Object | Sim | O objeto da API que contém o array que você quer modificar. Normalmente criado com `CreateObject`. |
-| arrayProperty | String | Sim | O nome da propriedade do tipo array no objeto da API que vai receber o novo item. |
-| @itemToAdd | String / API Object | Sim | O item a ser adicionado ao array. Pode ser outro objeto da API criado com `CreateObject`. |
+|---|---|---|---|
+| apiObject | API Object | Sim | O objeto da API que contém o array que você quer modificar. |
+| arrayProperty | String | Sim | O nome da propriedade de array que vai receber o novo item. |
+| itemToAdd | String | Sim | O item a ser adicionado ao array. |
 
 ## Exemplo básico
 
-Neste exemplo, vamos criar um subscriber e adicionar um atributo personalizado (como o nome do cliente) ao array `Attributes` dele.
+Adicionando um atributo personalizado ao objeto Subscriber - neste caso, o nome da cidade de um cliente da Lojas Vitória.
 
 ```ampscript
 %%[
-/* Cria o objeto Subscriber */
+VAR @subscriber, @attribute
+
 SET @subscriber = CreateObject("Subscriber")
 SetObjectProperty(@subscriber, "EmailAddress", "joao.silva@email.com.br")
-SetObjectProperty(@subscriber, "SubscriberKey", "JS-00123")
+SetObjectProperty(@subscriber, "SubscriberKey", "joao.silva@email.com.br")
 
-/* Cria um atributo para o nome */
-SET @attrNome = CreateObject("Attribute")
-SetObjectProperty(@attrNome, "Name", "NomeCompleto")
-SetObjectProperty(@attrNome, "Value", "João Silva")
+SET @attribute = CreateObject("Attribute")
+SetObjectProperty(@attribute, "Name", "Cidade")
+SetObjectProperty(@attribute, "Value", "São Paulo")
 
-/* Adiciona o atributo ao array Attributes do subscriber */
-AddObjectArrayItem(@subscriber, "Attributes", @attrNome)
+AddObjectArrayItem(@subscriber, "Attributes", @attribute)
 ]%%
 ```
 
 **Saída:**
-
 ```
-O atributo "NomeCompleto" com valor "João Silva" é adicionado ao array Attributes do objeto @subscriber.
-Nenhuma saída visível é gerada — a função apenas modifica o objeto em memória.
+O atributo "Cidade" com valor "São Paulo" é adicionado ao array Attributes do objeto @subscriber.
 ```
 
 ## Exemplo avançado
 
-Cenário real: uma loja fictícia chamada **Lojas Vitória** quer criar um subscriber via SOAP API diretamente pelo AMPscript, adicionando múltiplos atributos personalizados (nome, CPF, cidade e programa de pontos). Depois, o subscriber é criado no Marketing Cloud usando `InvokeCreate`.
+Cenário real de régua de relacionamento: ao cadastrar um novo subscriber via AMPscript, você precisa passar múltiplos atributos de perfil de uma só vez - nome, cidade e telefone do cliente da Conecta Telecom.
 
 ```ampscript
 %%[
-/* === Cria o objeto Subscriber === */
-SET @novoSub = CreateObject("Subscriber")
-SetObjectProperty(@novoSub, "EmailAddress", "maria.santos@email.com.br")
-SetObjectProperty(@novoSub, "SubscriberKey", "LV-98765")
+VAR @subscriber, @attrNome, @attrCidade, @attrTelefone
 
-/* === Atributo: Nome Completo === */
+SET @subscriber = CreateObject("Subscriber")
+SetObjectProperty(@subscriber, "EmailAddress", "maria.santos@conectatelecom.com.br")
+SetObjectProperty(@subscriber, "SubscriberKey", "maria.santos@conectatelecom.com.br")
+
+/* Atributo: Nome */
 SET @attrNome = CreateObject("Attribute")
 SetObjectProperty(@attrNome, "Name", "NomeCompleto")
 SetObjectProperty(@attrNome, "Value", "Maria Santos")
-AddObjectArrayItem(@novoSub, "Attributes", @attrNome)
+AddObjectArrayItem(@subscriber, "Attributes", @attrNome)
 
-/* === Atributo: CPF === */
-SET @attrCPF = CreateObject("Attribute")
-SetObjectProperty(@attrCPF, "Name", "CPF")
-SetObjectProperty(@attrCPF, "Value", "123.456.789-00")
-AddObjectArrayItem(@novoSub, "Attributes", @attrCPF)
-
-/* === Atributo: Cidade === */
+/* Atributo: Cidade */
 SET @attrCidade = CreateObject("Attribute")
 SetObjectProperty(@attrCidade, "Name", "Cidade")
-SetObjectProperty(@attrCidade, "Value", "Belo Horizonte")
-AddObjectArrayItem(@novoSub, "Attributes", @attrCidade)
+SetObjectProperty(@attrCidade, "Value", "Curitiba")
+AddObjectArrayItem(@subscriber, "Attributes", @attrCidade)
 
-/* === Atributo: Pontos do Programa Fidelidade === */
-SET @attrPontos = CreateObject("Attribute")
-SetObjectProperty(@attrPontos, "Name", "PontosFidelidade")
-SetObjectProperty(@attrPontos, "Value", "4500")
-AddObjectArrayItem(@novoSub, "Attributes", @attrPontos)
+/* Atributo: Telefone */
+SET @attrTelefone = CreateObject("Attribute")
+SetObjectProperty(@attrTelefone, "Name", "Telefone")
+SetObjectProperty(@attrTelefone, "Value", "(41) 99999-9999")
+AddObjectArrayItem(@subscriber, "Attributes", @attrTelefone)
 
-/* === Adiciona o subscriber à lista === */
-SET @listaObj = CreateObject("SubscriberList")
-SetObjectProperty(@listaObj, "ID", "12345")
-SetObjectProperty(@listaObj, "Status", "Active")
-AddObjectArrayItem(@novoSub, "Lists", @listaObj)
-
-/* === Invoca a criação do subscriber === */
-SET @statusMsg = InvokeCreate(@novoSub, @createStatus, @errorCode)
-
-IF @statusMsg == "OK" THEN
-  Output(Concat("Subscriber criado com sucesso! Bem-vinda, Maria Santos. Você já tem 4.500 pontos no programa Lojas Vitória Fidelidade!"))
-ELSE
-  Output(Concat("Erro ao criar subscriber: ", @errorCode))
-ENDIF
+/* Agora o objeto @subscriber está pronto para ser usado com InvokeCreate */
+VAR @statusCode, @statusMsg
+SET @statusCode = InvokeCreate(@subscriber, @statusMsg, @errorCode)
 ]%%
 ```
 
-**Saída (em caso de sucesso):**
-
+**Saída:**
 ```
-Subscriber criado com sucesso! Bem-vinda, Maria Santos. Você já tem 4.500 pontos no programa Lojas Vitória Fidelidade!
+O objeto @subscriber é montado com três atributos (NomeCompleto, Cidade e Telefone) no array Attributes, pronto para ser criado via InvokeCreate.
 ```
 
 ## Observações
 
-- A função `AddObjectArrayItem` **não retorna nenhum valor**. Ela modifica diretamente o objeto da API passado como primeiro parâmetro.
-- Você pode chamar `AddObjectArrayItem` **múltiplas vezes** no mesmo objeto e na mesma propriedade de array para adicionar vários itens — como mostrado no exemplo avançado com múltiplos atributos.
-- O objeto passado no parâmetro `@apiObject` precisa ter sido previamente criado com a função [CreateObject](../api-functions/createobject.md). Da mesma forma, o item adicionado (`@itemToAdd`) geralmente também é um objeto criado com `CreateObject`.
-- Essa função faz parte do fluxo de trabalho com a **SOAP API via AMPscript**. O padrão típico é: `CreateObject` → `SetObjectProperty` → `AddObjectArrayItem` → `InvokeCreate` / `InvokeUpdate`.
-- A propriedade `arrayProperty` precisa ser um nome válido de propriedade do tipo array no objeto da API em questão. Se você passar um nome inválido, o comportamento pode resultar em erro no momento do `Invoke`.
-- Essa função é mais utilizada em **cenários avançados** de automação, como criação/atualização de subscribers, triggered sends e gerenciamento de listas diretamente via AMPscript, sem depender de chamadas REST externas.
-- Funciona em **emails, CloudPages e Landing Pages**, mas tenha cuidado com o tempo de execução — operações com a SOAP API podem ser lentas e impactar a performance do envio.
+> **💡 Dica:** Cada item que você adiciona ao array precisa ser um objeto criado separadamente com [CreateObject](../api-functions/createobject.md). Você não consegue passar uma string simples diretamente - primeiro crie o objeto, defina suas propriedades com [SetObjectProperty](../api-functions/setobjectproperty.md) e só então use `AddObjectArrayItem` para inseri-lo no array.
+
+> **💡 Dica:** Você pode chamar `AddObjectArrayItem` várias vezes no mesmo array do mesmo objeto. Cada chamada adiciona um novo item ao final do array, como mostrado no exemplo avançado.
+
+> **⚠️ Atenção:** Essa função não tem valor de retorno documentado. Ela modifica o objeto da API diretamente. Certifique-se de que o objeto pai (apiObject) e o item a ser adicionado já foram criados antes de chamar a função.
 
 ## Funções relacionadas
 
-- [CreateObject](../api-functions/createobject.md) — cria um objeto da API do Marketing Cloud para ser manipulado via AMPscript
-- [SetObjectProperty](../api-functions/setobjectproperty.md) — define o valor de uma propriedade simples em um objeto da API
-- [InvokeCreate](../api-functions/invokecreate.md) — executa a criação de um objeto da API no Marketing Cloud
-- [InvokeUpdate](../api-functions/invokeupdate.md) — executa a atualização de um objeto da API já existente
-- [InvokeDelete](../api-functions/invokedelete.md) — executa a exclusão de um objeto da API
-- [InvokeRetrieve](../api-functions/invokeretrieve.md) — recupera dados de um objeto da API
-- [InvokePerform](../api-functions/invokeperform.md) — executa uma ação (perform) em um objeto da API
-- [RaiseError](../utility-functions/raiseerror.md) — levanta um erro personalizado, útil para tratamento de falhas nas operações com a API
+- [CreateObject](../api-functions/createobject.md) - cria o objeto da API que será manipulado
+- [SetObjectProperty](../api-functions/setobjectproperty.md) - define propriedades simples no objeto
+- [InvokeCreate](../api-functions/invokecreate.md) - executa a criação do objeto na API após montá-lo
+- [InvokeUpdate](../api-functions/invokeupdate.md) - executa a atualização de um objeto na API
+- [InvokeRetrieve](../api-functions/invokeretrieve.md) - recupera objetos da API

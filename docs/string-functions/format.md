@@ -1,31 +1,29 @@
 ---
 title: Format
 sidebar_label: Format
-description: Formata strings como datas, moedas, números e percentuais, com suporte a formatos customizados e códigos de cultura (locale).
+description: Formata strings como datas, moedas, números e percentuais usando padrões compatíveis com C# e códigos de cultura.
 ---
 
 # Format
 
 ## Descrição
 
-A função `Format` formata uma string de acordo com um formato especificado, usando padrões compatíveis com C#. Ela é extremamente versátil: você pode usá-la para formatar datas (com nomes de dia e mês por extenso), valores monetários, números decimais, percentuais, notação científica e muito mais. Você também pode passar um código de cultura (locale) para adaptar a saída a um idioma ou país específico — perfeito para exibir valores em Reais (R$) ou datas no formato brasileiro. Retorna uma string formatada.
+A função `Format` aplica formatação a uma string, transformando-a em datas, moedas, números, percentuais e outros formatos. É uma das funções mais versáteis do AMPscript - com ela você consegue exibir valores monetários em Real (R$), datas no padrão brasileiro (DD/MM/AAAA) e números com separadores de milhar e decimal corretos para o Brasil. Retorna a string formatada conforme o padrão e o código de cultura especificados.
 
 ## Sintaxe
 
 ```ampscript
-Format(stringToFormat, outputFormat)
-Format(stringToFormat, outputFormat, dataFormat)
-Format(stringToFormat, outputFormat, dataFormat, cultureCode)
+Format(stringToFormat, outputFormat [, dataFormat] [, cultureCode])
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| stringToFormat | String | Sim | A string que você quer formatar. |
-| outputFormat | String | Sim | O formato de saída compatível com C# a ser aplicado na string. Pode ser um código de formato (como `C`, `N`, `P`) ou um padrão customizado de data (como `dd/MM/yyyy`). |
-| dataFormat | String | Não | O tipo de dado da string. Valores aceitos: `Date` ou `Number`. |
-| cultureCode | String | Não | Um código de cultura (locale) para aplicar à formatação (ex: `pt-BR`, `en-US`, `hi-IN`). |
+| stringToFormat | string | Sim | A string à qual as regras de formatação serão aplicadas. |
+| outputFormat | string | Sim | String de formato compatível com C# a ser aplicada ao valor. |
+| dataFormat | string | Não | O tipo de dado da string. Valores aceitos: `Date` ou `Number`. |
+| cultureCode | string | Não | Código de cultura para aplicar à formatação (ex: `pt-BR`, `en-US`). |
 
 ### Códigos de formato numérico
 
@@ -36,182 +34,129 @@ Format(stringToFormat, outputFormat, dataFormat, cultureCode)
 | E | Notação científica |
 | F | Ponto fixo (Fixed-point) |
 | G | Geral |
-| N | Número com separadores de milhar |
+| N | Número |
 | P | Percentual |
 
-### Elementos de formato de data customizado
+### Elementos de formato de data personalizado
 
-| Elemento | Exemplo (para 05/08/2024, segunda-feira, 20:00:05, fuso -03:00) |
-|---|---|
-| `d` | 5 |
-| `dd` | 05 |
-| `ddd` | seg (abreviação do dia) |
-| `dddd` | segunda-feira (nome completo do dia) |
-| `M` | 8 |
-| `MM` | 08 |
-| `MMM` | ago (abreviação do mês) |
-| `MMMM` | agosto (nome completo do mês) |
-| `y` | 24 |
-| `yy` | 24 |
-| `yyy` / `yyyy` | 2024 |
-| `h` | 8 (12h) |
-| `hh` | 08 (12h) |
-| `H` | 20 (24h) |
-| `HH` | 20 (24h) |
-| `m` | 0 |
-| `mm` | 00 |
-| `s` | 5 |
-| `ss` | 05 |
-| `t` | P |
-| `tt` | PM |
-| `z` | -3 |
-| `zz` | -03 |
-| `zzz` | -03:00 |
+| Elemento | Descrição | Exemplo (para 05/08/2024 20:00:05 -06:00) |
+|---|---|---|
+| `y` | Ano sem zero à esquerda | 24 |
+| `yy` | Ano com dois dígitos | 24 |
+| `yyy` / `yyyy` | Ano completo | 2024 |
+| `M` | Mês sem zero à esquerda | 8 |
+| `MM` | Mês com zero à esquerda | 08 |
+| `MMM` | Mês abreviado | Aug |
+| `MMMM` | Mês por extenso | August |
+| `d` | Dia sem zero à esquerda | 5 |
+| `dd` | Dia com zero à esquerda | 05 |
+| `ddd` | Dia da semana abreviado | Mon |
+| `dddd` | Dia da semana por extenso | Monday |
+| `h` | Hora (12h) sem zero | 8 |
+| `hh` | Hora (12h) com zero | 08 |
+| `H` | Hora (24h) sem zero | 8 |
+| `HH` | Hora (24h) com zero | 20 |
+| `m` | Minuto sem zero | 0 |
+| `mm` | Minuto com zero | 00 |
+| `s` | Segundo sem zero | 5 |
+| `ss` | Segundo com zero | 05 |
+| `t` | AM/PM abreviado | P |
+| `tt` | AM/PM completo | PM |
+| `z` | Offset UTC sem zero | -6 |
+| `zz` | Offset UTC com zero | -06 |
+| `zzz` | Offset UTC completo | -06:00 |
 
 ## Exemplo básico
 
-Cenário: você quer exibir o valor total do pedido de um cliente no formato de moeda brasileira (R$).
+Formatando um valor de pedido como moeda brasileira (Real) para um e-mail transacional da MegaStore:
 
 ```ampscript
 %%[
-  SET @valorPedido = "1549.90"
-  SET @valorFormatado = Format(@valorPedido, "C", "Number", "pt-BR")
+SET @valorPedido = "1299.90"
+SET @valorFormatado = Format(@valorPedido, "C", "Number", "pt-BR")
 ]%%
 
-Olá, João! O valor total do seu pedido é %%=v(@valorFormatado)=%%.
+Valor do seu pedido: %%=v(@valorFormatado)=%%
 ```
 
 **Saída:**
 ```
-Olá, João! O valor total do seu pedido é R$ 1.549,90.
+Valor do seu pedido: R$ 1.299,90
 ```
 
 ## Exemplo avançado
 
-Cenário: a Lojas Vitória está enviando um e-mail de confirmação de compra na Black Friday. O e-mail precisa exibir a data da compra formatada no padrão brasileiro, o valor com desconto em Reais, e o percentual de desconto aplicado.
+E-mail de confirmação de compra da Lojas Vitória, combinando formatação de data no padrão brasileiro, valor monetário e percentual de desconto:
 
 ```ampscript
 %%[
-  SET @nomeCliente = "Maria Santos"
-  SET @dataCompra = "2024-11-29 14:35:00"
-  SET @valorOriginal = 899.90
-  SET @percentualDesconto = 0.25
-  SET @valorDesconto = Multiply(@valorOriginal, Subtract(1, @percentualDesconto))
+SET @nomeCliente = "João Silva"
+SET @dataCompra = Now()
+SET @valorOriginal = "2499.90"
+SET @desconto = "0.15"
 
-  /* Formata a data no padrão brasileiro com dia da semana por extenso */
-  SET @dataFormatada = Format(@dataCompra, "dddd, dd 'de' MMMM 'de' yyyy 'às' HH:mm", "Date", "pt-BR")
+/* Data no padrão brasileiro com dia da semana por extenso */
+SET @dataFormatada = Format(@dataCompra, "dddd, dd/MM/yyyy", "Date", "pt-BR")
 
-  /* Formata o valor como moeda brasileira */
-  SET @valorOriginalFormatado = Format(@valorOriginal, "C", "Number", "pt-BR")
-  SET @valorFinalFormatado = Format(@valorDesconto, "C", "Number", "pt-BR")
+/* Horário da compra */
+SET @horaFormatada = Format(@dataCompra, "HH:mm", "Date", "pt-BR")
 
-  /* Formata o percentual de desconto */
-  SET @descontoFormatado = Format(@percentualDesconto, "P0", "Number", "pt-BR")
+/* Valor em Real */
+SET @valorFormatado = Format(@valorOriginal, "C", "Number", "pt-BR")
+
+/* Percentual de desconto */
+SET @descontoFormatado = Format(@desconto, "P", "Number", "pt-BR")
+
+/* Calculando valor final */
+SET @valorFinal = Subtract(@valorOriginal, Multiply(@valorOriginal, @desconto))
+SET @valorFinalFormatado = Format(@valorFinal, "C", "Number", "pt-BR")
+
+/* Número do pedido formatado com zeros à esquerda */
+SET @numeroPedido = "4587"
+SET @pedidoFormatado = Format(@numeroPedido, "D8", "Number")
 ]%%
 
 Olá, %%=v(@nomeCliente)=%%!
 
-Sua compra na Lojas Vitória foi confirmada! 🎉
+Compra realizada em %%=v(@dataFormatada)=%% às %%=v(@horaFormatada)=%%
+Pedido nº %%=v(@pedidoFormatado)=%%
 
-📅 Data: %%=v(@dataFormatada)=%%
-💰 Valor original: %%=v(@valorOriginalFormatado)=%%
-🏷️ Desconto Black Friday: %%=v(@descontoFormatado)=%%
-✅ Valor pago: %%=v(@valorFinalFormatado)=%%
-
-Frete grátis para compras acima de R$299,00! Seu pedido se qualifica. 🚚
-
-Obrigado por comprar com a gente!
-Lojas Vitória — www.lojasvitoria.com.br
+Valor original: %%=v(@valorFormatado)=%%
+Desconto aplicado: %%=v(@descontoFormatado)=%%
+Valor final: %%=v(@valorFinalFormatado)=%%
 ```
 
 **Saída:**
 ```
-Olá, Maria Santos!
+Olá, João Silva!
 
-Sua compra na Lojas Vitória foi confirmada! 🎉
+Compra realizada em segunda-feira, 14/07/2025 às 10:35
+Pedido nº 00004587
 
-📅 Data: sexta-feira, 29 de novembro de 2024 às 14:35
-💰 Valor original: R$ 899,90
-🏷️ Desconto Black Friday: 25%
-✅ Valor pago: R$ 674,93
-
-Frete grátis para compras acima de R$299,00! Seu pedido se qualifica. 🚚
-
-Obrigado por comprar com a gente!
-Lojas Vitória — www.lojasvitoria.com.br
-```
-
-## Mais exemplos
-
-### Formatando números com separador de milhar
-
-```ampscript
-%%[
-  SET @pontos = "158430"
-  SET @pontosFormatados = Format(@pontos, "N0", "Number", "pt-BR")
-]%%
-
-Carlos, você tem %%=v(@pontosFormatados)=%% pontos no programa de fidelidade da FarmaRede!
-```
-
-**Saída:**
-```
-Carlos, você tem 158.430 pontos no programa de fidelidade da FarmaRede!
-```
-
-### Formatando data simples (DD/MM/AAAA)
-
-```ampscript
-%%[
-  SET @dataVencimento = "2025-01-15"
-  SET @dataFormatada = Format(@dataVencimento, "dd/MM/yyyy", "Date")
-]%%
-
-Sua fatura do Banco Meridional vence em %%=v(@dataFormatada)=%%.
-```
-
-**Saída:**
-```
-Sua fatura do Banco Meridional vence em 15/01/2025.
-```
-
-### Usando com dados de uma Data Extension
-
-```ampscript
-%%[
-  SET @saldo = Lookup("Clientes_Conecta", "Saldo", "Email", emailaddr)
-  SET @saldoFormatado = Format(@saldo, "C", "Number", "pt-BR")
-]%%
-
-Seu saldo de cashback na Conecta Telecom é de %%=v(@saldoFormatado)=%%.
-```
-
-**Saída:**
-```
-Seu saldo de cashback na Conecta Telecom é de R$ 47,50.
+Valor original: R$ 2.499,90
+Desconto aplicado: 15,00%
+Valor final: R$ 2.124,92
 ```
 
 ## Observações
 
-- O parâmetro `outputFormat` segue as convenções de formatação do C#. Consulte a documentação da Microsoft sobre [NumberFormatInfo](https://learn.microsoft.com/dotnet/api/system.globalization.numberformatinfo) e [DateTimeFormatInfo](https://learn.microsoft.com/dotnet/api/system.globalization.datetimeformatinfo) para referência completa.
-- Para formatar valores em Reais (R$), use o `cultureCode` como `"pt-BR"` junto com o formato `"C"` e o `dataFormat` como `"Number"`.
-- O parâmetro `dataFormat` aceita apenas dois valores: `Date` ou `Number`. Se você não informar, o comportamento depende do formato passado em `outputFormat`.
-- Ao usar formatos customizados de data, preste atenção na diferença entre `M` (mês) e `m` (minuto) — é case-sensitive!
-- A diferença entre `h`/`hh` (formato 12 horas) e `H`/`HH` (formato 24 horas) é importante. O Brasil geralmente usa o formato 24 horas.
-- Você pode incluir texto literal dentro do padrão de data envolvendo-o em aspas simples, como `'de'` ou `'às'`.
-- Para exibir percentual sem casas decimais, use `"P0"`. Para duas casas, use `"P2"` ou simplesmente `"P"`.
-- Se você precisa apenas formatar moeda de forma simples sem se preocupar com locale, considere usar [FormatCurrency](../string-functions/formatcurrency.md). Para formatação simples de números, considere [FormatNumber](../string-functions/formatnumber.md).
-- A função `Format` é a mais flexível das três — use-a quando precisar de controle total sobre o formato de saída.
+- O parâmetro `cultureCode` é essencial para o mercado brasileiro. Sem usar `"pt-BR"`, valores monetários virão com `$` em vez de `R$`, e os separadores de milhar/decimal ficarão no padrão americano (vírgula para milhar, ponto para decimal).
+
+- Os formatos de data personalizados (`dd/MM/yyyy`, `dddd`, `MMMM` etc.) combinados com o culture code `"pt-BR"` retornam nomes de meses e dias da semana em português (ex: "segunda-feira", "julho").
+
+> **💡 Dica:** Para exibir datas no padrão brasileiro, use `"dd/MM/yyyy"` - com `MM` maiúsculo para mês. Se usar `mm` minúsculo, vai trazer minutos em vez de mês. Esse é um erro clássico.
+
+> **💡 Dica:** O formato `"C"` (Currency) com culture code `"pt-BR"` já cuida de tudo: símbolo R$, separador de milhar com ponto e decimal com vírgula. É mais prático do que montar a formatação manualmente com [Concat](../string-functions/concat.md).
+
+> **⚠️ Atenção:** O parâmetro `dataFormat` aceita apenas `Date` ou `Number`. Se você passar um valor numérico sem especificar `"Number"` como `dataFormat`, o formato pode não ser aplicado corretamente.
+
+> **💡 Dica:** Quando precisar apenas formatar moeda de forma simples, considere também a função [FormatCurrency](../string-functions/formatcurrency.md). Já para formatação numérica básica, veja [FormatNumber](../string-functions/formatnumber.md). A `Format` é mais poderosa porque aceita culture codes e padrões personalizados.
 
 ## Funções relacionadas
 
-- [FormatCurrency](../string-functions/formatcurrency.md) — formata um valor como moeda de forma simplificada
-- [FormatNumber](../string-functions/formatnumber.md) — formata um valor numérico de forma simplificada
-- [FormatDate](../date-functions/formatdate.md) — formata datas com opções pré-definidas (short, long, etc.)
-- [Now](../date-functions/now.md) — retorna a data e hora atuais do sistema
-- [DatePart](../date-functions/datepart.md) — extrai uma parte específica de uma data (dia, mês, ano, etc.)
-- [Concat](../string-functions/concat.md) — concatena strings (útil para montar textos formatados)
-- [Multiply](../math-functions/multiply.md) — multiplica valores (útil para cálculos de desconto antes de formatar)
-- [Subtract](../math-functions/subtract.md) — subtrai valores numéricos
-- [Lookup](../data-extension-functions/lookup.md) — busca um valor em uma Data Extension para depois formatar
-- [V](../utility-functions/v.md) — exibe o valor de uma variável inline no conteúdo
+- [FormatCurrency](../string-functions/formatcurrency.md) - formatação simplificada de valores monetários
+- [FormatNumber](../string-functions/formatnumber.md) - formatação simplificada de números
+- [FormatDate](../date-functions/formatdate.md) - formatação específica para datas
+- [Now](../date-functions/now.md) - retorna a data/hora atual do sistema
+- [Concat](../string-functions/concat.md) - concatenação de strings para montar saídas compostas
+- [Replace](../string-functions/replace.md) - substituição de caracteres em strings

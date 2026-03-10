@@ -1,14 +1,14 @@
 ---
 title: Replace
 sidebar_label: Replace
-description: Substitui todas as ocorrências de uma substring por outra substring dentro de um texto.
+description: Substitui todas as ocorrências de uma substring por outra dentro de uma string.
 ---
 
 # Replace
 
 ## Descrição
 
-A função `Replace()` busca **todas as ocorrências** de uma substring dentro de um texto e substitui cada uma delas por outra substring que você definir. É uma das funções mais versáteis do AMPscript — super útil para personalizar templates de mensagem, corrigir formatações, trocar placeholders por dados dinâmicos, limpar textos vindos de Data Extensions e muito mais. Ela retorna a string original com todas as substituições aplicadas.
+A função `Replace` localiza **todas as ocorrências** de uma substring dentro de uma string e substitui cada uma por outra substring que você definir. É muito útil no dia a dia de SFMC para limpar e formatar dados de clientes - como corrigir formatação de telefones, ajustar URLs, trocar placeholders em templates dinâmicos ou padronizar textos em campanhas de e-mail e SMS. Retorna a string original com todas as substituições aplicadas.
 
 ## Sintaxe
 
@@ -20,110 +20,78 @@ Replace(sourceString, searchSubstring, replacementSubstring)
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| sourceString | String | Sim | O texto original onde a busca será feita. |
-| searchSubstring | String | Sim | A substring que você quer encontrar dentro de `sourceString`. |
-| replacementSubstring | String | Sim | A substring que vai substituir cada ocorrência de `searchSubstring`. |
+| sourceString | string | Sim | A string original onde a busca será feita. |
+| searchSubstring | string | Sim | A substring que você quer encontrar dentro de `sourceString`. |
+| replacementSubstring | string | Sim | A substring que vai substituir cada ocorrência de `searchSubstring`. |
 
 ## Exemplo básico
 
-Imagine que você tem um template de promoção e precisa trocar o placeholder `%%NOME%%` pelo nome real do assinante:
+Substituindo o nome de uma estação do ano em uma mensagem promocional da MegaStore:
 
 ```ampscript
 %%[
-
-SET @template = "Olá, %%NOME%%! Aproveite nossas ofertas de Dia das Mães, %%NOME%%!"
-SET @nomeCliente = "Maria Santos"
-SET @mensagem = Replace(@template, "%%NOME%%", @nomeCliente)
-
+SET @mensagem = "Promoção de inverno MegaStore: até 50% de desconto na coleção de inverno!"
+SET @mensagemAtualizada = Replace(@mensagem, "inverno", "verão")
 ]%%
-
-%%=v(@mensagem)=%%
+%%=v(@mensagemAtualizada)=%%
 ```
 
 **Saída:**
 ```
-Olá, Maria Santos! Aproveite nossas ofertas de Dia das Mães, Maria Santos!
+Promoção de verão MegaStore: até 50% de desconto na coleção de verão!
 ```
 
 ## Exemplo avançado
 
-Cenário real: a Lojas Vitória envia e-mails promocionais sazonais. O texto base da promoção menciona a estação do ano, e você precisa atualizar dinamicamente para a estação atual. Além disso, o preço e a URL do produto também são personalizados. Aqui usamos [RegExMatch](../string-functions/regexmatch.md) para identificar a estação no texto e `Replace()` para fazer a substituição:
+Cenário real de régua de relacionamento: você recebe o telefone do cliente sem formatação e precisa limpar caracteres antes de usar em uma integração via API ou exibir de forma padronizada no e-mail.
 
 ```ampscript
 %%[
+SET @telefoneOriginal = "(11) 99876-5432"
 
-SET @promoText = "A Lojas Vitória preparou ofertas incríveis de inverno! Frete grátis acima de R$299 em toda coleção de inverno. Acesse www.lojasvitoria.com.br/inverno e confira!"
+/* Remove parênteses, espaço e hífen para obter só números */
+SET @telefone = Replace(@telefoneOriginal, "(", "")
+SET @telefone = Replace(@telefone, ")", "")
+SET @telefone = Replace(@telefone, " ", "")
+SET @telefone = Replace(@telefone, "-", "")
 
-/* Identifica a estação atual no texto usando RegExMatch */
-SET @estacaoEncontrada = RegExMatch(@promoText, "inverno|verão|outono|primavera")
-
-/* Define a nova estação */
-SET @estacaoAtual = "primavera"
-
-/* Substitui todas as ocorrências da estação antiga pela nova */
-SET @promoText = Replace(@promoText, @estacaoEncontrada, @estacaoAtual)
-
-/* Também atualiza a URL para a landing page correta */
-SET @promoText = Replace(@promoText, "www.lojasvitoria.com.br/primavera", Concat("www.lojasvitoria.com.br/", @estacaoAtual, "?utm_source=email&utm_campaign=promo_", @estacaoAtual))
-
+SET @nome = "Maria Santos"
+SET @loja = "Lojas Vitória"
 ]%%
 
-%%=v(@promoText)=%%
+Olá, %%=v(@nome)=%%! 
+
+Seu cadastro na %%=v(@loja)=%% está vinculado ao telefone %%=v(@telefoneOriginal)=%%.
+
+Número limpo para integração: %%=v(@telefone)=%%
 ```
 
 **Saída:**
 ```
-A Lojas Vitória preparou ofertas incríveis de primavera! Frete grátis acima de R$299 em toda coleção de primavera. Acesse www.lojasvitoria.com.br/primavera?utm_source=email&utm_campaign=promo_primavera e confira!
-```
+Olá, Maria Santos!
 
-Outro exemplo prático — formatar CPF que veio sem pontuação de uma Data Extension:
+Seu cadastro na Lojas Vitória está vinculado ao telefone (11) 99876-5432.
 
-```ampscript
-%%[
-
-SET @cpfBruto = "12345678900"
-
-/* Monta o CPF formatado usando Substring e Concat */
-SET @cpfFormatado = Concat(
-  Substring(@cpfBruto, 1, 3), ".",
-  Substring(@cpfBruto, 4, 3), ".",
-  Substring(@cpfBruto, 7, 3), "-",
-  Substring(@cpfBruto, 10, 2)
-)
-
-/* Ou se o CPF já tem alguma formatação parcial, pode usar Replace para limpar e reformatar */
-SET @cpfComEspacos = "123 456 789 00"
-SET @cpfLimpo = Replace(@cpfComEspacos, " ", "")
-
-]%%
-
-CPF formatado: %%=v(@cpfFormatado)=%%
-CPF limpo: %%=v(@cpfLimpo)=%%
-```
-
-**Saída:**
-```
-CPF formatado: 123.456.789-00
-CPF limpo: 12345678900
+Número limpo para integração: 11998765432
 ```
 
 ## Observações
 
-- A função substitui **todas** as ocorrências da substring encontrada, não apenas a primeira. Se o texto tiver 5 ocorrências, todas serão trocadas.
-- A busca **não diferencia maiúsculas de minúsculas** (case-insensitive) no comportamento padrão do AMPscript. Se você precisa de controle mais fino sobre o padrão de busca, considere usar [RegExMatch](../string-functions/regexmatch.md) em conjunto.
-- Se a `searchSubstring` não for encontrada na `sourceString`, a função simplesmente retorna o texto original sem alterações.
-- Para substituir a substring por nada (ou seja, remover a substring), passe uma string vazia `""` como `replacementSubstring`.
-- Cuidado com substituições em cascata: se você encadear múltiplas chamadas de `Replace()`, o resultado de uma pode afetar a próxima. Planeje a ordem das substituições.
-- A função funciona em qualquer contexto do SFMC: e-mails, CloudPages, SMS, Landing Pages, etc.
-- Se você precisa substituir um valor por diferentes opções com base em uma lista, dê uma olhada na função [ReplaceList](../string-functions/replacelist.md).
+- A função substitui **todas** as ocorrências encontradas, não apenas a primeira. Se a substring aparecer 5 vezes, as 5 serão substituídas.
+
+- Você pode encadear múltiplas chamadas de `Replace` para fazer várias substituições em sequência, como no exemplo de limpeza de telefone acima.
+
+- Para identificar um trecho antes de substituir, o [RegExMatch](../string-functions/regexmatch.md) pode ser combinado com `Replace`.
+
+> **💡 Dica:** `Replace` é ótima para montar templates reutilizáveis com placeholders customizados (ex: `{{NOME_CLIENTE}}`, `{{VALOR_PEDIDO}}`), substituindo cada um pelo valor real no momento do envio.
+
+> **⚠️ Atenção:** Se `searchSubstring` não for encontrada em `sourceString`, a função simplesmente retorna a string original sem alterações - não gera erro.
 
 ## Funções relacionadas
 
-- [ReplaceList](../string-functions/replacelist.md) — substitui um valor por outro com base em uma lista de correspondências
-- [RegExMatch](../string-functions/regexmatch.md) — localiza texto usando expressões regulares, ótimo para combinar com `Replace()`
-- [Substring](../string-functions/substring.md) — extrai uma parte específica de uma string
-- [IndexOf](../string-functions/indexof.md) — encontra a posição de uma substring dentro de um texto
-- [Concat](../string-functions/concat.md) — concatena múltiplas strings em uma só
-- [Trim](../string-functions/trim.md) — remove espaços em branco do início e do fim de uma string
-- [Lowercase](../string-functions/lowercase.md) — converte texto para minúsculas, útil para normalizar antes de usar `Replace()`
-- [Uppercase](../string-functions/uppercase.md) — converte texto para maiúsculas
+- [Concat](../string-functions/concat.md) - para juntar strings após substituições
+- [Substring](../string-functions/substring.md) - para extrair parte de uma string
+- [IndexOf](../string-functions/indexof.md) - para localizar a posição de uma substring antes de decidir substituir
+- [RegExMatch](../string-functions/regexmatch.md) - para identificar trechos por padrão regex
+- [ReplaceList](../string-functions/replacelist.md) - para substituir um valor por outro a partir de uma lista de opções
+- [Trim](../string-functions/trim.md) - para remover espaços em branco das extremidades após substituições

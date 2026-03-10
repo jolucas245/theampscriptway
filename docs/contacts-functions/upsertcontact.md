@@ -1,73 +1,61 @@
 ---
 title: UpsertContact
 sidebar_label: UpsertContact
-description: Insere ou atualiza atributos de um registro de contato no MobileConnect, usando o número de telefone como identificador.
+description: Insere ou atualiza atributos de um contato no MobileConnect, criando o registro caso não exista.
 ---
 
 # UpsertContact
 
 ## Descrição
 
-A função `UpsertContact` faz um "upsert" (inserção ou atualização) de atributos em um registro de contato do MobileConnect. Se o contato já existir (identificado pelo número de telefone), os atributos informados são atualizados. Se o contato não existir, ele é criado com os valores fornecidos. A função retorna `0` quando a operação é concluída sem erros. Você pode atualizar quantos atributos quiser em uma única chamada, bastando adicionar pares de chave-valor como parâmetros adicionais.
+A função `UpsertContact` insere ou atualiza atributos em um registro de contato. Se o contato já existir, os atributos são atualizados com as chaves e valores fornecidos. Se o contato não existir, a função cria um novo registro usando essas mesmas chaves e valores. É especialmente útil em fluxos de SMS e MobileConnect, onde você precisa manter dados de contato atualizados - como nome, cidade ou CEP - a partir de interações via mensagem. A função retorna `0` quando a operação é concluída sem erros.
 
 ## Sintaxe
 
 ```ampscript
-UpsertContact(canal, atributo, numeroTelefone, chave1, valor1 [, chave2, valor2, ...])
+UpsertContact(channel, attribute, phoneNumber, keyToUpsert1, valueToUpsert1 [, keyToUpsert2, valueToUpsert2 ...])
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| canal | String | Sim | O canal do contato. O único valor suportado é `"mobile"`. |
-| atributo | String | Sim | O atributo usado para localizar o contato. O único valor suportado é `"phone"`. |
-| numeroTelefone | Número | Sim | O número de telefone do contato, incluindo o código do país (ex: `5511999998888`). |
-| chave1 | String | Sim | O nome do atributo a ser inserido ou atualizado (ex: `"_FirstName"`, `"_City"`, `"_ZipCode"` ou atributos customizados). |
-| valor1 | String | Sim | O valor do atributo correspondente à chave1. |
-| chaveN, valorN | String | Não | Pares adicionais de chave-valor para upsert de múltiplos atributos de uma só vez. Pode adicionar quantos pares precisar. |
+| channel | String | Sim | O canal do contato. O único valor suportado é `"mobile"`. |
+| attribute | String | Sim | O atributo usado para localizar o contato. O único valor suportado é `"phone"`. |
+| phoneNumber | Número | Sim | O número de telefone do contato. Deve incluir o código do país. |
+| keyToUpsert1 | String | Não | O nome do atributo a ser inserido ou atualizado. |
+| valueToUpsert1 | String | Não | O valor do atributo a ser inserido ou atualizado. |
+
+> **💡 Dica:** Você pode adicionar quantos pares de chave-valor forem necessários, basta acrescentá-los ao final da lista de parâmetros (keyToUpsert2, valueToUpsert2, keyToUpsert3, valueToUpsert3...).
 
 ## Exemplo básico
 
-Imagine que a **Conecta Telecom** precisa atualizar o CEP de um contato mobile que já está cadastrado. O número de telefone inclui o código do Brasil (`55`):
+Atualizando o CEP de um contato que interagiu por SMS com a Conecta Telecom:
 
 ```ampscript
 %%[
-  VAR @resultado
-  SET @resultado = UpsertContact(
-    "mobile",
-    "phone",
-    5511988887777,
-    "_ZipCode", "04538-132"
-  )
+  SET @resultado = UpsertContact("mobile", "phone", 5511999998888, "_ZipCode", "01310-100")
 ]%%
 
-Resultado da operação: %%=v(@resultado)=%%
+Resultado: %%=V(@resultado)=%%
 ```
 
 **Saída:**
 ```
-Resultado da operação: 0
+Resultado: 0
 ```
-
-O retorno `0` indica que a operação foi concluída sem erros. O CEP do contato com telefone `+55 (11) 98888-7777` foi atualizado para `04538-132`.
 
 ## Exemplo avançado
 
-Agora, a **FarmaRede** está rodando uma campanha de SMS para o Dia das Mães e quer cadastrar ou atualizar contatos mobile com nome, sobrenome e cidade de uma só vez. Os dados vêm de uma Data Extension chamada `CampanhaDiadasMaes`:
+Cenário de régua de relacionamento via MobileConnect: ao receber uma mensagem SMS de opt-in, você atualiza nome, sobrenome e cidade do contato de uma só vez, mantendo o cadastro completo no MobileConnect Data Attribute Group.
 
 ```ampscript
 %%[
-  VAR @telefone, @nome, @sobrenome, @cidade, @resultado
-
-  SET @telefone = Lookup("CampanhaDiadasMaes", "Telefone", "CPF", "123.456.789-00")
-  SET @nome = Lookup("CampanhaDiadasMaes", "Nome", "CPF", "123.456.789-00")
-  SET @sobrenome = Lookup("CampanhaDiadasMaes", "Sobrenome", "CPF", "123.456.789-00")
-  SET @cidade = Lookup("CampanhaDiadasMaes", "Cidade", "CPF", "123.456.789-00")
-
-  /* Remove espaços extras do nome */
-  SET @nome = Trim(@nome)
-  SET @sobrenome = Trim(@sobrenome)
+  SET @telefone = 5521988887777
+  SET @nome = "Maria"
+  SET @sobrenome = "Santos"
+  SET @cidade = "Rio de Janeiro"
+  SET @cep = "20040-020"
 
   SET @resultado = UpsertContact(
     "mobile",
@@ -75,42 +63,35 @@ Agora, a **FarmaRede** está rodando uma campanha de SMS para o Dia das Mães e 
     @telefone,
     "_FirstName", @nome,
     "_LastName", @sobrenome,
-    "_City", @cidade
+    "_City", @cidade,
+    "_ZipCode", @cep
   )
-
-  IF @resultado == 0 THEN
-    SET @mensagem = Concat("Contato ", @nome, " ", @sobrenome, " atualizado com sucesso!")
-  ELSE
-    SET @mensagem = Concat("Erro ao atualizar contato. Código: ", @resultado)
-  ENDIF
 ]%%
 
-%%=v(@mensagem)=%%
+Resultado do upsert: %%=V(@resultado)=%%
 ```
 
 **Saída:**
 ```
-Contato Maria Santos atualizado com sucesso!
+Resultado do upsert: 0
 ```
-
-Nesse exemplo, buscamos os dados na DE usando [Lookup](../data-extension-functions/lookup.md), limpamos espaços com [Trim](../string-functions/trim.md), e fazemos o upsert de três atributos de uma vez só (`_FirstName`, `_LastName` e `_City`).
 
 ## Observações
 
-- **Canal limitado:** O único canal suportado atualmente é `"mobile"`. Essa função é específica para contatos do **MobileConnect** (SMS). Não funciona para contatos de e-mail.
-- **Atributo de busca limitado:** O único atributo de match suportado é `"phone"`. Não é possível buscar por e-mail, nome ou outro campo.
-- **Código do país obrigatório:** O número de telefone deve incluir o código do país. Para o Brasil, use `55` antes do DDD e número (ex: `5521999991234`).
-- **Atributos disponíveis:** Você pode fazer upsert de qualquer atributo que faça parte do **MobileConnect Data Attribute Group** no Contact Builder. Isso inclui campos padrão como `_FirstName`, `_LastName`, `_City`, `_ZipCode`, e também atributos customizados. Consulte o **Data Designer** no Contact Builder para verificar os atributos disponíveis.
-- **Retorno:** A função retorna `0` quando a operação é concluída sem erros.
-- **Contexto de uso:** Por ser uma função voltada ao MobileConnect, é mais comum encontrá-la em mensagens SMS, templates de MobileConnect ou em CloudPages que interajam com contatos mobile.
-- **Múltiplos atributos:** Você pode passar quantos pares chave-valor quiser na mesma chamada. Não precisa fazer múltiplas chamadas para atualizar vários campos do mesmo contato.
+- A função trabalha exclusivamente com o canal `"mobile"` e o atributo de busca `"phone"`. Não há suporte para outros canais ou atributos de correspondência.
+
+- O número de telefone deve incluir o código do país. Para números brasileiros, use o prefixo `55` seguido do DDD e número (ex: `5511999998888`).
+
+- Você pode fazer upsert de qualquer atributo que faça parte do **MobileConnect Data Attribute Group**, incluindo campos padrão como `_FirstName`, `_LastName`, `_City` e `_ZipCode`, além de atributos customizados. Para visualizar esses atributos, acesse o **Data Designer** no **Contact Builder**.
+
+- O retorno `0` indica que a operação foi concluída sem erros.
+
+> **⚠️ Atenção:** Essa função é voltada para o contexto de MobileConnect. Se você precisa fazer upsert de dados em Data Extensions, utilize as funções [UpsertDE](../data-extension-functions/upsertde.md) ou [UpsertData](../data-extension-functions/upsertdata.md).
 
 ## Funções relacionadas
 
-- [CreateSmsConversation](../sms-functions/createsmsconversation.md) — cria uma conversa SMS interativa com o contato
-- [EndSmsConversation](../sms-functions/endsmsconversation.md) — encerra uma conversa SMS ativa
-- [SetSmsConversationNextKeyword](../sms-functions/setsmsconversationnextkeyword.md) — define a próxima keyword esperada em uma conversa SMS
-- [Lookup](../data-extension-functions/lookup.md) — busca um valor em uma Data Extension para usar como parâmetro
-- [UpsertDE](../data-extension-functions/upsertde.md) — insere ou atualiza registros em uma Data Extension (equivalente ao upsert, mas para DEs)
-- [Trim](../string-functions/trim.md) — remove espaços extras de strings antes de salvar no contato
-- [IsPhoneNumber](../utility-functions/isphonenumber.md) — valida se um valor é um número de telefone válido antes de usar no upsert
+- [CreateSmsConversation](../sms-functions/createsmsconversation.md) - cria uma conversa SMS
+- [EndSmsConversation](../sms-functions/endsmsconversation.md) - encerra uma conversa SMS
+- [SetSmsConversationNextKeyword](../sms-functions/setsmsconversationnextkeyword.md) - define a próxima keyword esperada numa conversa SMS
+- [UpsertDE](../data-extension-functions/upsertde.md) - upsert em Data Extensions (por nome)
+- [UpsertData](../data-extension-functions/upsertdata.md) - upsert em Data Extensions (por nome externo)

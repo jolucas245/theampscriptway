@@ -1,170 +1,138 @@
 ---
 title: Loops
 sidebar_label: Loops
-description: Aprenda a usar loops FOR em AMPScript para iterar sobre dados de Data Extensions e montar conteúdos dinâmicos nos seus e-mails.
-sidebar_position: 5
+description: Use blocos For em AMPscript para iterar sobre estruturas de dados ou executar código um número específico de vezes.
+sidebar_position: 6
 ---
 
 # Loops
 
-Se você já sabe trabalhar com [variáveis](/docs/getting-started/variables) e [condicionais](/docs/getting-started/conditionals), o próximo passo natural é aprender a repetir blocos de código. No AMPScript, o loop `FOR` é a única estrutura de repetição disponível — e, na prática, você vai usá-lo quase sempre junto com **LookupRows**, **Row()** e **Field()** para percorrer linhas de uma Data Extension.
+Loops permitem repetir um bloco de código várias vezes - seja um número fixo de repetições ou uma vez para cada linha de uma estrutura de dados. Em SFMC, isso é essencial para cenários como listar os últimos pedidos de um cliente, exibir produtos de um carrinho abandonado ou gerar linhas de uma tabela dinâmica.
 
-Vamos construir um exemplo do zero e evoluí-lo até um cenário real de carrinho abandonado.
+## Estrutura do For
 
-## Sintaxe do FOR...DO...NEXT
+O loop `For` é a única estrutura de repetição do AMPscript. No mínimo, um bloco `For` precisa de:
 
-A estrutura básica é assim:
+- `FOR` - inicia o loop
+- Uma variável de controle com valor inicial
+- `TO` ou `DOWNTO` - define a direção da contagem
+- O valor final (número, variável ou função)
+- `DO` - inicia o bloco de código
+- O código a repetir
+- `NEXT` - avança o contador e fecha o bloco
+
+Quando você usa `TO`, o contador aumenta 1 a cada iteração. Quando usa `DOWNTO`, diminui 1.
+
+> **💡 Dica:** As palavras-chave `FOR`, `TO`, `DOWNTO`, `DO` e `NEXT` não são case-sensitive - `for`, `For` e `FOR` funcionam exatamente igual. Escolha um padrão e mantenha consistência.
+
+## Repetindo um número fixo de vezes
+
+O uso mais simples de `FOR` é executar código um número pré-determinado de vezes. O exemplo abaixo exibe uma numeração de 1 a 5:
 
 ```ampscript
 %%[
-FOR @i = 1 TO @limite DO
-  /* código que se repete */
+FOR @i = 1 TO 5 DO
+    Output(Concat('Item ', @i, '<br>'))
 NEXT @i
 ]%%
 ```
 
-| Elemento | O que faz |
-|---|---|
-| `@i` | Variável contadora — incrementa automaticamente de 1 em 1 |
-| `1` | Valor inicial do contador |
-| `@limite` | Valor final (inclusive) — o loop roda enquanto `@i <= @limite` |
-| `DO` | Marca o início do bloco de repetição |
-| `NEXT @i` | Fecha o bloco e avança o contador |
+**Saída:**
+```
+Item 1
+Item 2
+Item 3
+Item 4
+Item 5
+```
 
-Um exemplo mínimo para você sentir a mecânica:
+## Iterando sobre um rowset
 
-```html
+O uso mais comum em SFMC é percorrer um rowset - uma estrutura de dados retornada por funções como `LookupRows()`, `BuildRowsetFromString()` ou `BuildRowsetFromJson()`. O padrão é sempre o mesmo: buscar o rowset, contar as linhas com `RowCount()` e iterar de 1 até esse total.
+
+O exemplo abaixo exibe os últimos pedidos de um cliente da Lojas Vitória:
+
+```ampscript
 %%[
-SET @limite = 3
-FOR @i = 1 TO @limite DO
+SET @pedidos = LookupRows('Pedidos_DE', 'Email', emailaddr)
+SET @total   = RowCount(@pedidos)
+
+IF @total > 0 THEN
+    FOR @i = 1 TO @total DO
+        SET @linha       = Row(@pedidos, @i)
+        SET @numeroPedido = Field(@linha, 'NumeroPedido')
+        SET @valor        = Field(@linha, 'ValorTotal')
+        SET @status       = Field(@linha, 'Status')
 ]%%
 
-<p>Repetição número %%=v(@i)=%%</p>
+<tr>
+    <td>%%=v(@numeroPedido)=%%</td>
+    <td>R$ %%=v(@valor)=%%</td>
+    <td>%%=v(@status)=%%</td>
+</tr>
+
+%%[
+    NEXT @i
+ENDIF
+]%%
+```
+
+Repare no padrão de fechar e reabrir blocos AMPscript (`]%%` e `%%[`) para intercalar com HTML. Isso é totalmente válido - o AMPscript interpreta os blocos em sequência, e o HTML no meio é renderizado normalmente.
+
+## Contagem regressiva com DOWNTO
+
+Use `DOWNTO` quando precisar iterar de um valor maior para um menor:
+
+```ampscript
+%%[
+FOR @i = 5 DOWNTO 1 DO
+    Output(Concat(@i, '... ', '<br>'))
+NEXT @i
+Output('Promoção ativada!')
+]%%
+```
+
+**Saída:**
+```
+5...
+4...
+3...
+2...
+1...
+Promoção ativada!
+```
+
+## Limitando o número de itens exibidos
+
+Em e-mails, é comum limitar quantos itens você exibe - por exemplo, no máximo 3 produtos recomendados. Use `IIF()` ou um `IF` simples para definir o limite antes do loop:
+
+```ampscript
+%%[
+SET @produtos = LookupRows('Recomendados_DE', 'Email', emailaddr)
+SET @total    = RowCount(@produtos)
+
+/* Exibe no máximo 3 produtos */
+IF @total > 3 THEN
+    SET @total = 3
+ENDIF
+
+FOR @i = 1 TO @total DO
+    SET @linha  = Row(@produtos, @i)
+    SET @nome   = Field(@linha, 'NomeProduto')
+    SET @preco  = Field(@linha, 'Preco')
+]%%
+
+<div class="produto">
+    <strong>%%=v(@nome)=%%</strong> - R$ %%=v(@preco)=%%
+</div>
 
 %%[
 NEXT @i
 ]%%
 ```
 
-Isso gera três parágrafos: *Repetição número 1*, *Repetição número 2*, *Repetição número 3*. Simples assim.
-
-## Iterando sobre rowsets — o uso mais comum
-
-Na vida real, você quase nunca vai usar um `FOR` com número fixo. O padrão do dia a dia é:
-
-1. **LookupRows** busca linhas de uma Data Extension → retorna um *rowset*
-2. **RowCount()** conta quantas linhas vieram → define o limite do loop
-3. Dentro do loop, **Row()** pega uma linha específica e **Field()** extrai o valor de cada coluna
-
-Imagine uma Data Extension chamada **Pedidos_Recentes** com as colunas `EmailAssinante`, `NomeProduto`, `Valor` e `DataPedido`. Vamos listar os últimos pedidos de um assinante:
-
-```html
-%%[
-SET @email = AttributeValue("emailaddr")
-SET @linhas = LookupRows("Pedidos_Recentes", "EmailAssinante", @email)
-SET @total = RowCount(@linhas)
-]%%
-
-%%[ IF @total > 0 THEN ]%%
-
-<h2>Seus últimos pedidos</h2>
-<table>
-  <tr>
-    <th>Produto</th>
-    <th>Valor</th>
-    <th>Data</th>
-  </tr>
-
-  %%[ FOR @i = 1 TO @total DO ]%%
-    %%[
-      SET @linha = Row(@linhas, @i)
-      SET @produto = Field(@linha, "NomeProduto")
-      SET @valor = Field(@linha, "Valor")
-      SET @data = Field(@linha, "DataPedido")
-    ]%%
-    <tr>
-      <td>%%=v(@produto)=%%</td>
-      <td>R$ %%=v(@valor)=%%</td>
-      <td>%%=FormatDate(@data, "dd/MM/yyyy")=%%</td>
-    </tr>
-  %%[ NEXT @i ]%%
-
-</table>
-
-%%[ ELSE ]%%
-<p>Você ainda não tem pedidos registrados.</p>
-%%[ ENDIF ]%%
-```
-
-Repare no fluxo: **LookupRows** → **RowCount** (define `@total`) → **FOR 1 TO @total** → **Row + Field** dentro do loop. Esse é o padrão que você vai repetir em 90% dos casos.
-
-> **💡 Dica:** Sempre envolva o loop com `IF @total > 0 THEN` para evitar que o e-mail renderize uma tabela vazia quando não houver dados.
-
-## Cuidado com performance
-
-Cada chamada de **LookupRows** e cada iteração do loop consomem tempo de processamento no momento do envio. Em bases grandes, isso pode atrasar a entrega ou até causar timeout.
-
-| Regra prática | Por quê |
-|---|---|
-| Limite o loop a **no máximo 2.000 iterações** | Acima disso o SFMC pode abortar a renderização |
-| Prefira **LookupRows** com filtros específicos | Quanto menos linhas retornarem, mais rápido o loop roda |
-| Evite **LookupRows dentro de outro FOR** | Loops aninhados com lookup multiplicam chamadas ao banco — use **LookupOrderedRows** com limite quando possível |
-| Use **LookupOrderedRows** quando precisar de ordenação e limite | Permite trazer só os N registros mais recentes |
-
-> **⚠️ Atenção:** O **LookupRows** retorna no máximo **2.000 linhas** por padrão. Se a sua DE tiver mais registros para o mesmo filtro, considere refinar a consulta ou usar **LookupOrderedRows** com um limite explícito.
-
-## Exemplo real: e-mail de carrinho abandonado
-
-Vamos evoluir o exemplo anterior para um cenário completo. A **MegaStore** quer enviar um e-mail de carrinho abandonado listando os produtos que o cliente deixou no carrinho, com link para finalizar a compra.
-
-Data Extension **Carrinho_Abandonado**: `EmailCliente`, `NomeProduto`, `ImagemURL`, `Valor`, `SKU`.
-
-```html
-%%[
-SET @email = AttributeValue("emailaddr")
-SET @nome = AttributeValue("FirstName")
-SET @itens = LookupRows("Carrinho_Abandonado", "EmailCliente", @email)
-SET @qtd = RowCount(@itens)
-SET @valorTotal = 0
-]%%
-
-<p>Oi, %%=v(@nome)=%% 👋</p>
-<p>Você deixou %%=v(@qtd)=%% item(ns) esperando no seu carrinho:</p>
-
-%%[ IF @qtd > 0 THEN ]%%
-<table>
-  %%[ FOR @i = 1 TO @qtd DO ]%%
-    %%[
-      SET @linha = Row(@itens, @i)
-      SET @produto = Field(@linha, "NomeProduto")
-      SET @img = Field(@linha, "ImagemURL")
-      SET @preco = Field(@linha, "Valor")
-      SET @sku = Field(@linha, "SKU")
-      SET @valorTotal = Add(@valorTotal, @preco)
-      SET @linkProduto = Concat("https://www.megastore.com.br/produto/", @sku)
-    ]%%
-    <tr>
-      <td><img src="%%=v(@img)=%%" width="80" alt="%%=v(@produto)=%%"></td>
-      <td>
-        <a href="%%=RedirectTo(@linkProduto)=%%">%%=v(@produto)=%%</a><br>
-        R$ %%=FormatNumber(@preco, "N2")=%%
-      </td>
-    </tr>
-  %%[ NEXT @i ]%%
-</table>
-
-<p><strong>Total: R$ %%=FormatNumber(@valorTotal, "N2")=%%</strong></p>
-<p>Finalize agora e ganhe <strong>frete grátis</strong>! 🚚</p>
-
-%%[ ELSE ]%%
-<p>Parece que seu carrinho está vazio. Que tal dar uma olhada nas nossas ofertas?</p>
-%%[ ENDIF ]%%
-```
-
-Perceba como este exemplo é uma evolução natural do anterior: adicionamos acumulador de valor total (`@valorTotal` com **Add**), montagem dinâmica de URL com **Concat** e **RedirectTo**, e uma imagem por produto. Tudo dentro do mesmo padrão **LookupRows → RowCount → FOR → Row → Field**.
-
-> **💡 Dica:** Se você quiser limitar a exibição a, digamos, 5 produtos, troque `LookupRows` por `LookupOrderedRows("Carrinho_Abandonado", 5, "Valor DESC", "EmailCliente", @email)` — assim já vem ordenado pelo maior valor e limitado a 5 itens.
+> **⚠️ Atenção:** Evite usar `LookupRows()` ou `HTTPGet()` dentro de um loop - cada chamada é executada a cada iteração. Em um rowset com 50 linhas, isso significa 50 queries ou 50 requests externos. Busque os dados antes do loop e percorra o rowset já carregado.
 
 ---
 
-Com loops dominados, você já consegue montar e-mails altamente dinâmicos. Quando sentir que o código está ficando complexo demais, volte ao básico: revise a [sintaxe](/docs/getting-started/syntax), organize suas [variáveis](/docs/getting-started/variables) e use [condicionais](/docs/getting-started/conditionals) para controlar o que aparece. É tudo junto e misturado! 🚀
+Com loops dominados, você tem todas as ferramentas fundamentais para construir AMPscript dinâmico. Para boas práticas sobre como organizar código com loops complexos, veja [Boas Práticas](/getting-started/best-practices).

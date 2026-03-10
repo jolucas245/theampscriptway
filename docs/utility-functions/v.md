@@ -1,36 +1,37 @@
 ---
 title: V
 sidebar_label: V
-description: Retorna o valor de uma variável AMPscript, permitindo acessar seu conteúdo de forma inline.
+description: Retorna o valor de uma variável AMPscript a partir do seu nome passado como string.
 ---
 
 # V
 
 ## Descrição
 
-A função `V()` retorna o valor armazenado em uma variável AMPscript. Ela é a forma padrão de exibir o conteúdo de uma variável dentro de expressões inline (`%%=...=%%`). Sempre que você precisa imprimir o valor de uma variável declarada com `SET`, você usa `V()` para acessá-lo. É uma das funções mais fundamentais do AMPscript — você vai usar ela o tempo todo.
+A função **V** retorna o valor de uma variável AMPscript. A diferença em relação à referência direta da variável (com `%%variavel%%`) é que aqui você passa o **nome da variável como string** - o que permite acessar variáveis de forma dinâmica. Isso é especialmente útil quando o nome da variável que você precisa acessar é construído em tempo de execução, como em loops ou quando os nomes dos campos seguem um padrão previsível.
 
 ## Sintaxe
 
 ```ampscript
-V(@variavel)
+V(variableName)
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|--------------|--------|-------------|------------------------------------------------|
-| variableName | String | Sim | O nome da variável cujo valor você quer retornar. |
+|---|---|---|---|
+| variableName | String | Sim | O nome da variável cujo valor será retornado. |
 
 ## Exemplo básico
 
+Declarando uma variável com o nome do cliente e exibindo o valor com `V()`:
+
 ```ampscript
 %%[
-  VAR @nomeCliente
-  SET @nomeCliente = "Maria Santos"
+SET @NomeCliente = "Maria Santos"
 ]%%
 
-Olá, %%=V(@nomeCliente)=%%! Bem-vinda à Lojas Vitória.
+Olá, %%=V(@NomeCliente)=%%! Bem-vinda à Lojas Vitória.
 ```
 
 **Saída:**
@@ -40,54 +41,45 @@ Olá, Maria Santos! Bem-vinda à Lojas Vitória.
 
 ## Exemplo avançado
 
-Cenário real: um e-mail de boas-vindas do programa de fidelidade da FarmaRede, onde combinamos `V()` com outras funções para personalizar a mensagem completa.
+Cenário de e-mail marketing onde você precisa exibir dados de produtos de forma dinâmica. Imagine que uma régua de relacionamento da MegaStore envia um e-mail com até 3 produtos recomendados, e os nomes das variáveis seguem um padrão (`@Produto1`, `@Produto2`, `@Produto3`). Com `V()`, você monta o nome da variável dentro do loop:
 
 ```ampscript
 %%[
-  VAR @primeiroNome, @pontos, @validade, @mensagem, @linkLoja
+SET @Produto1 = "Notebook Ultra 15 - R$ 3.499,90"
+SET @Produto2 = "Fone Bluetooth Pro - R$ 249,90"
+SET @Produto3 = "Smartwatch Pulse - R$ 899,90"
 
-  SET @primeiroNome = "João"
-  SET @pontos = 1500
-  SET @validade = "31/12/2025"
-  SET @linkLoja = "https://www.farmarede.com.br/programa-fidelidade"
-
-  IF @pontos >= 1000 THEN
-    SET @mensagem = Concat("Parabéns, ", V(@primeiroNome), "! Você tem ", V(@pontos), " pontos no FarmaRede Fidelidade.")
-  ELSE
-    SET @mensagem = Concat("Olá, ", V(@primeiroNome), "! Continue comprando para acumular mais pontos.")
-  ENDIF
+FOR @i = 1 TO 3 DO
+  SET @NomeVariavel = Concat("@Produto", @i)
+  SET @ValorProduto = V(@NomeVariavel)
 ]%%
 
-%%=V(@mensagem)=%%
-
-Seus pontos são válidos até %%=V(@validade)=%%.
-
-Acesse sua conta: %%=V(@linkLoja)=%%
+Produto %%=V(@i)=%%: %%=V(@ValorProduto)=%%
+%%[
+NEXT @i
+]%%
 ```
 
 **Saída:**
 ```
-Parabéns, João! Você tem 1500 pontos no FarmaRede Fidelidade.
-
-Seus pontos são válidos até 31/12/2025.
-
-Acesse sua conta: https://www.farmarede.com.br/programa-fidelidade
+Produto 1: Notebook Ultra 15 - R$ 3.499,90
+Produto 2: Fone Bluetooth Pro - R$ 249,90
+Produto 3: Smartwatch Pulse - R$ 899,90
 ```
+
+> **💡 Dica:** Esse padrão de `Concat` + `V()` é um dos mais poderosos do AMPscript. Sempre que você tiver variáveis numeradas seguindo um padrão (como resultados de um [LookupRows](../data-extension-functions/lookuprows.md) iterado com [Row](../data-extension-functions/row.md) e [Field](../data-extension-functions/field.md)), usar `V()` com o nome construído dinamicamente evita repetição de código e deixa o template muito mais limpo.
 
 ## Observações
 
-- `V()` é a forma mais comum de exibir variáveis em expressões inline (`%%=V(@var)=%%`). Dentro de blocos `%%[ ... ]%%`, você não precisa de `V()` para referenciar variáveis — basta usar `@variavel` diretamente em funções como `Concat()`, `IF`, etc.
-- Se a variável não foi declarada ou não teve valor atribuído, `V()` retorna uma string vazia. Isso não gera erro, mas pode deixar espaços em branco no seu conteúdo. Use [IsNull](../utility-functions/isnull.md) ou [Empty](../utility-functions/empty.md) para verificar antes de exibir.
-- Muitos desenvolvedores usam a forma abreviada `%%=@variavel=%%` sem `V()` e funciona da mesma maneira. Porém, usar `V()` explicitamente torna o código mais legível e é considerado uma boa prática.
-- `V()` funciona em todos os contextos do SFMC: emails, SMS, CloudPages, landing pages e blocos de conteúdo.
-- O parâmetro passado deve ser o nome da variável (com `@`), não uma string com o nome. Por exemplo: `V(@nome)` está correto; `V("@nome")` retornaria a string literal `"@nome"`.
+- Na maioria dos casos simples, usar `%%=V(@variavel)=%%` produz o mesmo resultado que `%%@variavel%%`. A função `V()` se torna essencial quando o nome da variável é **dinâmico** - ou seja, montado em tempo de execução via [Concat](../string-functions/concat.md) ou outra lógica.
+
+> **⚠️ Atenção:** Se a variável referenciada por `V()` não tiver sido declarada ou definida previamente, o retorno será vazio. Combine com [Empty](../utility-functions/empty.md) para validar antes de exibir conteúdo ao assinante.
 
 ## Funções relacionadas
 
-- [Output](../utility-functions/output.md) — Exibe conteúdo dentro de blocos AMPscript (alternativa ao inline com `V()`)
-- [OutputLine](../utility-functions/outputline.md) — Similar ao `Output`, mas adiciona uma quebra de linha ao final
-- [TreatAsContent](../utility-functions/treatascontent.md) — Processa uma string como se fosse conteúdo AMPscript, útil quando o valor da variável contém AMPscript
-- [AttributeValue](../utility-functions/attributevalue.md) — Retorna o valor de um atributo de perfil ou campo de Data Extension com tratamento seguro de nulos
-- [Concat](../string-functions/concat.md) — Concatena strings e variáveis, frequentemente usada junto com `V()`
-- [IsNull](../utility-functions/isnull.md) — Verifica se uma variável é nula antes de exibir com `V()`
-- [IsNullDefault](../utility-functions/isnulldefault.md) — Retorna um valor padrão caso a variável seja nula, evitando espaços em branco
+- [Output](../utility-functions/output.md) - exibe valores dentro de blocos de código AMPscript
+- [OutputLine](../utility-functions/outputline.md) - exibe valores com quebra de linha
+- [Concat](../string-functions/concat.md) - construa nomes de variáveis dinamicamente para usar com `V()`
+- [TreatAsContent](../utility-functions/treatascontent.md) - processa strings que contêm AMPscript embutido
+- [AttributeValue](../utility-functions/attributevalue.md) - recupera valores de atributos do assinante
+- [Empty](../utility-functions/empty.md) - valida se o retorno de `V()` está vazio antes de usar

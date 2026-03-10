@@ -1,14 +1,14 @@
 ---
 title: RetrieveSalesforceJobSources
 sidebar_label: RetrieveSalesforceJobSources
-description: Retorna um rowset com informações sobre as fontes (sources) de um envio do Salesforce, incluindo SourceID, SourceType e IsInclusionSource.
+description: Retorna um rowset com informações sobre as fontes de dados (sources) utilizadas em um envio do Salesforce, incluindo SourceID, SourceType e IsInclusionSource.
 ---
 
 # RetrieveSalesforceJobSources
 
 ## Descrição
 
-A função `RetrieveSalesforceJobSources` retorna um rowset contendo informações sobre as fontes de dados utilizadas em um envio (send) do Salesforce. Para cada fonte, o rowset traz os valores de **SourceID**, **SourceType** e **IsInclusionSource** associados ao Job ID informado. Essa função é útil quando você precisa auditar ou exibir quais listas, grupos ou Data Extensions foram usados como origem de um envio específico feito via Salesforce (Sales/Service Cloud). Importante: ela **não** retorna informações sobre o status do job em si — inclusive retorna dados mesmo se o job foi cancelado, então não use essa função para verificar se um envio foi concluído com sucesso.
+Retorna um rowset contendo informações sobre as fontes de dados usadas em um envio (send) do Salesforce. Para cada fonte, o rowset traz os valores de **SourceID**, **SourceType** e **IsInclusionSource** referentes ao Job ID informado. Essa função é útil quando você precisa auditar ou registrar quais listas, relatórios ou campanhas do Salesforce CRM foram utilizadas como fonte em um determinado envio - algo comum em operações que integram Sales Cloud com Marketing Cloud.
 
 ## Sintaxe
 
@@ -19,148 +19,103 @@ RetrieveSalesforceJobSources(jobId)
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|-----------|--------|-------------|-----------|
-| jobId | Número | Sim | O ID numérico do job de envio do Salesforce sobre o qual você quer recuperar informações das fontes. |
-
-## Retorno
-
-A função retorna um **rowset** (conjunto de linhas) onde cada linha contém os seguintes campos:
-
-| Campo | Descrição |
-|-------|-----------|
-| SourceID | O identificador da fonte de dados usada no envio. |
-| SourceType | O tipo da fonte (por exemplo, lista, grupo, Data Extension, etc.). |
-| IsInclusionSource | Indica se a fonte é de inclusão (`True`) ou de exclusão (`False`) no envio. |
+|-----------|------|-------------|-----------|
+| jobId | Número | Sim | O Job ID numérico do envio Salesforce sobre o qual você quer recuperar as informações de fontes. |
 
 ## Exemplo básico
 
-Imagine que a equipe de marketing da **Conecta Telecom** disparou uma campanha de reativação de clientes inativos pelo Salesforce e você quer saber quais fontes de dados foram usadas nesse envio (Job ID: 84521).
+Recuperando as fontes de um envio do Salesforce para exibir em uma página de auditoria da Conecta Telecom.
 
 ```ampscript
 %%[
-VAR @jobSources, @sourceCount, @counter, @row, @sourceID, @sourceType, @isInclusion
+SET @jobId = 123456
+SET @fontes = RetrieveSalesforceJobSources(@jobId)
 
-SET @jobSources = RetrieveSalesforceJobSources(84521)
-SET @sourceCount = RowCount(@jobSources)
+FOR @i = 1 TO RowCount(@fontes) DO
+  SET @linha = Row(@fontes, @i)
+  SET @sourceId = Field(@linha, "SourceID")
+  SET @sourceType = Field(@linha, "SourceType")
+  SET @isInclusion = Field(@linha, "IsInclusionSource")
 
-IF @sourceCount > 0 THEN
-  FOR @counter = 1 TO @sourceCount DO
-    SET @row = Row(@jobSources, @counter)
-    SET @sourceID = Field(@row, "SourceID")
-    SET @sourceType = Field(@row, "SourceType")
-    SET @isInclusion = Field(@row, "IsInclusionSource")
+  OutputLine(Concat("Fonte: ", @sourceId, " | Tipo: ", @sourceType, " | Inclusão: ", @isInclusion))
+NEXT @i
 ]%%
-
-SourceID: %%=v(@sourceID)=%%
-SourceType: %%=v(@sourceType)=%%
-IsInclusionSource: %%=v(@isInclusion)=%%
----
-
-%%[ NEXT @counter ]%%
-%%[ ELSE ]%%
-
-Nenhuma fonte encontrada para este job.
-
-%%[ ENDIF ]%%
 ```
 
 **Saída:**
 ```
-SourceID: 12345
-SourceType: List
-IsInclusionSource: True
----
-SourceID: 67890
-SourceType: List
-IsInclusionSource: False
----
+Fonte: 00Q5e000001AbCdEFG | Tipo: Report | Inclusão: true
+Fonte: 00Q5e000002XyZwVUT | Tipo: List | Inclusão: false
 ```
 
 ## Exemplo avançado
 
-Agora vamos a um cenário mais completo. A **Lojas Vitória** usa uma CloudPage interna para a equipe de CRM consultar detalhes de envios realizados via Salesforce. O usuário informa o Job ID via query string e a página exibe as fontes de dados com formatação amigável, incluindo se a fonte foi usada para inclusão ou exclusão de destinatários.
+Cenário de auditoria para a equipe de CRM do Banco Brasilão: ao acessar uma CloudPage interna, o analista informa o Job ID e visualiza um resumo formatado de todas as fontes utilizadas no envio, diferenciando fontes de inclusão e exclusão.
 
 ```ampscript
 %%[
-VAR @jobId, @jobSources, @sourceCount, @counter
-VAR @row, @sourceID, @sourceType, @isInclusion, @tipoLabel
-
 SET @jobId = RequestParameter("jobId")
 
-IF Empty(@jobId) THEN
-  RaiseError("Erro: Informe o parâmetro jobId na URL.", true)
+IF NOT Empty(@jobId) THEN
+  SET @fontes = RetrieveSalesforceJobSources(@jobId)
+  SET @totalFontes = RowCount(@fontes)
+
+  IF @totalFontes > 0 THEN
+    OutputLine(Concat("<h2>Auditoria do Job #", @jobId, "</h2>"))
+    OutputLine(Concat("<p>Total de fontes encontradas: ", @totalFontes, "</p>"))
+    OutputLine("<table border='1' cellpadding='5'>")
+    OutputLine("<tr><th>SourceID</th><th>Tipo</th><th>Categoria</th></tr>")
+
+    FOR @i = 1 TO @totalFontes DO
+      SET @linha = Row(@fontes, @i)
+      SET @sourceId = Field(@linha, "SourceID")
+      SET @sourceType = Field(@linha, "SourceType")
+      SET @isInclusion = Field(@linha, "IsInclusionSource")
+
+      IF @isInclusion == "true" THEN
+        SET @categoria = "Inclusão"
+      ELSE
+        SET @categoria = "Exclusão"
+      ENDIF
+
+      OutputLine(Concat("<tr><td>", @sourceId, "</td><td>", @sourceType, "</td><td>", @categoria, "</td></tr>"))
+    NEXT @i
+
+    OutputLine("</table>")
+  ELSE
+    OutputLine("<p>Nenhuma fonte encontrada para este Job ID.</p>")
+  ENDIF
+ELSE
+  OutputLine("<p>Informe um Job ID válido na URL. Ex: ?jobId=123456</p>")
 ENDIF
-
-SET @jobSources = RetrieveSalesforceJobSources(@jobId)
-SET @sourceCount = RowCount(@jobSources)
 ]%%
-
-<h2>Fontes do Envio - Job ID: %%=v(@jobId)=%%</h2>
-<p>Total de fontes encontradas: %%=v(@sourceCount)=%%</p>
-
-%%[ IF @sourceCount > 0 THEN ]%%
-<table border="1" cellpadding="8" cellspacing="0">
-  <tr>
-    <th>Fonte (SourceID)</th>
-    <th>Tipo</th>
-    <th>Inclusão ou Exclusão</th>
-  </tr>
-%%[
-  FOR @counter = 1 TO @sourceCount DO
-    SET @row = Row(@jobSources, @counter)
-    SET @sourceID = Field(@row, "SourceID")
-    SET @sourceType = Field(@row, "SourceType")
-    SET @isInclusion = Field(@row, "IsInclusionSource")
-
-    IF @isInclusion == "True" THEN
-      SET @tipoLabel = "✅ Inclusão"
-    ELSE
-      SET @tipoLabel = "❌ Exclusão"
-    ENDIF
-]%%
-  <tr>
-    <td>%%=v(@sourceID)=%%</td>
-    <td>%%=v(@sourceType)=%%</td>
-    <td>%%=v(@tipoLabel)=%%</td>
-  </tr>
-%%[ NEXT @counter ]%%
-</table>
-
-%%[ ELSE ]%%
-<p>Nenhuma fonte encontrada para o Job ID informado. Verifique se o ID está correto.</p>
-%%[ ENDIF ]%%
 ```
 
-**Saída (renderizada na CloudPage com jobId=84521):**
+**Saída:**
 ```
-Fontes do Envio - Job ID: 84521
-Total de fontes encontradas: 3
+Auditoria do Job #123456
+Total de fontes encontradas: 2
 
-| Fonte (SourceID) | Tipo             | Inclusão ou Exclusão |
-|-------------------|------------------|----------------------|
-| 12345             | List             | ✅ Inclusão          |
-| 23456             | DataExtension    | ✅ Inclusão          |
-| 67890             | List             | ❌ Exclusão          |
+| SourceID               | Tipo   | Categoria |
+|------------------------|--------|-----------|
+| 00Q5e000001AbCdEFG     | Report | Inclusão  |
+| 00Q5e000002XyZwVUT     | List   | Exclusão  |
 ```
 
 ## Observações
 
-- Essa função **só funciona com envios feitos via Salesforce** (Sales Cloud ou Service Cloud integrados ao Marketing Cloud). Se você passar um Job ID de um envio feito diretamente pelo Marketing Cloud (sem integração Salesforce), o comportamento pode não ser o esperado.
-- A função **não retorna o status do job**. Ela retorna dados inclusive para jobs cancelados. **Não use** `RetrieveSalesforceJobSources` para verificar se um envio foi concluído com sucesso.
-- O parâmetro `jobId` deve ser um valor **numérico**. Se você estiver recebendo o valor como string (por exemplo, via `RequestParameter`), a conversão geralmente é feita de forma implícita pelo AMPscript.
-- O rowset retornado pode conter **múltiplas linhas** — uma para cada fonte de dados associada ao envio. Use [RowCount](../data-extension-functions/rowcount.md) para saber quantas linhas existem e itere com um loop `FOR`.
+> **⚠️ Atenção:** A função **não** retorna informações sobre o status do job em si. Ela retorna dados mesmo que o job tenha sido cancelado. Por isso, **não use** `RetrieveSalesforceJobSources` para verificar se um envio foi concluído com sucesso. Para esse tipo de validação, você precisa de outros mecanismos.
+
+- O rowset retornado contém três campos por linha: **SourceID**, **SourceType** e **IsInclusionSource**.
+- Use [RowCount](../data-extension-functions/rowcount.md) para verificar se o rowset tem registros antes de iterar, evitando erros em jobs sem fontes.
 - Use [Row](../data-extension-functions/row.md) e [Field](../data-extension-functions/field.md) para acessar os valores de cada linha do rowset retornado.
-- Se o Job ID não existir ou não tiver fontes associadas, o rowset retornado terá zero linhas. Sempre valide com `RowCount` antes de iterar.
-- Essa é uma função de nicho, usada principalmente em cenários de **auditoria, relatórios internos ou diagnóstico de envios** feitos pela integração Salesforce ↔ Marketing Cloud.
 
 ## Funções relacionadas
 
-- [RetrieveSalesforceObjects](../salesforce-functions/retrievesalesforceobjects.md) — recupera registros de objetos do Salesforce CRM
-- [CreateSalesforceObject](../salesforce-functions/createsalesforceobject.md) — cria um registro em um objeto do Salesforce CRM
-- [UpdateSingleSalesforceObject](../salesforce-functions/updatesinglesalesforceobject.md) — atualiza um registro em um objeto do Salesforce CRM
-- [LongSfid](../salesforce-functions/longsfid.md) — converte um Salesforce ID de 15 caracteres para o formato de 18 caracteres
-- [Row](../data-extension-functions/row.md) — acessa uma linha específica de um rowset por índice
-- [RowCount](../data-extension-functions/rowcount.md) — retorna a quantidade de linhas em um rowset
-- [Field](../data-extension-functions/field.md) — recupera o valor de um campo específico de uma linha do rowset
-- [RequestParameter](../sites-functions/requestparameter.md) — captura parâmetros de query string em CloudPages
-- [RaiseError](../utility-functions/raiseerror.md) — gera um erro personalizado e interrompe a execução
+- [RetrieveSalesforceObjects](../salesforce-functions/retrievesalesforceobjects.md) - recupera registros de objetos do Salesforce CRM
+- [CreateSalesforceObject](../salesforce-functions/createsalesforceobject.md) - cria registros em objetos do Salesforce CRM
+- [UpdateSingleSalesforceObject](../salesforce-functions/updatesinglesalesforceobject.md) - atualiza um registro no Salesforce CRM
+- [LongSfid](../salesforce-functions/longsfid.md) - converte Salesforce IDs de 15 para 18 caracteres
+- [RowCount](../data-extension-functions/rowcount.md) - conta registros em um rowset
+- [Row](../data-extension-functions/row.md) - acessa uma linha específica de um rowset
+- [Field](../data-extension-functions/field.md) - extrai o valor de um campo de uma linha do rowset

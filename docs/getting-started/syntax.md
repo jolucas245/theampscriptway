@@ -1,94 +1,85 @@
 ---
 title: Sintaxe básica
 sidebar_label: Sintaxe básica
-description: Aprenda os fundamentos da sintaxe AMPscript — blocos de código, expressões inline e boas práticas de formatação para seus emails no Marketing Cloud.
+description: Conheça as três formas de inserir AMPscript no seu conteúdo - inline, bloco de código e tag-based scripting.
 sidebar_position: 2
 ---
 
 # Sintaxe básica
 
-Se você já passou pela [Introdução](/docs/getting-started/introduction), sabe o que o AMPscript pode fazer. Agora vamos entender **como** ele funciona na prática. Nesta página, você vai aprender as três formas de escrever AMPscript e onde usá-las nos seus emails.
-
-## Blocos de código: `%%[ ... ]%%`
-
-O bloco de código é a forma principal de escrever AMPscript. Tudo que fica entre `%%[` e `]%%` é processado pelo Marketing Cloud antes do envio. É dentro desses blocos que você declara [variáveis](/docs/getting-started/variables), faz [condicionais](/docs/getting-started/conditionals), [loops](/docs/getting-started/loops) e qualquer lógica mais elaborada.
-
-```ampscript
-%%[
-
-SET @primeiroNome = AttributeValue("FirstName")
-SET @desconto = "20%"
-
-]%%
-```
-
-Nesse exemplo, estamos criando duas variáveis que podem ser usadas depois no corpo do email. O bloco em si **não gera nenhuma saída visual** — ele apenas processa a lógica. Para exibir valores, você vai precisar das expressões inline.
-
-## Expressões inline
-
-### `%%=...=%%` — saída com encoding (HTML encoded)
-
-Essa é a expressão que você vai usar na maioria das vezes. Ela **renderiza o valor** diretamente no HTML e aplica encoding automático de caracteres especiais (como `<`, `>`, `&`). Isso protege contra problemas de exibição e injeção de HTML.
-
-```html
-<p>Oi, %%=v(@primeiroNome)=%%. Seu cupom de %%=v(@desconto)=%% de desconto está esperando por você!</p>
-```
-
-O resultado final para a Maria Santos seria: *"Oi, Maria. Seu cupom de 20% de desconto está esperando por você!"*
-
-### `%%==...==%%` — saída raw (sem encoding)
-
-Essa expressão retorna o valor **sem nenhum encoding**. Use quando precisar inserir HTML dinâmico que já vem pronto — por exemplo, um trecho de código armazenado em uma Data Extension.
-
-```html
-%%==v(@htmlBanner)==%%
-```
-
-> **⚠️ Atenção:** Use `%%==...==%%` com cuidado. Se o conteúdo da variável vier de uma fonte externa ou de input do usuário, você pode acabar com HTML quebrado ou problemas de segurança. Na dúvida, prefira sempre a versão com encoding (`%%=...=%%`).
-
-## Onde usar AMPscript
-
-AMPscript não funciona só no corpo do email. Veja onde você pode colocar seus blocos e expressões:
-
-| Local | Bloco `%%[ ]%%` | Inline `%%=...=%%` | Exemplo de uso |
-|---|---|---|---|
-| **Body (HTML)** | ✅ | ✅ | Personalização, lógica condicional |
-| **Subject line** | ❌ | ✅ | `Oi, %%=v(@primeiroNome)=%%! Sua oferta de Dia das Mães` |
-| **Preheader** | ❌ | ✅ | `%%=v(@primeiroNome)=%%, R$ 50 de cashback te esperando` |
-
-> **💡 Dica:** No subject e no preheader, você só consegue usar expressões inline. Mas se precisar de lógica (um IF, por exemplo), declare tudo em um bloco `%%[ ]%%` no início do body do email. As variáveis criadas lá ficam disponíveis para o subject e o preheader usarem via `%%=v(...)=%%`.
-
-## AMPscript é case-insensitive
-
-Não importa se você escreve `SET`, `Set` ou `set` — o AMPscript não diferencia maiúsculas de minúsculas. O mesmo vale para nomes de funções e variáveis: `@PrimeiroNome`, `@primeironome` e `@PRIMEIRONOME` são a mesma coisa. Escolha um padrão e mantenha a consistência no seu código.
-
-## Boas práticas de formatação
-
-- **Coloque o bloco principal no topo do email**, antes de qualquer HTML. Isso garante que todas as variáveis e lookups sejam processados antes de serem usados.
-- **Use uma instrução por linha** — evite empilhar vários `SET` na mesma linha. Fica muito mais fácil de ler e debugar.
-- **Indente seu código** dentro de [condicionais](/docs/getting-started/conditionals) e [loops](/docs/getting-started/loops). AMPscript não exige indentação, mas seu eu do futuro vai agradecer.
-- **Adicione [comentários](/docs/getting-started/comments)** para explicar trechos de lógica mais complexos, principalmente se outras pessoas do time vão mexer no mesmo template.
-
-```html
-%%[
-  /* Busca dados do assinante na DE de Fidelidade */
-  SET @nome = AttributeValue("FirstName")
-  SET @pontos = Lookup("Fidelidade_MegaStore", "Pontos", "CPF", AttributeValue("CPF"))
-
-  IF @pontos > 1000 THEN
-    SET @mensagem = "Você é cliente VIP! Frete grátis em todas as compras."
-  ELSE
-    SET @mensagem = "Acumule mais pontos e ganhe frete grátis!"
-  ENDIF
-]%%
-
-<h1>Olá, %%=v(@nome)=%%!</h1>
-<p>Seus pontos: %%=v(@pontos)=%%</p>
-<p>%%=v(@mensagem)=%%</p>
-```
-
-Esse exemplo junta tudo que você aprendeu: bloco de código no topo, variáveis, lógica condicional e expressões inline no HTML. É basicamente a estrutura de 90% dos emails com AMPscript que você vai encontrar por aí.
+Antes de sair escrevendo lógica e variáveis, você precisa entender como o Marketing Cloud reconhece que determinado trecho do seu conteúdo é AMPscript. Existem três formas de fazer isso, cada uma com seus delimitadores próprios. Pense nos delimitadores como sinais que dizem ao sistema: "ei, interprete isso aqui como código, não como texto comum".
 
 ---
 
-Agora que você domina a sintaxe, o próximo passo é entender como as [variáveis](/docs/getting-started/variables) funcionam em detalhes.
+## Inline AMPscript
+
+Use os delimitadores `%%=` e `=%%` para inserir AMPscript **diretamente dentro do seu HTML**. Essa é a forma mais comum quando você quer exibir um valor dinâmico no meio do conteúdo, como o nome do cliente num e-mail, o preço de um produto, uma data formatada.
+
+```html
+<p>Olá, %%=v(@primeiroNome)=%%! Seu pedido no valor de %%=v(@valorPedido)=%% foi confirmado.</p>
+```
+
+Uma regra importante: dentro de um trecho inline, você só pode executar **uma única função**. Mas calma, você pode **aninhar funções** dentro dessa função única. Isso dá bastante flexibilidade na prática.
+
+No exemplo abaixo, usamos a função `Iif()` para testar uma condição. Se o nome do cliente estiver vazio (verificado pela função `Empty()` aninhada), exibimos "Cliente" como fallback. Se não, exibimos o próprio nome:
+
+```html
+<p>Bem-vindo(a), %%=Iif(Empty(@nome), "Cliente", @nome)=%%!</p>
+```
+
+Esse padrão é muito usado em campanhas de e-mail marketing. Imagine uma régua de boas-vindas da **Lojas CompraTudo** onde nem todo lead tem nome preenchido no cadastro.
+
+> **💡 Dica:** Inline AMPscript é perfeito para personalização pontual dentro de tags HTML. Sempre que precisar exibir um valor dinâmico no meio de um parágrafo, botão ou link, essa é a abordagem certa.
+
+---
+
+## Bloco de código
+
+Quando você precisa fazer mais do que exibir um valor (definir múltiplas variáveis, executar várias funções, montar lógica mais elaborada) use um **bloco de código**. Os delimitadores são `%%[` para abrir e `]%%` para fechar.
+
+```
+%%[
+  SET @nomeCliente = "Maria Santos"
+  SET @cpf = "123.456.789-00"
+  SET @cidade = "Belo Horizonte"
+  SET @valorDesconto = "R$ 50,00"
+]%%
+
+<h1>Oferta exclusiva para você, %%=v(@nomeCliente)=%%!</h1>
+<p>Identificamos que você é de %%=v(@cidade)=%%. Aproveite %%=v(@valorDesconto)=%% de desconto na sua próxima compra.</p>
+```
+
+Perceba o padrão: o bloco `%%[ ... ]%%` fica no topo, cuidando de toda a lógica e preparação de dados, e o HTML abaixo usa trechos inline para exibir os valores. Essa separação entre lógica e apresentação é a base de praticamente todo e-mail personalizado que você vai construir.
+
+> **💡 Dica:** Em e-mails e CloudPages mais complexos, é comum ter vários blocos de código ao longo do conteúdo. Organize-os de forma que a lógica fique próxima do HTML que ela alimenta e seu "eu do futuro" agradecerá na hora da manutenção.
+
+---
+
+## Tag-based scripting
+
+A terceira forma usa tags `<script>` com atributos específicos, padronizando a sintaxe de declaração do AMPscript com a mesma estrutura usada em Server-Side JavaScript (SSJS). Isso facilita a vida de quem trabalha com as duas linguagens no dia a dia.
+
+```html
+<script runat="server" language="ampscript">
+  SET @empresa = "Conecta Telecom"
+  SET @telefone = "(11) 99999-9999"
+</script>
+
+<p>Fale com a %%=v(@empresa)=%%: %%=v(@telefone)=%%</p>
+```
+
+> **⚠️ Atenção:** Quando você abre um bloco com um tipo de delimitador, **precisa fechar com o mesmo tipo**. Se abriu com `<script>`, feche com `</script>`. Se abriu com `%%[`, feche com `]%%`. Misturar delimitadores de abertura e fechamento vai gerar erro.
+
+---
+
+## Qual usar?
+
+| Situação | Forma recomendada |
+|---|---|
+| Exibir um valor no meio do HTML | Inline (`%%==%%`) |
+| Definir variáveis e executar várias funções | Bloco de código (`%%[ ]%%`) |
+| Padronizar sintaxe com SSJS no mesmo conteúdo | Tag-based (`<script>`) |
+
+Na prática, a maioria dos projetos combina **blocos de código** para a lógica com **inline** para a exibição. Tag-based scripting aparece mais em contextos onde a equipe também trabalha com SSJS e quer manter consistência. Particularmente, em anos de trabalho com Marketing Cloud Engagement, eu cheguei a user o Tag-based não mais que 3 vezes.
+
+Agora que você entende como o Marketing Cloud identifica AMPscript, o próximo passo é aprender a trabalhar com [variáveis](/getting-started/variables), a base de qualquer personalização.

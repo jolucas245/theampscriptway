@@ -1,14 +1,14 @@
 ---
 title: InvokePerform
 sidebar_label: InvokePerform
-description: Invoca o método Perform em um objeto da API do Marketing Cloud e retorna o código de status da operação.
+description: Invoca o método Perform em um API Object do Marketing Cloud e retorna o código de status da API.
 ---
 
 # InvokePerform
 
 ## Descrição
 
-A função `InvokePerform` invoca o método **Perform** em um objeto da API do Marketing Cloud Engagement e retorna o código de status da operação. Ela é usada quando você precisa executar uma ação específica sobre um objeto da API — como iniciar ou parar uma campanha, por exemplo. O retorno é o código de status da API (como `"OK"` ou `"Error"`), e você pode capturar a mensagem de status em uma variável AMPscript para tratamento de erros.
+A função `InvokePerform` invoca o método **Perform** em um API Object do Marketing Cloud e retorna o código de status da API. Ela é usada quando você precisa executar uma ação sobre um objeto já criado - como iniciar ou parar uma campanha, disparar um envio ou qualquer outra ação suportada pelo tipo do objeto. O retorno é o código de status da operação (por exemplo, `"OK"`), e uma variável AMPscript captura a mensagem de status detalhada.
 
 ## Sintaxe
 
@@ -20,127 +20,86 @@ InvokePerform(@apiObject, "actionToPerform", @statusMessage)
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| apiObject | API Object | Sim | O objeto da API do Marketing Cloud sobre o qual o método Perform será invocado. Deve ser criado previamente com `CreateObject`. |
-| actionToPerform | String | Sim | A ação a ser executada no objeto. Os valores válidos variam conforme o tipo de objeto (ex: `"start"`, `"stop"`). |
-| statusMessage | Variável AMPscript | Não | Uma variável AMPscript que armazena a mensagem de status retornada pela API. |
-
-## Retorno
-
-Retorna uma **string** com o código de status da API (ex: `"OK"`, `"Error"`).
+| apiObject | API Object | Sim | O API Object sobre o qual o método Perform será invocado. |
+| actionToPerform | String | Sim | A ação a ser executada. Os valores válidos variam conforme o tipo do objeto. |
+| statusMessage | Variável AMPscript | Não | Variável AMPscript que armazena a mensagem de status retornada pela API. |
 
 ## Exemplo básico
 
-Neste exemplo, criamos um objeto Campaign da API e executamos a ação `"stop"` para interromper uma campanha no Marketing Cloud.
+Cenário onde uma campanha de e-mail marketing da MegaStore precisa ser interrompida via AMPscript - por exemplo, ao detectar que o estoque de uma promoção relâmpago acabou.
 
 ```ampscript
 %%[
-/* Cria o objeto Campaign da API */
+
+VAR @campaign, @statusCode, @statusMessage
+
 SET @campaign = CreateObject("Campaign")
-SetObjectProperty(@campaign, "ID", 12345)
+SetObjectProperty(@campaign, "Name", "Promocao Inverno MegaStore")
 
-/* Invoca o método Perform com a ação "stop" */
 SET @statusCode = InvokePerform(@campaign, "stop", @statusMessage)
+
+Output(Concat("Status: ", @statusCode))
+
 ]%%
-
-Status Code: %%=v(@statusCode)=%%
-
-%%[IF @statusCode != "OK" THEN]%%
-  Status Message: %%=v(@statusMessage)=%%
-  Error Code: %%=v(@errorCode)=%%
-%%[ENDIF]%%
 ```
 
-**Saída (em caso de sucesso):**
+**Saída:**
 ```
-Status Code: OK
-```
-
-**Saída (em caso de erro):**
-```
-Status Code: Error
-Status Message: Campaign not found
-Error Code: 12345
+Status: OK
 ```
 
 ## Exemplo avançado
 
-Imagine que a "Conecta Telecom" precisa parar automaticamente uma campanha promocional do Dia das Mães quando o estoque de chips acaba. Um CloudPage verifica o estoque e, se zerado, para a campanha e registra o evento em uma Data Extension de log.
+Em uma régua de relacionamento da Conecta Telecom, uma CloudPage de administração permite que o time de CRM pare uma campanha de retenção. O código verifica o status da operação e, caso falhe, exibe a mensagem de erro para diagnóstico.
 
 ```ampscript
 %%[
-/* Verifica o estoque atual na Data Extension */
-SET @estoque = Lookup("Estoque_Produtos", "Quantidade", "SKU", "CHIP-5G-PROMO")
 
-IF @estoque <= 0 THEN
+VAR @campaign, @statusCode, @statusMessage
 
-  /* Cria o objeto Campaign e define o ID da campanha do Dia das Mães */
-  SET @campaign = CreateObject("Campaign")
-  SetObjectProperty(@campaign, "ID", 67890)
+SET @campaign = CreateObject("Campaign")
+SetObjectProperty(@campaign, "Name", "Retencao Clientes Conecta Telecom")
 
-  /* Executa a ação "stop" na campanha */
-  SET @statusCode = InvokePerform(@campaign, "stop", @statusMessage)
+SET @statusCode = InvokePerform(@campaign, "stop", @statusMessage)
 
-  /* Registra o resultado na DE de log */
-  IF @statusCode == "OK" THEN
-    InsertDE(
-      "Log_Campanhas",
-      "DataHora", Now(),
-      "CampanhaID", "67890",
-      "Acao", "stop",
-      "Status", @statusCode,
-      "Motivo", "Estoque zerado - Chip 5G Promo Dia das Mães"
-    )
-  ELSE
-    InsertDE(
-      "Log_Campanhas",
-      "DataHora", Now(),
-      "CampanhaID", "67890",
-      "Acao", "stop",
-      "Status", @statusCode,
-      "Motivo", Concat("Erro ao parar campanha: ", @statusMessage)
-    )
-    /* Levanta erro para notificar o time */
-    RaiseError(Concat("Falha ao parar campanha Dia das Maes. Status: ", @statusCode, " - ", @statusMessage), false)
-  ENDIF
-
+IF @statusCode == "OK" THEN
+  Output(Concat("Campanha parada com sucesso. Status: ", @statusCode))
+ELSE
+  Output(Concat("Erro ao parar campanha. Status: ", @statusCode))
+  Output(Concat("<br>Mensagem: ", @statusMessage))
 ENDIF
+
 ]%%
-
-%%[IF @estoque <= 0 THEN]%%
-  <p>Campanha encerrada. Status: %%=v(@statusCode)=%%</p>
-%%[ELSE]%%
-  <p>Estoque disponível: %%=v(@estoque)=%% unidades. Campanha segue ativa.</p>
-%%[ENDIF]%%
 ```
 
-**Saída (estoque zerado, sucesso ao parar):**
+**Saída (em caso de sucesso):**
 ```
-Campanha encerrada. Status: OK
+Campanha parada com sucesso. Status: OK
 ```
 
-**Saída (estoque disponível):**
+**Saída (em caso de erro):**
 ```
-Estoque disponível: 142 unidades. Campanha segue ativa.
+Erro ao parar campanha. Status: Error
+Mensagem: Campaign not found or insufficient permissions
 ```
 
 ## Observações
 
-- **Função avançada**: `InvokePerform` faz parte do grupo de funções da API SOAP do Marketing Cloud. Você precisa ter um bom entendimento dos objetos da API para usá-la corretamente.
-- **Ações válidas variam por objeto**: O parâmetro `actionToPerform` depende do tipo de objeto. Nem todo objeto suporta as mesmas ações. Consulte a documentação da API SOAP do Marketing Cloud para saber quais ações cada objeto aceita.
-- **Sempre verifique o status de retorno**: Nunca assuma que a operação deu certo. Compare o retorno com `"OK"` e trate os erros adequadamente.
-- **Permissões da API**: A conta do Marketing Cloud precisa ter permissões adequadas para executar ações via API. Se as permissões não estiverem configuradas, a função pode retornar erro.
-- **Uso em contexto adequado**: Essa função geralmente é usada em **CloudPages** ou em **emails com lógica avançada**, mas tenha cuidado ao usá-la em envios de email em massa — cada execução faz uma chamada à API, o que pode impactar performance.
-- **Objeto precisa ser criado antes**: Você deve usar [CreateObject](../api-functions/createobject.md) e [SetObjectProperty](../api-functions/setobjectproperty.md) para criar e configurar o objeto da API antes de passá-lo para `InvokePerform`.
-- **Variável de status message**: Embora o terceiro parâmetro não seja obrigatório segundo a documentação, é altamente recomendável usá-lo para capturar mensagens de erro e facilitar o debugging.
+- O valor retornado por `InvokePerform` é o código de status da API (ex: `"OK"`). Sempre valide esse retorno antes de prosseguir com qualquer lógica dependente.
+
+> **⚠️ Atenção:** Os valores válidos para o parâmetro `actionToPerform` variam conforme o tipo do API Object. Usar uma ação incompatível com o objeto resultará em erro.
+
+> **💡 Dica:** Sempre capture a variável `@statusMessage` e use-a em tratamentos de erro. Quando algo dá errado, essa mensagem é a melhor pista para entender o que aconteceu - especialmente em automações que rodam sem supervisão.
+
+- A função depende de um API Object previamente criado com [CreateObject](../api-functions/createobject.md) e configurado com [SetObjectProperty](../api-functions/setobjectproperty.md). Sem essas etapas, não há objeto sobre o qual executar a ação.
 
 ## Funções relacionadas
 
-- [CreateObject](../api-functions/createobject.md) — Cria um objeto da API do Marketing Cloud para uso com as funções Invoke
-- [SetObjectProperty](../api-functions/setobjectproperty.md) — Define propriedades em um objeto da API
-- [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) — Adiciona um item a uma propriedade de array de um objeto da API
-- [InvokeCreate](../api-functions/invokecreate.md) — Invoca o método Create na API do Marketing Cloud
-- [InvokeUpdate](../api-functions/invokeupdate.md) — Invoca o método Update na API do Marketing Cloud
-- [InvokeDelete](../api-functions/invokedelete.md) — Invoca o método Delete na API do Marketing Cloud
-- [InvokeRetrieve](../api-functions/invokeretrieve.md) — Invoca o método Retrieve na API do Marketing Cloud
-- [InvokeExecute](../api-functions/invokeexecute.md) — Invoca o método Execute na API do Marketing Cloud
-- [RaiseError](../utility-functions/raiseerror.md) — Levanta um erro personalizado, útil para tratamento de falhas
+- [CreateObject](../api-functions/createobject.md) - cria o API Object que será usado no Perform
+- [SetObjectProperty](../api-functions/setobjectproperty.md) - define propriedades no objeto antes de invocar a ação
+- [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) - adiciona itens a propriedades de array do objeto
+- [InvokeCreate](../api-functions/invokecreate.md) - invoca o método Create em um API Object
+- [InvokeUpdate](../api-functions/invokeupdate.md) - invoca o método Update em um API Object
+- [InvokeDelete](../api-functions/invokedelete.md) - invoca o método Delete em um API Object
+- [InvokeRetrieve](../api-functions/invokeretrieve.md) - invoca o método Retrieve em um API Object
+- [InvokeExecute](../api-functions/invokeexecute.md) - invoca o método Execute em um API Object

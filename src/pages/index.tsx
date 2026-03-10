@@ -15,7 +15,7 @@ const cards: CardItem[] = [
   {
     title: 'Primeiros Passos',
     icon: '⌥',
-    description: 'Sintaxe, variáveis, operadores, loops e controle de fluxo — tudo que você precisa para ler e escrever AMPscript com fluência.',
+    description: 'Sintaxe, variáveis, operadores, loops e controle de fluxo. Tudo que você precisa para ler e escrever AMPscript com fluência.',
     link: '/getting-started/introduction',
   },
   {
@@ -76,8 +76,8 @@ export default function Home(): ReactNode {
               <span className={styles.heroTitleAccent}>Way</span>
             </h1>
             <p className={styles.heroSubtitle}>
-              Referência completa de AMPscript em português —<br />
-              a linguagem de personalização do Salesforce Marketing Cloud.
+              Referência completa de AMPscript em português<br />
+              A linguagem de personalização do Salesforce Marketing Cloud.
             </p>
             <div className={styles.heroActions}>
               <Link to="/getting-started/introduction" className={styles.btnPrimary}>

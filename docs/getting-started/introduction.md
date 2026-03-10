@@ -1,89 +1,62 @@
 ---
-title: "Introdução ao AMPscript"
-sidebar_label: "Introdução ao AMPscript"
-description: "Guia de boas-vindas ao AMPscript: o que é, onde usar no SFMC e como ele pode transformar suas comunicações com personalização dinâmica."
+title: Introdução ao AMPscript
+sidebar_label: Introdução ao AMPscript
+description: Visão geral do AMPscript, a linguagem de script interpretada do Marketing Cloud Engagement para personalização de mensagens e páginas.
 sidebar_position: 1
-tags: [ampscript, introdução, sfmc, getting-started]
 ---
 
 # Introdução ao AMPscript
 
-## O que é AMPscript e para que serve
+## O que é AMPscript?
 
-AMPscript é a linguagem de script nativa do Salesforce Marketing Cloud. Com ela, você consegue personalizar e-mails, SMS, landing pages e praticamente qualquer mensagem de forma dinâmica — usando dados reais dos seus subscribers e Data Extensions.
+AMPscript é uma linguagem de script interpretada do Marketing Cloud Engagement. Em termos práticos, é a ferramenta que conecta os dados dos seus clientes ao conteúdo das suas comunicações. Isso muda completamente o jogo da personalização.
 
-Pensa assim: em vez de mandar o mesmo e-mail genérico pra todo mundo, você usa AMPscript pra exibir o nome do cliente, mostrar produtos relevantes, calcular valores de cashback e até mudar blocos inteiros de conteúdo com base em regras de negócio. É a ferramenta que transforma comunicação em massa em comunicação personalizada.
+Imagine que a Lojas CompraTudo precisa enviar um e-mail de aniversário para milhões de clientes, cada um com nome, oferta e valor de desconto diferentes. É exatamente para isso que o AMPscript existe: integrar os dados do seu banco de clientes diretamente no conteúdo de marketing.
 
-A sintaxe é simples e direta. Se você já trabalha com SFMC mas ainda faz tudo "na mão" ou só com campos de personalização básicos, AMPscript vai ser um salto enorme na qualidade das suas campanhas.
+## Onde você pode usar
 
-## Onde ele pode ser usado no SFMC
+O AMPscript funciona em todos os canais de comunicação suportados pelo Marketing Cloud Engagement:
 
-| Canal / Recurso | Suporte a AMPscript | Exemplo de uso |
-|---|---|---|
-| **E-mail (Content Builder)** | Completo | Personalização de nome, ofertas dinâmicas, conteúdo condicional |
-| **SMS (MobileConnect)** | Completo | Inserir código de rastreio, nome do cliente |
-| **CloudPages** | Completo | Formulários, landing pages dinâmicas, preference centers |
-| **Automações (Script Activity)** | ⚠️ Limitado (prefira SSJS) | Manipulação de dados em automações mais complexas |
+- **E-mail**: personalização de campanhas, réguas de relacionamento, e-mails transacionais
+- **SMS**: mensagens mobile com dados dinâmicos
+- **WhatsApp**: mensagens de template e sessão via WhatsApp Business
+- **Mobile**: comunicações via push e mensagens in-app
+- **CloudPages**: landing pages e microsites customizados
 
-> **💡 Dica:** O lugar mais comum pra começar com AMPscript é no e-mail. Depois que você pegar o jeito, usar em CloudPages e SMS é natural.
+Essa versatilidade é o que torna o AMPscript tão valioso no dia a dia. Você aprende uma linguagem e aplica em praticamente todos os pontos de contato com o cliente.
 
-## AMPscript vs. SSJS — Quando usar cada um
+## Como funciona a execução
 
-| Critério | AMPscript | SSJS (Server-Side JavaScript) |
-|---|---|---|
-| **Curva de aprendizado** | Mais fácil | Mais complexa |
-| **Melhor pra** | Personalização de conteúdo | Lógica complexa, integrações via API |
-| **Performance em e-mail** | Excelente | Mais lento |
-| **Sintaxe** | Funções próprias do SFMC | JavaScript padrão |
-| **Recomendação** | E-mails, SMS, conteúdo dinâmico | Automações, CloudPages complexas, chamadas HTTP |
+Esse é um ponto fundamental para entender bem: o código AMPscript é executado no servidor do Marketing Cloud Engagement. O momento da execução depende do contexto:
 
-**Resumo prático:** se é personalização de conteúdo em e-mail ou SMS, vá de AMPscript. Se precisa de loops complexos, chamadas a APIs externas ou manipulação pesada de dados, SSJS pode ser mais adequado.
+- **Em mensagens (e-mail, SMS, mobile):** o código roda no momento do envio
+- **Em CloudPages:** o código roda quando a landing page é carregada pelo navegador
 
-## Como o AMPscript é processado
+Ou seja, quando o Mário abre o e-mail da Conecta Telecom, ele já recebe o HTML final, pois todo o processamento do AMPscript já aconteceu antes, no servidor, na hora do envio. O destinatário nunca vê o código, apenas o resultado.
 
-AMPscript é processado **no servidor (server-side)**, **antes** da mensagem ser entregue ao subscriber. Isso significa que quando o João Silva abre o e-mail dele, todo o código AMPscript já foi executado e substituído pelo conteúdo final em HTML.
+> **💡 Dica:** Como a execução acontece no servidor durante o envio, cada mensagem é processada individualmente. É assim que um único e-mail template pode gerar milhões de versões personalizadas, uma para cada assinante da sua base.
 
-O subscriber **nunca vê** o código AMPscript — ele só vê o resultado. E como tudo roda no servidor da Salesforce, não depende do cliente de e-mail nem do navegador.
+> **⚠️ Atenção:** Em CloudPages, o código executa a cada carregamento da página. Isso é diferente do e-mail, onde a execução acontece uma única vez no momento do envio. Tenha isso em mente ao planejar sua solução.
 
-## Seu primeiro exemplo prático
+## O que dá para fazer na prática
 
-Imagine que a **MegaStore** vai mandar um e-mail de Dia das Mães. A Data Extension tem os campos `PrimeiroNome`, `ValorCashback` e `Email`. Veja como personalizar:
+Com a integração entre dados e conteúdo que o AMPscript oferece, sua equipe de marketing consegue enviar mensagens altamente personalizadas. Pense em cenários como:
 
-```html
-%%[
-  VAR @nome, @cashback
-  SET @nome = AttributeValue("PrimeiroNome")
-  SET @cashback = AttributeValue("ValorCashback")
-]%%
+- Um e-mail do Banco Brasilão que exibe o nome, agência e saldo de pontos de cada correntista
+- Uma CloudPage da MegaStore que mostra produtos recomendados com preços como R$ 1.299,90, formatados para cada região
+- Um SMS da FarmaRede com o endereço da loja mais próxima baseado no CEP do cliente
 
-<h1>Olá, %%=v(@nome)=%%! 💜</h1>
-
-<p>
-  Neste Dia das Mães, você tem <strong>R$ %%=v(@cashback)=%%</strong>
-  de cashback disponível na MegaStore.
-</p>
-
-<a href="https://www.megastore.com.br/diadasmaes">
-  Aproveitar agora
-</a>
-```
-
-Se a subscriber for **Maria Santos** com **R$ 45,00** de cashback, ela verá:
-
-> **Olá, Maria! 💜**
-> Neste Dia das Mães, você tem **R$ 45,00** de cashback disponível na MegaStore.
-
-Simples assim. E isso é só o começo!
+Tudo isso é possível porque o AMPscript puxa os dados diretamente da sua base dentro do Marketing Cloud Engagement e injeta no conteúdo na hora certa.
 
 ## Próximos passos
 
-Agora que você entendeu o que é AMPscript e onde ele se encaixa, bora aprender na prática:
+Este guia cobre os fundamentos que você precisa dominar para trabalhar com AMPscript. Cada tópico a seguir aprofunda um aspecto da linguagem:
 
-1. [Sintaxe básica](/docs/getting-started/syntax) — blocos de código, delimitadores e regras de escrita
-2. [Variáveis](/docs/getting-started/variables) — como declarar, atribuir e usar variáveis
-3. [Personalization Strings](/docs/getting-started/personalization-strings) — o jeito mais rápido de exibir dados
-4. [Condicionais](/docs/getting-started/conditionals) — IF/ELSE para conteúdo dinâmico
-5. [Loops](/docs/getting-started/loops) — repetir blocos de conteúdo com dados de tabelas
-6. [Comentários](/docs/getting-started/comments) — documentando seu código
+1. [Sintaxe](/getting-started/syntax) - como escrever e estruturar código AMPscript
+2. [Variáveis](/getting-started/variables) - como armazenar e manipular dados
+3. [Condicionais](/getting-started/conditionals) - como criar lógica e regras de exibição
+4. [Loops](/getting-started/loops) - como repetir blocos de conteúdo
+5. [Comentários](/getting-started/comments) - como documentar seu código
+6. [Strings de personalização](/getting-started/personalization-strings) - como exibir dados dos assinantes no conteúdo
 
-> **💡 Dica:** Recomendo seguir essa ordem. Cada guia assume que você leu os anteriores.
+> **💡 Dica:** Se você já programa em qualquer linguagem, vai se sentir confortável rapidamente. Se é sua primeira vez com código, não se preocupe, o AMPscript tem uma curva de aprendizado acessível, e esse guia foi feito para acompanhar você passo a passo.

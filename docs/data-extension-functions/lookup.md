@@ -8,12 +8,12 @@ description: Retorna o valor de uma coluna específica de uma Data Extension com
 
 ## Descrição
 
-A função `Lookup` busca um valor específico dentro de uma Data Extension e retorna o conteúdo de uma coluna que você escolher. Você informa o nome da Data Extension, a coluna que quer retornar, a coluna de busca e o valor procurado. Se a busca encontrar mais de um resultado, a função retorna apenas o **primeiro valor encontrado** — por isso, o ideal é usá-la com colunas que tenham valores únicos (como um ID, CPF ou e-mail). Se precisar retornar múltiplas linhas, dê uma olhada nas funções `LookupRows` ou `LookupOrderedRows`.
+A função `Lookup` busca um valor em uma Data Extension e retorna o dado de uma coluna específica da linha encontrada. É a função mais direta para consultas simples - tipo quando você precisa puxar o nome do cliente, o saldo, a última compra ou qualquer outro dado armazenado em uma DE a partir de um identificador como e-mail ou CPF. Se a busca retornar mais de um resultado, o sistema devolve apenas o primeiro valor encontrado, por isso o ideal é usar essa função com identificadores únicos dentro da Data Extension.
 
 ## Sintaxe
 
 ```ampscript
-Lookup("NomeDaDataExtension", "ColunaRetorno", "ColunaBusca1", "ValorBusca1" [, "ColunaBusca2", "ValorBusca2", ...])
+Lookup("dataExt", "returnColumn", "searchColumn1", "searchValue1" [, "searchColumn2", "searchValue2" ...])
 ```
 
 ## Parâmetros
@@ -22,121 +22,96 @@ Lookup("NomeDaDataExtension", "ColunaRetorno", "ColunaBusca1", "ValorBusca1" [, 
 |---|---|---|---|
 | dataExt | string | Sim | Nome da Data Extension que contém os dados que você quer consultar. |
 | returnColumn | string | Sim | Nome da coluna da qual o valor será retornado. |
-| searchColumn1 | string | Sim | Nome da coluna usada como critério de busca. **Case-sensitive** (diferencia maiúsculas de minúsculas). |
-| searchValue1 | string | Sim | Valor que será procurado na coluna de busca. **Case-sensitive**. |
-| searchColumn2, searchValue2, ... | string | Não | Você pode adicionar pares extras de coluna/valor para refinar a busca. |
+| searchColumn1 | string | Sim | Nome da coluna usada como critério de busca. O valor é case-sensitive. |
+| searchValue1 | string | Sim | Valor a ser procurado na coluna de busca. O valor é case-sensitive. Você pode adicionar pares extras de coluna e valor de busca ao final da chamada. |
 
 ## Exemplo básico
 
-Imagine que você tem uma Data Extension chamada **"Clientes"** com os dados dos seus assinantes:
-
-| CPF | Nome | Email | Cidade | Pontos |
-|---|---|---|---|---|
-| 123.456.789-00 | João Silva | joao@email.com | São Paulo | 1500 |
-| 987.654.321-00 | Maria Santos | maria@email.com | Rio de Janeiro | 3200 |
-| 456.789.123-00 | Carlos Oliveira | carlos@email.com | Belo Horizonte | 800 |
+Buscando o nome de um cliente na Data Extension "Clientes" a partir do e-mail do assinante:
 
 ```ampscript
 %%[
-SET @cpfCliente = "987.654.321-00"
-SET @nomeCliente = Lookup("Clientes", "Nome", "CPF", @cpfCliente)
+VAR @nomeCliente
+SET @nomeCliente = Lookup("Clientes", "NomeCompleto", "Email", "joao.silva@email.com.br")
 ]%%
 
-Olá, %%=v(@nomeCliente)=%%! Bem-vindo(a) de volta.
+Olá, %%=v(@nomeCliente)=%%! Tudo bem?
 ```
 
 **Saída:**
 ```
-Olá, Maria Santos! Bem-vindo(a) de volta.
+Olá, João Silva! Tudo bem?
 ```
 
 ## Exemplo avançado
 
-Cenário real: você está enviando um e-mail de campanha de **Dia das Mães** para clientes de uma loja virtual fictícia. Quer mostrar o saldo de pontos do programa de fidelidade e oferecer frete grátis acima de R$ 299. Os dados de pontos estão numa Data Extension separada chamada **"ProgramaFidelidade"**:
-
-| ClienteID | Tier | Pontos | UltimaCompra |
-|---|---|---|---|
-| CLI-001 | Ouro | 4500 | 15/04/2025 |
-| CLI-002 | Prata | 1200 | 02/03/2025 |
-| CLI-003 | Bronze | 300 | 28/01/2025 |
-
-E outra Data Extension chamada **"Cupons"** com ofertas segmentadas por tier:
-
-| Tier | CodigoCupom | Desconto |
-|---|---|---|
-| Ouro | MAES25OFF | 25 |
-| Prata | MAES15OFF | 15 |
-| Bronze | MAES10OFF | 10 |
+Cenário real de régua de relacionamento: um e-mail de boas-vindas da Lojas Vitória que puxa dados do cliente (nome e cidade) a partir do CPF, trata valores nulos e formata a saudação.
 
 ```ampscript
 %%[
-/* ID do cliente vem da DE de envio */
-SET @clienteID = AttributeValue("ClienteID")
+VAR @cpf, @nome, @cidade, @saudacao
 
-/* Busca dados do programa de fidelidade */
-SET @tier = Lookup("ProgramaFidelidade", "Tier", "ClienteID", @clienteID)
-SET @pontos = Lookup("ProgramaFidelidade", "Pontos", "ClienteID", @clienteID)
+SET @cpf = AttributeValue("CPF")
+SET @nome = Lookup("Clientes_Vitoria", "PrimeiroNome", "CPF", @cpf)
+SET @cidade = Lookup("Clientes_Vitoria", "Cidade", "CPF", @cpf)
 
-/* Busca o cupom correspondente ao tier do cliente */
-SET @cupom = Lookup("Cupons", "CodigoCupom", "Tier", @tier)
-SET @desconto = Lookup("Cupons", "Desconto", "Tier", @tier)
-
-/* Calcula o valor em reais dos pontos (cada ponto = R$ 0,10) */
-SET @valorPontos = Multiply(@pontos, 0.10)
-SET @valorPontosFormatado = FormatCurrency(@valorPontos, "pt-BR", 2)
-
-/* Verifica se o nome do tier está vazio */
-SET @tierExibicao = IIF(Empty(@tier), "Participante", @tier)
+IF Empty(@nome) THEN
+  SET @saudacao = "Olá!"
+ELSE
+  SET @saudacao = Concat("Olá, ", ProperCase(@nome), "!")
+ENDIF
 ]%%
 
-<h1>🌷 Especial Dia das Mães — Lojas Vitória</h1>
+%%=v(@saudacao)=%%
 
-<p>Você é cliente <strong>%%=v(@tierExibicao)=%%</strong> do nosso programa de fidelidade!</p>
-
-<p>Seu saldo atual: <strong>%%=v(@pontos)=%% pontos</strong> (equivalem a <strong>%%=v(@valorPontosFormatado)=%%</strong>).</p>
-
-<p>Use o cupom <strong>%%=v(@cupom)=%%</strong> e ganhe <strong>%%=v(@desconto)=%%% de desconto</strong> em presentes para a mamãe!</p>
-
-<p>🚚 Frete grátis em compras acima de R$ 299,00.</p>
-
-<p>Acesse: <a href="https://www.lojasvitoria.com.br/diadasmaes">www.lojasvitoria.com.br/diadasmaes</a></p>
+%%[ IF NOT Empty(@cidade) THEN ]%%
+  Confira as ofertas exclusivas para a região de %%=v(@cidade)=%%.
+%%[ ELSE ]%%
+  Confira nossas ofertas exclusivas.
+%%[ ENDIF ]%%
 ```
 
-**Saída (para o cliente CLI-001):**
+**Saída:**
 ```
-🌷 Especial Dia das Mães — Lojas Vitória
+Olá, Maria!
 
-Você é cliente Ouro do nosso programa de fidelidade!
+Confira as ofertas exclusivas para a região de Belo Horizonte.
+```
 
-Seu saldo atual: 4500 pontos (equivalem a R$ 450,00).
+## Exemplo com múltiplos critérios de busca
 
-Use o cupom MAES25OFF e ganhe 25% de desconto em presentes para a mamãe!
+Buscando o valor de um pedido na Data Extension "Pedidos" usando dois critérios - CPF do cliente e número do pedido:
 
-🚚 Frete grátis em compras acima de R$ 299,00.
+```ampscript
+%%[
+VAR @valorPedido
+SET @valorPedido = Lookup("Pedidos", "ValorTotal", "CPF", "123.456.789-00", "NumeroPedido", "98765")
+]%%
 
-Acesse: www.lojasvitoria.com.br/diadasmaes
+O valor do seu pedido é R$ %%=FormatNumber(@valorPedido, "N", 2, "pt-BR")=%%.
+```
+
+**Saída:**
+```
+O valor do seu pedido é R$ 1.299,90.
 ```
 
 ## Observações
 
-- A função retorna **apenas um valor** (uma única célula). Se a busca encontrar múltiplas linhas que atendem ao critério, apenas o primeiro resultado é retornado. Se você precisa de múltiplas linhas, use [LookupRows](../data-extension-functions/lookuprows.md) ou [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md).
-- Os nomes das **colunas de busca** (searchColumn) e os **valores de busca** (searchValue) são **case-sensitive** — ou seja, `"Ouro"` é diferente de `"ouro"`. Preste atenção nisso pra evitar dor de cabeça.
-- Se nenhum resultado for encontrado, a função retorna uma **string vazia**. É uma boa prática usar [Empty](../utility-functions/empty.md) ou [IsNull](../utility-functions/isnull.md) para verificar o retorno antes de exibir qualquer coisa.
-- Você pode adicionar **múltiplos pares** de coluna/valor de busca para criar filtros mais específicos. Por exemplo, buscar por `"Tier", "Ouro", "Cidade", "São Paulo"` ao mesmo tempo.
-- O nome da Data Extension no primeiro parâmetro **não é case-sensitive**.
-- Essa função funciona em **e-mails, CloudPages, SMS e Landing Pages** — basicamente em qualquer contexto onde AMPscript é suportado.
-- Para buscas que respeitam maiúsculas e minúsculas também no nome da coluna de retorno, considere combinar com as variantes CS das funções de lookup.
+> **⚠️ Atenção:** Os valores de busca (tanto o nome da coluna quanto o valor procurado) são **case-sensitive**. Se na sua Data Extension a coluna se chama `Email` e você passar `email` ou `EMAIL`, a busca pode não funcionar como esperado. O mesmo vale para os valores - `"SP"` é diferente de `"sp"`.
+
+> **⚠️ Atenção:** Se mais de uma linha atender aos critérios de busca, a função retorna apenas o **primeiro valor encontrado**. Por isso, prefira usar `Lookup` com identificadores únicos (CPF, e-mail, ID de pedido). Se você precisa trabalhar com múltiplas linhas, use [LookupRows](../data-extension-functions/lookuprows.md) ou [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md).
+
+> **💡 Dica:** Você pode encadear vários pares de coluna/valor de busca para refinar o filtro. Isso é útil quando um único campo não garante unicidade - por exemplo, buscar por CPF **e** número do pedido ao mesmo tempo.
 
 ## Funções relacionadas
 
-- [LookupRows](../data-extension-functions/lookuprows.md) — Retorna uma ou mais linhas de uma Data Extension com base em critérios de busca.
-- [LookupRowsCS](../data-extension-functions/lookuprowscs.md) — Versão case-sensitive do LookupRows.
-- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) — Retorna múltiplas linhas com possibilidade de ordenação por coluna.
-- [LookupOrderedRowsCS](../data-extension-functions/lookuporderedrowscs.md) — Versão case-sensitive do LookupOrderedRows.
-- [Row](../data-extension-functions/row.md) — Retorna uma linha específica de um rowset.
-- [Field](../data-extension-functions/field.md) — Retorna o valor de um campo específico de uma linha de um rowset.
-- [RowCount](../data-extension-functions/rowcount.md) — Retorna a quantidade de linhas de um rowset.
-- [Empty](../utility-functions/empty.md) — Verifica se um valor está vazio, útil para tratar retornos do Lookup.
-- [IsNullDefault](../utility-functions/isnulldefault.md) — Retorna um valor padrão caso o resultado seja nulo.
-- [V](../utility-functions/v.md) — Exibe o valor de uma variável inline no conteúdo.
-- [AttributeValue](../utility-functions/attributevalue.md) — Retorna o valor de um atributo do assinante ou coluna da DE de envio.
+- [LookupRows](../data-extension-functions/lookuprows.md) - retorna uma ou mais linhas com base nos critérios de busca
+- [LookupRowsCS](../data-extension-functions/lookuprowscs.md) - versão case-sensitive do LookupRows
+- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) - retorna múltiplas linhas com ordenação por coluna
+- [LookupOrderedRowsCS](../data-extension-functions/lookuporderedrowscs.md) - versão case-sensitive do LookupOrderedRows
+- [Row](../data-extension-functions/row.md) - acessa uma linha específica de um rowset
+- [Field](../data-extension-functions/field.md) - acessa o valor de uma coluna dentro de uma linha de rowset
+- [RowCount](../data-extension-functions/rowcount.md) - conta o número de linhas em um rowset
+- [Empty](../utility-functions/empty.md) - verifica se um valor está vazio
+- [IsNull](../utility-functions/isnull.md) - verifica se um valor é nulo

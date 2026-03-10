@@ -1,112 +1,81 @@
 ---
 title: Image
 sidebar_label: Image
-description: Retorna uma tag HTML img com o caminho de uma imagem do Portfolio do Marketing Cloud, incluindo opção de imagem fallback.
+description: Retorna uma tag img HTML a partir da external key de uma imagem no Portfolio do SFMC, com suporte a imagem de fallback.
 ---
 
 # Image
 
 ## Descrição
 
-A função `Image` retorna uma tag `<img>` completa, onde o atributo `src` aponta para o caminho de uma imagem armazenada no Portfolio (Content Builder) do Marketing Cloud. A tag gerada inclui automaticamente os atributos `title`, `alt`, `border="0"` e um atributo `thid` contendo o ID interno da imagem no Portfolio. Você pode passar uma imagem de fallback como segundo parâmetro — se a primeira imagem não for encontrada, a função usa a imagem alternativa. É super útil para garantir que seus e-mails sempre exibam uma imagem, mesmo quando a chave externa da imagem principal estiver incorreta ou a imagem tiver sido removida.
+A função `Image` gera uma tag `<img>` completa a partir de uma imagem armazenada no Portfolio (Content Builder) do Marketing Cloud, usando a **external key** como referência. A tag retornada já inclui os atributos `src`, `title`, `alt`, `border="0"` e um atributo `thid` com o ID interno da imagem. É muito útil para montar e-mails dinâmicos onde as imagens podem variar por segmento ou campanha, e você ainda pode definir uma imagem de fallback caso a principal não seja encontrada.
 
 ## Sintaxe
 
 ```ampscript
-Image(imageExternalKey, defaultImageExternalKey)
+Image(imageExternalKey [, defaultImageExternalKey])
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| imageExternalKey | String | Sim | A chave externa (external key) da imagem no Portfolio do Marketing Cloud. |
-| defaultImageExternalKey | String | Não | A chave externa de uma imagem de fallback no Portfolio. Será usada caso a imagem do primeiro parâmetro não seja encontrada. |
+| imageExternalKey | string | Sim | A external key da imagem no Portfolio que você quer exibir. |
+| defaultImageExternalKey | string | Não | A external key de uma imagem de fallback no Portfolio. Usada caso a imagem do primeiro parâmetro não seja encontrada. |
 
 ## Exemplo básico
 
-Imagine que a loja online **MegaStore** quer exibir um banner de promoção de Dia das Mães no e-mail:
+Exibindo o banner principal de uma campanha de e-mail da MegaStore:
 
 ```ampscript
-%%=Image("banner-dia-das-maes-2024")=%%
+%%=Image("banner-inverno-2024")=%%
 ```
 
 **Saída:**
 ```html
-<img src="https://image.s1.sfmc-content.com/lib/fe123/m/1/banner-dia-das-maes.jpg" alt="Banner Dia das Mães" title="Banner Dia das Mães" border="0" thid="12345678" />
+<img src="https://image.s11.sfmc-content.com/lib/fe3a.../banner-inverno-2024.jpg" title="Promoção de Inverno 2024" alt="Promoção de Inverno 2024" border="0" thid="12345" />
 ```
 
 ## Exemplo avançado
 
-Agora, a **Lojas Vitória** quer exibir banners personalizados por categoria de produto preferida do cliente. Se a imagem da categoria não existir no Portfolio, um banner genérico de Black Friday é exibido como fallback. Os dados vêm de uma Data Extension chamada `PreferenciasClientes`:
+Em uma régua de relacionamento da Lojas Vitória, o banner muda conforme a categoria preferida do cliente. Se a imagem da categoria não existir no Portfolio, um banner genérico é exibido como fallback:
 
 ```ampscript
 %%[
-  SET @email = AttributeValue("emailaddr")
-  SET @rows = LookupRows("PreferenciasClientes", "Email", @email)
-
-  IF RowCount(@rows) > 0 THEN
-    SET @row = Row(@rows, 1)
-    SET @categoria = Field(@row, "CategoriaPreferida")
-    SET @chaveImagem = Concat("banner-bf-", Lowercase(@categoria))
-  ELSE
-    SET @chaveImagem = "banner-bf-generico"
-  ENDIF
+  SET @categoriaPreferida = AttributeValue("CategoriaPreferida")
+  SET @chaveImagem = Concat("banner-categoria-", Lowercase(@categoriaPreferida))
+  SET @chaveFallback = "banner-generico-lojasvitoria"
 ]%%
 
-<h2>Ofertas Black Friday especiais pra você!</h2>
-%%=Image(@chaveImagem, "banner-bf-generico")=%%
-
-<p>Frete grátis acima de R$299,00. Aproveite!</p>
-<p>
-  Acesse: <a href="https://www.lojasvitoria.com.br/blackfriday">
-    www.lojasvitoria.com.br/blackfriday
-  </a>
-</p>
+%%=Image(@chaveImagem, @chaveFallback)=%%
 ```
 
-**Saída (quando a categoria é "eletronicos" e a imagem existe):**
+**Saída (quando a categoria é "Eletrônicos" e a imagem existe):**
 ```html
-<h2>Ofertas Black Friday especiais pra você!</h2>
-<img src="https://image.s1.sfmc-content.com/lib/fe456/m/1/banner-bf-eletronicos.jpg" alt="Banner Black Friday Eletrônicos" title="Banner Black Friday Eletrônicos" border="0" thid="87654321" />
-
-<p>Frete grátis acima de R$299,00. Aproveite!</p>
-<p>
-  Acesse: <a href="https://www.lojasvitoria.com.br/blackfriday">
-    www.lojasvitoria.com.br/blackfriday
-  </a>
-</p>
+<img src="https://image.s11.sfmc-content.com/lib/fe3a.../banner-categoria-eletronicos.jpg" title="Eletrônicos - Lojas Vitória" alt="Eletrônicos - Lojas Vitória" border="0" thid="67890" />
 ```
 
-**Saída (quando a imagem da categoria NÃO existe — usa o fallback):**
+**Saída (quando a imagem da categoria não é encontrada):**
 ```html
-<h2>Ofertas Black Friday especiais pra você!</h2>
-<img src="https://image.s1.sfmc-content.com/lib/fe456/m/1/banner-bf-generico.jpg" alt="Banner Black Friday" title="Banner Black Friday" border="0" thid="11223344" />
-
-<p>Frete grátis acima de R$299,00. Aproveite!</p>
-<p>
-  Acesse: <a href="https://www.lojasvitoria.com.br/blackfriday">
-    www.lojasvitoria.com.br/blackfriday
-  </a>
-</p>
+<img src="https://image.s11.sfmc-content.com/lib/fe3a.../banner-generico-lojasvitoria.jpg" title="Lojas Vitória" alt="Lojas Vitória" border="0" thid="11111" />
 ```
 
 ## Observações
 
-- A função `Image` usa a **chave externa** (external key) da imagem no Portfolio. Não confunda com o ID numérico — para buscar por ID, use a função [ImageById](../content-functions/imagebyid.md).
-- O atributo `border` da tag `<img>` gerada é sempre definido como `0`.
-- A tag retornada inclui automaticamente um atributo `thid` com o ID interno da imagem no Portfolio. Esse atributo é usado pelo Marketing Cloud para rastreamento.
-- Se você não informar o segundo parâmetro (imagem de fallback) e a imagem do primeiro parâmetro não for encontrada, a função pode retornar uma tag `<img>` vazia ou gerar um erro. Sempre que possível, informe uma imagem padrão como fallback.
-- A função faz referência ao **Portfolio** (também chamado de "Classic Content" em algumas versões). Se você utiliza o Content Builder como repositório principal, verifique se suas imagens têm chaves externas definidas.
-- Essa função é mais utilizada em **e-mails**, mas pode funcionar também em **CloudPages** e **Landing Pages**.
-- Você não tem controle direto sobre os atributos `width`, `height` ou `style` da tag gerada. Se precisar de mais controle sobre o HTML da imagem, considere usar [GetPortfolioItem](../content-functions/getportfolioitem.md) para pegar a URL e montar a tag `<img>` manualmente.
+> **💡 Dica:** Sempre defina o segundo parâmetro (imagem de fallback) em cenários dinâmicos. Se a external key do primeiro parâmetro estiver errada ou a imagem tiver sido removida do Portfolio, o fallback garante que seu e-mail não fique com imagem quebrada.
+
+> **⚠️ Atenção:** A função busca a imagem pela **external key** no Portfolio. Certifique-se de que suas imagens tenham external keys bem definidas e padronizadas - isso facilita muito a montagem de chaves dinâmicas com [Concat](../string-functions/concat.md). Se você não definir uma external key ao fazer upload, o SFMC pode gerar uma automaticamente que não é intuitiva.
+
+- Os atributos `title` e `alt` da tag `<img>` retornada são preenchidos automaticamente com as informações cadastradas na imagem dentro do Portfolio.
+- O atributo `border` é sempre definido como `0`.
+- O atributo `thid` contém o ID interno da imagem no Portfolio.
 
 ## Funções relacionadas
 
-- [ImageById](../content-functions/imagebyid.md) — Retorna uma tag `<img>` buscando a imagem pelo ID numérico no Portfolio.
-- [ImageByKey](../content-functions/imagebykey.md) — Retorna uma tag `<img>` buscando a imagem pela chave externa (similar à Image, mas com comportamento específico).
-- [GetPortfolioItem](../content-functions/getportfolioitem.md) — Retorna informações detalhadas de um item do Portfolio, incluindo a URL da imagem.
-- [ContentBlockByKey](../content-functions/contentblockbykey.md) — Insere um bloco de conteúdo pela chave externa, útil quando você quer carregar blocos inteiros com imagens.
-- [Concat](../string-functions/concat.md) — Concatena strings, útil para montar chaves externas de imagens dinamicamente.
-- [Lowercase](../string-functions/lowercase.md) — Converte texto para minúsculas, útil para padronizar chaves externas.
-- [Lookup](../data-extension-functions/lookup.md) — Busca um valor em uma Data Extension, útil para determinar qual imagem exibir por assinante.
+- [ImageById](../content-functions/imagebyid.md) - busca a imagem pelo ID numérico em vez da external key.
+- [ImageByKey](../content-functions/imagebykey.md) - outra forma de buscar imagem por key no Portfolio.
+- [ContentImageById](../content-functions/contentimagebyid.md) - retorna imagem do Content Builder pelo ID.
+- [ContentImageByKey](../content-functions/contentimagebykey.md) - retorna imagem do Content Builder pela key.
+- [Concat](../string-functions/concat.md) - útil para montar external keys dinâmicas.
+- [Lowercase](../string-functions/lowercase.md) - para normalizar valores antes de compor a key da imagem.
+- [AttributeValue](../utility-functions/attributevalue.md) - para capturar dados do assinante de forma segura.

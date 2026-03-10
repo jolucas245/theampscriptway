@@ -1,19 +1,19 @@
 ---
 title: UpdateDE
 sidebar_label: UpdateDE
-description: Atualiza dados em uma ou mais colunas de uma linha existente em uma Data Extension durante o envio de e-mails.
+description: Atualiza dados em uma ou mais colunas de uma Data Extension a partir de critérios de busca.
 ---
 
 # UpdateDE
 
 ## Descrição
 
-A função `UpdateDE()` atualiza dados em uma Data Extension. Você passa o nome da DE, os critérios de busca para encontrar a linha que quer atualizar e os novos valores para as colunas desejadas. Essa função **não retorna nenhuma saída visível** — ela simplesmente executa a atualização nos bastidores. É importante saber que ela funciona **apenas em contexto de e-mail**. Se você precisa atualizar dados em CloudPages, landing pages, microsites ou mensagens SMS, use a função [UpdateData](../data-extension-functions/updatedata.md).
+A função `UpdateDE` atualiza dados em uma Data Extension, localizando a linha através de critérios de busca (coluna + valor) e aplicando as alterações nas colunas especificadas. É a função indicada para atualização de dados dentro de **e-mails** - se você precisa atualizar dados em CloudPages, landing pages, microsites ou mensagens SMS no MobileConnect, use a função [UpdateData](../data-extension-functions/updatedata.md). A função não retorna nenhuma saída.
 
 ## Sintaxe
 
 ```ampscript
-UpdateDE(@dataExtension, columnValuePairs, searchColumnName1, searchValue1, [searchColumnName2, searchValue2, ...], columnToUpdate1, updatedValue1, [columnToUpdate2, updatedValue2, ...])
+UpdateDE(@dataExt, @columnValuePairs, @searchColumnName1, @searchValue1, @columnToUpdate1, @updatedValue1)
 ```
 
 ## Parâmetros
@@ -21,116 +21,80 @@ UpdateDE(@dataExtension, columnValuePairs, searchColumnName1, searchValue1, [sea
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
 | dataExt | string | Sim | Nome da Data Extension que contém os dados a serem atualizados. |
-| columnValuePairs | número | Sim | Número de pares coluna/valor usados como critério de busca para localizar a linha. |
-| searchColumnName | string | Sim | Nome da coluna usada na busca para identificar a linha a ser atualizada. Você pode especificar múltiplos pares de busca. |
-| searchValue | string | Sim | Valor que a função usa para determinar qual linha atualizar. Deve corresponder ao `searchColumnName`. |
-| columnToUpdate | string | Sim | Nome da coluna que terá o valor atualizado. Você pode especificar múltiplas colunas para atualizar. |
-| updatedValue | string | Sim | Novo valor a ser gravado na coluna especificada em `columnToUpdate`. |
+| columnValuePairs | number | Sim | Número de pares coluna/valor usados como critério de busca para localizar a linha. |
+| searchColumnName1 | string | Sim | Nome da coluna usada para buscar a linha que será atualizada. |
+| searchValue1 | string | Sim | Valor que identifica qual linha deve ser atualizada. Você pode especificar múltiplos pares de coluna e valor como critério de busca. |
+| columnToUpdate1 | string | Sim | Nome da coluna que terá o dado atualizado. |
+| updatedValue1 | string | Sim | Novo valor a ser gravado na coluna especificada. Você pode especificar múltiplos pares de coluna e valor para atualizar. |
 
 ## Exemplo básico
 
-Imagine que você tem uma Data Extension chamada **"Carrinho_Abandonado"** com os dados dos clientes que abandonaram o carrinho na **MegaStore**. Quando o cliente abre o e-mail de recuperação, você quer registrar que ele visualizou a mensagem.
-
-**Data Extension "Carrinho_Abandonado" (antes):**
-
-| EmailCliente | NomeCliente | ValorCarrinho | StatusEmail |
-|---|---|---|---|
-| joao.silva@email.com.br | João Silva | 459.90 | Enviado |
-| maria.santos@email.com.br | Maria Santos | 129.00 | Enviado |
-| carlos.oliveira@email.com.br | Carlos Oliveira | 899.50 | Enviado |
+Atualizando o preço de um produto na Data Extension "Catalogo_Produtos" da MegaStore, identificando o item pelo código:
 
 ```ampscript
 %%[
 UpdateDE(
-  "Carrinho_Abandonado", 1,
-  "EmailCliente", "joao.silva@email.com.br",
-  "StatusEmail", "Visualizado"
+  "Catalogo_Produtos",
+  1,
+  "ProdutoId", "1042",
+  "Preco", "1299.90"
 )
 ]%%
 ```
 
-**Data Extension "Carrinho_Abandonado" (depois):**
-
-| EmailCliente | NomeCliente | ValorCarrinho | StatusEmail |
-|---|---|---|---|
-| joao.silva@email.com.br | João Silva | 459.90 | **Visualizado** |
-| maria.santos@email.com.br | Maria Santos | 129.00 | Enviado |
-| carlos.oliveira@email.com.br | Carlos Oliveira | 899.50 | Enviado |
-
 **Saída:**
 ```
-(nenhuma saída visível no e-mail — a atualização acontece nos bastidores)
+(nenhuma saída é gerada - o valor da coluna "Preco" do produto 1042 é atualizado para 1299.90)
 ```
 
 ## Exemplo avançado
 
-Agora um cenário mais completo: a **Conecta Telecom** envia um e-mail de confirmação de upgrade de plano. Quando o assinante recebe o e-mail, a DE é atualizada com o novo plano, o novo valor mensal e a data da alteração. Aqui atualizamos **múltiplas colunas de uma vez**.
-
-**Data Extension "Assinantes_Planos" (antes):**
-
-| CPF | NomeAssinante | Plano | ValorMensal | DataAlteracao |
-|---|---|---|---|---|
-| 123.456.789-00 | João Silva | Básico 50MB | 79.90 | 01/03/2024 |
-| 987.654.321-00 | Maria Santos | Plus 200MB | 119.90 | 15/01/2024 |
-| 456.789.123-00 | Carlos Oliveira | Básico 50MB | 79.90 | 20/02/2024 |
+Numa régua de relacionamento da Lojas Vitória, ao enviar o e-mail de confirmação de pedido, você atualiza o destino de entrega, o valor do frete e a taxa de embalagem do pedido do cliente de uma só vez:
 
 ```ampscript
 %%[
-VAR @cpf, @novoPlano, @novoValor, @dataHoje
 
-SET @cpf = AttributeValue("CPF")
-SET @novoPlano = "Ultra 500MB"
-SET @novoValor = "199.90"
-SET @dataHoje = FormatDate(Now(), "dd/MM/yyyy")
+VAR @pedidoId, @novoCep, @novoFrete, @taxaEmbalagem
+SET @pedidoId = "PED-78523"
+SET @novoCep = "04538-132"
+SET @novoFrete = "29.90"
+SET @taxaEmbalagem = "5.50"
 
 UpdateDE(
-  "Assinantes_Planos", 1,
-  "CPF", @cpf,
-  "Plano", @novoPlano,
-  "ValorMensal", @novoValor,
-  "DataAlteracao", @dataHoje
+  "Pedidos_Entrega",
+  1,
+  "PedidoId", @pedidoId,
+  "CEP_Destino", @novoCep,
+  "Frete", @novoFrete,
+  "TaxaEmbalagem", @taxaEmbalagem
 )
+
 ]%%
-
-<p>Olá, seu plano foi atualizado com sucesso para <b>%%=v(@novoPlano)=%%</b>!</p>
-<p>Novo valor mensal: <b>R$ %%=v(@novoValor)=%%</b></p>
-<p>Data da alteração: <b>%%=v(@dataHoje)=%%</b></p>
 ```
 
-**Saída no e-mail (se o CPF do assinante for 123.456.789-00):**
+**Saída:**
 ```
-Olá, seu plano foi atualizado com sucesso para Ultra 500MB!
-Novo valor mensal: R$ 199.90
-Data da alteração: 25/12/2024
+(nenhuma saída é gerada - as colunas "CEP_Destino", "Frete" e "TaxaEmbalagem" da linha do pedido PED-78523 são atualizadas)
 ```
-
-**Data Extension "Assinantes_Planos" (depois):**
-
-| CPF | NomeAssinante | Plano | ValorMensal | DataAlteracao |
-|---|---|---|---|---|
-| 123.456.789-00 | João Silva | **Ultra 500MB** | **199.90** | **25/12/2024** |
-| 987.654.321-00 | Maria Santos | Plus 200MB | 119.90 | 15/01/2024 |
-| 456.789.123-00 | Carlos Oliveira | Básico 50MB | 79.90 | 20/02/2024 |
 
 ## Observações
 
-- **Contexto de uso:** `UpdateDE()` funciona **apenas em e-mails**. Para CloudPages, landing pages, microsites e SMS (MobileConnect), use [UpdateData](../data-extension-functions/updatedata.md).
-- **Sem saída visível:** A função não produz nenhum output renderizado no e-mail. Ela apenas executa a operação de atualização.
-- **`columnValuePairs` incorreto:** Se o número informado no parâmetro `columnValuePairs` não bater com a quantidade real de pares de busca (searchColumnName/searchValue) passados na função, será retornada uma exceção (erro).
-- **Coluna de busca inexistente:** Se o nome da coluna informado em `searchColumnName` não existir na Data Extension, a função retorna uma exceção.
-- **Valor de busca não encontrado:** Se o valor informado em `searchValue` não for encontrado na coluna especificada, nenhum dado é atualizado e a função retorna `0`.
-- **Tipo de dado incompatível:** Se o valor informado em `updatedValue` tiver um tipo diferente do tipo da coluna de destino (por exemplo, passar texto em uma coluna numérica), nenhum dado é atualizado e a função retorna `0`.
-- **Desbalanceamento entre pares de busca e atualização:** Se o número de parâmetros de busca (searchColumnName/searchValue) for diferente do número de parâmetros de atualização (columnToUpdate/updatedValue), a função atualiza apenas as colunas que tiverem pares de busca correspondentes. Por exemplo, se você passar 2 pares de busca e 3 pares de atualização, apenas os 2 primeiros pares de atualização serão processados. Você pode repetir os mesmos parâmetros de atualização se necessário.
-- **Múltiplas colunas:** Você pode atualizar várias colunas de uma vez na mesma chamada, basta informar múltiplos pares de columnToUpdate/updatedValue após os critérios de busca.
+> **⚠️ Atenção:** A função `UpdateDE` é exclusiva para uso em **e-mails**. Para CloudPages, landing pages, microsites e mensagens SMS no MobileConnect, use [UpdateData](../data-extension-functions/updatedata.md).
+
+> **⚠️ Atenção:** Se o valor informado no parâmetro `columnValuePairs` não corresponder à quantidade real de pares de critério de busca na função, uma exceção será retornada.
+
+> **⚠️ Atenção:** Se o nome da coluna informado em `searchColumnName` não existir na Data Extension especificada, a função retorna uma exceção.
+
+> **💡 Dica:** Se o valor informado em `searchValue` não for encontrado na coluna de busca, nenhum dado é atualizado e a função retorna `0`.
+
+> **⚠️ Atenção:** Se o valor informado em `updatedValue` for de um tipo de dado diferente do tipo da coluna especificada em `columnToUpdate`, nenhum dado é atualizado e a função retorna `0`. Por exemplo, se você passar um valor numérico para uma coluna que armazena texto, a atualização não acontece.
+
+> **⚠️ Atenção:** Se a quantidade de parâmetros de busca (`searchColumnName` e `searchValue`) for diferente da quantidade de parâmetros de atualização (`columnToUpdate` e `updatedValue`), a função atualiza apenas as colunas para as quais você forneceu parâmetros de busca correspondentes. Por exemplo, se você informar dois pares de busca e três pares de atualização, apenas os dois primeiros pares de atualização serão executados. Você pode repetir os mesmos parâmetros de atualização múltiplas vezes, se necessário.
 
 ## Funções relacionadas
 
-- [UpdateData](../data-extension-functions/updatedata.md) — Mesma finalidade que `UpdateDE`, mas para uso em CloudPages, landing pages, microsites e SMS.
-- [UpsertDE](../data-extension-functions/upsertde.md) — Atualiza a linha se existir ou insere uma nova se não existir (em e-mails).
-- [InsertDE](../data-extension-functions/insertde.md) — Insere uma nova linha em uma Data Extension (em e-mails).
-- [DeleteDE](../data-extension-functions/deletede.md) — Remove uma linha de uma Data Extension (em e-mails).
-- [Lookup](../data-extension-functions/lookup.md) — Busca um valor específico em uma Data Extension.
-- [LookupRows](../data-extension-functions/lookuprows.md) — Retorna múltiplas linhas de uma Data Extension com base em critérios de busca.
-- [AttributeValue](../utility-functions/attributevalue.md) — Recupera o valor de um atributo do assinante ou coluna da DE de envio.
-- [Now](../date-functions/now.md) — Retorna a data e hora atuais do sistema.
-- [FormatDate](../date-functions/formatdate.md) — Formata uma data no padrão desejado.
+- [UpdateData](../data-extension-functions/updatedata.md) - equivalente para uso em CloudPages, landing pages, microsites e SMS
+- [InsertDE](../data-extension-functions/insertde.md) - insere uma nova linha na Data Extension (em e-mails)
+- [UpsertDE](../data-extension-functions/upsertde.md) - insere ou atualiza conforme a existência do registro (em e-mails)
+- [DeleteDE](../data-extension-functions/deletede.md) - exclui linhas de uma Data Extension (em e-mails)
+- [Lookup](../data-extension-functions/lookup.md) - consulta um valor na Data Extension antes de atualizar

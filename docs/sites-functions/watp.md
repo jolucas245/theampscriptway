@@ -1,97 +1,75 @@
 ---
 title: WATP
 sidebar_label: WATP
-description: Exibe conteúdo de um portfólio do Marketing Cloud em uma página web com rastreamento de impressões e parâmetros adicionais.
+description: Representa um placeholder ordinal para valores de parâmetros dentro de strings WAT configuradas pelo Suporte da Marketing Cloud.
 ---
-
-<!-- generated-by-script -->
 
 # WATP
 
 ## Descrição
 
-A função `WATP` (Web Analytics Tracking with Parameters) é usada para exibir conteúdo de portfólio (como imagens ou arquivos) hospedado no Salesforce Marketing Cloud em páginas web, adicionando rastreamento de web analytics junto com parâmetros personalizados. Ela funciona de forma similar à função [WAT](../content-functions/wat.md), mas com a capacidade extra de passar parâmetros adicionais na URL de rastreamento. Essa função é útil quando você precisa rastrear impressões de conteúdo em MicroSites ou Landing Pages e quer incluir informações extras para segmentação ou análise.
-
-> **Nota:** A documentação oficial da Salesforce para esta função não está disponível (retorna erro 404). As informações abaixo são baseadas no comportamento conhecido da função dentro do ecossistema SFMC e em sua relação com a função WAT. Use com cautela e teste em ambiente de desenvolvimento antes de aplicar em produção.
+A função `WATP` (WAT Parameter) representa um placeholder posicional para valores de parâmetros dentro de strings WAT. Ela **não funciona de forma independente** - só pode ser usada como parte de uma configuração de string WAT criada pelo Suporte da Salesforce Marketing Cloud. O resultado da `WATP` é incluído na saída gerada pela chamada da função [WAT](../content-functions/wat.md).
 
 ## Sintaxe
 
 ```ampscript
-WATP(conteudo, parametros)
+WATP(ordinal)
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |-----------|------|-------------|-----------|
-| conteudo | String | Sim | O nome ou referência do item de portfólio (conteúdo) a ser exibido com rastreamento |
-| parametros | String | Sim | Parâmetros adicionais a serem anexados à URL de rastreamento no formato de query string |
+| ordinal | Número | Sim | Valor ordinal que representa a posição do parâmetro na string WAT. O primeiro parâmetro é `1`, o segundo é `2`, e assim por diante. |
 
 ## Exemplo básico
 
+Configuração de string WAT para gerar um link de verificação de e-mail de um cliente, com o endereço tratado e codificado para URL.
+
 ```ampscript
-%%=WATP("banner_natal_2024", "campanha=natal&categoria=eletronicos")=%%
+/* Configuração da string WAT (feita pelo Suporte MC): */
+/* verifyParams,?verify=%%=URLEncode(Lowercase(Trim(WATP(1))))=%% */
+
+/* No e-mail, a função WAT é chamada passando o valor do parâmetro: */
+/* Veja a função WAT para o uso completo */
 ```
 
-**Saída:**
+**Saída (dentro da string WAT processada):**
 ```
-[Exibe o conteúdo do portfólio "banner_natal_2024" com rastreamento de web analytics e os parâmetros campanha=natal&categoria=eletronicos anexados à URL]
+?verify=joao.silva%40megastore.com.br
 ```
 
 ## Exemplo avançado
 
+Configuração de string WAT com múltiplos parâmetros para montar um link personalizado com nome e sobrenome do cliente, útil em réguas de boas-vindas ou confirmação de cadastro.
+
 ```ampscript
-%%[
-VAR @nomeAssinante, @segmento, @parametros
+/* Configuração da string WAT (feita pelo Suporte MC): */
+/* nameParams,?fName=%%=URLEncode(WATP(1))=%%&lName=%%=URLEncode(WATP(2))=%% */
 
-SET @nomeAssinante = AttributeValue("NomeCompleto")
-SET @segmento = Lookup("SegmentosClientes", "Segmento", "Email", EmailAddress)
+/* WATP(1) recebe o primeiro valor passado na chamada WAT (ex: "Maria") */
+/* WATP(2) recebe o segundo valor passado na chamada WAT (ex: "Santos") */
 
-IF @segmento == "VIP" THEN
-  SET @parametros = Concat("segmento=vip&origem=email&cliente=", URLEncode(@nomeAssinante))
-ELSE
-  SET @parametros = Concat("segmento=regular&origem=email&cliente=", URLEncode(@nomeAssinante))
-ENDIF
-]%%
-
-<!-- Banner promocional Black Friday - Lojas Vitória -->
-%%=WATP("banner_blackfriday_lojasvitoria", @parametros)=%%
-
-%%[
-/* Exemplo com conteúdo condicional para campanha de Dia das Mães */
-IF @segmento == "VIP" THEN
-]%%
-  %%=WATP("diamaes_oferta_premium", "tipo=premium&desconto=30&frete=gratis")=%%
-%%[ ELSE ]%%
-  %%=WATP("diamaes_oferta_padrao", "tipo=padrao&desconto=15")=%%
-%%[ ENDIF ]%%
+/* Veja a função WAT para entender como os valores são passados */
 ```
 
-**Saída:**
+**Saída (dentro da string WAT processada):**
 ```
-[Para cliente VIP: Exibe o banner de Black Friday com parâmetros segmento=vip&origem=email&cliente=Jo%C3%A3o%20Silva e depois o banner premium do Dia das Mães com parâmetros tipo=premium&desconto=30&frete=gratis]
-
-[Para cliente regular: Exibe o banner de Black Friday com parâmetros segmento=regular&origem=email&cliente=Maria%20Santos e depois o banner padrão do Dia das Mães com parâmetros tipo=padrao&desconto=15]
+?fName=Maria&lName=Santos
 ```
 
 ## Observações
 
-- ⚠️ **Documentação oficial indisponível:** A página oficial da Salesforce para esta função retorna erro 404. Isso pode indicar que a função está **depreciada** ou que foi removida da documentação pública. Recomenda-se testar antes de usar em produção.
-- A função `WATP` é uma extensão da função [WAT](../content-functions/wat.md), adicionando suporte a parâmetros customizados.
-- Essa função é mais relevante no contexto de **MicroSites e Landing Pages** do Marketing Cloud. Em CloudPages mais modernas, considere usar abordagens alternativas.
-- Os parâmetros são úteis para integração com ferramentas de web analytics (como Google Analytics) ou para rastreamento interno de campanhas.
-- Use [URLEncode](../string-functions/urlencode.md) para codificar valores de parâmetros que possam conter caracteres especiais (acentos, espaços, etc.).
-- Se o item de portfólio referenciado não existir, a função pode retornar vazio ou gerar erro — sempre valide o conteúdo antes.
-- O rastreamento de impressões depende da configuração de web analytics na sua conta do Marketing Cloud.
+> **⚠️ Atenção:** A função `WATP` **não pode ser usada de forma independente** no seu código AMPscript. Ela só funciona dentro de strings WAT que são configuradas diretamente pelo Suporte da Salesforce Marketing Cloud. Você não consegue criar essas configurações por conta própria - é necessário abrir um chamado com o suporte.
+
+- A numeração dos parâmetros é ordinal e começa em `1`. O primeiro valor passado na chamada [WAT](../content-functions/wat.md) corresponde a `WATP(1)`, o segundo a `WATP(2)`, e assim por diante.
+- Dentro da configuração da string WAT, você pode combinar `WATP` com outras funções AMPscript como [URLEncode](../string-functions/urlencode.md), [Lowercase](../string-functions/lowercase.md) e [Trim](../string-functions/trim.md) para tratar os valores antes de incluí-los na URL final.
+- Para entender o fluxo completo de como os valores chegam até os placeholders `WATP`, consulte a documentação da função [WAT](../content-functions/wat.md).
 
 ## Funções relacionadas
 
-- [WAT](../content-functions/wat.md) — Exibe conteúdo de portfólio com rastreamento de web analytics, sem parâmetros adicionais
-- [GetPortfolioItem](../content-functions/getportfolioitem.md) — Recupera um item do portfólio do Marketing Cloud
-- [ContentBlockByName](../content-functions/contentblockbyname.md) — Inclui um bloco de conteúdo pelo nome
-- [ContentBlockByKey](../content-functions/contentblockbykey.md) — Inclui um bloco de conteúdo pela chave externa
-- [Image](../content-functions/image.md) — Exibe uma imagem do portfólio
-- [URLEncode](../string-functions/urlencode.md) — Codifica strings para uso seguro em URLs
-- [Concat](../string-functions/concat.md) — Concatena strings, útil para montar parâmetros dinamicamente
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — Gera URLs para CloudPages com parâmetros criptografados
-- [MicrositeURL](../sites-functions/micrositeurl.md) — Gera URLs para MicroSites com rastreamento
+- [WAT](../content-functions/wat.md) - função principal que processa as strings WAT onde `WATP` é utilizada
+- [URLEncode](../string-functions/urlencode.md) - comumente usada junto com `WATP` para codificar valores em URLs
+- [Lowercase](../string-functions/lowercase.md) - normalização de texto dentro das strings WAT
+- [Trim](../string-functions/trim.md) - remoção de espaços em valores passados como parâmetros
+- [CloudPagesURL](../sites-functions/cloudpagesurl.md) - alternativa mais comum para geração de URLs parametrizadas sem depender do suporte

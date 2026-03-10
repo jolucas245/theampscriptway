@@ -1,14 +1,14 @@
 ---
 title: Empty
 sidebar_label: Empty
-description: Testa se uma variável está vazia ou nula, retornando true quando não possui valor e false quando possui.
+description: Verifica se uma variável está vazia ou nula, retornando true ou false.
 ---
 
 # Empty
 
 ## Descrição
 
-A função `Empty()` verifica se uma variável tem algum valor atribuído. Se a variável tiver um valor, a função retorna `false`. Se a variável for uma string vazia (`""`) ou `null` (nunca recebeu um valor), a função retorna `true`. É uma das funções mais usadas no dia a dia do AMPscript — você vai usar ela o tempo todo para evitar que campos em branco quebrem a personalização dos seus e-mails, CloudPages e SMS.
+A função `Empty()` testa se uma variável possui valor. Se a variável contém algum valor, retorna **false**. Se a variável é uma string vazia ou null (não foi definida), retorna **true**. É uma das funções mais usadas no dia a dia de SFMC - essencial para validar dados de subscribers antes de personalizar e-mails, evitando que campos em branco quebrem o layout ou gerem mensagens constrangedoras como "Olá, !".
 
 ## Sintaxe
 
@@ -19,113 +19,112 @@ Empty(@variavel)
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|-----------|--------|-------------|-----------|
-| variable | String | Sim | A variável que você quer testar para saber se está vazia ou nula. |
+|-----------|------|-------------|-----------|
+| variable | String | Sim | A variável que você quer testar para verificar se está vazia ou nula. |
 
 ## Exemplo básico
 
-Um cenário clássico: você quer mostrar o primeiro nome do assinante no e-mail, mas nem todo mundo tem esse campo preenchido na Data Extension. Com `Empty()`, você mostra um fallback amigável quando o nome estiver em branco.
+Verificando se o nome do cliente existe antes de montar a saudação em um e-mail da Lojas Vitória:
 
 ```ampscript
 %%[
-  SET @primeiroNome = [PrimeiroNome]
+VAR @nome, @cidade, @cupom
+
+SET @nome = "Maria Santos"
+SET @cidade = ""
+
+IF NOT Empty(@nome) THEN
+  SET @saudacao = Concat("Olá, ", @nome, "!")
+ELSE
+  SET @saudacao = "Olá!"
+ENDIF
+
+IF Empty(@cidade) THEN
+  SET @msgCidade = "Atualize seu cadastro para ofertas da sua região."
+ELSE
+  SET @msgCidade = Concat("Confira as ofertas em ", @cidade, "!")
+ENDIF
+
+IF Empty(@cupom) THEN
+  SET @msgCupom = "Nenhum cupom disponível no momento."
+ELSE
+  SET @msgCupom = Concat("Use o cupom: ", @cupom)
+ENDIF
 ]%%
 
-%%[ IF NOT Empty(@primeiroNome) THEN ]%%
-  Olá, %%=v(@primeiroNome)=%%! 👋
-%%[ ELSE ]%%
-  Olá! 👋
-%%[ ENDIF ]%%
+%%=v(@saudacao)=%%
+%%=v(@msgCidade)=%%
+%%=v(@msgCupom)=%%
 ```
 
-**Saída (quando `PrimeiroNome` = "Maria"):**
+**Saída:**
 ```
-Olá, Maria! 👋
-```
-
-**Saída (quando `PrimeiroNome` está vazio ou nulo):**
-```
-Olá! 👋
+Olá, Maria Santos!
+Atualize seu cadastro para ofertas da sua região.
+Nenhum cupom disponível no momento.
 ```
 
 ## Exemplo avançado
 
-Imagine que a **MegaStore** está mandando um e-mail de Dia das Mães com oferta personalizada. Você precisa verificar vários campos de uma Data Extension: nome, cupom de desconto e saldo de cashback. Se algum dado estiver faltando, o e-mail mostra uma versão genérica.
+Cenário real de régua de relacionamento: um e-mail transacional do Banco Brasilão que valida múltiplos campos do cliente antes de montar o conteúdo, usando `Empty()` combinado com [IIF](../utility-functions/iif.md) para tratamentos inline:
 
 ```ampscript
 %%[
-  SET @email = AttributeValue("EmailAddress")
-  SET @nome = AttributeValue("PrimeiroNome")
-  SET @cupom = AttributeValue("CupomDiaDasMaes")
-  SET @cashback = AttributeValue("SaldoCashback")
+VAR @nome, @cpf, @email, @telefone, @limiteCredito
 
-  /* Definindo fallbacks com IIF e Empty */
-  SET @saudacao = IIF(NOT Empty(@nome), Concat("Oi, ", @nome, "!"), "Oi!")
+SET @nome = AttributeValue("PrimeiroNome")
+SET @cpf = AttributeValue("CPF")
+SET @email = AttributeValue("EmailAddress")
+SET @telefone = AttributeValue("Telefone")
+SET @limiteCredito = AttributeValue("LimiteCredito")
 
-  SET @blocoCupom = ""
-  IF NOT Empty(@cupom) THEN
-    SET @blocoCupom = Concat("🎁 Use o cupom ", @cupom, " e ganhe 15% OFF no presente da sua mãe!")
-  ELSE
-    SET @blocoCupom = "🎁 Confira nossas ofertas especiais de Dia das Mães em www.megastore.com.br!"
-  ENDIF
+/* Validação crítica: sem e-mail válido, não faz sentido continuar */
+IF Empty(@email) THEN
+  RaiseError("E-mail do subscriber está vazio. Envio cancelado.", true)
+ENDIF
 
-  SET @blocoCashback = ""
-  IF NOT Empty(@cashback) THEN
-    SET @blocoCashback = Concat("💰 Você tem R$ ", FormatNumber(@cashback, "N2"), " de cashback disponível. Aproveite!")
-  ENDIF
+SET @saudacao = IIF(NOT Empty(@nome), Concat("Olá, ", @nome, "!"), "Olá, cliente!")
+
+SET @infoCpf = IIF(NOT Empty(@cpf), Concat("CPF cadastrado: ", @cpf), "CPF não informado - atualize seu cadastro.")
+
+SET @infoTelefone = IIF(NOT Empty(@telefone), Concat("Telefone: ", @telefone), "Cadastre seu telefone para receber alertas por SMS.")
+
+SET @infoLimite = IIF(NOT Empty(@limiteCredito), Concat("Seu limite disponível: R$ ", FormatNumber(@limiteCredito, "N", 2)), "Consulte seu limite pelo app do Banco Brasilão.")
 ]%%
 
 %%=v(@saudacao)=%%
 
-%%=v(@blocoCupom)=%%
-
-%%[ IF NOT Empty(@blocoCashback) THEN ]%%
-  %%=v(@blocoCashback)=%%
-%%[ ENDIF ]%%
-
----
-Frete grátis acima de R$ 299,00 | www.megastore.com.br
+Resumo da sua conta:
+%%=v(@infoCpf)=%%
+%%=v(@infoTelefone)=%%
+%%=v(@infoLimite)=%%
 ```
 
-**Saída (quando todos os campos estão preenchidos — nome: "Carla", cupom: "MAES2024", cashback: 47.50):**
+**Saída (quando o subscriber tem nome "Carlos Mendes", CPF preenchido, telefone vazio e limite de 5500.50):**
 ```
-Oi, Carla!
+Olá, Carlos Mendes!
 
-🎁 Use o cupom MAES2024 e ganhe 15% OFF no presente da sua mãe!
-
-💰 Você tem R$ 47,50 de cashback disponível. Aproveite!
-
----
-Frete grátis acima de R$ 299,00 | www.megastore.com.br
-```
-
-**Saída (quando nome está vazio, cupom está vazio e cashback está nulo):**
-```
-Oi!
-
-🎁 Confira nossas ofertas especiais de Dia das Mães em www.megastore.com.br!
-
----
-Frete grátis acima de R$ 299,00 | www.megastore.com.br
+Resumo da sua conta:
+CPF cadastrado: 123.456.789-00
+Cadastre seu telefone para receber alertas por SMS.
+Seu limite disponível: R$ 5.500,50
 ```
 
 ## Observações
 
-- `Empty()` retorna `true` em dois cenários: quando a variável contém uma **string vazia** (`""`) ou quando ela é **nula** (nunca recebeu nenhum valor com `SET`).
-- Se a variável tiver um valor atribuído — mesmo que seja um espaço em branco (`" "`), zero (`0`) ou a string `"0"` — a função retorna `false`. Se você precisa tratar espaços em branco, combine com [Trim](../string-functions/trim.md) antes de testar: `Empty(Trim(@variavel))`.
-- É muito comum combinar `Empty()` com `NOT` dentro de blocos `IF` para executar código somente quando o valor **existe**.
-- Você também pode usar `Empty()` inline com [IIF](../utility-functions/iif.md) para resoluções em uma única linha, como: `%%=IIF(NOT Empty(@var), @var, "Valor padrão")=%%`.
-- A função `Empty()` funciona em todos os contextos do Marketing Cloud: e-mails, CloudPages, SMS, Landing Pages e Script Activities.
-- Se você está trabalhando com resultados de [Lookup](../data-extension-functions/lookup.md) ou [LookupRows](../data-extension-functions/lookuprows.md), sempre teste com `Empty()` (para `Lookup`) ou compare o [RowCount](../data-extension-functions/rowcount.md) com zero (para `LookupRows`) antes de usar os valores retornados — isso evita erros em tempo de envio.
-- `Empty()` é diferente de [IsNull](../utility-functions/isnull.md): enquanto `IsNull()` detecta apenas valores nulos, `Empty()` detecta **tanto nulos quanto strings vazias**, sendo geralmente a opção mais segura para validações.
+- A função `Empty()` retorna **true** em dois cenários: quando a variável contém uma string vazia (`""`) e quando a variável é null (nunca recebeu um valor via `SET`).
+
+- Combiná-la com `IF` ou [IIF](../utility-functions/iif.md) é o padrão mais comum no dia a dia - praticamente todo e-mail personalizado no SFMC brasileiro usa essa abordagem para tratar campos opcionais do cadastro.
+
+> **💡 Dica:** Use `Empty()` junto com [AttributeValue](../utility-functions/attributevalue.md) para validar campos vindos de Data Extensions ou atributos de perfil. O `AttributeValue` já retorna string vazia quando o campo não existe, o que combina perfeitamente com `Empty()`.
+
+> **⚠️ Atenção:** Uma variável que contém um espaço em branco (`" "`) **não** é considerada vazia por `Empty()` - ela tem um valor (o espaço). Se seus dados podem vir com espaços indesejados, combine com [Trim](../string-functions/trim.md) antes de testar: `Empty(Trim(@variavel))`.
 
 ## Funções relacionadas
 
-- [IIF](../utility-functions/iif.md) — Retorna um valor ou outro com base em uma condição; muito usado junto com `Empty()` para fallbacks inline.
-- [IsNull](../utility-functions/isnull.md) — Testa se uma variável é nula (mas não detecta strings vazias).
-- [IsNullDefault](../utility-functions/isnulldefault.md) — Retorna um valor padrão quando a variável é nula.
-- [AttributeValue](../utility-functions/attributevalue.md) — Recupera o valor de um atributo de perfil ou campo de Data Extension, retornando string vazia quando não encontra (ideal para usar com `Empty()`).
-- [V](../utility-functions/v.md) — Exibe o valor de uma variável; combine com `Empty()` para só exibir quando houver valor.
-- [Trim](../string-functions/trim.md) — Remove espaços em branco no início e fim de uma string; útil antes de testar com `Empty()`.
-- [Length](../string-functions/length.md) — Retorna o tamanho de uma string; alternativa para verificar se um campo tem conteúdo.
-- [Lookup](../data-extension-functions/lookup.md) — Busca um valor em Data Extension; sempre valide o retorno com `Empty()` antes de usar.
+- [IIF](../utility-functions/iif.md) - ternário inline, ideal para combinar com `Empty()` em tratamentos de uma linha
+- [IsNull](../utility-functions/isnull.md) - testa especificamente se o valor é null
+- [IsNullDefault](../utility-functions/isnulldefault.md) - retorna um valor padrão quando a variável é null
+- [AttributeValue](../utility-functions/attributevalue.md) - recupera atributos de subscriber retornando string vazia quando não existem
+- [Trim](../string-functions/trim.md) - remove espaços em branco antes de testar com `Empty()`
+- [RaiseError](../utility-functions/raiseerror.md) - cancela o envio quando um campo obrigatório está vazio

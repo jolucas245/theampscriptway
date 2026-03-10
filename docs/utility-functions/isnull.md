@@ -1,14 +1,14 @@
 ---
 title: IsNull
 sidebar_label: IsNull
-description: Testa se o valor de uma variável ou função é nulo (null), retornando true em caso positivo e false caso contrário.
+description: Testa se o valor de uma variável ou função é nulo, retornando true ou false.
 ---
 
 # IsNull
 
 ## Descrição
 
-A função `IsNull` verifica se o valor de uma variável ou função é **nulo (null)**. Se for nulo, ela retorna `true`; caso contrário, retorna `false`. É muito útil para validar dados antes de usá-los em personalizações de e-mail, CloudPages ou qualquer outro contexto do Marketing Cloud — por exemplo, para checar se um campo da Data Extension veio preenchido ou se uma variável foi definida corretamente. Ela é parecida com a função [Empty](../utility-functions/empty.md), mas tem uma diferença importante: `Empty` retorna `true` também para strings vazias (`""`), enquanto `IsNull` **não** retorna `true` para strings vazias — só para valores genuinamente nulos.
+A função `IsNull` verifica se o valor de uma variável ou função é **nulo** (null). Se for nulo, retorna `true`; caso contrário, retorna `false`. É essencial para validar dados antes de usá-los em e-mails e CloudPages - especialmente quando você trabalha com Data Extensions onde campos podem vir sem nenhum valor preenchido.
 
 ## Sintaxe
 
@@ -19,102 +19,67 @@ IsNull(valorParaTestar)
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|---|---|---|---|
-| valorParaTestar | String | Sim | A variável ou função cujo valor será testado para verificar se é nulo. |
+|-----------|------|-------------|-----------|
+| valorParaTestar | String | Sim | Variável ou função cujo valor será testado para verificar se é nulo. |
 
 ## Exemplo básico
 
-Neste exemplo, declaramos uma variável sem atribuir nenhum valor a ela (ou seja, o valor é nulo) e depois usamos `IsNull` para testar:
+Verificando se uma variável declarada sem valor atribuído é nula - situação comum quando você declara variáveis mas a lógica de atribuição ainda não executou.
 
 ```ampscript
 %%[
-  VAR @n
+VAR @cidade
+SET @resultado = IsNull(@cidade)
 ]%%
 
-O valor de @n é nulo? %%=IsNull(@n)=%%
+A variável @cidade é nula? %%=V(@resultado)=%%
 ```
 
 **Saída:**
 ```
-O valor de @n é nulo? True
+A variável @cidade é nula? True
 ```
 
 ## Exemplo avançado
 
-Imagine que você trabalha na **MegaStore** e está enviando um e-mail de Dia das Mães. Você quer personalizar a saudação usando o primeiro nome do cliente, que vem de uma Data Extension. Porém, nem todo cadastro tem o nome preenchido — alguns vieram nulos. Veja como tratar isso:
+Em uma régua de boas-vindas da Lojas Vitória, você precisa verificar se o campo de telefone do cliente veio preenchido antes de montar a mensagem. Quando o dado vem de uma Data Extension e o campo é nullable, ele pode chegar como null (e não como string vazia).
 
 ```ampscript
 %%[
-  SET @primeiroNome = Lookup("Clientes_MegaStore", "PrimeiroNome", "Email", EmailAddress)
-  SET @cupom = Lookup("Clientes_MegaStore", "CupomDiadasMaes", "Email", EmailAddress)
-  SET @saldoPontos = Lookup("Clientes_MegaStore", "SaldoPontos", "Email", EmailAddress)
+SET @nome = "Maria Santos"
+SET @email = "maria.santos@email.com.br"
+SET @telefone = Lookup("Clientes_Vitoria", "Telefone", "Email", @email)
 
-  IF IsNull(@primeiroNome) THEN
-    SET @saudacao = "Olá, cliente especial"
-  ELSE
-    SET @saudacao = Concat("Olá, ", @primeiroNome)
-  ENDIF
-
-  IF IsNull(@cupom) THEN
-    SET @msgCupom = "Aproveite nossas ofertas de Dia das Mães!"
-  ELSE
-    SET @msgCupom = Concat("Use o cupom ", @cupom, " e ganhe 15% de desconto!")
-  ENDIF
-
-  IF IsNull(@saldoPontos) THEN
-    SET @msgPontos = ""
-  ELSE
-    SET @msgPontos = Concat("Você tem ", @saldoPontos, " pontos disponíveis no programa MegaPontos.")
-  ENDIF
+IF IsNull(@telefone) THEN
+  SET @mensagem = Concat("Olá, ", @nome, "! Atualize seu telefone no nosso site para receber ofertas exclusivas por SMS.")
+ELSE
+  SET @mensagem = Concat("Olá, ", @nome, "! Vamos enviar novidades também para o número ", @telefone, ".")
+ENDIF
 ]%%
 
-%%=v(@saudacao)=%%! 🌷
-
-%%=v(@msgCupom)=%%
-
-%%[IF NOT IsNull(@saldoPontos) THEN]%%
-  %%=v(@msgPontos)=%%
-  Troque seus pontos por frete grátis em compras acima de R$299,00!
-%%[ENDIF]%%
-
-Acesse: www.megastore.com.br/diadasmaes
+%%=V(@mensagem)=%%
 ```
 
-**Saída (para Maria Santos, que tem cupom e pontos):**
+**Saída (quando o telefone não existe na DE):**
 ```
-Olá, Maria! 🌷
-
-Use o cupom MAES2024 e ganhe 15% de desconto!
-
-Você tem 4.250 pontos disponíveis no programa MegaPontos.
-Troque seus pontos por frete grátis em compras acima de R$299,00!
-
-Acesse: www.megastore.com.br/diadasmaes
+Olá, Maria Santos! Atualize seu telefone no nosso site para receber ofertas exclusivas por SMS.
 ```
 
-**Saída (para um cliente sem nome nem cupom cadastrados):**
+**Saída (quando o telefone existe na DE):**
 ```
-Olá, cliente especial! 🌷
-
-Aproveite nossas ofertas de Dia das Mães!
-
-Acesse: www.megastore.com.br/diadasmaes
+Olá, Maria Santos! Vamos enviar novidades também para o número (11) 99999-9999.
 ```
 
 ## Observações
 
-- `IsNull` retorna `true` **somente** quando o valor é genuinamente nulo. Uma string vazia (`""`) **não** é considerada nula por essa função — para esse caso, use [Empty](../utility-functions/empty.md).
-- Uma variável declarada com `VAR` sem receber um valor via `SET` é considerada nula.
-- Campos de Data Extension que não têm valor preenchido e não possuem valor padrão geralmente retornam nulo, o que pode ser capturado por `IsNull`.
-- Na prática, muitos desenvolvedores preferem usar [Empty](../utility-functions/empty.md) como verificação mais abrangente, pois ela cobre tanto nulos quanto strings vazias. Use `IsNull` quando você precisa distinguir especificamente entre "nulo" e "vazio".
-- Se você quer testar se é nulo e, em caso positivo, retornar um valor padrão em uma única linha, confira a função [IsNullDefault](../utility-functions/isnulldefault.md) — ela faz exatamente isso e deixa seu código mais enxuto.
-- A função pode ser usada em qualquer contexto do SFMC: e-mails, CloudPages, SMS, Landing Pages, etc.
+> **⚠️ Atenção:** `IsNull` e [Empty](../utility-functions/empty.md) **não são a mesma coisa**. A função `Empty` retorna `true` quando o valor é uma **string vazia** (`""`), enquanto `IsNull` retorna `true` apenas quando o valor é **null**. Uma variável declarada sem `SET` é null, mas um campo de Data Extension que existe porém está em branco pode ser uma string vazia. Na prática, muitos desenvolvedores combinam as duas verificações para cobrir ambos os cenários.
+
+> **💡 Dica:** Quando você precisa testar se um valor é nulo **e já definir um valor padrão** em uma única linha, considere usar [IsNullDefault](../utility-functions/isnulldefault.md) - ela faz as duas coisas de uma vez e deixa o código mais limpo.
 
 ## Funções relacionadas
 
-- [Empty](../utility-functions/empty.md) — Testa se o valor é nulo **ou** uma string vazia. Mais abrangente que `IsNull`.
-- [IsNullDefault](../utility-functions/isnulldefault.md) — Testa se o valor é nulo e retorna um valor padrão caso seja. Combina teste + fallback em uma só função.
-- [IIF](../utility-functions/iif.md) — Retorna um valor ou outro com base em uma condição. Útil para lógicas inline combinadas com `IsNull`.
-- [AttributeValue](../utility-functions/attributevalue.md) — Retorna o valor de um atributo do assinante, retornando string vazia em vez de erro caso o atributo não exista.
-- [Lookup](../data-extension-functions/lookup.md) — Busca um valor em uma Data Extension. Pode retornar nulo quando não encontra o registro, sendo um cenário comum para usar `IsNull`.
-- [V](../utility-functions/v.md) — Exibe o valor de uma variável. Frequentemente usada junto com `IsNull` para renderização condicional.
+- [Empty](../utility-functions/empty.md) - testa se o valor é uma string vazia (diferente de null)
+- [IsNullDefault](../utility-functions/isnulldefault.md) - testa se é nulo e já retorna um valor padrão
+- [IIF](../utility-functions/iif.md) - avaliação condicional inline, útil para combinar com `IsNull`
+- [AttributeValue](../utility-functions/attributevalue.md) - recupera valor de atributo retornando string vazia (em vez de null) quando não encontrado
+- [Lookup](../data-extension-functions/lookup.md) - busca dados em Data Extensions, onde campos podem retornar null

@@ -1,118 +1,112 @@
 ---
 title: DateAdd
 sidebar_label: DateAdd
-description: Adiciona um valor de tempo especificado a uma data, retornando uma nova data com o acréscimo de anos, meses, dias, horas ou minutos.
+description: Adiciona um valor de tempo (anos, meses, dias, horas ou minutos) a uma data, retornando a nova data calculada.
 ---
 
 # DateAdd
 
 ## Descrição
 
-A função `DateAdd` adiciona um valor de tempo a uma data existente e retorna a nova data resultante. Você pode somar anos, meses, dias, horas ou minutos a qualquer data. É super útil pra calcular datas de expiração de cupons, prazos de entrega, validade de promoções, períodos de carência e qualquer cenário onde você precisa projetar uma data futura (ou passada, usando valores negativos) a partir de uma data de referência.
+A função `DateAdd` adiciona um valor de tempo especificado a uma data. É uma das funções mais usadas no dia a dia de SFMC no Brasil - seja para calcular datas de vencimento de boletos, definir prazos de validade de cupons em réguas de relacionamento, ou determinar janelas de expiração em campanhas de e-mail marketing. Retorna a data resultante após a adição do tempo informado.
 
 ## Sintaxe
 
 ```ampscript
-DateAdd(date, amountToAdd, unitToAdd)
+DateAdd(@date, amountToAdd, "unitToAdd")
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| date | Date | Sim | A data base à qual o valor de tempo será adicionado. |
-| amountToAdd | Number | Sim | O valor numérico a ser adicionado à data. Pode ser negativo para subtrair tempo. |
-| unitToAdd | String | Sim | A unidade do tempo a ser adicionado. Valores aceitos: `"Y"` (anos), `"M"` (meses), `"D"` (dias), `"H"` (horas) e `"MI"` (minutos). |
+| date | date | Sim | A data à qual o valor de tempo será adicionado. |
+| amountToAdd | number | Sim | O valor de tempo a ser adicionado à data. |
+| unitToAdd | string | Sim | A unidade do valor de tempo. Valores aceitos: `Y` (anos), `M` (meses), `D` (dias), `H` (horas) e `MI` (minutos). |
 
 ## Exemplo básico
 
-Neste exemplo, adicionamos 1 dia à data/hora atual para mostrar quando uma oferta relâmpago expira. Vamos supor que a data atual seja `05/08/2023 10:41:23`.
+Adicionando 1 dia à data atual para calcular o prazo de entrega de um pedido da MegaStore (assumindo que a data/hora atual é `2023-08-05T13:41:23Z`):
 
 ```ampscript
 %%[
-SET @agora = Now()
-SET @expiracao = DateAdd(@agora, 1, "D")
+SET @agora = NOW()
+SET @prazoEntrega = DateAdd(@agora, 1, "D")
 ]%%
 
-Corra! Esta oferta expira em %%=FormatDate(@expiracao, "DD/MM/YYYY", "", "")=%%.
+Olá, João Silva!
+
+Seu pedido foi confirmado em %%=FormatDate(@agora, "DD/MM/YYYY", "HH:mm")=%%
+Previsão de entrega: %%=FormatDate(@prazoEntrega, "DD/MM/YYYY", "HH:mm")=%%
 ```
 
 **Saída:**
 ```
-Corra! Esta oferta expira em 06/08/2023.
+Olá, João Silva!
+
+Seu pedido foi confirmado em 05/08/2023, 13:41
+Previsão de entrega: 06/08/2023, 13:41
 ```
 
 ## Exemplo avançado
 
-Cenário real: a **MegaStore** envia um e-mail de boas-vindas com um cupom de desconto que vale por 7 dias. Além disso, informa ao cliente quando seus pontos de fidelidade expiram (em 12 meses). A data de cadastro vem de uma Data Extension.
+Cenário real de régua de relacionamento: a Lojas Vitória envia um e-mail com cupom de desconto que expira em 7 dias, e aproveita para lembrar a data de renovação anual do programa de fidelidade do cliente.
 
 ```ampscript
 %%[
-SET @nome = AttributeValue("PrimeiroNome")
-SET @dataCadastro = AttributeValue("DataCadastro")
+SET @nomeCliente = "Maria Santos"
+SET @dataCompra = NOW()
+SET @validadeCupom = DateAdd(@dataCompra, 7, "D")
+SET @renovacaoFidelidade = DateAdd(@dataCompra, 1, "Y")
+SET @lembreteContato = DateAdd(@dataCompra, 3, "D")
+SET @ofertaRelampago = DateAdd(@dataCompra, 2, "H")
 
-/* Cupom válido por 7 dias a partir do cadastro */
-SET @validadeCupom = DateAdd(@dataCadastro, 7, "D")
-
-/* Pontos expiram em 12 meses */
-SET @expiracaoPontos = DateAdd(@dataCadastro, 12, "M")
-
-/* Lembrete 48h antes da expiração do cupom */
-SET @lembreteCupom = DateAdd(@validadeCupom, -48, "H")
-
-/* Formata as datas no padrão brasileiro */
-SET @validadeCupomFormatada = FormatDate(@validadeCupom, "DD/MM/YYYY", "", "")
-SET @expiracaoPontosFormatada = FormatDate(@expiracaoPontos, "DD/MM/YYYY", "", "")
+SET @cupomFormatado = FormatDate(@validadeCupom, "DD/MM/YYYY")
+SET @renovacaoFormatada = FormatDate(@renovacaoFidelidade, "DD/MM/YYYY")
+SET @lembreteFormatado = FormatDate(@lembreteContato, "DD/MM/YYYY", "HH:mm")
+SET @relampagoFormatado = FormatDate(@ofertaRelampago, "DD/MM/YYYY", "HH:mm")
 ]%%
 
-Olá, %%=v(@nome)=%%! Bem-vindo(a) à MegaStore! 🎉
+Olá, %%=v(@nomeCliente)=%%!
 
-Preparamos um presente especial pra você:
+🎉 Você ganhou um cupom de R$ 50,00 de desconto!
+Use o código VITORIA50 até %%=v(@cupomFormatado)=%%.
 
-🎁 Use o cupom BEMVINDO15 e ganhe 15% de desconto
-   em compras acima de R$ 149,90!
-   Válido até: %%=v(@validadeCupomFormatada)=%%
+⚡ Oferta relâmpago! Frete grátis para São Paulo válido até %%=v(@relampagoFormatado)=%%.
 
-⭐ Você já ganhou 500 pontos de boas-vindas no
-   programa MegaPontos!
-   Seus pontos expiram em: %%=v(@expiracaoPontosFormatada)=%%
-
-Aproveite! Acesse: www.megastore.com.br
+📋 Informações do seu programa de fidelidade:
+- Próxima renovação: %%=v(@renovacaoFormatada)=%%
+- Entraremos em contato em: %%=v(@lembreteFormatado)=%%
 ```
 
-**Saída (supondo cadastro em 05/08/2023 e nome "Maria Santos"):**
+**Saída:**
 ```
-Olá, Maria Santos! Bem-vindo(a) à MegaStore! 🎉
+Olá, Maria Santos!
 
-Preparamos um presente especial pra você:
+🎉 Você ganhou um cupom de R$ 50,00 de desconto!
+Use o código VITORIA50 até 12/08/2023.
 
-🎁 Use o cupom BEMVINDO15 e ganhe 15% de desconto
-   em compras acima de R$ 149,90!
-   Válido até: 12/08/2023
+⚡ Oferta relâmpago! Frete grátis para São Paulo válido até 05/08/2023, 15:41.
 
-⭐ Você já ganhou 500 pontos de boas-vindas no
-   programa MegaPontos!
-   Seus pontos expiram em: 05/08/2024
-
-Aproveite! Acesse: www.megastore.com.br
+📋 Informações do seu programa de fidelidade:
+- Próxima renovação: 05/08/2024
+- Entraremos em contato em: 08/08/2023, 13:41
 ```
 
 ## Observações
 
-- O parâmetro `unitToAdd` aceita **apenas** os seguintes valores: `"Y"` (anos), `"M"` (meses), `"D"` (dias), `"H"` (horas) e `"MI"` (minutos). Qualquer outro valor vai gerar erro.
-- Você pode usar **valores negativos** em `amountToAdd` para subtrair tempo de uma data. Por exemplo, `DateAdd(@data, -3, "D")` retorna a data de 3 dias atrás.
-- O valor retornado é um **timestamp completo** (data e hora). Se você precisa exibir só a data ou só a hora, use a função [FormatDate](../date-functions/formatdate.md) para formatar a saída.
-- Lembre-se que as datas no Marketing Cloud são armazenadas em **UTC (horário central do servidor)**. Se você precisa trabalhar com horário de Brasília, considere usar [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) ou [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md) para converter antes ou depois de aplicar o `DateAdd`.
-- Se a data passada for nula ou inválida, a função pode gerar um erro em tempo de execução. É uma boa prática validar a data antes usando [Empty](../utility-functions/empty.md) ou [IsNull](../utility-functions/isnull.md).
-- A função funciona normalmente em todos os contextos do SFMC: e-mails, CloudPages, SMS e Landing Pages.
+> **💡 Dica:** Você pode usar valores negativos no parâmetro `amountToAdd` para subtrair tempo de uma data. Por exemplo, `DateAdd(@data, -30, "D")` retorna a data de 30 dias atrás - útil para buscar clientes que não compram há um mês.
+
+> **💡 Dica:** Combine `DateAdd` com [FormatDate](../date-functions/formatdate.md) para exibir a data resultante no formato brasileiro (DD/MM/AAAA). O `DateAdd` retorna um timestamp completo, então a formatação é quase sempre necessária na saída final.
+
+> **⚠️ Atenção:** A função `DateAdd` trabalha com a data/hora que você passar. Se estiver usando [Now](../date-functions/now.md), lembre-se de que ela retorna o horário do servidor (UTC/CST). Para trabalhar com horário de Brasília, considere usar [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) antes de aplicar o `DateAdd`, ou ajuste manualmente com a unidade `H`.
 
 ## Funções relacionadas
 
-- [Now](../date-functions/now.md) — retorna a data e hora atuais do sistema (UTC).
-- [SystemDate](../date-functions/systemdate.md) — retorna a data do sistema no momento do envio.
-- [DateDiff](../date-functions/datediff.md) — calcula a diferença entre duas datas.
-- [DatePart](../date-functions/datepart.md) — extrai uma parte específica de uma data (dia, mês, ano, etc).
-- [FormatDate](../date-functions/formatdate.md) — formata uma data para exibição em diferentes padrões.
-- [DateParse](../date-functions/dateparse.md) — converte uma string em um valor de data.
-- [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) — converte data UTC para fuso horário local.
-- [GetSendTime](../date-functions/getsendtime.md) — retorna a data e hora do envio do e-mail.
+- [Now](../date-functions/now.md) - retorna a data/hora atual do sistema, frequentemente usada como primeiro parâmetro do `DateAdd`.
+- [DateDiff](../date-functions/datediff.md) - calcula a diferença entre duas datas (operação inversa ao `DateAdd`).
+- [FormatDate](../date-functions/formatdate.md) - formata a data retornada pelo `DateAdd` para exibição no formato brasileiro.
+- [DateParse](../date-functions/dateparse.md) - converte uma string em data, útil quando você precisa transformar um texto antes de usar no `DateAdd`.
+- [SystemDateToLocalDate](../date-functions/systemdatetolocaldate.md) - converte a data do sistema para o fuso horário local antes de fazer cálculos.
+- [LocalDateToSystemDate](../date-functions/localdatetosystemdate.md) - converte uma data local para o horário do sistema.
+- [DatePart](../date-functions/datepart.md) - extrai partes específicas de uma data (dia, mês, ano).

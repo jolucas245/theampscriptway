@@ -8,114 +8,69 @@ description: Redireciona visitantes de uma landing page para uma URL diferente, 
 
 ## Descrição
 
-A função `Redirect()` redireciona os visitantes de uma landing page (como uma CloudPage) para uma URL diferente. Quando executada, a página retorna uma resposta **HTTP 302** (redirecionamento temporário) e o visitante é automaticamente levado para a nova URL. É muito útil quando você precisa montar URLs dinâmicas — por exemplo, adicionando parâmetros personalizados como ID do cliente, código de cupom ou chave do assinante. Um caso de uso bem comum é combinar essa função com [Concat](../string-functions/concat.md) para construir a URL final com query parameters.
+A função `Redirect` redireciona visitantes de uma landing page para uma URL diferente. Quando executada, a página retorna uma resposta HTTP 302, e o cliente é automaticamente redirecionado para a nova URL. É muito útil em cenários onde você precisa direcionar o usuário para uma página específica com base em dados personalizados - por exemplo, redirecionar um cliente para sua área logada ou para uma oferta segmentada.
 
 ## Sintaxe
 
 ```ampscript
-Redirect(redirectUrl)
+Redirect(@redirectUrl)
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|-------------|--------|-------------|-----------|
-| redirectUrl | String | Sim | A URL completa para onde o visitante será redirecionado. |
+|-----------|------|-------------|-----------|
+| redirectUrl | String | Sim | A URL para a qual o visitante será redirecionado. |
 
 ## Exemplo básico
 
-Imagine que você tem uma CloudPage que simplesmente redireciona o visitante para o site da sua loja fictícia:
+Redirecionando o visitante de uma landing page para o site principal da loja:
 
 ```ampscript
 %%[
-Redirect("https://www.lojasvitoria.com.br/ofertas")
+Redirect("https://www.lojasvitoria.com.br")
 ]%%
 ```
 
 **Saída:**
-
 ```
-O visitante é redirecionado automaticamente (HTTP 302) para:
-https://www.lojasvitoria.com.br/ofertas
+O visitante é redirecionado automaticamente (HTTP 302) para https://www.lojasvitoria.com.br
 ```
 
 ## Exemplo avançado
 
-Aqui vai um cenário bem real: você está rodando uma campanha de **Black Friday** da Lojas Vitória e quer redirecionar cada cliente para uma página personalizada, passando a SubscriberKey e o código do cupom de desconto como parâmetros na URL. A CloudPage recebe esses dados, monta a URL dinâmica e redireciona o cliente:
+Um caso de uso comum é combinar `Redirect` com [Concat](../string-functions/concat.md) para passar parâmetros na query string. Neste exemplo, o subscriber key do cliente é concatenado à URL, permitindo que a página de destino identifique quem está acessando - útil em réguas de relacionamento onde você envia um e-mail com link para uma landing page personalizada:
 
 ```ampscript
 %%[
-SET @subscriberKey = AttributeValue("_subscriberkey")
-SET @email = AttributeValue("EmailAddress")
+VAR @subscriberKey, @urlRedirect
 
-/* Busca o cupom personalizado na Data Extension */
-SET @cupom = Lookup("CuponsBlackFriday", "CodigoCupom", "SubscriberKey", @subscriberKey)
+SET @subscriberKey = _subscriberkey
 
-/* Monta a URL com os parâmetros dinâmicos */
-SET @urlBase = "https://www.lojasvitoria.com.br/blackfriday/resgate"
-SET @urlFinal = Concat(
-  @urlBase,
-  "?sk=", URLEncode(@subscriberKey),
-  "&cupom=", URLEncode(@cupom),
-  "&email=", URLEncode(@email)
+SET @urlRedirect = Concat(
+  "https://www.lojasvitoria.com.br/ofertas?sk=",
+  @subscriberKey
 )
 
-Redirect(@urlFinal)
+Redirect(@urlRedirect)
 ]%%
 ```
 
 **Saída:**
-
 ```
-O visitante é redirecionado (HTTP 302) para algo como:
-https://www.lojasvitoria.com.br/blackfriday/resgate?sk=joao.silva%40email.com&cupom=BF2024VIT30&email=joao.silva%40email.com
-```
-
-### Outro exemplo: redirecionamento condicional
-
-Você pode usar lógica condicional para redirecionar o cliente para páginas diferentes com base no seu nível no programa de fidelidade:
-
-```ampscript
-%%[
-SET @subscriberKey = AttributeValue("_subscriberkey")
-SET @nivel = Lookup("ProgramaFidelidade", "Nivel", "SubscriberKey", @subscriberKey)
-
-IF @nivel == "Ouro" THEN
-  SET @destino = "https://www.bancomeridional.com.br/fidelidade/ouro"
-ELSEIF @nivel == "Prata" THEN
-  SET @destino = "https://www.bancomeridional.com.br/fidelidade/prata"
-ELSE
-  SET @destino = "https://www.bancomeridional.com.br/fidelidade/cadastro"
-ENDIF
-
-Redirect(@destino)
-]%%
-```
-
-**Saída:**
-
-```
-Se o cliente João Silva tem nível "Ouro", ele é redirecionado para:
-https://www.bancomeridional.com.br/fidelidade/ouro
+O visitante é redirecionado automaticamente (HTTP 302) para https://www.lojasvitoria.com.br/ofertas?sk=joao.silva@email.com.br
+(onde o valor de sk corresponde ao subscriber key do contato)
 ```
 
 ## Observações
 
-- A função `Redirect()` deve ser utilizada em **landing pages** (CloudPages ou Microsites). Não use em e-mails — para links rastreáveis em e-mails, use [RedirectTo](../http-functions/redirectto.md).
-- O redirecionamento retorna um **HTTP 302** (redirecionamento temporário), ou seja, o navegador do visitante é automaticamente levado para a nova URL.
-- A função **não retorna nenhum valor**. Ela simplesmente executa o redirecionamento. Qualquer código HTML ou AMPscript **após** o `Redirect()` provavelmente não será renderizado para o visitante.
-- Quando montar URLs dinâmicas, use [URLEncode](../string-functions/urlencode.md) nos valores dos parâmetros para garantir que caracteres especiais (como `@`, espaços, acentos) sejam codificados corretamente.
-- É muito comum combinar `Redirect()` com [Concat](../string-functions/concat.md) para montar a URL final com query parameters, conforme mostrado no exemplo avançado.
-- Certifique-se de que a URL passada é completa (incluindo `https://`). URLs relativas podem não funcionar como esperado.
-- Se você precisar validar dados antes do redirecionamento, faça toda a lógica **antes** de chamar `Redirect()`.
+> **⚠️ Atenção:** A função `Redirect` deve ser usada em landing pages (como CloudPages). Ela retorna uma resposta HTTP 302, ou seja, é um redirecionamento temporário - o navegador não faz cache dessa instrução.
+
+> **💡 Dica:** Combinar `Redirect` com [Concat](../string-functions/concat.md) é o padrão mais comum no dia a dia. Você monta a URL dinamicamente com dados do subscriber e redireciona para uma página que já recebe esses parâmetros prontos. Isso é muito usado para páginas de preferências, confirmação de opt-in, ou redirecionamento condicional baseado em dados de uma Data Extension.
 
 ## Funções relacionadas
 
-- [RedirectTo](../http-functions/redirectto.md) — redireciona para uma URL em contexto de e-mail, com rastreamento de cliques
-- [Concat](../string-functions/concat.md) — concatena strings, muito usada para montar a URL dinâmica antes do redirecionamento
-- [URLEncode](../string-functions/urlencode.md) — codifica valores para uso seguro em URLs (query parameters)
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — gera uma URL criptografada para uma CloudPage, útil para links seguros em e-mails
-- [RequestParameter](../sites-functions/requestparameter.md) — captura parâmetros passados na URL da landing page
-- [QueryParameter](../sites-functions/queryparameter.md) — similar ao RequestParameter, recupera valores de query strings
-- [Lookup](../data-extension-functions/lookup.md) — busca dados em Data Extensions, útil para montar URLs personalizadas antes do redirect
-- [AttributeValue](../utility-functions/attributevalue.md) — recupera valores de atributos do assinante de forma segura
+- [Concat](../string-functions/concat.md) - para montar URLs dinâmicas com parâmetros antes de redirecionar
+- [RedirectTo](../http-functions/redirectto.md) - função de redirecionamento do contexto HTTP
+- [CloudPagesURL](../sites-functions/cloudpagesurl.md) - para gerar URLs de CloudPages com parâmetros criptografados
+- [RequestParameter](../sites-functions/requestparameter.md) - para capturar os parâmetros passados na URL de destino

@@ -1,185 +1,150 @@
 ---
 title: EncryptSymmetric
 sidebar_label: EncryptSymmetric
-description: Criptografa dados em texto simples usando um algoritmo simétrico e valores de senha, salt e vetor de inicialização (IV).
+description: Criptografa dados em texto plano usando um algoritmo simétrico e valores de senha, salt e vetor de inicialização.
 ---
 
 # EncryptSymmetric
 
 ## Descrição
 
-A função `EncryptSymmetric()` criptografa uma string de texto simples usando um algoritmo de criptografia simétrica (AES, DES ou Triple DES) junto com uma senha, um valor de salt e um vetor de inicialização (IV). Ela é muito útil quando você precisa proteger dados sensíveis como CPF, números de cartão de fidelidade ou tokens antes de armazená-los em Data Extensions ou exibi-los em CloudPages. Você pode fornecer os valores de senha, salt e IV diretamente como parâmetros ou referenciar chaves externas cadastradas na seção Key Management do Marketing Cloud. O resultado é uma string criptografada que só pode ser revertida usando a função `DecryptSymmetric()` com os mesmos parâmetros.
+Criptografa uma string de texto plano usando o algoritmo simétrico especificado (AES, DES ou Triple DES), junto com senha, salt e vetor de inicialização (IV). É a função essencial quando você precisa proteger dados sensíveis de clientes - como CPF, número de cartão ou qualquer informação pessoal - antes de armazená-los em Data Extensions ou passá-los via parâmetros em URLs de CloudPages. Retorna a string criptografada, que posteriormente pode ser revertida com [DecryptSymmetric](../encryption-functions/decryptsymmetric.md).
 
 ## Sintaxe
 
 ```ampscript
-EncryptSymmetric(@textoSimples, "algoritmo", @passwordExternalKey, @passwordValue, @saltExternalKey, @saltValue, @ivExternalKey, @ivValue)
+EncryptSymmetric(@data, "algoritmo", @passwordExternalKey, @passwordValue, @saltExternalKey, @saltValue, @ivExternalKey, @ivValue)
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| data | string | Sim | O texto simples que você quer criptografar. |
-| encryptionAlgorithm | string | Sim | O algoritmo de criptografia. Opções: `aes`, `des`, `tripledes`. Você pode adicionar modo e padding (ex: `tripledes;mode=cfb;padding=ansix923`). |
-| passwordExternalKey | string | Sim | A chave externa de uma senha cadastrada no Key Management. Passe uma variável vazia/nula se for usar o valor direto. |
-| passwordValue | string | Sim | O valor da senha. Passe uma variável vazia/nula se for usar a chave externa. |
-| saltExternalKey | string | Sim | A chave externa de um salt cadastrado no Key Management. Passe uma variável vazia/nula se for usar o valor direto. |
-| saltValue | string | Sim | O valor do salt, representado como uma string hexadecimal de 8 bytes (16 caracteres hex). Passe uma variável vazia/nula se for usar a chave externa. |
-| ivExternalKey | string | Sim | A chave externa de um vetor de inicialização (IV) cadastrado no Key Management. Passe uma variável vazia/nula se for usar o valor direto. |
-| ivValue | string | Sim | O vetor de inicialização, representado como uma string hexadecimal de 16 bytes (32 caracteres hex). Passe uma variável vazia/nula se for usar a chave externa. Se não for informado, a função usa o valor da senha como IV. |
+| data | string | Sim | A string de texto plano que será criptografada. |
+| encryptionAlgorithm | string | Sim | O algoritmo de criptografia. Opções: `aes`, `des`, `tripledes`. Para DES e Triple DES, você pode especificar modo de operação e padding (ex: `tripledes;mode=cfb;padding=ansix923`). |
+| passwordExternalKey | string | Sim | A external key de uma senha criada no Key Management. Use uma variável não declarada (ex: `@null`) se for informar o valor diretamente. |
+| passwordValue | string | Sim | O valor da senha. Use uma variável não declarada (ex: `@null`) se estiver usando a external key. |
+| saltExternalKey | string | Sim | A external key de um salt no Key Management. Use uma variável não declarada (ex: `@null`) se for informar o valor diretamente. |
+| saltValue | string | Sim | O valor do salt, representado como uma string hexadecimal de 8 bytes. Use uma variável não declarada (ex: `@null`) se estiver usando a external key. |
+| ivExternalKey | string | Sim | A external key de um vetor de inicialização no Key Management. Use uma variável não declarada (ex: `@null`) se for informar o valor diretamente. |
+| ivValue | string | Sim | O vetor de inicialização, representado como uma string hexadecimal de 16 bytes. Use uma variável não declarada (ex: `@null`) se estiver usando a external key. |
 
-### Algoritmos disponíveis
+## Algoritmos disponíveis
 
 | Algoritmo | Descrição | Segurança |
 |---|---|---|
 | `aes` | AES (Advanced Encryption Standard) | Mais seguro |
-| `tripledes` | Triple DES (aplica DES três vezes a cada bloco) | Intermediário |
+| `tripledes` | Triple DES (aplica o DES três vezes em cada bloco) | Intermediário |
 | `des` | DES (Data Encryption Standard) | Menos seguro |
 
-### Modos de operação (para DES e Triple DES)
+### Modos de operação (DES e Triple DES)
 
-Adicione após o algoritmo com `;mode=`: `cbc` (padrão), `cfb`, `cts`, `ecb`, `ofb`.
+Especifique após o algoritmo com `;mode=`:
 
-### Métodos de padding
+| Modo | Descrição |
+|---|---|
+| `cbc` | Cipher Block Chaining (padrão) |
+| `cfb` | Cipher Feedback |
+| `cts` | Ciphertext Stealing |
+| `ecb` | Electronic Codebook |
+| `ofb` | Output Feedback |
 
-Adicione após o modo com `;padding=`: `pkcs7` (padrão), `ansix923`, `iso10126`, `none`, `zeros`.
+### Métodos de padding (DES e Triple DES)
+
+Especifique após o modo com `;padding=`:
+
+| Padding | Descrição |
+|---|---|
+| `pkcs7` | PKCS#7/RFC 5652 (padrão) |
+| `ansix923` | ANSI X9.23 |
+| `iso10126` | ISO 10126 |
+| `zeros` | Bytes preenchidos com zeros |
+| `none` | Sem padding |
 
 ## Exemplo básico
 
-Imagine que o **Banco Meridional** precisa criptografar o CPF do cliente antes de gravar numa URL segura de CloudPage para consulta de extrato:
+Criptografando o CPF de um cliente do Banco Brasilão usando AES com valores fornecidos diretamente.
 
 ```ampscript
 %%[
-VAR @cpf, @encData, @null
+
+VAR @cpf, @encData
 SET @cpf = "123.456.789-00"
 
-/* Usando valores diretos — chaves externas ficam como @null (não declarada) */
-SET @encData = EncryptSymmetric(
-  @cpf,
-  "aes",
-  @null, "M1nh@S3nh@F0rt3!",
-  @null, "0000000000000000",
-  @null, "00000000000000000000000000000000"
-)
+SET @encData = EncryptSymmetric(@cpf, "aes", @null, "S3nh4M3r1d10n4l!", @null, "0000000000000000", @null, "00000000000000000000000000000000")
+
 ]%%
 
-CPF criptografado: %%=v(@encData)=%%
+CPF criptografado: %%=V(@encData)=%%
 ```
 
 **Saída:**
 ```
-CPF criptografado: kX7jF2mQpL8sN4vR+3wYtA==  (exemplo ilustrativo — o valor real varia)
+CPF criptografado: [string criptografada]
 ```
 
 ## Exemplo avançado
 
-Cenário real: a **FarmaRede** quer enviar um e-mail com um link seguro para a CloudPage do programa de pontos. O link contém o número do cartão fidelidade criptografado e codificado em Base64 para ser passado via URL. Na CloudPage, o valor será descriptografado.
-
-### Parte 1 — No e-mail (criptografar e montar o link)
+Cenário real: em um e-mail da FarmaRede, você precisa gerar um link para CloudPage que carregue dados sensíveis do cliente de forma segura. Aqui criptografamos o e-mail do cliente com Triple DES usando Cipher Feedback e padding ANSI X9.23, e então codificamos em Base64 para transporte seguro via URL.
 
 ```ampscript
 %%[
-VAR @cartaoFidelidade, @nomeCliente, @encCartao, @encCartaoB64, @linkSeguro, @null
 
-SET @nomeCliente = AttributeValue("PrimeiroNome")
-SET @cartaoFidelidade = AttributeValue("CartaoFidelidade")
+VAR @email, @encData, @encBase64, @linkSeguro
 
-/* Criptografar com Triple DES, modo CFB e padding ANSI X9.23 */
-SET @encCartao = EncryptSymmetric(
-  @cartaoFidelidade,
-  "tripledes;mode=cfb;padding=ansix923",
-  @null, "P0nt0sFarma2024!",
-  @null, "4F6A7B8C9D0E1F2A",
-  @null, "4F6A7B8C9D0E1F2A4F6A7B8C9D0E1F2A"
-)
+SET @email = "joao.silva@email.com.br"
 
-/* Codificar em Base64 e depois URL-encode para ficar seguro na URL */
-SET @encCartaoB64 = Base64Encode(@encCartao)
-SET @linkSeguro = Concat(
-  "https://cloud.bancomeridional.com.br/pontos?token=",
-  URLEncode(@encCartaoB64)
-)
-]%%
-
-Olá, %%=v(@nomeCliente)=%%, confira seus pontos FarmaRede!
-
-<a href="%%=RedirectTo(@linkSeguro)=%%">Ver meus pontos</a>
-```
-
-### Parte 2 — Na CloudPage (descriptografar)
-
-```ampscript
-%%[
-VAR @tokenParam, @encCartaoDecoded, @cartaoOriginal, @null
-
-SET @tokenParam = RequestParameter("token")
-
-/* Decodificar de Base64 */
-SET @encCartaoDecoded = Base64Decode(@tokenParam)
-
-/* Descriptografar com os mesmos parâmetros */
-SET @cartaoOriginal = DecryptSymmetric(
-  @encCartaoDecoded,
-  "tripledes;mode=cfb;padding=ansix923",
-  @null, "P0nt0sFarma2024!",
-  @null, "4F6A7B8C9D0E1F2A",
-  @null, "4F6A7B8C9D0E1F2A4F6A7B8C9D0E1F2A"
-)
-]%%
-
-<h1>Programa de Pontos FarmaRede</h1>
-<p>Cartão: %%=v(@cartaoOriginal)=%%</p>
-```
-
-**Saída (na CloudPage):**
-```
-Programa de Pontos FarmaRede
-Cartão: 9876543210  (valor original descriptografado)
-```
-
-## Exemplo com Key Management
-
-Se você já cadastrou chaves no Key Management do Marketing Cloud, pode referenciá-las pelas chaves externas em vez de colocar os valores diretamente no código — isso é bem mais seguro para produção:
-
-```ampscript
-%%[
-VAR @cpf, @encData, @null
-
-SET @cpf = Lookup("Clientes_BancoMeridional", "CPF", "EmailAddress", EmailAddress)
-
+/* Criptografa com Triple DES, modo CFB, padding ANSI X9.23 */
 SET @encData = EncryptSymmetric(
-  @cpf,
-  "aes",
-  "chave-senha-banco-meridional", @null,
-  "chave-salt-banco-meridional", @null,
-  "chave-iv-banco-meridional", @null
+  @email,
+  "tripledes;mode=cfb;padding=ansix923",
+  @null,
+  "F4rm4R3d3S3cur3!",
+  @null,
+  "0102030405060708",
+  @null,
+  "01020304050607080910111213141516"
 )
+
+/* Codifica em Base64 para poder usar em URL */
+SET @encBase64 = Base64Encode(@encData)
+
+SET @linkSeguro = Concat("https://cloud.farmarede.com.br/minha-conta?token=", URLEncode(@encBase64))
+
 ]%%
+
+<a href="%%=RedirectTo(@linkSeguro)=%%">Acessar minha conta FarmaRede</a>
+```
+
+**Saída:**
+```html
+<a href="https://cloud.farmarede.com.br/minha-conta?token=[string criptografada em Base64 e URL-encoded]">Acessar minha conta FarmaRede</a>
 ```
 
 ## Observações
 
-- **Funciona apenas dentro do Marketing Cloud.** Você **não pode** usar `EncryptSymmetric()` e `DecryptSymmetric()` para interoperar com sistemas de criptografia de terceiros. Os dados precisam ser criptografados e descriptografados usando essas mesmas funções do AMPscript.
-- **Salt e IV são strings hexadecimais.** O salt deve ter 8 bytes (16 caracteres hexadecimais) e o IV deve ter 16 bytes (32 caracteres hexadecimais). Cada par de caracteres representa um byte. Não tente usar esses valores como cipher strings — a descriptografia vai falhar.
-- **Se você não informar o IV**, a função usa o valor da senha como vetor de inicialização.
-- **AES é o algoritmo mais seguro** e deve ser a sua primeira escolha. Use DES ou Triple DES apenas se houver alguma necessidade específica de compatibilidade.
-- **Modos de operação e padding** só podem ser especificados para DES e Triple DES. O formato é: `tripledes;mode=cfb;padding=ansix923`.
-- **Use Base64Encode/Base64Decode** para envolver o resultado criptografado quando precisar visualizar ou transportar a string (por exemplo, em URLs ou Data Extensions com campo texto).
-- **Para produção, prefira usar Key Management** em vez de colocar senhas, salts e IVs diretamente no código. Isso é mais seguro e facilita a rotação de chaves.
-- Para parâmetros que você não vai usar (chave externa ou valor direto), passe uma variável não declarada (como `@null`) — o SFMC vai tratá-la como vazia.
-- O modo de operação padrão é `cbc` (Cipher Block Chaining) e o padding padrão é `pkcs7`.
+> **⚠️ Atenção:** Os valores de Salt e IV são tratados como **strings hexadecimais**, onde cada par de caracteres representa um byte. O Salt deve ter **8 bytes** (16 caracteres hex) e o IV deve ter **16 bytes** (32 caracteres hex). Não tente usar esses valores como strings de cifra - você não conseguirá descriptografar corretamente depois.
+
+> **⚠️ Atenção:** As funções `EncryptSymmetric` e `DecryptSymmetric` funcionam **exclusivamente com dados dentro do Marketing Cloud**. Não é possível usá-las com funcionalidades de criptografia/descriptografia de terceiros.
+
+> **💡 Dica:** Quando for informar valores diretamente (em vez de usar external keys do Key Management), passe uma variável não declarada (como `@null`) no parâmetro de external key correspondente. Isso indica à função que ela deve usar o valor fornecido no parâmetro seguinte.
+
+> **💡 Dica:** Para visualizar ou transportar a string criptografada com segurança, envolva o resultado em [Base64Encode](../encryption-functions/base64encode.md). Na hora de descriptografar, use [Base64Decode](../encryption-functions/base64decode.md) antes de chamar [DecryptSymmetric](../encryption-functions/decryptsymmetric.md).
+
+> **💡 Dica:** Se você não passar ou referenciar um vetor de inicialização (IV), a função usará o valor da senha como IV. Mesmo assim, é altamente recomendável sempre definir um IV explícito para maior segurança.
+
+> **💡 Dica:** Se você já criou chaves na seção **Key Management** da interface do Marketing Cloud, pode referenciar as external keys diretamente nos parâmetros, sem precisar expor valores sensíveis no código. Essa é a abordagem mais segura para ambientes de produção.
+
+> **💡 Dica:** Entre os algoritmos disponíveis, prefira **AES** - é o mais seguro. Use Triple DES ou DES apenas quando houver necessidade de compatibilidade com sistemas legados.
 
 ## Funções relacionadas
 
-- [DecryptSymmetric](../encryption-functions/decryptsymmetric.md) — Descriptografa dados que foram criptografados com `EncryptSymmetric()`
-- [MD5](../encryption-functions/md5.md) — Gera um hash MD5 de uma string (mão única, sem descriptografia)
-- [SHA256](../encryption-functions/sha256.md) — Gera um hash SHA-256 de uma string
-- [SHA512](../encryption-functions/sha512.md) — Gera um hash SHA-512 de uma string
-- [Base64Encode](../content-functions/buildrowsetfromstring.md) — Útil para codificar o resultado criptografado em Base64
-- [URLEncode](../string-functions/urlencode.md) — Codifica strings para uso seguro em URLs
-- [Lookup](../data-extension-functions/lookup.md) — Busca valores em Data Extensions para criptografar
-- [AttributeValue](../utility-functions/attributevalue.md) — Recupera atributos do assinante de forma segura
-- [CloudPagesURL](../sites-functions/cloudpagesurl.md) — Gera URLs de CloudPages onde você pode passar dados criptografados
-- [RequestParameter](../sites-functions/requestparameter.md) — Captura parâmetros na CloudPage para descriptografar
-- [RedirectTo](../http-functions/redirectto.md) — Redireciona para URLs com dados criptografados
+- [DecryptSymmetric](../encryption-functions/decryptsymmetric.md) - descriptografa dados criptografados com `EncryptSymmetric`
+- [Base64Encode](../encryption-functions/base64encode.md) - codifica a string criptografada em Base64 para visualização e transporte
+- [Base64Decode](../encryption-functions/base64decode.md) - decodifica Base64 antes de descriptografar
+- [MD5](../encryption-functions/md5.md) - gera hash MD5 (criptografia unidirecional)
+- [SHA256](../encryption-functions/sha256.md) - gera hash SHA-256 (criptografia unidirecional)
+- [SHA512](../encryption-functions/sha512.md) - gera hash SHA-512 (criptografia unidirecional)
+- [URLEncode](../string-functions/urlencode.md) - codifica strings para uso seguro em URLs
+- [RedirectTo](../http-functions/redirectto.md) - redireciona para URLs construídas dinamicamente
+- [CloudPagesURL](../sites-functions/cloudpagesurl.md) - gera URLs de CloudPages com parâmetros criptografados

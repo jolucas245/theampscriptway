@@ -1,14 +1,14 @@
 ---
 title: TreatAsContent
 sidebar_label: TreatAsContent
-description: Trata uma string como se fosse conteúdo nativo do Marketing Cloud, processando personalizações e AMPscript embutidos nela.
+description: Interpreta uma string como conteúdo, processando personalizações e código AMPscript embutido nela.
 ---
 
 # TreatAsContent
 
 ## Descrição
 
-A função `TreatAsContent` pega uma string e a trata como se fosse conteúdo vindo diretamente de uma Content Area do Marketing Cloud. Isso significa que, se a string contiver personalization strings (como `%%FirstName%%`) ou código AMPscript, eles serão processados e substituídos pelos valores correspondentes. É muito útil quando você monta HTML dinamicamente (por exemplo, puxando de uma Data Extension) e precisa que o AMPscript ou as personalization strings dentro dessa string sejam interpretados. Para que links embutidos na string tenham rastreamento de clique, inclua a string `httpgetwrap` nos links.
+A função `TreatAsContent` recebe uma string e a trata como se fosse conteúdo vindo de uma Content Area - ou seja, qualquer personalização (como `%%FirstName%%`) ou código AMPscript presente nessa string será processado e resolvido. Isso é extremamente útil quando você armazena templates ou trechos de HTML com personalizações em Data Extensions e precisa que eles sejam renderizados dinamicamente no momento do envio. Se o conteúdo tiver links embutidos e você precisar rastrear cliques, inclua a string `httpgetwrap` nesses links.
 
 ## Sintaxe
 
@@ -20,93 +20,80 @@ TreatAsContent(stringToReturn)
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| stringToReturn | String | Sim | A string que será tratada como conteúdo. Pode conter HTML, personalization strings e código AMPscript que serão processados. |
+| stringToReturn | String | Sim | A string que será interpretada e retornada como conteúdo. Personalizações e código AMPscript dentro dela serão processados. |
 
 ## Exemplo básico
 
-Imagine que você tem uma Data Extension chamada **CampanhasEmail** com uma coluna `ConteudoHTML` que armazena trechos de HTML personalizados. Você quer renderizar esse conteúdo no e-mail:
+Renderizando uma saudação personalizada montada dinamicamente a partir de uma string com personalizações:
 
 ```ampscript
 %%[
-SET @primeiroNome = "Maria"
-SET @saudacao = Concat("<p>Olá, ", @primeiroNome, "! Bem-vinda à nossa promoção de Dia das Mães! 🌹</p>")
+
+SET @nome = "Maria Santos"
+SET @saudacao = Concat("Olá, ", @nome, "! Bem-vinda à MegaStore.")
+
 TreatAsContent(@saudacao)
+
 ]%%
 ```
 
 **Saída:**
-
-```html
-<p>Olá, Maria! Bem-vinda à nossa promoção de Dia das Mães! 🌹</p>
+```
+Olá, Maria Santos! Bem-vinda à MegaStore.
 ```
 
 ## Exemplo avançado
 
-Cenário real: a **MegaStore** armazena templates de e-mail em uma Data Extension chamada **TemplatesPromocao**. Cada template contém personalization strings que precisam ser resolvidas no momento do envio. O conteúdo é puxado dinamicamente com base no tipo de campanha do assinante.
+Imagine que a equipe de CRM da Lojas Vitória armazena templates de blocos de e-mail em uma Data Extension chamada `TemplatesEmail`, onde cada linha tem um campo `HtmlBloco` com HTML e personalizações AMPscript embutidas. Isso permite que o time de marketing atualize o conteúdo sem mexer no e-mail principal:
 
 ```ampscript
 %%[
-/* Busca o template na Data Extension */
-SET @conteudoTemplate = Lookup(
-  "TemplatesPromocao",
-  "ConteudoHTML",
-  "TipoCampanha", "black_friday"
-)
+
+SET @email = AttributeValue("EmailAddress")
+SET @primeiroNome = AttributeValue("PrimeiroNome")
+SET @cidade = AttributeValue("Cidade")
+
+SET @templateRows = LookupRows("TemplatesEmail", "BlocoID", "header-promo")
+SET @templateRow = Row(@templateRows, 1)
+SET @htmlTemplate = Field(@templateRow, "HtmlBloco")
 
 /* 
-   Supondo que o conteúdo retornado seja algo como:
-   
-   "<h1>Fala, %%NomeCliente%%! 🖤</h1>
-    <p>A Black Friday da MegaStore chegou!</p>
-    <p>Você tem <strong>R$ %%SaldoCashback%%</strong> de cashback disponível.</p>
-    <p>Use no site e ganhe frete grátis acima de R$ 299!</p>
-    <p>Aproveite até 30/11/2024.</p>
-    <a href='https://www.megastore.com.br/blackfriday?cpf=%%CPFCliente%%'>
-      Ver ofertas exclusivas
-    </a>"
+  O campo HtmlBloco contém algo como:
+  "<h1>Oi, %%=v(@primeiroNome)=%%!</h1>
+   <p>Ofertas exclusivas para quem é de %%=v(@cidade)=%%.</p>
+   <p>Aproveite até 40% de desconto em produtos selecionados.</p>"
 */
 
-/* Valida se o conteúdo não está vazio */
-IF NOT Empty(@conteudoTemplate) THEN
-  TreatAsContent(@conteudoTemplate)
-ELSE
-  Output(Concat("<p>Olá! Confira nossas ofertas em www.megastore.com.br</p>"))
-ENDIF
+TreatAsContent(@htmlTemplate)
+
 ]%%
 ```
 
-**Saída (para a assinante Maria Santos, com R$ 45,00 de cashback e CPF 123.456.789-00):**
-
+**Saída:**
 ```html
-<h1>Fala, Maria Santos! 🖤</h1>
-<p>A Black Friday da MegaStore chegou!</p>
-<p>Você tem <strong>R$ 45,00</strong> de cashback disponível.</p>
-<p>Use no site e ganhe frete grátis acima de R$ 299!</p>
-<p>Aproveite até 30/11/2024.</p>
-<a href='https://www.megastore.com.br/blackfriday?cpf=123.456.789-00'>
-  Ver ofertas exclusivas
-</a>
+<h1>Oi, Maria Santos!</h1>
+<p>Ofertas exclusivas para quem é de Curitiba.</p>
+<p>Aproveite até 40% de desconto em produtos selecionados.</p>
 ```
 
 ## Observações
 
-- **⚠️ Segurança é prioridade:** Sempre sanitize qualquer input de usuário dentro de um bloco `TreatAsContent`. Remova, escape ou bloqueie entradas que contenham tags HTML ou código AMPscript. Use uma lista de caracteres permitidos (allowlist) para evitar injeção de código malicioso. Isso é especialmente crítico quando o conteúdo vem de fontes externas ou de dados que o próprio assinante pode ter preenchido (como campos de formulário em CloudPages).
-- **Personalization strings são processadas:** Se a string contiver `%%NomeDoAtributo%%`, o Marketing Cloud vai substituir pelo valor correspondente do assinante, exatamente como faria em conteúdo nativo.
-- **AMPscript embutido também é processado:** Código AMPscript dentro da string será executado. Isso é poderoso, mas exige cuidado — conteúdo não confiável pode executar código indesejado.
-- **Rastreamento de links:** Para que os links embutidos na string retornada tenham tracking de clique, você precisa incluir a string `httpgetwrap` nesses links.
-- **Use apenas com dados revisados:** A documentação oficial recomenda usar essa função somente com dados que foram previamente revisados e otimizados para aparecer como conteúdo. Não use com dados brutos ou não validados.
-- **Diferença para `TreatAsContentArea`:** A função `TreatAsContent` trabalha com strings puras, enquanto [`TreatAsContentArea`](../content-functions/treatascontentarea.md) simula uma Content Area com mais opções de formatação.
-- **Contexto de uso:** Funciona em e-mails, CloudPages, SMS e Landing Pages — qualquer contexto onde AMPscript é processado.
+> **⚠️ Atenção:** Sempre sanitize dados de entrada do usuário dentro de um bloco `TreatAsContent()`. Remova, escape ou bloqueie qualquer input que contenha tags HTML ou código AMPscript. Use uma allowlist de caracteres seguros. Se a string processada vier de uma fonte não confiável (como um formulário de CloudPage), um usuário mal-intencionado pode injetar código AMPscript que será executado, causando desde vazamento de dados até erros no envio.
+
+> **💡 Dica:** Use essa função apenas com dados que foram revisados e otimizados para aparecer como conteúdo. Ela é ideal para cenários onde os blocos de conteúdo ficam armazenados em Data Extensions - por exemplo, quando diferentes unidades de negócio gerenciam seus próprios textos promocionais e você precisa montar o e-mail dinamicamente.
+
+> **💡 Dica:** Se o conteúdo retornado por `TreatAsContent` incluir links e você precisar rastrear cliques nesses links, utilize a string [HTTPGetWrap](../http-functions/httpgetwrap.md) nos links embutidos para garantir que as informações de tracking sejam capturadas corretamente.
+
+- A função processa tanto personalization strings (ex: `%%NomeColuna%%`) quanto blocos AMPscript completos (ex: `%%=v(@variavel)=%%`) presentes na string recebida.
 
 ## Funções relacionadas
 
-- [TreatAsContentArea](../content-functions/treatascontentarea.md) — similar, mas trata a string como uma Content Area com opções adicionais de layout
-- [ContentBlockByName](../content-functions/contentblockbyname.md) — busca e renderiza um Content Block pelo nome (conteúdo já salvo no SFMC)
-- [ContentBlockByKey](../content-functions/contentblockbykey.md) — busca e renderiza um Content Block pela Customer Key
-- [ContentBlockById](../content-functions/contentblockbyid.md) — busca e renderiza um Content Block pelo ID
-- [Lookup](../data-extension-functions/lookup.md) — busca valores em Data Extensions (frequentemente usada junto com TreatAsContent)
-- [Concat](../string-functions/concat.md) — concatena strings para montar conteúdo dinâmico antes de tratar como conteúdo
-- [Output](../utility-functions/output.md) — exibe conteúdo diretamente, mas sem processar personalization strings embutidas na string
-- [V](../utility-functions/v.md) — recupera o valor de uma variável ou atributo pelo nome em formato de string
-- [Replace](../string-functions/replace.md) — útil para sanitizar strings antes de passá-las para TreatAsContent
-- [Empty](../utility-functions/empty.md) — verifica se a string está vazia antes de tentar renderizá-la como conteúdo
+- [Output](../utility-functions/output.md) - exibe o resultado de uma expressão, mas não processa personalizações dentro de strings
+- [V](../utility-functions/v.md) - retorna o valor de uma variável
+- [ContentBlockByKey](../content-functions/contentblockbykey.md) - carrega um Content Block pelo key, já processando o conteúdo automaticamente
+- [ContentBlockByName](../content-functions/contentblockbyname.md) - carrega um Content Block pelo nome
+- [ContentBlockById](../content-functions/contentblockbyid.md) - carrega um Content Block pelo ID
+- [TreatAsContentArea](../content-functions/treatascontentarea.md) - similar, mas trata a string como uma Content Area nomeada
+- [Concat](../string-functions/concat.md) - útil para montar a string que será processada pelo TreatAsContent
+- [Lookup](../data-extension-functions/lookup.md) - para buscar o template armazenado em uma Data Extension
+- [HTTPGetWrap](../http-functions/httpgetwrap.md) - para incluir tracking em links dentro do conteúdo processado

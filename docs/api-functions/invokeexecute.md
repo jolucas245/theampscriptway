@@ -1,14 +1,14 @@
 ---
 title: InvokeExecute
 sidebar_label: InvokeExecute
-description: Invoca o método Execute em um objeto da API do Marketing Cloud e retorna o código de status da operação.
+description: Invoca o método Execute em um API Object do Marketing Cloud e retorna o código de status da API.
 ---
 
 # InvokeExecute
 
 ## Descrição
 
-A função `InvokeExecute` invoca o método **Execute** em um objeto da API (SOAP) do Marketing Cloud e retorna o código de status da operação. Ela é usada quando você precisa executar ações específicas da API que utilizam o método Execute, como registrar eventos de unsubscribe (`LogUnsubEvent`), iniciar automações, entre outros. O retorno é o código de status da API (por exemplo, `"OK"` para sucesso ou um código de erro), e você pode capturar também a mensagem de status e o ID da requisição em variáveis AMPscript.
+A função `InvokeExecute` invoca o método Execute em um API Object do Marketing Cloud Engagement, retornando o código de status da API como resultado. É usada quando você precisa executar operações específicas da API que possuem o método Execute - como, por exemplo, registrar um evento de descadastro (LogUnsubEvent). Essa função é parte do fluxo de trabalho com API Objects via AMPscript, onde você primeiro cria o objeto com [CreateObject](../api-functions/createobject.md), configura suas propriedades com [SetObjectProperty](../api-functions/setobjectproperty.md) e então executa a ação com `InvokeExecute`.
 
 ## Sintaxe
 
@@ -19,189 +19,134 @@ InvokeExecute(@apiObject, @statusMessage, @requestId)
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|----------------|-------------------|-------------|--------------------------------------------------------------|
-| @apiObject | API Object | Sim | O objeto da API do Marketing Cloud sobre o qual o método Execute será invocado. |
+|---|---|---|---|
+| @apiObject | API Object | Sim | O API Object sobre o qual o método Execute será invocado. |
 | @statusMessage | Variável AMPscript | Não | Variável que armazena a mensagem de status retornada pela API. |
-| @requestId | Variável AMPscript | Não | Variável que armazena o ID da requisição retornado pela API. |
+| @requestId | Variável AMPscript | Não | Variável que armazena o ID da requisição (request ID) retornado pela API. |
 
 ## Retorno
 
-Retorna o código de status da API como string (por exemplo, `"OK"` em caso de sucesso, ou um código de erro).
+Retorna o código de status da API (status code) indicando o resultado da operação.
 
 ## Exemplo básico
 
-Este exemplo registra um evento de unsubscribe (`LogUnsubEvent`) para um assinante que solicitou o descadastramento de uma lista da **Conecta Telecom**.
+Registrando um evento de descadastro (LogUnsubEvent) para um assinante da Conecta Telecom.
 
 ```ampscript
 %%[
-/* Cria o objeto LogUnsubEvent */
+VAR @logUnsub, @statusCode, @statusMessage, @requestId
+
 SET @logUnsub = CreateObject("ExecuteRequest")
 SetObjectProperty(@logUnsub, "Name", "LogUnsubEvent")
 
-/* Define o SubscriberKey do assinante */
-SET @subscriberKey = "joao.silva@email.com.br"
+VAR @subParam
+SET @subParam = CreateObject("APIProperty")
+SetObjectProperty(@subParam, "Name", "SubscriberKey")
+SetObjectProperty(@subParam, "Value", "joao.silva@conectatelecom.com.br")
+AddObjectArrayItem(@logUnsub, "Parameters", @subParam)
 
-/* Adiciona os parâmetros do evento */
-SET @prop1 = CreateObject("APIProperty")
-SetObjectProperty(@prop1, "Name", "SubscriberKey")
-SetObjectProperty(@prop1, "Value", @subscriberKey)
-AddObjectArrayItem(@logUnsub, "Parameters", @prop1)
+VAR @reasonParam
+SET @reasonParam = CreateObject("APIProperty")
+SetObjectProperty(@reasonParam, "Name", "Reason")
+SetObjectProperty(@reasonParam, "Value", "Solicitação do cliente via central de preferências")
+AddObjectArrayItem(@logUnsub, "Parameters", @reasonParam)
 
-SET @prop2 = CreateObject("APIProperty")
-SetObjectProperty(@prop2, "Name", "EmailAddress")
-SetObjectProperty(@prop2, "Value", "joao.silva@email.com.br")
-AddObjectArrayItem(@logUnsub, "Parameters", @prop2)
-
-SET @prop3 = CreateObject("APIProperty")
-SetObjectProperty(@prop3, "Name", "Reason")
-SetObjectProperty(@prop3, "Value", "Solicitacao via CloudPage - Conecta Telecom")
-AddObjectArrayItem(@logUnsub, "Parameters", @prop3)
-
-/* Executa o LogUnsubEvent */
 SET @statusCode = InvokeExecute(@logUnsub, @statusMessage, @requestId)
-
-IF @statusCode == "OK" THEN
-  Output(Concat("Descadastramento realizado com sucesso para: ", @subscriberKey))
-ELSE
-  Output(Concat("Erro: ", @statusCode, " - ", @statusMessage))
-ENDIF
 ]%%
+
+Status: %%=V(@statusCode)=%%
+Mensagem: %%=V(@statusMessage)=%%
+Request ID: %%=V(@requestId)=%%
 ```
 
-**Saída (em caso de sucesso):**
+**Saída:**
 ```
-Descadastramento realizado com sucesso para: joao.silva@email.com.br
+Status: OK
+Mensagem: Log Unsub Event completed successfully.
+Request ID: a1b2c3d4-e5f6-7890-abcd-ef1234567890
 ```
 
 ## Exemplo avançado
 
-Neste cenário mais robusto, uma CloudPage da **Lojas Vitória** processa o descadastramento de um assinante, trata erros específicos (como quando o assinante já está descadastrado) e registra o resultado em uma Data Extension de log.
+Cenário de uma CloudPage de descadastro para o Banco Brasilão, onde o assinante confirma que quer sair da lista. O código valida o resultado e trata o caso em que o assinante já estava descadastrado.
 
 ```ampscript
 %%[
-/* Captura o e-mail via parâmetro da URL */
-SET @email = RequestParameter("email")
-SET @subscriberKey = RequestParameter("sk")
+VAR @email, @logUnsub, @statusCode, @statusMessage, @requestId
+VAR @subParam, @reasonParam
 
-IF Empty(@email) OR Empty(@subscriberKey) THEN
-  RaiseError("Parametros obrigatorios nao informados.", true)
+SET @email = RequestParameter("email")
+
+IF Empty(@email) THEN
+  RaiseError("E-mail não informado. Não é possível processar o descadastro.", true)
 ENDIF
 
-/* Monta o objeto ExecuteRequest para LogUnsubEvent */
+/* Cria o objeto ExecuteRequest para LogUnsubEvent */
 SET @logUnsub = CreateObject("ExecuteRequest")
 SetObjectProperty(@logUnsub, "Name", "LogUnsubEvent")
 
-/* SubscriberKey */
-SET @paramSK = CreateObject("APIProperty")
-SetObjectProperty(@paramSK, "Name", "SubscriberKey")
-SetObjectProperty(@paramSK, "Value", @subscriberKey)
-AddObjectArrayItem(@logUnsub, "Parameters", @paramSK)
+/* Parâmetro: SubscriberKey */
+SET @subParam = CreateObject("APIProperty")
+SetObjectProperty(@subParam, "Name", "SubscriberKey")
+SetObjectProperty(@subParam, "Value", @email)
+AddObjectArrayItem(@logUnsub, "Parameters", @subParam)
 
-/* EmailAddress */
-SET @paramEmail = CreateObject("APIProperty")
-SetObjectProperty(@paramEmail, "Name", "EmailAddress")
-SetObjectProperty(@paramEmail, "Value", @email)
-AddObjectArrayItem(@logUnsub, "Parameters", @paramEmail)
+/* Parâmetro: EmailAddress */
+VAR @emailParam
+SET @emailParam = CreateObject("APIProperty")
+SetObjectProperty(@emailParam, "Name", "EmailAddress")
+SetObjectProperty(@emailParam, "Value", @email)
+AddObjectArrayItem(@logUnsub, "Parameters", @emailParam)
 
-/* Reason */
-SET @paramReason = CreateObject("APIProperty")
-SetObjectProperty(@paramReason, "Name", "Reason")
-SetObjectProperty(@paramReason, "Value", "Descadastro voluntario - Preference Center Lojas Vitoria")
-AddObjectArrayItem(@logUnsub, "Parameters", @paramReason)
+/* Parâmetro: Reason */
+SET @reasonParam = CreateObject("APIProperty")
+SetObjectProperty(@reasonParam, "Name", "Reason")
+SetObjectProperty(@reasonParam, "Value", "Descadastro via página de preferências - Banco Brasilão")
+AddObjectArrayItem(@logUnsub, "Parameters", @reasonParam)
 
-/* Executa a chamada */
+/* Executa o LogUnsubEvent */
 SET @statusCode = InvokeExecute(@logUnsub, @statusMessage, @requestId)
 
-/* 
-  Trata o resultado: 
-  - "OK" = sucesso
-  - Verifica se já estava descadastrado (erro esperado)
-*/
-SET @sucesso = false
-
+/* Verifica se a operação foi bem-sucedida ou se já estava descadastrado */
 IF @statusCode == "OK" THEN
-  SET @sucesso = true
-  SET @resultado = "Descadastro realizado com sucesso"
+  SET @resultado = "Pronto! Você foi descadastrado com sucesso das comunicações do Banco Brasilão."
 ELSEIF IndexOf(@statusMessage, "already unsubscribed") > 0 THEN
-  SET @sucesso = true
-  SET @resultado = "Assinante ja estava descadastrado"
+  SET @resultado = "Você já estava descadastrado das nossas comunicações. Nenhuma ação adicional necessária."
 ELSE
-  SET @resultado = Concat("Erro no descadastro: ", @statusCode, " - ", @statusMessage)
+  SET @resultado = Concat("Não foi possível processar seu descadastro. Por favor, entre em contato pelo (11) 3000-1234. Erro: ", @statusMessage)
 ENDIF
-
-/* Registra o log na Data Extension */
-InsertDE(
-  "Log_Descadastro_Vitoria",
-  "SubscriberKey", @subscriberKey,
-  "EmailAddress", @email,
-  "StatusCode", @statusCode,
-  "StatusMessage", @statusMessage,
-  "RequestId", @requestId,
-  "Resultado", @resultado,
-  "DataProcessamento", FormatDate(Now(), "dd/MM/yyyy HH:mm:ss")
-)
 ]%%
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Descadastro - Lojas Vitória</title>
-</head>
-<body>
-  <div style="text-align:center; padding:40px; font-family:Arial,sans-serif;">
-    %%[IF @sucesso == true THEN]%%
-      <h1>Pronto, %%=v(@email)=%%!</h1>
-      <p>Você foi descadastrado(a) das comunicações da Lojas Vitória.</p>
-      <p>Sentiremos sua falta! Se mudar de ideia, visite 
-        <a href="https://www.lojasvitoria.com.br/preferencias">nosso centro de preferências</a>.
-      </p>
-    %%[ELSE]%%
-      <h1>Ops, algo deu errado</h1>
-      <p>Não conseguimos processar seu descadastro neste momento.</p>
-      <p>Por favor, tente novamente ou entre em contato pelo e-mail 
-        <strong>atendimento@lojasvitoria.com.br</strong>.</p>
-      <p><small>Código de referência: %%=v(@requestId)=%%</small></p>
-    %%[ENDIF]%%
-  </div>
-</body>
-</html>
+<h2>%%=V(@resultado)=%%</h2>
+<p>Protocolo: %%=V(@requestId)=%%</p>
 ```
 
-**Saída (assinante descadastrado com sucesso):**
+**Saída:**
 ```
-Pronto, joao.silva@email.com.br!
-Você foi descadastrado(a) das comunicações da Lojas Vitória.
-Sentiremos sua falta! Se mudar de ideia, visite nosso centro de preferências.
-```
-
-**Saída (assinante já descadastrado anteriormente):**
-```
-Pronto, joao.silva@email.com.br!
-Você foi descadastrado(a) das comunicações da Lojas Vitória.
-Sentiremos sua falta! Se mudar de ideia, visite nosso centro de preferências.
+Pronto! Você foi descadastrado com sucesso das comunicações do Banco Brasilão.
+Protocolo: f8a3b1c2-d4e5-6789-abcd-0123456789ab
 ```
 
 ## Observações
 
-- **Método Execute da API SOAP:** A função `InvokeExecute` corresponde ao método `Execute` da API SOAP do Marketing Cloud. Ela é usada para operações específicas que não se encaixam em Create, Update, Delete ou Retrieve — o caso mais comum é o `LogUnsubEvent`.
-- **LogUnsubEvent:** O cenário mais frequente de uso dessa função é registrar programaticamente o descadastramento (unsubscribe) de assinantes, especialmente em CloudPages de Preference Center.
-- **Tratamento de erros:** A operação é considerada bem-sucedida quando retorna `"OK"`. Porém, em cenários de `LogUnsubEvent`, é uma boa prática também tratar o caso em que o assinante já estava descadastrado, pois a API pode retornar um código de erro específico nessa situação — mas o resultado funcional é o mesmo.
-- **Variáveis de saída:** Embora `@statusMessage` e `@requestId` não sejam obrigatórios, é altamente recomendável usá-los para fins de debug e log. O `@requestId` é especialmente útil para abrir chamados no suporte da Salesforce.
-- **Contexto de execução:** Essa função funciona em emails, CloudPages e Landing Pages. Em CloudPages, é o cenário mais comum (formulários de descadastro ou preference centers).
-- **Objeto ExecuteRequest:** Para usar `InvokeExecute`, você precisa criar um objeto do tipo `ExecuteRequest` usando [CreateObject](../api-functions/createobject.md) e configurar suas propriedades com [SetObjectProperty](../api-functions/setobjectproperty.md). Os parâmetros do request são adicionados como itens de array via [AddObjectArrayItem](../api-functions/addobjectarrayitem.md).
-- **Função avançada:** Essa é uma função de nível avançado. Se você está começando com AMPscript, provavelmente não vai precisar dela no dia a dia. Para cenários simples de unsubscribe, o link de descadastro padrão do Marketing Cloud costuma ser suficiente.
+- A função `InvokeExecute` é voltada para API Objects que possuem o método Execute. O caso de uso documentado é o `LogUnsubEvent`, usado para registrar eventos de descadastro programaticamente.
+
+- O retorno da função é o código de status da API. Use as variáveis `@statusMessage` e `@requestId` para capturar detalhes adicionais sobre o resultado da operação - especialmente útil para logs e tratamento de erros.
+
+> **💡 Dica:** Sempre capture o `@requestId` e exiba-o ao assinante como protocolo ou registre-o em uma Data Extension. Em caso de auditoria ou dúvida do cliente, esse ID permite rastrear exatamente o que aconteceu na plataforma.
+
+> **⚠️ Atenção:** A operação pode ser considerada bem-sucedida tanto quando completa normalmente quanto quando o erro retornado indica que o assinante já estava descadastrado. Trate ambos os cenários no seu código para evitar exibir mensagens de erro desnecessárias ao usuário.
+
+- Essa função faz parte de um fluxo que geralmente envolve [CreateObject](../api-functions/createobject.md) para criar o API Object, [SetObjectProperty](../api-functions/setobjectproperty.md) para definir propriedades e [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) para adicionar itens a arrays do objeto.
 
 ## Funções relacionadas
 
-- [CreateObject](../api-functions/createobject.md) — cria um objeto da API, necessário para montar o request que será executado
-- [SetObjectProperty](../api-functions/setobjectproperty.md) — define propriedades no objeto da API (como `Name` do ExecuteRequest)
-- [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) — adiciona itens a arrays do objeto (como os parâmetros do LogUnsubEvent)
-- [InvokeCreate](../api-functions/invokecreate.md) — invoca o método Create da API SOAP
-- [InvokeUpdate](../api-functions/invokeupdate.md) — invoca o método Update da API SOAP
-- [InvokeDelete](../api-functions/invokedelete.md) — invoca o método Delete da API SOAP
-- [InvokeRetrieve](../api-functions/invokeretrieve.md) — invoca o método Retrieve da API SOAP
-- [InvokePerform](../api-functions/invokeperform.md) — invoca o método Perform da API SOAP
-- [RaiseError](../utility-functions/raiseerror.md) — levanta um erro e interrompe a execução, útil para validações
-- [InsertDE](../data-extension-functions/insertde.md) — insere registros em Data Extensions, útil para logs de operações
-- [RequestParameter](../sites-functions/requestparameter.md) — captura parâmetros de formulário ou query string em CloudPages
+- [CreateObject](../api-functions/createobject.md) - cria o API Object que será passado para `InvokeExecute`
+- [SetObjectProperty](../api-functions/setobjectproperty.md) - define propriedades no API Object
+- [AddObjectArrayItem](../api-functions/addobjectarrayitem.md) - adiciona itens a propriedades de array do objeto
+- [InvokeCreate](../api-functions/invokecreate.md) - invoca o método Create em um API Object
+- [InvokeUpdate](../api-functions/invokeupdate.md) - invoca o método Update em um API Object
+- [InvokeDelete](../api-functions/invokedelete.md) - invoca o método Delete em um API Object
+- [InvokeRetrieve](../api-functions/invokeretrieve.md) - invoca o método Retrieve em um API Object
+- [InvokePerform](../api-functions/invokeperform.md) - invoca o método Perform em um API Object
+- [RaiseError](../utility-functions/raiseerror.md) - interrompe a execução com mensagem de erro personalizada

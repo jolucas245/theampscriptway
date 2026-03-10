@@ -29,11 +29,7 @@ export const dateFunctions: Record<string, (...args: ScalarValue[]) => ScalarVal
     return new Date().toISOString();
   },
 
-  SYSTEMDATE() {
-    return new Date().toISOString();
-  },
-
-  FORMATDATE(dateVal, format, locale?) {
+  FORMATDATE(dateVal, format, _locale?) {
     const d = parseDate(dateVal);
     const fmt = toString(format);
 
@@ -73,9 +69,8 @@ export const dateFunctions: Record<string, (...args: ScalarValue[]) => ScalarVal
       case 'H':  d.setHours(d.getHours() + n);       break;
       case 'MI': d.setMinutes(d.getMinutes() + n);   break;
       case 'S':  d.setSeconds(d.getSeconds() + n);   break;
-      default:   throw new Error(`DATEADD: unknown unit "${unit}". Use Y, M, D, H, MI or S`);
+      default: throw new Error(`DATEADD: unidade desconhecida "${unit}". Use Y, M, D, H, MI ou S`);
     }
-
     return d.toISOString();
   },
 
@@ -92,7 +87,7 @@ export const dateFunctions: Record<string, (...args: ScalarValue[]) => ScalarVal
       case 'H':  return Math.floor(diffMs / (1000 * 60 * 60));
       case 'MI': return Math.floor(diffMs / (1000 * 60));
       case 'S':  return Math.floor(diffMs / 1000);
-      default:   throw new Error(`DATEDIFF: unknown unit "${unit}". Use Y, M, D, H, MI or S`);
+      default: throw new Error(`DATEDIFF: unidade desconhecida "${unit}". Use Y, M, D, H, MI ou S`);
     }
   },
 
@@ -101,19 +96,18 @@ export const dateFunctions: Record<string, (...args: ScalarValue[]) => ScalarVal
     const p = toString(part).toUpperCase();
 
     switch (p) {
-      case 'Y':    return d.getFullYear();
-      case 'M':    return d.getMonth() + 1;
-      case 'D':    return d.getDate();
-      case 'H':    return d.getHours();
-      case 'MI':   return d.getMinutes();
-      case 'S':    return d.getSeconds();
-      case 'DW':   return d.getDay() + 1;
-      case 'DY':   {
+      case 'Y':  return d.getFullYear();
+      case 'M':  return d.getMonth() + 1;
+      case 'D':  return d.getDate();
+      case 'H':  return d.getHours();
+      case 'MI': return d.getMinutes();
+      case 'S':  return d.getSeconds();
+      case 'DW': return d.getDay() + 1;
+      case 'DY': {
         const start = new Date(d.getFullYear(), 0, 0);
-        const diff = d.getTime() - start.getTime();
-        return Math.floor(diff / (1000 * 60 * 60 * 24));
+        return Math.floor((d.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
       }
-      default: throw new Error(`DATEPART: unknown part "${part}". Use Y, M, D, H, MI, S, DW or DY`);
+      default: throw new Error(`DATEPART: parte desconhecida "${part}". Use Y, M, D, H, MI, S, DW ou DY`);
     }
   },
 

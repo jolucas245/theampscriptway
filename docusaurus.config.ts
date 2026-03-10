@@ -18,7 +18,7 @@ const config: Config = {
 
   i18n: {
     defaultLocale: 'pt-BR',
-    locales: ['pt-BR', 'en'],
+    locales: ['pt-BR'],
     localeConfigs: {
       'pt-BR': { label: 'Português (BR)', direction: 'ltr' },
       en: { label: 'English', direction: 'ltr' },
@@ -40,7 +40,17 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
-
+  themes: [
+    [
+      require.resolve('@easyops-cn/docusaurus-search-local'),
+      {
+        hashed: true,
+        language: ['pt'],
+        indexDocs: true,
+        indexPages: true,
+      },
+    ],
+  ],
   themeConfig: {
     navbar: {
       title: 'The AMPScript Way',
@@ -55,24 +65,31 @@ const config: Config = {
           position: 'left',
           label: 'Documentação',
         },
-        {
-          href: 'https://github.com/jolucas245//theampscriptway',
-          label: 'GitHub',
-          position: 'right',
-        },
         { to: '/playground', label: 'Playground', position: 'left' },
         { to: '/about', label: 'Sobre', position: 'right' },
+        {
+          href: 'https://github.com/jolucas245/theampscriptway',
+          position: 'right',
+          className: 'navbar-icon-link navbar-github-link',
+          'aria-label': 'GitHub',
+        },
+        {
+          href: 'https://linkedin.com/in/jolucas245',
+          position: 'right',
+          className: 'navbar-icon-link navbar-linkedin-link',
+          'aria-label': 'LinkedIn',
+        },
       ],
     },
     footer: {
       style: 'dark',
-      copyright: `AMPscript Way | Community-maintained reference for Salesforce Marketing Cloud.`,
+      copyright: `AMPscript Way | Guia mantido pela comunidade do Salesforce Marketing`,
     },
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
-    algolia: undefined,
+    
   } satisfies Preset.ThemeConfig,
 };
 

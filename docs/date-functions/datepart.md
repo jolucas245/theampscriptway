@@ -8,7 +8,7 @@ description: Extrai uma parte específica (dia, mês, ano, hora ou minuto) de um
 
 ## Descrição
 
-A função `DatePart` extrai uma parte específica de uma string de data ou timestamp — como o ano, mês, dia, hora ou minuto. É super útil quando você precisa isolar um pedaço de uma data para criar lógicas condicionais no seu e-mail, como exibir uma mensagem diferente dependendo do mês de aniversário do assinante ou personalizar conteúdo com base no ano de cadastro. A função retorna um valor numérico correspondente à parte extraída.
+Extrai uma parte específica de uma data - como o dia, mês, ano, hora ou minuto - a partir de uma string de data ou timestamp. É uma função essencial quando você precisa segmentar conteúdo com base em partes isoladas da data, como exibir uma mensagem diferente conforme o mês de aniversário do cliente ou montar lógicas condicionais baseadas no ano de cadastro. Retorna o valor numérico correspondente à parte extraída.
 
 ## Sintaxe
 
@@ -19,134 +19,129 @@ DatePart(dateString, datePart)
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|------------|--------|-------------|-----------|
-| dateString | string | Sim | Uma string contendo uma data ou timestamp. Aceita diversos formatos como ISO 8601 (`2023-08-05T13:41:23-06:00`), data ISO (`2023-08-05`), notação americana de data e hora (`8/5/2023 1:41 PM`), formato longo (`5 August 2023` ou `August 5, 2023`), data e hora (`2023-08-05 1:41:23 PM`), hora apenas (`1:41 PM`), além de notações chinesa/japonesa e coreana. |
-| datePart | string | Sim | A parte da data que você quer extrair. Valores aceitos: `Y` (ano), `M` (mês), `D` (dia), `H` (hora) e `MI` (minuto). |
+|-----------|------|-------------|-----------|
+| dateString | string | Sim | String contendo uma data ou timestamp. |
+| datePart | string | Sim | A parte da data que você quer extrair. Valores aceitos: `"Y"` (ano), `"M"` (mês), `"D"` (dia), `"H"` (hora) e `"MI"` (minutos). |
+
+## Formatos de data suportados
+
+A função aceita strings de data em diversos formatos:
+
+| Formato | Exemplo |
+|---------|---------|
+| ISO 8601 timestamp | `2023-08-05T13:41:23-06:00` |
+| ISO 8601 date | `2023-08-05` |
+| Data e hora no padrão US | `8/5/2023 1:41 PM` |
+| Formato por extenso (inglês) | `5 August 2023` ou `August 5, 2023` |
+| Data e hora | `2023-08-05 1:41:23 PM` |
+| Somente hora | `1:41 PM` |
+| Notação chinesa/japonesa | `2023年8月5日` |
+| Notação coreana | `2023년 8월 5일` |
+
+> **⚠️ Atenção:** A função **não suporta** os seguintes formatos:
+> - Dias com sufixo ordinal em inglês (`August 5th, 2023` ou `5th August 2023`)
+> - Notação numérica little-endian (`5/8/2023` para representar 5 de agosto) - o formato numérico com barras é interpretado como padrão americano (mês/dia/ano)
+> - Nomes de meses em idiomas que não sejam inglês (`5 août 2023`, `5 agosto 2023`)
+> - Numerais que não sejam arábicos ocidentais (`٢٠٢٣/٨/٥`)
+> - Calendários diferentes do gregoriano (`18 Av, 5783` ou `18 Muharram, 1445`)
 
 ## Exemplo básico
 
+Extraindo o ano atual para exibir no rodapé de um e-mail da Lojas Vitória:
+
 ```ampscript
 %%[
-SET @dataCompra = "2024-12-25T14:30:00"
-SET @ano = DatePart(@dataCompra, "Y")
-SET @mes = DatePart(@dataCompra, "M")
-SET @dia = DatePart(@dataCompra, "D")
+VAR @dataAtual, @anoAtual
+SET @dataAtual = Now()
+SET @anoAtual = DatePart(@dataAtual, "Y")
 ]%%
 
-Sua última compra foi no dia %%=v(@dia)=%% do mês %%=v(@mes)=%% de %%=v(@ano)=%%.
+© %%=v(@anoAtual)=%% Lojas Vitória. Todos os direitos reservados.
 ```
 
 **Saída:**
 ```
-Sua última compra foi no dia 25 do mês 12 de 2024.
+© 2025 Lojas Vitória. Todos os direitos reservados.
 ```
 
 ## Exemplo avançado
 
-Imagine que a **MegaStore** quer enviar um e-mail de aniversário personalizado para seus clientes. A Data Extension `Clientes_MegaStore` tem um campo `DataNascimento`. Dependendo do mês de aniversário, a loja oferece um cupom temático:
+Personalizando um e-mail de aniversário na régua de relacionamento do Banco Brasilão, exibindo o mês e montando uma saudação com base no horário do envio:
 
 ```ampscript
 %%[
+VAR @dataNascimento, @mesAniversario, @diaAniversario
+VAR @horaEnvio, @saudacao, @nomeMes
+
 SET @dataNascimento = AttributeValue("DataNascimento")
 SET @mesAniversario = DatePart(@dataNascimento, "M")
 SET @diaAniversario = DatePart(@dataNascimento, "D")
-SET @anoAtual = DatePart(Now(), "Y")
-SET @mesAtual = DatePart(Now(), "M")
 
-/* Verifica se o aniversário é neste mês */
-IF @mesAniversario == @mesAtual THEN
+SET @horaEnvio = DatePart(Now(), "H")
 
-  /* Define o cupom e a mensagem com base no mês */
-  IF @mesAniversario == 5 THEN
-    SET @cupom = "MAES30"
-    SET @desconto = "30%"
-    SET @mensagemExtra = "Além do seu presente de aniversário, aproveite o mês das mães!"
-  ELSEIF @mesAniversario == 6 THEN
-    SET @cupom = "NAMO25"
-    SET @desconto = "25%"
-    SET @mensagemExtra = "Mês dos namorados com desconto especial pra você!"
-  ELSEIF @mesAniversario == 12 THEN
-    SET @cupom = "NATAL40"
-    SET @desconto = "40%"
-    SET @mensagemExtra = "Natal + aniversário = desconto em dobro!"
-  ELSE
-    SET @cupom = Concat("ANIVER", @mesAniversario)
-    SET @desconto = "20%"
-    SET @mensagemExtra = "Um presente especial para o seu mês!"
-  ENDIF
-
-  /* Calcula a hora do envio para saudação */
-  SET @horaEnvio = DatePart(Now(), "H")
-
-  IF @horaEnvio < 12 THEN
-    SET @saudacao = "Bom dia"
-  ELSEIF @horaEnvio < 18 THEN
-    SET @saudacao = "Boa tarde"
-  ELSE
-    SET @saudacao = "Boa noite"
-  ENDIF
-
-]%%
-
-%%=v(@saudacao)=%%, %%=v(@nomeCliente)=%%! 🎂
-
-Dia %%=v(@diaAniversario)=%% é o seu aniversário e a MegaStore preparou um presente pra você:
-
-**%%=v(@desconto)=%% de desconto** em todo o site com o cupom **%%=v(@cupom)=%%**!
-
-%%=v(@mensagemExtra)=%%
-
-Válido para compras acima de R$149,00 com frete grátis acima de R$299,00.
-
-Acesse: www.megastore.com.br
-
-%%[
+IF @horaEnvio < 12 THEN
+  SET @saudacao = "Bom dia"
+ELSEIF @horaEnvio < 18 THEN
+  SET @saudacao = "Boa tarde"
 ELSE
-]%%
+  SET @saudacao = "Boa noite"
+ENDIF
 
-/* Não é o mês de aniversário — não renderiza nada ou exibe conteúdo padrão */
-
-%%[
+IF @mesAniversario == 1 THEN
+  SET @nomeMes = "janeiro"
+ELSEIF @mesAniversario == 2 THEN
+  SET @nomeMes = "fevereiro"
+ELSEIF @mesAniversario == 3 THEN
+  SET @nomeMes = "março"
+ELSEIF @mesAniversario == 4 THEN
+  SET @nomeMes = "abril"
+ELSEIF @mesAniversario == 5 THEN
+  SET @nomeMes = "maio"
+ELSEIF @mesAniversario == 6 THEN
+  SET @nomeMes = "junho"
+ELSEIF @mesAniversario == 7 THEN
+  SET @nomeMes = "julho"
+ELSEIF @mesAniversario == 8 THEN
+  SET @nomeMes = "agosto"
+ELSEIF @mesAniversario == 9 THEN
+  SET @nomeMes = "setembro"
+ELSEIF @mesAniversario == 10 THEN
+  SET @nomeMes = "outubro"
+ELSEIF @mesAniversario == 11 THEN
+  SET @nomeMes = "novembro"
+ELSE
+  SET @nomeMes = "dezembro"
 ENDIF
 ]%%
+
+%%=v(@saudacao)=%%, Maria Santos!
+
+Dia %%=v(@diaAniversario)=%% de %%=v(@nomeMes)=%% é o seu dia especial! 🎂
+O Banco Brasilão preparou uma condição exclusiva para você.
 ```
 
-**Saída (para um cliente que faz aniversário em dezembro, com envio às 10h da manhã):**
+**Saída:**
 ```
-Bom dia, João Silva! 🎂
+Boa tarde, Maria Santos!
 
-Dia 15 é o seu aniversário e a MegaStore preparou um presente pra você:
-
-**40% de desconto** em todo o site com o cupom **NATAL40**!
-
-Natal + aniversário = desconto em dobro!
-
-Válido para compras acima de R$149,00 com frete grátis acima de R$299,00.
-
-Acesse: www.megastore.com.br
+Dia 15 de março é o seu dia especial! 🎂
+O Banco Brasilão preparou uma condição exclusiva para você.
 ```
 
 ## Observações
 
-- **Formatos de data suportados:** A função aceita ISO 8601 (`2023-08-05T13:41:23-06:00`), data ISO (`2023-08-05`), notação americana (`8/5/2023 1:41 PM`), formato longo em inglês (`5 August 2023` ou `August 5, 2023`), data e hora (`2023-08-05 1:41:23 PM`), hora apenas (`1:41 PM`) e notações chinesa/japonesa/coreana.
-- **Formato brasileiro (DD/MM/AAAA) NÃO é suportado:** A função interpreta datas numéricas no formato americano (MM/DD/AAAA). Se você passar `05/08/2023`, a função vai entender como **5 de agosto** e não como **8 de maio**. Para evitar ambiguidade, use sempre o formato ISO (`2023-08-05`).
-- **Sufixos ordinais não são suportados:** Datas como `August 5th, 2023` ou `5th August 2023` não funcionam.
-- **Nomes de meses devem estar em inglês:** A função não reconhece `5 agosto 2023` ou `5 août 2023`. Use `5 August 2023` ou, melhor ainda, o formato ISO.
-- **Calendários não-gregorianos não são suportados:** Datas hebraicas, islâmicas e outros sistemas de calendário não são aceitos.
-- **Numerais não-ocidentais não são suportados:** Apenas numerais arábicos ocidentais (0-9) são reconhecidos.
-- **Ao extrair hora ou minuto**, certifique-se de que a string de data inclui informação de horário. Se passar apenas uma data como `2023-08-05`, os valores de `H` e `MI` retornarão `0`.
-- **O valor de `datePart` não diferencia maiúsculas/minúsculas:** Tanto `"Y"` quanto `"y"` funcionam, assim como `"MI"` ou `"mi"`.
-- **Dica prática:** Se você tem datas armazenadas no formato brasileiro na sua Data Extension, considere usar [DateParse](../date-functions/dateparse.md) ou [StringToDate](../date-functions/stringtodate.md) para converter a string antes de usar `DatePart`.
+> **⚠️ Atenção:** Datas no formato brasileiro `DD/MM/AAAA` (como `05/08/2023`) serão interpretadas no padrão americano `MM/DD/AAAA`. Ou seja, `05/08/2023` será lido como **5 de agosto** (e não 8 de maio). Para datas onde o dia é maior que 12 (como `25/08/2023`), o comportamento pode ser imprevisível. Sempre converta suas datas para o formato ISO 8601 (`2023-08-05`) antes de usar `DatePart` para evitar ambiguidades.
+
+> **💡 Dica:** Use `DatePart` com `"MI"` (e não `"M"`) para extrair minutos. O `"M"` extrai o mês. Essa é uma confusão comum que pode gerar bugs silenciosos nas suas comunicações.
+
+> **💡 Dica:** Quando precisar apenas formatar a exibição de uma data (sem lógica condicional), considere usar [FormatDate](../date-functions/formatdate.md). Reserve `DatePart` para quando você precisa do valor numérico isolado para comparações e condicionais.
 
 ## Funções relacionadas
 
-- [Now](../date-functions/now.md) — Retorna a data e hora atuais do sistema (útil para pegar a data atual e extrair partes dela)
-- [SystemDate](../date-functions/systemdate.md) — Retorna a data do sistema no momento do envio
-- [FormatDate](../date-functions/formatdate.md) — Formata uma data em um formato de exibição específico
-- [DateAdd](../date-functions/dateadd.md) — Adiciona um intervalo de tempo a uma data
-- [DateDiff](../date-functions/datediff.md) — Calcula a diferença entre duas datas
-- [DateParse](../date-functions/dateparse.md) — Converte uma string de data em um objeto de data reconhecido pelo sistema
-- [StringToDate](../date-functions/stringtodate.md) — Converte uma string em um valor de data
-- [Format](../string-functions/format.md) — Formata valores (incluindo datas) como strings personalizadas
-- [Concat](../string-functions/concat.md) — Concatena strings (útil para montar datas ou mensagens dinâmicas)
-- [IIF](../utility-functions/iif.md) — Avaliação condicional inline (útil para lógicas simples baseadas em partes de data)
+- [Now](../date-functions/now.md) - retorna a data e hora atuais (útil como input para `DatePart`)
+- [FormatDate](../date-functions/formatdate.md) - formata a exibição de uma data
+- [DateAdd](../date-functions/dateadd.md) - adiciona intervalos a uma data
+- [DateDiff](../date-functions/datediff.md) - calcula a diferença entre duas datas
+- [DateParse](../date-functions/dateparse.md) - converte uma string em objeto de data
+- [StringToDate](../date-functions/stringtodate.md) - converte string para data
+- [Format](../string-functions/format.md) - formatação genérica de valores

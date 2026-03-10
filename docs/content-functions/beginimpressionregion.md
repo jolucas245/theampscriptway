@@ -1,14 +1,14 @@
 ---
 title: BeginImpressionRegion
 sidebar_label: BeginImpressionRegion
-description: Marca o início de uma região de rastreamento de impressões em emails enviados pelo Marketing Cloud.
+description: Marca o início de uma região de rastreamento de impressões em e-mails enviados pelo SFMC.
 ---
 
 # BeginImpressionRegion
 
 ## Descrição
 
-A função `BeginImpressionRegion` marca o início de uma região do seu email que será rastreada pelo sistema de impression tracking (rastreamento de impressões) do Marketing Cloud. Com ela, você consegue identificar quais blocos de conteúdo do email estão sendo visualizados pelos seus assinantes. Isso é super útil pra entender qual seção do email (header, banner promocional, rodapé, etc.) está gerando mais engajamento. A função não produz nenhuma saída visível no email — ela funciona apenas como um marcador interno para o sistema de rastreamento.
+Define o início de uma região de rastreamento de impressões (impression tracking) no corpo de um e-mail. Isso permite que você monitore quais seções do e-mail foram efetivamente renderizadas para cada destinatário - útil para medir a visibilidade de blocos de conteúdo dinâmico como banners, ofertas segmentadas ou seções condicionais. A função não produz nenhuma saída visível no e-mail.
 
 ## Sintaxe
 
@@ -19,134 +19,109 @@ BeginImpressionRegion("regionName")
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
-|------------|--------|-------------|-----------|
-| regionName | String | Sim | O nome que você quer dar para a região de impressão. Esse nome vai aparecer nos relatórios de rastreamento para você identificar qual seção do email foi visualizada. |
+|-----------|------|-------------|-----------|
+| regionName | String | Sim | Nome que você quer atribuir à região de impressão. Esse nome será usado nos relatórios de tracking para identificar a região. |
 
 ## Exemplo básico
 
-```ampscript
-%%[
-BeginImpressionRegion("Header")
-]%%
+Rastreando a impressão de um banner promocional em um e-mail da MegaStore:
 
-<table width="100%" bgcolor="#1a1a2e">
+```ampscript
+%%=BeginImpressionRegion("Banner_Promocional")=%%
+
+<table width="100%" cellpadding="0" cellspacing="0">
   <tr>
-    <td style="padding: 20px; text-align: center;">
-      <img src="https://www.megastore.com.br/images/logo.png" alt="MegaStore" />
-      <h1 style="color: #ffffff;">Bem-vindo à MegaStore!</h1>
+    <td style="background-color:#FF6600; padding:20px; text-align:center;">
+      <h1 style="color:#FFFFFF;">Mega Oferta MegaStore</h1>
+      <p style="color:#FFFFFF;">Até 40% de desconto em eletrônicos!</p>
     </td>
   </tr>
 </table>
 
-%%[
-EndImpressionRegion()
-]%%
+%%=EndImpressionRegion()=%%
 ```
 
 **Saída:**
 ```
-(Nenhuma saída visível — o HTML do header é renderizado normalmente.
-A região "Header" é registrada internamente para rastreamento de impressões.)
+(A função não gera saída visível. O banner é exibido normalmente e a região "Banner_Promocional" é registrada no tracking de impressões.)
 ```
 
 ## Exemplo avançado
 
-Imagine que você está montando um email de campanha de **Black Friday** para a loja fictícia "Lojas Vitória". Você quer rastrear separadamente o banner principal, a seção de ofertas personalizadas e o rodapé, para depois analisar qual parte do email teve mais visualizações:
+E-mail de régua de relacionamento da Lojas Vitória com conteúdo condicional - cada bloco exibido é rastreado como uma região de impressão separada, permitindo analisar depois qual oferta foi mostrada para cada segmento de clientes:
 
 ```ampscript
 %%[
-VAR @primeiroNome, @categoriaFavorita, @desconto
-SET @primeiroNome = AttributeValue("PrimeiroNome")
-SET @primeiroNome = IIF(Empty(@primeiroNome), "Cliente", @primeiroNome)
-SET @categoriaFavorita = Lookup("PreferenciasCliente", "Categoria", "EmailAddress", EmailAddress)
-SET @categoriaFavorita = IIF(Empty(@categoriaFavorita), "Eletrônicos", @categoriaFavorita)
-SET @desconto = Lookup("DescontosBlackFriday", "Percentual", "Categoria", @categoriaFavorita)
+  SET @categoria = AttributeValue("CategoriaPreferida")
+  SET @nome = AttributeValue("PrimeiroNome")
 ]%%
 
-<!-- Região: Banner Principal -->
-%%[ BeginImpressionRegion("BannerBlackFriday") ]%%
-<table width="100%" bgcolor="#000000">
-  <tr>
-    <td style="padding: 30px; text-align: center;">
-      <h1 style="color: #ff0000; font-size: 36px;">🔥 BLACK FRIDAY LOJAS VITÓRIA 🔥</h1>
-      <p style="color: #ffffff; font-size: 18px;">
-        Olá, %%=v(@primeiroNome)=%%, preparamos ofertas especiais pra você!
-      </p>
-    </td>
-  </tr>
-</table>
-%%[ EndImpressionRegion() ]%%
+Olá, %%=v(@nome)=%%! Confira sua oferta exclusiva:
 
-<!-- Região: Ofertas Personalizadas -->
-%%[ BeginImpressionRegion("OfertasPersonalizadas") ]%%
-<table width="100%" bgcolor="#1a1a1a">
-  <tr>
-    <td style="padding: 20px; text-align: center;">
-      <h2 style="color: #ffcc00;">Até %%=v(@desconto)=%%% OFF em %%=v(@categoriaFavorita)=%%!</h2>
-      <p style="color: #ffffff;">Frete grátis acima de R$ 299,00 para todo o Brasil.</p>
-      <a href="https://www.lojasvitoria.com.br/blackfriday?cat=%%=URLEncode(@categoriaFavorita)=%%"
-         style="background: #ff0000; color: #fff; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;">
-        VER OFERTAS
-      </a>
-    </td>
-  </tr>
-</table>
-%%[ EndImpressionRegion() ]%%
+%%[ IF @categoria == "Eletrônicos" THEN ]%%
 
-<!-- Região: Cashback e Programa de Pontos -->
-%%[ BeginImpressionRegion("ProgramaPontos") ]%%
-<table width="100%" bgcolor="#222222">
-  <tr>
-    <td style="padding: 20px; text-align: center;">
-      <h3 style="color: #00ff88;">💰 Ganhe cashback de até R$ 150,00</h3>
-      <p style="color: #cccccc;">
-        Compras acima de R$ 500,00 dão direito a pontos em dobro no
-        Programa Vitória Fidelidade. Válido de 24/11/2024 a 01/12/2024.
-      </p>
-    </td>
-  </tr>
-</table>
-%%[ EndImpressionRegion() ]%%
+  %%=BeginImpressionRegion("Oferta_Eletronicos")=%%
 
-<!-- Região: Rodapé -->
-%%[ BeginImpressionRegion("Rodape") ]%%
-<table width="100%" bgcolor="#000000">
-  <tr>
-    <td style="padding: 15px; text-align: center; color: #666666; font-size: 12px;">
-      <p>Lojas Vitória LTDA - CNPJ: 12.345.678/0001-90</p>
-      <p>Rua das Palmeiras, 500 - São Paulo/SP - CEP 01310-100</p>
-      <p>
-        <a href="%%unsub_center_url%%" style="color: #999999;">Gerenciar preferências</a> |
-        <a href="%%subscription_center_url%%" style="color: #999999;">Cancelar inscrição</a>
-      </p>
-    </td>
-  </tr>
-</table>
-%%[ EndImpressionRegion() ]%%
+  <table width="100%" cellpadding="10">
+    <tr>
+      <td>
+        <h2>Smartphones a partir de R$ 1.299,90</h2>
+        <p>Frete grátis para São Paulo e Curitiba!</p>
+      </td>
+    </tr>
+  </table>
+
+  %%=EndImpressionRegion()=%%
+
+%%[ ELSEIF @categoria == "Moda" THEN ]%%
+
+  %%=BeginImpressionRegion("Oferta_Moda")=%%
+
+  <table width="100%" cellpadding="10">
+    <tr>
+      <td>
+        <h2>Nova coleção com 30% OFF</h2>
+        <p>Parcele em até 6x sem juros no cartão.</p>
+      </td>
+    </tr>
+  </table>
+
+  %%=EndImpressionRegion()=%%
+
+%%[ ELSE ]%%
+
+  %%=BeginImpressionRegion("Oferta_Geral")=%%
+
+  <table width="100%" cellpadding="10">
+    <tr>
+      <td>
+        <h2>Ofertas imperdíveis para você</h2>
+        <p>Até 25% de desconto em todo o site!</p>
+      </td>
+    </tr>
+  </table>
+
+  %%=EndImpressionRegion()=%%
+
+%%[ ENDIF ]%%
 ```
 
 **Saída:**
 ```
-(O email é renderizado normalmente com todas as seções visíveis.
-Internamente, quatro regiões de impressão são registradas:
-"BannerBlackFriday", "OfertasPersonalizadas", "ProgramaPontos" e "Rodape".
-Os dados de visualização de cada região ficam disponíveis nos relatórios de tracking.)
+(Para um assinante com CategoriaPreferida = "Eletrônicos", o bloco "Oferta_Eletronicos" é exibido e registrado no tracking. Os demais blocos não são renderizados nem rastreados. Nenhuma saída visível é gerada pelas funções de impressão em si.)
 ```
 
 ## Observações
 
-- **Somente emails de saída (outbound):** As regiões de impressão funcionam apenas em emails enviados pelo Marketing Cloud. **CloudPages não suportam** impression regions.
-- **Sem saída visível:** A função não gera nenhum conteúdo no email. Ela serve apenas como marcador interno para o sistema de rastreamento.
-- **Fechamento automático:** Se você esquecer de chamar `EndImpressionRegion()` antes do final do email, o sistema fecha a região automaticamente. Mas é uma boa prática sempre fechar explicitamente para manter o código organizado e garantir que cada região rastreie exatamente o trecho que você quer.
-- **Nomes descritivos:** Use nomes claros e descritivos para as regiões (ex: "BannerPrincipal", "OfertasDiaDasMaes", "MenuCategorias"). Isso facilita muito na hora de analisar os relatórios.
-- **Múltiplas regiões:** Você pode ter várias regiões de impressão no mesmo email, cada uma com um nome diferente. Isso permite comparar o desempenho de diferentes seções.
-- **Relatórios:** Os dados de impressão por região ficam disponíveis nos relatórios de tracking do Marketing Cloud, ajudando a entender quais partes do email recebem mais atenção dos assinantes.
+> **⚠️ Atenção:** Regiões de impressão funcionam **apenas em mensagens de e-mail enviadas (outbound)**. CloudPages **não suportam** impression regions.
+
+- A função não gera nenhuma saída visível no e-mail. Ela apenas marca internamente onde começa a região de rastreamento.
+- Toda região aberta com `BeginImpressionRegion` deve ser fechada com [`EndImpressionRegion`](../content-functions/endimpressionregion.md). Se você esquecer de fechar, o sistema fecha automaticamente no final do e-mail - mas é boa prática sempre fechar explicitamente para evitar que o rastreamento capture conteúdo que você não pretendia incluir na região.
+
+> **💡 Dica:** Use nomes descritivos e padronizados para as regiões (ex: `"Header_Principal"`, `"Bloco_Oferta_Eletronicos"`, `"Footer_RedesSociais"`). Isso facilita muito a análise posterior nos relatórios de impression tracking, especialmente quando você trabalha com vários blocos de conteúdo dinâmico no mesmo e-mail.
 
 ## Funções relacionadas
 
-- [EndImpressionRegion](../content-functions/endimpressionregion.md) — Marca o fim de uma região de impressão. Usada em conjunto com `BeginImpressionRegion`.
-- [ContentBlockByName](../content-functions/contentblockbyname.md) — Insere um bloco de conteúdo pelo nome. Útil para modularizar seções rastreadas.
-- [ContentBlockByKey](../content-functions/contentblockbykey.md) — Insere um bloco de conteúdo pela chave. Outra forma de organizar conteúdo dentro de regiões de impressão.
-- [ContentBlockById](../content-functions/contentblockbyid.md) — Insere um bloco de conteúdo pelo ID.
-- [AttributeValue](../utility-functions/attributevalue.md) — Retorna o valor de um atributo do assinante, útil para personalizar o conteúdo dentro das regiões rastreadas.
-- [URLEncode](../string-functions/urlencode.md) — Codifica valores para uso seguro em URLs dentro das regiões de impressão.
+- [EndImpressionRegion](../content-functions/endimpressionregion.md) - fecha a região de impressão aberta por `BeginImpressionRegion`
+- [ContentBlockByName](../content-functions/contentblockbyname.md) - útil para modularizar blocos de conteúdo que serão rastreados
+- [ContentBlockByKey](../content-functions/contentblockbykey.md) - alternativa para referenciar blocos de conteúdo por chave

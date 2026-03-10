@@ -1,103 +1,97 @@
 ---
 title: ReplaceList
 sidebar_label: ReplaceList
-description: Substitui uma ou mais substrings por outra string em uma única chamada de função.
+description: Substitui uma ou mais substrings de uma só vez por uma única string de substituição.
 ---
 
 # ReplaceList
 
 ## Descrição
 
-A função `ReplaceList()` procura uma ou mais substrings dentro de uma string e substitui **todas elas** por uma única string de substituição. É como fazer vários "localizar e substituir" de uma vez só — muito útil quando você precisa limpar dados que vêm com separadores variados ou remover/padronizar múltiplos caracteres indesejados. A função retorna a string original com todas as substituições aplicadas.
+A função `ReplaceList()` substitui uma ou mais substrings dentro de um texto por uma única string de substituição. É perfeita para quando você precisa limpar ou padronizar dados que podem conter vários caracteres ou padrões diferentes - tudo em uma única chamada, sem precisar encadear múltiplos [Replace()](../string-functions/replace.md). Retorna a string original com todas as substituições aplicadas.
 
 ## Sintaxe
 
 ```ampscript
-ReplaceList(stringOrigem, stringSubstituta, stringBusca1 [, stringBusca2, ...])
+ReplaceList(sourceString, replacementString, searchString1 [, searchString2, ...])
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| stringOrigem | String | Sim | A string original onde a busca será realizada. |
-| stringSubstituta | String | Sim | A string que vai substituir todas as ocorrências encontradas. |
-| stringBusca1 | String | Sim | A primeira substring a ser buscada e substituída. |
-| stringBusca2, ... | String | Não | Substrings adicionais a serem buscadas e substituídas. Você pode adicionar quantos parâmetros de busca precisar. |
+| sourceString | string | Sim | A string original onde a busca será feita. |
+| replacementString | string | Sim | A string que substituirá cada ocorrência encontrada. |
+| searchString1 | string | Sim | A substring a ser encontrada. Você pode adicionar quantas strings de busca precisar, incluindo parâmetros adicionais (searchString2, searchString3, etc.). |
 
 ## Exemplo básico
 
-Imagine que você tem uma lista de categorias favoritas do cliente separadas por diferentes delimitadores (vírgula, ponto e vírgula e pipe) e quer padronizar a exibição:
+Removendo diferentes delimitadores de uma lista de categorias de produtos e substituindo por um separador legível:
 
 ```ampscript
 %%[
-SET @categorias = "Eletrônicos|Moda;Casa,Esportes|Livros"
-SET @categoriasFormatadas = ReplaceList(@categorias, " • ", "|", ";", ",")
+VAR @categorias, @resultado
+SET @categorias = "Eletrônicos|Celulares;Informática,Acessórios"
+SET @resultado = ReplaceList(@categorias, " | ", "|", ";", ",")
 ]%%
 
-Suas categorias favoritas são: %%=v(@categoriasFormatadas)=%%
+Categorias: %%=v(@resultado)=%%
 ```
 
 **Saída:**
 ```
-Suas categorias favoritas são: Eletrônicos • Moda • Casa • Esportes • Livros
+Categorias: Eletrônicos | Celulares | Informática | Acessórios
 ```
 
 ## Exemplo avançado
 
-Cenário real: a MegaStore está enviando um e-mail de Dia das Mães com recomendações personalizadas. Os hobbies da mãe do cliente estão armazenados numa Data Extension com separadores inconsistentes, e você precisa formatar tudo bonitinho para o e-mail:
+Limpando dados de telefone que chegam com formatações variadas de uma Data Extension, padronizando para uso em um e-mail de confirmação de cadastro da Conecta Telecom:
 
 ```ampscript
 %%[
-/* Busca os dados na Data Extension */
-SET @nomeCliente = AttributeValue("PrimeiroNome")
-SET @nomeMae = Lookup("MaesDosClientes", "NomeMae", "EmailCliente", emailaddr)
-SET @hobbiesMae = Lookup("MaesDosClientes", "Hobbies", "EmailCliente", emailaddr)
-SET @valorVoucher = "R$ 150,00"
+VAR @nome, @telefoneRaw, @telefoneLimpo, @cpfRaw, @cpfLimpo
 
-/* Limpa os separadores e formata a lista */
-SET @hobbiesFormatados = ReplaceList(@hobbiesMae, ", ", "|", ";", " | ", ",", " ; ")
+SET @nome = "Maria Santos"
+SET @telefoneRaw = "(11) 99876-5432"
+SET @cpfRaw = "123.456.789-00"
 
-/* Remove possíveis espaços extras nos dados */
-SET @hobbiesFormatados = Trim(@hobbiesFormatados)
+/* Remove parênteses, espaços e traço do telefone */
+SET @telefoneLimpo = ReplaceList(@telefoneRaw, "", "(", ")", " ", "-")
+
+/* Remove pontos e traço do CPF */
+SET @cpfLimpo = ReplaceList(@cpfRaw, "", ".", "-")
 ]%%
 
-Olá, %%=v(@nomeCliente)=%%! 🌷
+Olá, %%=v(@nome)=%%!
 
-Sabemos que a %%=v(@nomeMae)=%% adora: %%=v(@hobbiesFormatados)=%%.
+Seus dados cadastrados na Conecta Telecom:
+- Telefone: %%=v(@telefoneLimpo)=%%
+- CPF: %%=v(@cpfLimpo)=%%
 
-Por isso, separamos presentes especiais pra ela!
-Use o voucher de %%=v(@valorVoucher)=%% com frete grátis acima de R$ 299,00.
-
-Acesse: www.megastore.com.br/diadasmaes
+Caso precise de suporte, ligue para (11) 3000-1234.
 ```
 
-**Saída (exemplo para o subscriber João Silva):**
+**Saída:**
 ```
-Olá, João! 🌷
+Olá, Maria Santos!
 
-Sabemos que a Dona Maria adora: Jardinagem, Culinária, Yoga, Leitura.
+Seus dados cadastrados na Conecta Telecom:
+- Telefone: 1199876543
+- CPF: 12345678900
 
-Por isso, separamos presentes especiais pra ela!
-Use o voucher de R$ 150,00 com frete grátis acima de R$ 299,00.
-
-Acesse: www.megastore.com.br/diadasmaes
+Caso precise de suporte, ligue para (11) 3000-1234.
 ```
 
 ## Observações
 
-- A `ReplaceList()` substitui **todas** as strings de busca pela **mesma** string de substituição. Se você precisa substituir cada string por um valor diferente, use múltiplas chamadas da função [Replace](../string-functions/replace.md).
-- Você pode passar quantos parâmetros de busca quiser após os dois primeiros parâmetros obrigatórios (stringOrigem e stringSubstituta). Não há limite documentado.
-- Se a string de substituição for vazia (`""`), as substrings encontradas serão simplesmente removidas da string original — ótimo para limpar caracteres indesejados.
-- A busca **não** diferencia maiúsculas de minúsculas (case-insensitive) no comportamento padrão do AMPscript.
-- Se nenhuma das strings de busca for encontrada na string de origem, a função retorna a string original sem alterações.
-- Cuidado com a ordem dos parâmetros: o segundo parâmetro é a **substituição** e do terceiro em diante são as **buscas**. Inverter isso é um erro comum.
+> **💡 Dica:** A grande vantagem do `ReplaceList()` sobre o [Replace()](../string-functions/replace.md) é poder buscar múltiplas substrings em uma única chamada. Em vez de encadear vários `Replace()` dentro de `Replace()` (o que deixa o código difícil de ler), você passa todas as strings de busca como parâmetros adicionais e todas são substituídas pela mesma string de destino.
+
+> **⚠️ Atenção:** Note que o segundo parâmetro é a string de **substituição** e o terceiro em diante são as strings de **busca**. Essa ordem é diferente do [Replace()](../string-functions/replace.md), onde a busca vem antes da substituição. Preste atenção para não inverter.
+
+> **💡 Dica:** Se você precisar substituir por valores **diferentes** para cada busca, o `ReplaceList()` não é a função certa - nesse caso, use chamadas separadas de [Replace()](../string-functions/replace.md) para cada substituição.
 
 ## Funções relacionadas
 
-- [Replace](../string-functions/replace.md) — Substitui uma única substring por outra. Use quando cada busca precisa de uma substituição diferente.
-- [Concat](../string-functions/concat.md) — Concatena múltiplas strings. Útil para montar o resultado final após substituições.
-- [Trim](../string-functions/trim.md) — Remove espaços em branco do início e fim da string. Bom complemento após usar `ReplaceList()`.
-- [BuildRowsetFromString](../content-functions/buildrowsetfromstring.md) — Transforma uma string delimitada em um rowset. Alternativa quando você precisa iterar sobre os itens ao invés de apenas reformatar.
-- [IndexOf](../string-functions/indexof.md) — Encontra a posição de uma substring dentro de outra. Útil para verificar se um delimitador existe antes de substituir.
-- [RegExMatch](../string-functions/regexmatch.md) — Busca padrões com expressões regulares. Para cenários mais complexos de busca e substituição.
+- [Replace()](../string-functions/replace.md) - substitui uma única substring por outra (quando cada busca precisa de uma substituição diferente)
+- [Trim()](../string-functions/trim.md) - remove espaços em branco das extremidades de uma string
+- [Concat()](../string-functions/concat.md) - concatena strings, útil para reconstruir textos após substituições

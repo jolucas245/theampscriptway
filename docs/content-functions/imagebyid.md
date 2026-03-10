@@ -1,119 +1,93 @@
 ---
 title: ImageById
 sidebar_label: ImageById
-description: Retorna uma tag img com o caminho de uma imagem armazenada no Content Builder, usando o ID da imagem.
+description: Retorna uma tag img com o caminho de uma imagem do Content Builder a partir do seu ID, com suporte a imagem fallback.
 ---
 
 # ImageById
 
 ## Descrição
 
-A função `ImageById` (também referenciada como `ContentImageById`) retorna uma tag `<img>` completa com o caminho (`src`) de uma imagem armazenada no Content Builder. A tag gerada inclui automaticamente os atributos `title`, `alt`, `border="0"` e um atributo `thid` com o ID da imagem. Você passa o ID da imagem desejada e um ID de imagem de fallback — se a primeira não for encontrada, a função usa a segunda. É muito útil para montar e-mails dinâmicos onde as imagens podem variar por campanha, categoria de produto ou segmento de cliente.
+A função `ContentImageById` retorna uma tag `<img>` completa apontando para uma imagem armazenada no Content Builder, localizada pelo seu ID. A tag gerada já inclui os atributos `title`, `alt`, `border="0"` e um `thid` com o ID da imagem. É muito útil quando você precisa inserir imagens dinâmicas em e-mails - por exemplo, banners personalizados por segmento ou imagens de produtos - e quer garantir que, se a imagem principal não for encontrada, um fallback seja exibido automaticamente.
+
+> **⚠️ Atenção:** Essa função funciona **apenas com imagens no Content Builder**. Ela não funciona com blocos de imagem (image blocks).
 
 ## Sintaxe
 
 ```ampscript
-ImageById(imageExternalId, defaultImageExternalId)
+ContentImageById(imageExternalId, defaultImageExternalId)
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| imageExternalId | String | Sim | O ID da imagem no Content Builder que você deseja exibir. |
-| defaultImageExternalId | String | Sim | O ID de uma imagem de fallback no Content Builder. Será usada caso a imagem do primeiro parâmetro não seja encontrada. |
+| imageExternalId | string | Sim | O ID da imagem no Content Builder que você deseja exibir. |
+| defaultImageExternalId | string | Sim | O ID de uma imagem fallback no Content Builder. Será usada caso a imagem do primeiro parâmetro não seja encontrada. |
 
 ## Exemplo básico
 
-Imagine que você está montando um e-mail de promoção para a **MegaStore** e quer exibir o banner principal da campanha de Dia das Mães:
+Exibindo o banner principal de uma campanha promocional da MegaStore, com um banner genérico como fallback:
 
 ```ampscript
 %%[
-/* Banner principal - Dia das Mães */
+VAR @bannerCampanha
+SET @bannerCampanha = ContentImageById("38274", "10001")
 ]%%
-%%=ImageById("45678", "99999")=%%
+
+%%=v(@bannerCampanha)=%%
 ```
 
-**Saída (quando a imagem 45678 é encontrada):**
+**Saída:**
 ```html
-<img src="https://image.s11.sfmc-content.com/lib/fe3a.../45678.jpg" alt="Banner Dia das Mães" title="Banner Dia das Mães" border="0" thid="45678" />
-```
-
-**Saída (quando a imagem 45678 NÃO é encontrada — usa o fallback):**
-```html
-<img src="https://image.s11.sfmc-content.com/lib/fe3a.../99999.jpg" alt="Imagem padrão" title="Imagem padrão" border="0" thid="99999" />
+<img src="https://image.s11.sfmc-content.com/lib/fe3a/m/1/megastore-blackfriday-2024.jpg" alt="Promoção Black Friday MegaStore" title="Promoção Black Friday MegaStore" border="0" thid="38274" />
 ```
 
 ## Exemplo avançado
 
-Agora um cenário mais completo: a **Lojas Vitória** quer enviar um e-mail personalizado onde a imagem do banner muda de acordo com a categoria favorita do cliente, e você também precisa extrair somente a URL da imagem (sem a tag `<img>` inteira) para usar como background em CSS inline.
+Em uma régua de relacionamento da Lojas Vitória, cada segmento de cliente recebe um banner diferente. O ID da imagem vem de uma Data Extension. Caso o registro não tenha um ID válido, o fallback garante que o e-mail não quebre. Além disso, usamos [RegExMatch](../string-functions/regexmatch.md) para extrair apenas a URL da imagem quando precisamos dela isolada (por exemplo, para usar como background em CSS inline).
 
 ```ampscript
 %%[
-SET @emailCliente = "joao.silva@email.com.br"
-SET @nomeCliente = "João Silva"
+VAR @idBanner, @idBannerFallback, @tagImagem, @urlImagem
 
-/* Busca a categoria favorita do cliente na Data Extension */
-SET @categoriaFavorita = Lookup("Clientes_Preferencias", "CategoriaFavorita", "Email", @emailCliente)
+SET @idBanner = Lookup("BannersPorSegmento", "ImagemId", "Segmento", "premium")
+SET @idBannerFallback = "50001"
 
-/* Define o ID da imagem com base na categoria */
-IF @categoriaFavorita == "Eletrônicos" THEN
-  SET @imagemBannerId = "10001"
-ELSEIF @categoriaFavorita == "Moda" THEN
-  SET @imagemBannerId = "10002"
-ELSEIF @categoriaFavorita == "Casa e Decoração" THEN
-  SET @imagemBannerId = "10003"
-ELSE
-  SET @imagemBannerId = "10000" /* Banner genérico */
-ENDIF
+/* Gera a tag <img> completa */
+SET @tagImagem = ContentImageById(@idBanner, @idBannerFallback)
 
-/* Imagem de fallback padrão */
-SET @fallbackId = "10000"
-
-/* Gera a tag img completa */
-SET @tagImgCompleta = ImageById(@imagemBannerId, @fallbackId)
-
-/* Extrai somente a URL da imagem usando RegExMatch */
-SET @urlImagem = RegExMatch(@tagImgCompleta, 'src="([^"]+)"', 1)
+/* Extrai apenas a URL do atributo src */
+SET @urlImagem = RegExMatch(@tagImagem, 'src="([^"]+)"', 1)
 ]%%
 
-<!-- Banner com tag img completa -->
-%%=v(@tagImgCompleta)=%%
+<!-- Usando a tag completa -->
+<div class="hero-banner">
+  %%=v(@tagImagem)=%%
+</div>
 
-<!-- Uso da URL como background inline -->
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<!-- Usando só a URL como background -->
+<table width="600" style="background-image: url('%%=v(@urlImagem)=%%');">
   <tr>
-    <td background="%%=v(@urlImagem)=%%" style="background-image:url('%%=v(@urlImagem)=%%'); background-size:cover; height:400px; text-align:center;">
-      <h1 style="color:#ffffff; font-size:28px; padding-top:150px;">
-        Olá, %%=v(@nomeCliente)=%%! 🎉
-      </h1>
-      <p style="color:#ffffff; font-size:18px;">
-        Ofertas especiais em %%=v(@categoriaFavorita)=%% com até 40% OFF + frete grátis acima de R$299!
-      </p>
-      <a href="https://www.lojasvitoria.com.br/ofertas" style="background:#FF6600; color:#ffffff; padding:12px 30px; text-decoration:none; border-radius:5px; font-weight:bold;">
-        VER OFERTAS
-      </a>
+    <td style="padding: 40px; color: #ffffff; font-size: 24px;">
+      Olá, aproveite as ofertas exclusivas para clientes Premium!
     </td>
   </tr>
 </table>
 ```
 
-**Saída (para um cliente com categoria "Eletrônicos"):**
+**Saída:**
 ```html
-<img src="https://image.s11.sfmc-content.com/lib/fe3a.../10001.jpg" alt="Banner Eletrônicos" title="Banner Eletrônicos" border="0" thid="10001" />
+<!-- Usando a tag completa -->
+<div class="hero-banner">
+  <img src="https://image.s11.sfmc-content.com/lib/fe3a/m/1/lojas-vitoria-premium.jpg" alt="Banner Premium Lojas Vitória" title="Banner Premium Lojas Vitória" border="0" thid="72035" />
+</div>
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<!-- Usando só a URL como background -->
+<table width="600" style="background-image: url('https://image.s11.sfmc-content.com/lib/fe3a/m/1/lojas-vitoria-premium.jpg');">
   <tr>
-    <td background="https://image.s11.sfmc-content.com/lib/fe3a.../10001.jpg" style="background-image:url('https://image.s11.sfmc-content.com/lib/fe3a.../10001.jpg'); background-size:cover; height:400px; text-align:center;">
-      <h1 style="color:#ffffff; font-size:28px; padding-top:150px;">
-        Olá, João Silva! 🎉
-      </h1>
-      <p style="color:#ffffff; font-size:18px;">
-        Ofertas especiais em Eletrônicos com até 40% OFF + frete grátis acima de R$299!
-      </p>
-      <a href="https://www.lojasvitoria.com.br/ofertas" style="background:#FF6600; color:#ffffff; padding:12px 30px; text-decoration:none; border-radius:5px; font-weight:bold;">
-        VER OFERTAS
-      </a>
+    <td style="padding: 40px; color: #ffffff; font-size: 24px;">
+      Olá, aproveite as ofertas exclusivas para clientes Premium!
     </td>
   </tr>
 </table>
@@ -121,21 +95,17 @@ SET @urlImagem = RegExMatch(@tagImgCompleta, 'src="([^"]+)"', 1)
 
 ## Observações
 
-- **Funciona apenas com imagens no Content Builder.** Essa função não funciona com blocos de imagem (image blocks) — somente com arquivos de imagem salvos diretamente no Content Builder.
-- **Ambos os parâmetros são obrigatórios.** Você sempre precisa informar tanto o ID da imagem principal quanto o ID da imagem de fallback. Mesmo que você ache que a imagem sempre vai existir, o fallback é exigido.
-- **O retorno é uma tag `<img>` completa**, não apenas a URL. Se você precisa somente da URL da imagem (por exemplo, para usar em CSS inline ou como parâmetro de outra função), utilize a função [RegExMatch](../string-functions/regexmatch.md) para extrair o valor do atributo `src`.
-- **O atributo `border` é sempre definido como `0`** automaticamente na tag gerada.
-- **A tag inclui um atributo `thid`** que contém o ID da imagem, usado internamente pelo Marketing Cloud para rastreamento.
-- **Cuidado com IDs inválidos nos dois parâmetros.** Se tanto a imagem principal quanto a imagem de fallback não forem encontradas, o comportamento pode ser imprevisível. Garanta que pelo menos a imagem de fallback seja uma imagem genérica que sempre exista no seu Content Builder.
-- **Não confunda com `Image`**. A função [Image](../content-functions/image.md) usa uma referência diferente para localizar imagens. Se você prefere buscar por Customer Key em vez de ID, confira a função [ImageByKey](../content-functions/imagebykey.md).
+- A função retorna uma tag `<img>` completa, não apenas a URL. Se você precisar **somente da URL**, use a função [RegExMatch](../string-functions/regexmatch.md) para extrair o valor do atributo `src`.
+- A tag gerada inclui automaticamente os atributos `title`, `alt`, `border="0"` e `thid` (com o ID da imagem).
+- O segundo parâmetro (imagem fallback) é **obrigatório**. Se a função não encontrar a imagem do primeiro parâmetro, ela retorna a tag `<img>` apontando para a imagem fallback.
+
+> **⚠️ Atenção:** Essa função funciona **exclusivamente com imagens no Content Builder**. Não funciona com blocos de imagem (image blocks). Se você trabalha com imagens no Portfolio/Classic, considere outras abordagens.
+
+> **💡 Dica:** Mantenha uma imagem genérica padrão no Content Builder (como o logo da sua marca) para usar sempre como fallback. Assim, mesmo que algum ID de imagem esteja incorreto ou desatualizado, o e-mail nunca vai renderizar quebrado.
 
 ## Funções relacionadas
 
-- [Image](../content-functions/image.md) — Retorna uma tag `<img>` de uma imagem do portfólio clássico.
-- [ImageByKey](../content-functions/imagebykey.md) — Semelhante ao `ImageById`, mas busca a imagem pela Customer Key em vez do ID.
-- [RegExMatch](../string-functions/regexmatch.md) — Útil para extrair somente a URL (`src`) da tag `<img>` retornada pelo `ImageById`.
-- [ContentBlockById](../content-functions/contentblockbyid.md) — Insere um bloco de conteúdo do Content Builder pelo ID.
-- [ContentBlockByKey](../content-functions/contentblockbykey.md) — Insere um bloco de conteúdo do Content Builder pela Customer Key.
-- [Lookup](../data-extension-functions/lookup.md) — Busca valores em Data Extensions, útil para determinar dinamicamente qual ID de imagem usar.
-- [V](../utility-functions/v.md) — Exibe o valor de uma variável no HTML do e-mail.
-- [TreatAsContent](../utility-functions/treatascontent.md) — Processa uma string como conteúdo AMPscript, útil quando você monta HTML dinâmico com imagens.
+- [ContentImageByKey](../content-functions/contentimagebykey.md) - mesma funcionalidade, mas localiza a imagem pela Customer Key em vez do ID.
+- [Image](../content-functions/image.md) - para trabalhar com imagens usando referências do Portfolio clássico.
+- [RegExMatch](../string-functions/regexmatch.md) - útil para extrair apenas a URL do `src` a partir da tag `<img>` retornada.
+- [ContentBlockById](../content-functions/contentblockbyid.md) - para inserir blocos de conteúdo completos do Content Builder por ID.

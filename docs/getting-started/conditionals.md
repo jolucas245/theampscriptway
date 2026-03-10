@@ -1,167 +1,101 @@
 ---
 title: Condicionais
 sidebar_label: Condicionais
-description: Aprenda a usar estruturas condicionais em AMPscript para criar emails dinâmicos e personalizados no Salesforce Marketing Cloud.
+description: Use blocos If, ElseIf e Else em AMPScript para controlar o conteúdo exibido com base em condições.
 sidebar_position: 4
 ---
 
 # Condicionais
 
-Condicionais são o coração da personalização em AMPscript. É com elas que você decide **o que mostrar** para cada subscriber com base nos dados que tem. Imagina enviar um email de campanha da **MegaStore** onde clientes VIP veem uma oferta exclusiva e os demais veem outra — é exatamente isso que você vai aprender aqui.
+Personalização de verdade vai muito além de colocar o primeiro nome no assunto do e-mail. Quando você precisa mostrar um conteúdo diferente para cada perfil de cliente (uma oferta por faixa etária, uma saudação por região, um bloco específico por tipo de plano), é aí que entram as condicionais.
 
-Se você ainda não domina como declarar variáveis, dá uma passada no guia de [Variáveis](/docs/getting-started/variables) antes de continuar.
+Em AMPScript, o bloco `If` é a estrutura que permite executar processamento condicional: você define uma condição, e o conteúdo só é renderizado se ela for verdadeira.
 
-## IF / THEN / ENDIF
+## Bloco If básico
 
-A estrutura mais básica. Se a condição for verdadeira, o bloco é executado.
+No mínimo, um bloco `If` precisa de três palavras-chave:
 
-**Sintaxe:**
+- **`If`** - vem imediatamente antes da condição que você quer avaliar.
+- **`Then`** - vem imediatamente depois da condição.
+- **`EndIf`** - fecha o bloco.
 
-```ampscript
-%%[
-IF @condicao THEN
-  /* faça algo */
-ENDIF
-]%%
-```
-
-**Exemplo:** Vamos supor que você está montando um email para a campanha de **Dia das Mães** da MegaStore. Clientes com status "VIP" recebem um cupom especial:
-
-```ampscript
-%%[
-SET @status = AttributeValue("StatusCliente")
-
-IF @status == "VIP" THEN
-  SET @cupom = "MAES50"
-ENDIF
-]%%
-```
-
-Se `@status` for "VIP", a variável `@cupom` recebe o valor `"MAES50"`. Caso contrário, nada acontece.
-
-## ELSEIF / ELSE
-
-Agora vamos **estender** o exemplo acima para cobrir mais cenários. O `ELSEIF` adiciona condições extras e o `ELSE` é o "se nada mais der certo":
-
-```ampscript
-%%[
-SET @status = AttributeValue("StatusCliente")
-
-IF @status == "VIP" THEN
-  SET @cupom = "MAES50"
-  SET @desconto = "50% de desconto"
-ELSEIF @status == "Premium" THEN
-  SET @cupom = "MAES30"
-  SET @desconto = "30% de desconto"
-ELSE
-  SET @cupom = "MAES10"
-  SET @desconto = "10% de desconto"
-ENDIF
-]%%
-```
-
-Agora todo subscriber recebe um cupom, independentemente do status. Simples, né?
-
-> **💡 Dica:** Você pode encadear quantos `ELSEIF` quiser, mas se a lista ficar enorme, considere usar uma Data Extension de regras para manter o código limpo.
-
-## Operadores de comparação
-
-Esses são os operadores que você usa dentro do `IF`:
-
-| Operador | Significado       | Exemplo              |
-|----------|-------------------|----------------------|
-| `==`     | Igual a           | `@status == "VIP"`   |
-| `!=`     | Diferente de      | `@status != "Inativo"` |
-| `>`      | Maior que         | `@total > 200`       |
-| `<`      | Menor que         | `@total < 50`        |
-| `>=`     | Maior ou igual a  | `@total >= 100`      |
-| `<=`     | Menor ou igual a  | `@total <= 500`      |
-
-> **⚠️ Atenção:** AMPscript compara strings **sem diferenciar** maiúsculas de minúsculas. `"VIP"` e `"vip"` são considerados iguais.
-
-## Operadores lógicos (AND, OR, NOT)
-
-Para combinar condições, use `AND`, `OR` e `NOT`.
-
-**AND** — ambas as condições precisam ser verdadeiras:
-
-```ampscript
-%%[
-IF @status == "VIP" AND @totalCompras > 500 THEN
-  SET @freteGratis = "true"
-ENDIF
-]%%
-```
-
-**OR** — pelo menos uma condição precisa ser verdadeira:
-
-```ampscript
-%%[
-IF @status == "VIP" OR @status == "Premium" THEN
-  SET @acessoAntecipado = "true"
-ENDIF
-]%%
-```
-
-**NOT** — inverte a condição:
-
-```ampscript
-%%[
-IF NOT Empty(@cupom) THEN
-  SET @mensagem = Concat("Use o cupom: ", @cupom)
-ENDIF
-]%%
-```
-
-## IIF()
-
-O `IIF()` é tipo um **IF inline** — perfeito para decisões rápidas em uma única linha. Funciona assim: `IIF(condição, valor_se_verdadeiro, valor_se_falso)`.
-
-```ampscript
-%%[
-SET @saudacao = IIF(@status == "VIP", "Olá, cliente especial!", "Olá!")
-SET @corBanner = IIF(@totalCompras >= 300, "#FFD700", "#CCCCCC")
-]%%
-```
-
-> **💡 Dica:** Use `IIF()` para coisas simples como trocar uma cor ou uma palavra. Para lógica mais complexa, prefira `IF/ELSEIF/ELSE`.
-
-## Exemplo final: tudo junto
-
-Vamos montar um trecho real de um email da campanha de Dia das Mães da **MegaStore**, combinando tudo que vimos:
+Essa é a estrutura mais enxuta possível:
 
 ```html
 %%[
-SET @nome = AttributeValue("PrimeiroNome")
-SET @status = AttributeValue("StatusCliente")
-SET @totalCompras = AttributeValue("TotalComprasReais")
-SET @cpf = AttributeValue("CPF")
+  SET @totalPedido = 1500
 
-IF @status == "VIP" AND @totalCompras >= 500 THEN
-  SET @cupom = "MAES50"
-  SET @desconto = "50%"
-  SET @freteGratis = "true"
-ELSEIF @status == "Premium" OR @totalCompras >= 200 THEN
-  SET @cupom = "MAES30"
-  SET @desconto = "30%"
-  SET @freteGratis = IIF(@totalCompras >= 300, "true", "false")
-ELSE
-  SET @cupom = "MAES10"
-  SET @desconto = "10%"
-  SET @freteGratis = "false"
-ENDIF
-
-SET @msgFrete = IIF(@freteGratis == "true", "🚚 Frete grátis!", "")
+  IF @totalPedido > 1299 THEN
+    SET @mensagem = "Você ganhou frete grátis para todo o Brasil!"
+  ENDIF
 ]%%
 
-<h1>Oi, %%=v(@nome)=%%! 💐</h1>
-<p>Seu cupom exclusivo de Dia das Mães: <strong>%%=v(@cupom)=%%</strong></p>
-<p>%%=v(@desconto)=%% de desconto em todo o site! %%=v(@msgFrete)=%%</p>
-<p><a href="https://www.megastore.com.br/maes?cupom=%%=v(@cupom)=%%">Aproveitar agora</a></p>
+%%=v(@mensagem)=%%
 ```
 
-Nesse exemplo, a Maria Santos (VIP com R$ 800 em compras) vê o cupom `MAES50` com frete grátis. Já o Carlos Oliveira (cliente novo com R$ 150 em compras) vê o cupom `MAES10` sem frete grátis. **Um único email, experiências completamente diferentes.**
+Nesse exemplo, como o valor de `@totalPedido` (1500) é maior que 1299, a condição é verdadeira e a variável `@mensagem` recebe o texto sobre frete grátis. Se o valor fosse 800, nada seria exibido - o bloco simplesmente seria ignorado.
+
+> **💡 Dica:** As palavras-chave `If`, `Then` e `EndIf` **não são case-sensitive**. Ou seja, `IF`, `If` e `if` funcionam exatamente da mesma forma. Escolha um padrão e mantenha consistência no seu código - isso facilita muito a manutenção em equipe.
+
+## O que pode entrar na condição
+
+As avaliações dentro de um bloco `If` aceitam estes tipos de entrada:
+
+- **Constantes** - valores fixos como números ou strings (`1299`, `"SP"`)
+- **Variáveis** - definidas com `SET` (como `@totalPedido`)
+- **Atributos e valores de Data Extension** - campos do seu modelo de dados
+- **Chamadas de função** - o retorno de qualquer função AMPScript
+
+Isso dá bastante flexibilidade. Você pode comparar uma variável com uma constante, comparar dois campos de Data Extension entre si, ou usar o resultado de uma função diretamente na condição.
+
+## Testando condições adicionais com ElseIf
+
+Use `ElseIf` quando precisar testar mais de uma condição dentro do mesmo bloco. Você pode incluir **múltiplos** `ElseIf` em sequência.
+
+Imagine uma régua de relacionamento da MegaStore onde a oferta muda conforme a faixa etária do cliente:
+
+```html
+%%[
+  SET @idade = 35
+
+  IF @idade >= 31 AND @idade <= 40 THEN
+    SET @oferta = "20% de desconto em eletrônicos - aproveite, é por tempo limitado!"
+  ELSEIF @idade >= 41 AND @idade <= 50 THEN
+    SET @oferta = "15% de desconto em eletrodomésticos para renovar sua casa."
+  ENDIF
+]%%
+
+%%=v(@oferta)=%%
+```
+
+Aqui, se `@idade` for 35, o cliente vê a oferta de eletrônicos. Se for 45, vê a de eletrodomésticos. Para qualquer outro valor fora dessas faixas, nenhuma oferta é exibida.
+
+## Capturando tudo o que sobrou com Else
+
+O `Else` funciona como uma rede de segurança: ele captura **qualquer condição que não foi tratada** pelos blocos `If` ou `ElseIf` anteriores. Você só pode incluir **um único** `Else` por bloco.
+
+```html
+%%[
+  SET @idade = 28
+
+  IF @idade >= 31 AND @idade <= 40 THEN
+    SET @oferta = "20% de desconto em eletrônicos!"
+  ELSEIF @idade >= 41 AND @idade <= 50 THEN
+    SET @oferta = "15% de desconto em eletrodomésticos!"
+  ELSE
+    SET @oferta = "Confira nossas ofertas especiais do mês na MegaStore."
+  ENDIF
+]%%
+
+Olá, João! %%=v(@oferta)=%%
+```
+
+Como `@idade` é 28 - fora das duas faixas definidas - o bloco `Else` entra em ação e o cliente recebe a mensagem genérica. Ninguém fica sem conteúdo.
+
+> **⚠️ Atenção:** Você pode ter quantos `ElseIf` precisar, mas apenas **um `Else`**, e ele deve ser sempre o último antes do `EndIf`. Se você colocar um `ElseIf` depois do `Else`, vai ter erro.
+
+> **💡 Dica:** Em campanhas de e-mail com vários perfis de público, o `Else` é seu melhor amigo. Ele garante que mesmo um registro com dados inesperados receba um conteúdo válido, evitando aquele e-mail com espaço em branco no meio.
 
 ---
 
-Agora que você domina condicionais, o próximo passo natural são os [Loops](/docs/getting-started/loops), que permitem iterar sobre linhas de Data Extensions e montar conteúdo repetitivo de forma dinâmica.
+Agora que você domina condicionais, o próximo passo é aprender a percorrer conjuntos de dados com [Loops](/getting-started/loops). Para revisar como criar e usar as variáveis que aparecem nas condições, volte em [Variáveis](/getting-started/variables).

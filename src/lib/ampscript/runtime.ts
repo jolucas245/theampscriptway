@@ -31,23 +31,46 @@ function segmentize(template: string): Segment[] {
     return template[pos + offset] ?? '';
   }
 
+  function skipString(quote: string): string {
+    let s = quote;
+    pos++;
+    while (pos < template.length) {
+      const ch = template[pos++];
+      s += ch;
+      if (ch === '\\' && pos < template.length) {
+        s += template[pos++];
+      } else if (ch === quote) {
+        break;
+      }
+    }
+    return s;
+  }
+
   while (pos < template.length) {
+
     if (peek() === '%' && peek(1) === '%' && peek(2) === '[') {
       const startLine = line;
       pos += 3;
-      let depth = 1;
       let content = '';
+
       while (pos < template.length) {
-        if (peek() === '[') depth++;
-        if (peek() === ']' && peek(1) === '%' && peek(2) === '%') {
+        const ch = peek();
+
+        if (ch === ']' && peek(1) === '%' && peek(2) === '%') {
           pos += 3;
-          depth--;
-          if (depth === 0) break;
+          break;
         }
-        const ch = template[pos++];
+
+        if (ch === '"' || ch === "'") {
+          const s = skipString(ch);
+          content += s;
+          continue;
+        }
+
         if (ch === '\n') line++;
-        content += ch;
+        content += template[pos++];
       }
+
       segments.push({ kind: 'block', content, line: startLine });
       continue;
     }
@@ -56,15 +79,25 @@ function segmentize(template: string): Segment[] {
       const startLine = line;
       pos += 3;
       let content = '';
+
       while (pos < template.length) {
-        if (peek() === '=' && peek(1) === '%' && peek(2) === '%') {
+        const ch = peek();
+
+        if (ch === '=' && peek(1) === '%' && peek(2) === '%') {
           pos += 3;
           break;
         }
-        const ch = template[pos++];
+
+        if (ch === '"' || ch === "'") {
+          const s = skipString(ch);
+          content += s;
+          continue;
+        }
+
         if (ch === '\n') line++;
-        content += ch;
+        content += template[pos++];
       }
+
       segments.push({ kind: 'inline', content, line: startLine });
       continue;
     }
@@ -80,6 +113,12 @@ function segmentize(template: string): Segment[] {
           continue;
         }
       }
+    }
+
+    if (peek() === '%' && peek(1) === '%') {
+      segments.push({ kind: 'html', content: '%%' });
+      pos += 2;
+      continue;
     }
 
     let html = '';

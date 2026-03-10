@@ -1,30 +1,30 @@
 ---
 title: Output
 sidebar_label: Output
-description: Retorna o resultado de uma função AMPscript aninhada e insere esse resultado diretamente no conteúdo renderizado.
+description: Exibe o resultado de uma função AMPscript dentro do conteúdo renderizado, permitindo imprimir valores dinamicamente dentro de blocos de código.
 ---
 
 # Output
 
 ## Descrição
 
-A função `Output` pega o resultado de uma função AMPscript aninhada e insere esse resultado diretamente no conteúdo renderizado (email, CloudPage, SMS, etc). Ela é essencial quando você está escrevendo blocos de código AMPscript entre `%%[` e `]%%` e precisa "imprimir" algo no HTML de saída sem usar a sintaxe inline `%%=...=%%`. **Atenção:** a `Output` só funciona quando você passa outra função como parâmetro. Se você passar uma string literal ou qualquer outro valor direto (que não seja uma função), ela **não vai gerar nenhuma saída**.
+A função `Output` retorna o resultado de uma função AMPscript e insere esse resultado diretamente no conteúdo renderizado. Ela é essencial quando você está dentro de um bloco `%%[...]%%` e precisa imprimir algo no HTML - já que, dentro desses blocos, o conteúdo não é exibido automaticamente. A função **só aceita outra função AMPscript como parâmetro**; se você passar uma string literal ou qualquer outro valor direto, ela não produz nenhuma saída.
 
 ## Sintaxe
 
 ```ampscript
-Output(valor)
+Output(value)
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |-----------|------|-------------|-----------|
-| valor | Função AMPscript | Sim | A função cujo resultado será inserido no conteúdo renderizado. Pode ser qualquer função AMPscript válida, como `Concat()`, `v()`, `Format()`, etc. |
+| value | Função AMPscript | Sim | A função cujo resultado será exibido no conteúdo renderizado. Deve ser uma função AMPscript (como `Concat()` ou `v()`), não um valor literal. |
 
 ## Exemplo básico
 
-Imagine que você quer exibir o nome de um assinante dentro de um bloco de código AMPscript. Usando `Output` com a função `v()`, você consegue imprimir o valor da variável direto no conteúdo:
+Exibindo o nome de um cliente dentro de um bloco de código AMPscript em um e-mail da Lojas Vitória:
 
 ```ampscript
 %%[
@@ -34,81 +34,43 @@ Output(v(@nome))
 ```
 
 **Saída:**
+
 ```
 Maria Santos
 ```
 
 ## Exemplo avançado
 
-Cenário real: você está montando um email de confirmação de pedido para a loja **MegaStore**. Precisa exibir uma mensagem personalizada com o nome do cliente e o valor do pedido, tudo dentro de um bloco de código:
+Montando uma mensagem personalizada para uma régua de boas-vindas, combinando `Output` com [`Concat`](../string-functions/concat.md) e [`v`](../utility-functions/v.md) para exibir diferentes trechos dinâmicos dentro de um único bloco de código:
 
 ```ampscript
 %%[
 SET @primeiroNome = "João"
-SET @sobrenome = "Silva"
-SET @valorPedido = "R$ 459,90"
-SET @numeroPedido = "MS-2024-78432"
+SET @valorCredito = "R$ 150,00"
+SET @loja = "MegaStore"
 
-Output(Concat("Olá, ", v(@primeiroNome), " ", v(@sobrenome), "!"))
-]%%
-
-<br>
-
-%%[
-Output(Concat("Seu pedido #", v(@numeroPedido), " no valor de ", v(@valorPedido), " foi confirmado com sucesso."))
-]%%
-
-<br>
-
-%%[
-Output(Concat("Aproveite o frete grátis para compras acima de R$ 299,00 em www.megastore.com.br"))
+Output(Concat("Olá, ", v(@primeiroNome), "! Você ganhou um crédito de ", v(@valorCredito), " para usar na ", v(@loja), "."))
+Output(Concat(" Aproveite essa oferta até 31/12/2025."))
 ]%%
 ```
 
 **Saída:**
+
 ```
-Olá, João Silva!
-
-Seu pedido #MS-2024-78432 no valor de R$ 459,90 foi confirmado com sucesso.
-
-Aproveite o frete grátis para compras acima de R$ 299,00 em www.megastore.com.br
-```
-
-## Cenário prático: quando usar Output vs sintaxe inline
-
-Muita gente se pergunta: "Mas por que eu usaria `Output` se posso usar `%%=v(@variavel)=%%`?" Boa pergunta! A `Output` brilha quando você tem lógica complexa dentro de um bloco `%%[ ]%%` e precisa gerar saída condicionalmente:
-
-```ampscript
-%%[
-SET @pontos = 1250
-SET @nomeCliente = "Carlos Oliveira"
-
-IF @pontos >= 1000 THEN
-  Output(Concat(v(@nomeCliente), ", parabéns! Você tem ", v(@pontos), " pontos no programa Conecta Pontos. Resgate já suas recompensas!"))
-ELSE
-  Output(Concat(v(@nomeCliente), ", você tem ", v(@pontos), " pontos. Faltam apenas ", Subtract(1000, @pontos), " pontos para começar a resgatar!"))
-ENDIF
-]%%
-```
-
-**Saída (quando pontos >= 1000):**
-```
-Carlos Oliveira, parabéns! Você tem 1250 pontos no programa Conecta Pontos. Resgate já suas recompensas!
+Olá, João! Você ganhou um crédito de R$ 150,00 para usar na MegaStore. Aproveite essa oferta até 31/12/2025.
 ```
 
 ## Observações
 
-- **Só aceita funções como parâmetro.** Se você passar uma string literal como `Output("Olá")`, nada será exibido. Você precisa envolver em uma função, por exemplo: `Output(Concat("Olá"))` ou `Output(v(@variavel))`.
-- A `Output` é a alternativa à sintaxe inline `%%=...=%%` para quando você está dentro de um bloco de código `%%[ ]%%`.
-- Se você precisa que a saída inclua uma quebra de linha ao final, considere usar a função [OutputLine](../utility-functions/outputline.md) em vez de `Output`.
-- A função funciona em todos os contextos do Marketing Cloud: emails, CloudPages, SMS e Landing Pages.
-- Se a função aninhada retornar `null` ou vazio, `Output` simplesmente não vai exibir nada no conteúdo — não gera erro.
-- Para exibir o valor de uma variável, o padrão mais comum é `Output(v(@variavel))`, já que `v()` é a função que retorna o valor de uma variável.
+> **⚠️ Atenção:** A função `Output` **só funciona com funções AMPscript aninhadas** como parâmetro. Se você passar uma string literal diretamente - por exemplo, `Output("texto qualquer")` - nada será exibido. Para imprimir o valor de uma variável, envolva-a com `v()`: use `Output(v(@variavel))` e não `Output(@variavel)`.
+
+- Fora de um bloco `%%[...]%%`, você pode exibir valores simplesmente usando a sintaxe inline `%%=v(@variavel)=%%`. A função `Output` é necessária justamente quando você está **dentro** de um bloco de código e precisa inserir conteúdo no HTML renderizado sem sair do bloco.
+
+- Se você precisa que cada saída apareça em uma nova linha, considere usar [`OutputLine`](../utility-functions/outputline.md), que adiciona automaticamente uma quebra de linha após o conteúdo.
 
 ## Funções relacionadas
 
-- [V](../utility-functions/v.md) — retorna o valor de uma variável; é o par mais comum da `Output`
-- [OutputLine](../utility-functions/outputline.md) — funciona como `Output`, mas adiciona uma quebra de linha ao final
-- [Concat](../string-functions/concat.md) — concatena strings; muito usado dentro de `Output` para montar textos dinâmicos
-- [TreatAsContent](../utility-functions/treatascontent.md) — processa uma string como conteúdo AMPscript, útil para renderizar HTML dinâmico
-- [Format](../string-functions/format.md) — formata valores (datas, números) que podem ser exibidos via `Output`
+- [`V`](../utility-functions/v.md) - retorna o valor de uma variável; par natural do `Output` para exibir variáveis
+- [`OutputLine`](../utility-functions/outputline.md) - semelhante ao `Output`, mas adiciona quebra de linha ao final
+- [`Concat`](../string-functions/concat.md) - concatena strings; frequentemente usada dentro do `Output` para montar textos dinâmicos
+- [`TreatAsContent`](../utility-functions/treatascontent.md) - processa uma string como se fosse conteúdo AMPscript renderizável

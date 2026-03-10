@@ -1,67 +1,68 @@
 ---
 title: LookupRowsCS
 sidebar_label: LookupRowsCS
-description: Retorna um conjunto de linhas (rowset) de uma Data Extension com busca case-sensitive (diferencia maiúsculas de minúsculas).
+description: Retorna um conjunto de linhas de uma Data Extension com busca case-sensitive (diferencia maiúsculas de minúsculas).
 ---
 
 # LookupRowsCS
 
 ## Descrição
 
-A função `LookupRowsCS` busca linhas em uma Data Extension e retorna um conjunto de resultados (rowset) **não ordenado**, com um limite de até **2.000 linhas**. A diferença principal dela para a `LookupRows` é que tanto o nome da coluna quanto o valor buscado são **case-sensitive** — ou seja, "Ouro" é diferente de "ouro" e de "OURO". Use essa função quando a distinção entre maiúsculas e minúsculas for importante na sua lógica, como códigos de cupom, categorias padronizadas ou identificadores que variam por caixa.
+A função `LookupRowsCS` busca linhas em uma Data Extension e retorna um rowset (conjunto de linhas) não ordenado, com limite de até 2.000 linhas. A diferença crucial em relação à [LookupRows](../data-extension-functions/lookuprows.md) é que essa função é **case-sensitive** - ou seja, ela diferencia maiúsculas de minúsculas tanto no nome da coluna de busca quanto no valor procurado. Isso é essencial quando você precisa de precisão exata na comparação, como em códigos de cupom, SKUs de produtos ou identificadores que variam por caixa.
 
 ## Sintaxe
 
 ```ampscript
-LookupRowsCS("NomeDaDataExtension", "colunaBusca1", "valorBusca1" [, "colunaBusca2", "valorBusca2", ...])
+LookupRowsCS("dataExt", "searchColumn1", "searchValue1" [, "searchColumn2", "searchValue2" ...])
 ```
 
 ## Parâmetros
 
 | Parâmetro | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| dataExt | String | Sim | Nome da Data Extension que contém os dados que você quer consultar. |
-| searchColumn1 | String | Sim | Nome da coluna onde a busca será feita. **Case-sensitive.** |
-| searchValue1 | String | Sim | Valor a ser buscado na coluna especificada. **Case-sensitive.** |
-| searchColumn2, searchValue2, ... | String | Não | Pares adicionais de coluna/valor para refinar a busca. Também case-sensitive. |
+| dataExt | string | Sim | Nome da Data Extension que contém os dados que você quer recuperar. |
+| searchColumn1 | string | Sim | Nome da coluna onde a busca será feita. O valor é case-sensitive. |
+| searchValue1 | string | Sim | Valor a ser procurado na coluna especificada. O valor é case-sensitive. |
+
+> **💡 Dica:** Você pode adicionar pares extras de coluna e valor de busca ao final da chamada para filtrar por múltiplos critérios simultaneamente.
 
 ## Exemplo básico
 
-Imagine que você tem uma Data Extension chamada **"ProgramaFidelidade"** com os seguintes dados:
+Imagine que a Lojas Vitória tem uma Data Extension chamada "ProgramaFidelidade" com dados dos clientes e suas filiais. Você precisa listar todos os membros da filial "Centro" - respeitando exatamente a grafia.
 
-| ClienteId | Nome | Sobrenome | Pontos | Tier | Cidade |
+**Data Extension: ProgramaFidelidade**
+
+| ClienteId | Nome | Sobrenome | Pontos | Nivel | Filial |
 |---|---|---|---|---|---|
-| 1 | João | Silva | 92374 | Ouro | São Paulo |
-| 2 | Maria | Santos | 201042 | Diamante | Campinas |
-| 3 | Carlos | Oliveira | 69311 | Prata | São Paulo |
-| 4 | Ana | Ferreira | 23999 | Bronze | Curitiba |
-| 5 | Pedro | Costa | 15123 | Bronze | são paulo |
-
-Repare que o Pedro tem "são paulo" (tudo minúsculo) na coluna Cidade. Com `LookupRowsCS`, ele **não** será retornado se buscarmos por "São Paulo":
+| 1 | João | Silva | 92374 | 2 | Centro |
+| 2 | Maria | Santos | 201042 | 1 | Pinheiros |
+| 3 | Carlos | Mendes | 69311 | 3 | Jardins |
+| 4 | Ana | Lima | 23999 | 4 | centro |
+| 5 | Pedro | Rocha | 15123 | 4 | Centro |
 
 ```ampscript
 %%[
 
-VAR @membrosSP, @totalLinhas
-SET @membrosSP = LookupRowsCS("ProgramaFidelidade", "Cidade", "São Paulo")
-SET @totalLinhas = RowCount(@membrosSP)
+SET @membros = LookupRowsCS("ProgramaFidelidade", "Filial", "Centro")
 
-IF @totalLinhas > 0 THEN
-  FOR @i = 1 TO @totalLinhas DO
-
-    VAR @linha, @clienteId, @nome, @sobrenome, @pontos
-    SET @linha = Row(@membrosSP, @i)
-    SET @clienteId = Field(@linha, "ClienteId")
+IF RowCount(@membros) > 0 THEN
+  FOR @i = 1 TO RowCount(@membros) DO
+    SET @linha = Row(@membros, @i)
     SET @nome = Field(@linha, "Nome")
     SET @sobrenome = Field(@linha, "Sobrenome")
     SET @pontos = Field(@linha, "Pontos")
-
 ]%%
 
-%%=v(@nome)=%% %%=v(@sobrenome)=%% (ID %%=v(@clienteId)=%%) - Saldo de pontos: %%=v(@pontos)=%%
+<p>%%=v(@nome)=%% %%=v(@sobrenome)=%% - %%=v(@pontos)=%% pontos</p>
 
 %%[
   NEXT @i
+ELSE
+]%%
+
+<p>Nenhum membro encontrado nesta filial.</p>
+
+%%[
 ENDIF
 
 ]%%
@@ -69,73 +70,74 @@ ENDIF
 
 **Saída:**
 ```
-João Silva (ID 1) - Saldo de pontos: 92374
-Carlos Oliveira (ID 3) - Saldo de pontos: 69311
+João Silva - 92374 pontos
+Pedro Rocha - 15123 pontos
 ```
 
-> Note que Pedro Costa **não** apareceu porque o valor "são paulo" não corresponde a "São Paulo" na busca case-sensitive.
+> **⚠️ Atenção:** Note que Ana Lima (filial "centro" com "c" minúsculo) **não aparece** no resultado. Se você usasse [LookupRows](../data-extension-functions/lookuprows.md) (case-insensitive), ela seria incluída. Esse é exatamente o comportamento diferencial da `LookupRowsCS`.
 
 ## Exemplo avançado
 
-Cenário real: a **MegaStore** está enviando um e-mail de campanha de **Dia das Mães** com ofertas personalizadas. Eles têm uma Data Extension chamada **"OfertasDiaDasMaes"** onde a coluna `Categoria` é preenchida com valores padronizados como "Perfumaria", "Eletrônicos", "Moda". A equipe precisa garantir que a busca respeite exatamente a grafia cadastrada, porque existe "PERFUMARIA" (para atacado) e "Perfumaria" (para varejo).
+A FarmaRede precisa enviar um e-mail personalizado para clientes do programa de fidelidade, mostrando os pedidos recentes de um produto específico. O código do produto é case-sensitive (ex: "VitC500" é diferente de "VITC500" e de "vitc500"), e a busca deve considerar também a cidade do cliente.
 
-| OfertaId | Categoria | Produto | PrecoOriginal | PrecoPromocional | FreteGratis |
-|---|---|---|---|---|---|
-| 101 | Perfumaria | Kit Hidratante Floral | 189.90 | 139.90 | Sim |
-| 102 | Perfumaria | Eau de Parfum Rosé | 259.90 | 199.90 | Sim |
-| 103 | PERFUMARIA | Kit Atacado 12un Sabonete | 450.00 | 380.00 | Nao |
-| 104 | Moda | Bolsa Couro Legítimo | 499.90 | 349.90 | Sim |
+**Data Extension: PedidosRecentes**
+
+| PedidoId | Email | NomeCliente | CodigoProduto | Produto | Valor | Cidade |
+|---|---|---|---|---|---|---|
+| 1001 | joao@email.com.br | João Silva | VitC500 | Vitamina C 500mg | 29,90 | São Paulo |
+| 1002 | maria@email.com.br | Maria Santos | vitc500 | Vitamina C 500mg Genérico | 19,90 | São Paulo |
+| 1003 | carlos@email.com.br | Carlos Mendes | VitC500 | Vitamina C 500mg | 29,90 | São Paulo |
+| 1004 | ana@email.com.br | Ana Lima | VitC500 | Vitamina C 500mg | 29,90 | Curitiba |
+| 1005 | pedro@email.com.br | Pedro Rocha | VITC500 | Vitamina C 500mg Premium | 49,90 | São Paulo |
 
 ```ampscript
 %%[
 
-VAR @categoriaCliente, @ofertas, @qtdOfertas
-SET @categoriaCliente = "Perfumaria"
-SET @ofertas = LookupRowsCS("OfertasDiaDasMaes", "Categoria", @categoriaCliente)
-SET @qtdOfertas = RowCount(@ofertas)
+SET @codigoProduto = "VitC500"
+SET @cidade = "São Paulo"
 
-IF @qtdOfertas > 0 THEN
+SET @pedidos = LookupRowsCS("PedidosRecentes", "CodigoProduto", @codigoProduto, "Cidade", @cidade)
+SET @totalPedidos = RowCount(@pedidos)
 
+IF @totalPedidos > 0 THEN
 ]%%
 
-<h2>🌷 Ofertas de Dia das Mães — %%=v(@categoriaCliente)=%%</h2>
-<p>Encontramos %%=v(@qtdOfertas)=%% oferta(s) especial(is) pra você!</p>
+<h2>Encontramos %%=v(@totalPedidos)=%% pedido(s) de %%=v(@codigoProduto)=%% em %%=v(@cidade)=%%:</h2>
+
+<table>
+  <tr>
+    <th>Cliente</th>
+    <th>Produto</th>
+    <th>Valor</th>
+  </tr>
 
 %%[
-
-  FOR @i = 1 TO @qtdOfertas DO
-
-    VAR @linha, @produto, @precoOriginal, @precoPromo, @frete, @economia
-    SET @linha = Row(@ofertas, @i)
+  FOR @i = 1 TO @totalPedidos DO
+    SET @linha = Row(@pedidos, @i)
+    SET @nomeCliente = Field(@linha, "NomeCliente")
     SET @produto = Field(@linha, "Produto")
-    SET @precoOriginal = Field(@linha, "PrecoOriginal")
-    SET @precoPromo = Field(@linha, "PrecoPromocional")
-    SET @frete = Field(@linha, "FreteGratis")
-    SET @economia = Subtract(@precoOriginal, @precoPromo)
-
+    SET @valor = Field(@linha, "Valor")
 ]%%
 
-<div style="border:1px solid #e0e0e0; padding:15px; margin-bottom:10px;">
-  <strong>%%=v(@produto)=%%</strong><br>
-  De: R$ %%=FormatNumber(@precoOriginal, "N2")=%%<br>
-  <strong style="color:#e91e63;">Por: R$ %%=FormatNumber(@precoPromo, "N2")=%%</strong><br>
-  Você economiza: R$ %%=FormatNumber(@economia, "N2")=%%<br>
-  %%[ IF @frete == "Sim" THEN ]%%
-    <span style="color:green;">✅ Frete grátis!</span>
-  %%[ ENDIF ]%%
-</div>
+  <tr>
+    <td>%%=v(@nomeCliente)=%%</td>
+    <td>%%=v(@produto)=%%</td>
+    <td>R$ %%=v(@valor)=%%</td>
+  </tr>
 
 %%[
   NEXT @i
-
-ELSE
-
 ]%%
 
-<p>Nenhuma oferta encontrada para a categoria selecionada.</p>
+</table>
 
 %%[
+ELSE
+]%%
 
+<p>Nenhum pedido encontrado para o produto %%=v(@codigoProduto)=%% em %%=v(@cidade)=%%.</p>
+
+%%[
 ENDIF
 
 ]%%
@@ -143,40 +145,33 @@ ENDIF
 
 **Saída:**
 ```
-🌷 Ofertas de Dia das Mães — Perfumaria
-Encontramos 2 oferta(s) especial(is) pra você!
+Encontramos 2 pedido(s) de VitC500 em São Paulo:
 
-Kit Hidratante Floral
-De: R$ 189,90
-Por: R$ 139,90
-Você economiza: R$ 50,00
-✅ Frete grátis!
-
-Eau de Parfum Rosé
-De: R$ 259,90
-Por: R$ 199,90
-Você economiza: R$ 60,00
-✅ Frete grátis!
+Cliente          Produto              Valor
+João Silva       Vitamina C 500mg     R$ 29,90
+Carlos Mendes    Vitamina C 500mg     R$ 29,90
 ```
 
-> Perceba que o "Kit Atacado 12un Sabonete" com categoria "PERFUMARIA" (tudo maiúsculo) **não** foi incluído nos resultados, exatamente porque a busca é case-sensitive. Isso evita que produtos de atacado apareçam no e-mail do varejo.
+> **💡 Dica:** Perceba que Maria Santos ("vitc500") e Pedro Rocha ("VITC500") não aparecem, mesmo estando em São Paulo. A busca case-sensitive garantiu que apenas os registros com o código exato "VitC500" fossem retornados. Isso é fundamental quando códigos de produto, cupons promocionais ou SKUs têm variações intencionais de caixa.
 
 ## Observações
 
-- **Case-sensitive**: Tanto o nome da coluna (`searchColumn`) quanto o valor buscado (`searchValue`) diferenciam maiúsculas e minúsculas. Se o dado na DE está como "Ouro" e você busca "ouro", **não vai retornar resultados**.
-- **Limite de 2.000 linhas**: A função retorna no máximo 2.000 linhas. Se precisar de mais registros, considere filtrar melhor com colunas adicionais ou usar outra abordagem.
-- **Resultados não ordenados**: O rowset retornado **não tem uma ordem garantida**. Se você precisa de ordenação, use [LookupOrderedRowsCS](../data-extension-functions/lookuporderedrowscs.md).
-- **Múltiplos filtros**: Você pode adicionar quantos pares de coluna/valor precisar para refinar a busca. Todos os critérios funcionam como um **AND** lógico.
-- **Rowset vazio**: Se nenhuma linha corresponder à busca, o rowset retornado terá `RowCount` igual a 0. Sempre valide com `RowCount` antes de iterar para evitar erros.
-- **Dica prática**: Se a diferença entre maiúsculas e minúsculas **não importa** para o seu caso de uso, prefira usar [LookupRows](../data-extension-functions/lookuprows.md) — é mais tolerante e evita problemas com dados inconsistentes.
-- **Funciona em múltiplos contextos**: Pode ser usada em e-mails, CloudPages, SMS e Landing Pages.
+- O rowset retornado **não possui ordenação garantida**. Se você precisa dos resultados em uma ordem específica, considere usar [LookupOrderedRowsCS](../data-extension-functions/lookuporderedrowscs.md).
+
+- A função retorna no máximo **2.000 linhas**. Se a sua busca pode ultrapassar esse limite, considere adicionar mais critérios de filtro para refinar os resultados.
+
+- A busca é **case-sensitive tanto no valor da coluna quanto no nome da coluna de busca**. Certifique-se de que a grafia está exatamente igual ao que está armazenado na Data Extension.
+
+> **⚠️ Atenção:** Antes de iterar sobre o resultado, sempre use [RowCount](../data-extension-functions/rowcount.md) para verificar se há linhas retornadas. Tentar acessar um rowset vazio sem essa verificação pode causar erros na renderização do e-mail ou da CloudPage.
+
+> **💡 Dica:** Situações comuns onde a `LookupRowsCS` faz diferença no dia a dia: códigos de cupom promocional (ex: "NATAL2024" vs "natal2024"), SKUs de produto, tokens de autenticação e qualquer campo onde a caixa do texto carrega significado. Se a distinção de caixa não importa para o seu caso, prefira a [LookupRows](../data-extension-functions/lookuprows.md) - ela é mais tolerante e evita que dados deixem de ser encontrados por diferença de maiúsculas/minúsculas.
 
 ## Funções relacionadas
 
-- [LookupRows](../data-extension-functions/lookuprows.md) — Versão case-insensitive desta função. Use quando não precisar diferenciar maiúsculas/minúsculas.
-- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) — Retorna linhas com possibilidade de ordenação por uma coluna (case-insensitive).
-- [LookupOrderedRowsCS](../data-extension-functions/lookuporderedrowscs.md) — Versão case-sensitive com ordenação. Ideal quando você precisa de busca exata E resultados ordenados.
-- [Lookup](../data-extension-functions/lookup.md) — Retorna o valor de uma única coluna de uma única linha (em vez de um rowset completo).
-- [Row](../data-extension-functions/row.md) — Extrai uma linha específica de um rowset pelo índice.
-- [RowCount](../data-extension-functions/rowcount.md) — Conta o número de linhas em um rowset.
-- [Field](../data-extension-functions/field.md) — Extrai o valor de uma coluna específica de uma linha.
+- [LookupRows](../data-extension-functions/lookuprows.md) - versão case-insensitive desta função
+- [LookupOrderedRows](../data-extension-functions/lookuporderedrows.md) - permite ordenar o resultado por uma coluna e direção
+- [LookupOrderedRowsCS](../data-extension-functions/lookuporderedrowscs.md) - versão case-sensitive com ordenação
+- [Lookup](../data-extension-functions/lookup.md) - retorna o valor de uma única coluna em vez de linhas inteiras
+- [Row](../data-extension-functions/row.md) - extrai uma linha específica do rowset retornado
+- [RowCount](../data-extension-functions/rowcount.md) - conta o número de linhas no rowset
+- [Field](../data-extension-functions/field.md) - extrai o valor de uma coluna de uma linha do rowset
