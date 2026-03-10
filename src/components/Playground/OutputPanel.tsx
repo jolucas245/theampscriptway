@@ -27,13 +27,13 @@ export function OutputPanel({ result }: Props) {
           className={`${styles.viewBtn} ${view === 'preview' ? styles.viewActive : ''}`}
           onClick={() => setView('preview')}
         >
-          Preview
+          Pré-visualizar
         </button>
         <button
           className={`${styles.viewBtn} ${view === 'html' ? styles.viewActive : ''}`}
           onClick={() => setView('html')}
         >
-          HTML Source
+          Código HTML
         </button>
       </div>
 
