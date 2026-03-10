@@ -32,14 +32,13 @@ function saveState(state: SavedState) {
   } catch {}
 }
 
-const DEFAULT_CODE = `%%[\n  VAR @firstName, @score, @grade\n\n  SET @firstName = AttributeValue("FirstName")\n  SET @score = 87\n\n  IF @score >= 90 THEN\n    SET @grade = "A"\n  ELSEIF @score >= 80 THEN\n    SET @grade = "B"\n  ELSEIF @score >= 70 THEN\n    SET @grade = "C"\n  ELSE\n    SET @grade = "F"\n  ENDIF\n]%%\n\n<h2>Hello, %%=V(@firstName)=%%!</h2>\n<p>Your score is <strong>%%=V(@score)=%%</strong> - Grade: <strong>%%=V(@grade)=%%</strong></p>\n<p>Report generated on %%=FormatDate(Now(), "MMMM DD, YYYY")=%%</p>\n`;
+const DEFAULT_CODE = `%%[\n  VAR @primeiroNome, @pontuacao, @nota\n\n  SET @primeiroNome = AttributeValue("FirstName")\n  SET @pontuacao = 87\n\n  IF @pontuacao >= 90 THEN\n    SET @nota = "A"\n  ELSEIF @pontuacao >= 80 THEN\n    SET @nota = "B"\n  ELSEIF @pontuacao >= 70 THEN\n    SET @nota = "C"\n  ELSE\n    SET @nota = "F"\n  ENDIF\n]%%\n\n<h2>Olá, %%=V(@primeiroNome)=%%!</h2>\n<p>Sua pontuação é <strong>%%=V(@pontuacao)=%%</strong><br>Nota: <strong>%%=V(@nota)=%%</strong></p>\n<p>Relatório gerado em %%=FormatDate(Now(), "DD/MM/YYYY")=%%</p>\n`;
 
 const DEFAULT_ATTRIBUTES: SubscriberAttributes = {
-  FirstName:    'Maria',
-  LastName:     'Silva',
-  EmailAddress: 'maria@example.com',
+  FirstName:    'João',
+  LastName:     'Ávila',
+  EmailAddress: 'joao@email.com.br',
 };
-
 const MIN_WIDTH = 280;
 const DEFAULT_EDITOR_WIDTH = 55;
 
@@ -276,7 +275,7 @@ export default function Playground() {
           {result && errorCount  > 0 && `${errorCount} error${errorCount > 1 ? 's' : ''}`}
         </span>
         <div className={styles.statusSpacer} />
-        <span>ampscriptway.com.br</span>
+        <span>ampscriptway.com</span>
       </div>
     </div>
   );

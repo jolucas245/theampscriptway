@@ -38,21 +38,28 @@ export const dateFunctions: Record<string, (...args: ScalarValue[]) => ScalarVal
     const hours12 = hours24 % 12 || 12;
     const ampm = hours24 < 12 ? 'AM' : 'PM';
 
-    return fmt
-      .replace(/YYYY/g, String(d.getFullYear()))
-      .replace(/YY/g,   String(d.getFullYear()).slice(-2))
-      .replace(/MMMM/g, MONTH_NAMES[d.getMonth()])
-      .replace(/MMM/g,  MONTH_NAMES[d.getMonth()].slice(0, 3))
-      .replace(/MM/g,   pad(d.getMonth() + 1))
-      .replace(/M/g,    String(d.getMonth() + 1))
-      .replace(/DDDD/g, DAY_NAMES[d.getDay()])
-      .replace(/DDD/g,  DAY_NAMES[d.getDay()].slice(0, 3))
-      .replace(/DD/g,   pad(d.getDate()))
-      .replace(/D/g,    String(d.getDate()))
-      .replace(/HH/g,   pad(hours24))
-      .replace(/hh/g,   pad(hours12))
-      .replace(/mm/g,   pad(d.getMinutes()))
-      .replace(/ss/g,   pad(d.getSeconds()))
+    return fmt.replace(
+      /YYYY|YY|MMMM|MMM|MM|M|DDDD|DDD|DD|D|HH|hh|mm|ss/g,
+      (token) => {
+        switch (token) {
+          case 'YYYY': return String(d.getFullYear());
+          case 'YY':   return String(d.getFullYear()).slice(-2);
+          case 'MMMM': return MONTH_NAMES[d.getMonth()];
+          case 'MMM':  return MONTH_NAMES[d.getMonth()].slice(0, 3);
+          case 'MM':   return pad(d.getMonth() + 1);
+          case 'M':    return String(d.getMonth() + 1);
+          case 'DDDD': return DAY_NAMES[d.getDay()];
+          case 'DDD':  return DAY_NAMES[d.getDay()].slice(0, 3);
+          case 'DD':   return pad(d.getDate());
+          case 'D':    return String(d.getDate());
+          case 'HH':   return pad(hours24);
+          case 'hh':   return pad(hours12);
+          case 'mm':   return pad(d.getMinutes());
+          case 'ss':   return pad(d.getSeconds());
+          default:     return token;
+        }
+      }
+    )
       .replace(/TT/g,   ampm)
       .replace(/tt/g,   ampm.toLowerCase());
   },
