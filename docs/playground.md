@@ -99,7 +99,7 @@ O playground implementa as seguintes funções em TypeScript puro, sem dependên
 
 ### Data Extensions são simuladas em memória
 
-> As DEs do playground existem apenas enquanto a sessão está aberta. Não há persistência - fechar ou recarregar a página apaga tudo. Além disso, o playground não tem acesso a nenhuma DE real da sua conta SFMC.
+> O playground não tem acesso a nenhuma DE real da sua conta SFMC. Apesar disso, os códigos são salvos no armazenamento local do seu navegador. Então, quando você sair e voltar depois, o código está salvo.
 
 ### Funções de data e fuso horário
 

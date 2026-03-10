@@ -84,7 +84,7 @@ ENDIF
 
 ## O operador NOT
 
-O `NOT` inverte o resultado de uma condição - o bloco é executado quando a condição for **falsa**.
+O `NOT` inverte o resultado de uma condição. O bloco é executado quando a condição for **falsa**.
 
 ```ampscript
 %%[

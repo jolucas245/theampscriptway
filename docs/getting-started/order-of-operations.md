@@ -13,7 +13,7 @@ Entender a ordem em que o Marketing Cloud Engagement processa o AMPscript é fun
 
 O Marketing Cloud não executa o AMPscript linha por linha, de forma sequencial, no momento em que o e-mail é montado. Em vez disso, ele **processa todo o código em lote como etapa final** do envio.
 
-Isso tem uma implicação prática importante: se você usa uma Data Extension para gerenciar dados de subscribers e o próprio envio grava dados nessa DE, o AMPscript pode tentar inserir um registro que já foi criado pelo processo de envio - gerando um erro de chave duplicada.
+Isso tem uma implicação prática importante: se você usa uma Data Extension para gerenciar dados de subscribers e o próprio envio grava dados nessa DE, o AMPscript pode tentar inserir um registro que já foi criado pelo processo de envio, gerando um erro de chave duplicada.
 
 > **💡 Dica:** Sempre que precisar gravar dados em uma DE durante um envio, prefira `UpsertDE()` ao invés de `InsertDE()`. O `UpsertDE()` insere se não existir e atualiza se já existir, evitando conflitos de chave primária.
 

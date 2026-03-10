@@ -7,7 +7,7 @@ sidebar_position: 4
 
 # Condicionais
 
-Personalização de verdade vai muito além de colocar o primeiro nome no assunto do e-mail. Quando você precisa mostrar um conteúdo diferente para cada perfil de cliente - uma oferta por faixa etária, uma saudação por região, um bloco específico por tipo de plano - é aí que entram as condicionais.
+Personalização de verdade vai muito além de colocar o primeiro nome no assunto do e-mail. Quando você precisa mostrar um conteúdo diferente para cada perfil de cliente (uma oferta por faixa etária, uma saudação por região, um bloco específico por tipo de plano), é aí que entram as condicionais.
 
 Em AMPScript, o bloco `If` é a estrutura que permite executar processamento condicional: você define uma condição, e o conteúdo só é renderizado se ela for verdadeira.
 
@@ -94,7 +94,7 @@ Como `@idade` é 28 - fora das duas faixas definidas - o bloco `Else` entra em a
 
 > **⚠️ Atenção:** Você pode ter quantos `ElseIf` precisar, mas apenas **um `Else`**, e ele deve ser sempre o último antes do `EndIf`. Se você colocar um `ElseIf` depois do `Else`, vai ter erro.
 
-> **💡 Dica:** Em campanhas de e-mail com vários perfis de público, o `Else` é seu melhor amigo. Ele garante que mesmo um registro com dados inesperados receba um conteúdo válido - evitando aquele e-mail com espaço em branco no meio.
+> **💡 Dica:** Em campanhas de e-mail com vários perfis de público, o `Else` é seu melhor amigo. Ele garante que mesmo um registro com dados inesperados receba um conteúdo válido, evitando aquele e-mail com espaço em branco no meio.
 
 ---
 

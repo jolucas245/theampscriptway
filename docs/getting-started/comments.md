@@ -7,11 +7,11 @@ sidebar_position: 7
 
 # Comentários
 
-Comentários são trechos de texto dentro do seu código que o AMPscript ignora completamente durante a execução. Eles existem apenas para humanos - para documentar intenções, explicar decisões e facilitar a manutenção por quem vier depois (inclusive você mesmo, seis meses depois).
+Comentários são trechos de texto dentro do seu código que o AMPscript ignora completamente durante a execução. Eles existem apenas para nós humanos para documentar intenções, explicar decisões e facilitar a manutenção por quem vier depois (inclusive você mesmo, seis meses depois), além de auxiliar muito na depuração.
 
 ## Sintaxe
 
-O delimitador de comentário em AMPscript é `/* */` - o mesmo usado em várias outras linguagens. Tudo que estiver entre `/*` e `*/` é tratado como comentário e não é processado.
+O delimitador de comentário em AMPscript é `/* */`, o mesmo usado em várias outras linguagens. Tudo que estiver entre `/*` e `*/` é tratado como comentário e não é processado.
 
 ```ampscript
 %%[
@@ -24,7 +24,7 @@ SET @nomeCliente = Lookup('Clientes_DE', 'Nome', 'Email', emailaddr)
 
 Você pode adicionar comentários em **blocos de código** (`%%[ ]%%`) e em blocos com **sintaxe tag-based** (`<script runat="server">`).
 
-> **⚠️ Atenção:** Não é possível adicionar comentários em AMPscript **inline** - ou seja, dentro de `%%=` e `=%%`. Comentários funcionam apenas dentro de blocos.
+> **⚠️ Atenção:** Não é possível adicionar comentários em AMPscript **inline**, ou seja, dentro de `%%=` e `=%%`. Comentários funcionam apenas dentro de blocos.
 
 ```ampscript
 /* ✅ Funciona - dentro de bloco de código */
@@ -74,7 +74,7 @@ SET @limite   = 3  /* máximo de produtos exibidos por e-mail */
 
 ## Quando comentar
 
-Comente sempre que o código não for autoexplicativo. Não é necessário comentar o óbvio - o objetivo é documentar o **por quê**, não o **o quê**.
+Comente sempre que o código não for autoexplicativo. Não é necessário comentar o óbvio, o objetivo é documentar o **por quê**, não o **o quê**.
 
 ```ampscript
 %%[
