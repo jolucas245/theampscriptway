@@ -2,7 +2,7 @@
 
 > Referência completa de AMPscript em português, feita pela comunidade brasileira de Salesforce Marketing Cloud.
 
-**[ampscriptway.dev](https://ampscriptway.dev)** &nbsp;·&nbsp; [Playground](https://ampscriptway.dev/playground) &nbsp;·&nbsp; [Documentação](https://ampscriptway.dev/getting-started/introduction)
+**[ampscriptway.com](https://ampscriptway.com)** &nbsp;·&nbsp; [Playground](https://ampscriptway.com/playground) &nbsp;·&nbsp; [Documentação](https://ampscriptway.com/getting-started/introduction)
 
 ---
 
