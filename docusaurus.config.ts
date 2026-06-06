@@ -8,7 +8,8 @@ const config: Config = {
   favicon: 'favicon.ico',
 
   url: 'https://ampscriptway.com',
-baseUrl: '/',
+  baseUrl: '/',
+  trailingSlash: true,
 
   organizationName: 'jolucas245',
   projectName: 'AMPScript-Way',
@@ -19,10 +20,6 @@ baseUrl: '/',
   i18n: {
     defaultLocale: 'pt-BR',
     locales: ['pt-BR'],
-    localeConfigs: {
-      'pt-BR': { label: 'Português (BR)', direction: 'ltr' },
-      en: { label: 'English', direction: 'ltr' },
-    },
   },
 
   presets: [
@@ -89,7 +86,6 @@ baseUrl: '/',
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
-    
   } satisfies Preset.ThemeConfig,
 };
 
